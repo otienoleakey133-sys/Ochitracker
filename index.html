@@ -1,351 +1,1036 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FX Trading Tracker</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+<title>OchiTracker</title>
 
-    body {
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: white;
-      padding: 20px;
-    }
+<style>
 
-    .container {
-      max-width: 1000px;
-      margin: auto;
-    }
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
 
-    h1 {
-      text-align: center;
-      margin-bottom: 10px;
-      color: #38bdf8;
-    }
+body{
+font-family:Arial,sans-serif;
+background:#0b1220;
+color:#fff;
+padding:16px;
+}
 
-    .subtitle {
-      text-align: center;
-      color: #94a3b8;
-      margin-bottom: 25px;
-    }
+.container{
+max-width:1100px;
+margin:auto;
+}
 
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 15px;
-      margin-bottom: 25px;
-    }
+header{
+text-align:center;
+padding:15px 0 25px;
+}
 
-    .card {
-      background: #1e293b;
-      padding: 20px;
-      border-radius: 12px;
-      text-align: center;
-    }
+header h1{
+font-size:32px;
+color:#38bdf8;
+}
 
-    .card h3 {
-      color: #94a3b8;
-      font-size: 14px;
-      margin-bottom: 8px;
-    }
+header p{
+color:#94a3b8;
+margin-top:6px;
+}
 
-    .card p {
-      font-size: 24px;
-      font-weight: bold;
-    }
+.section{
+background:#111c30;
+border:1px solid #23324b;
+border-radius:14px;
+padding:18px;
+margin-bottom:18px;
+}
 
-    .form {
-      background: #1e293b;
-      padding: 20px;
-      border-radius: 12px;
-      margin-bottom: 25px;
-    }
+.section h2{
+color:#38bdf8;
+margin-bottom:15px;
+}
 
-    .form h2 {
-      margin-bottom: 15px;
-      color: #38bdf8;
-    }
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+gap:12px;
+margin-bottom:18px;
+}
 
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 12px;
-    }
+.card{
+background:#18253a;
+padding:18px;
+border-radius:12px;
+text-align:center;
+border:1px solid #263751;
+}
 
-    input, select, textarea {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      background: #334155;
-      color: white;
-    }
+.card h3{
+font-size:13px;
+color:#94a3b8;
+margin-bottom:8px;
+}
 
-    textarea {
-      min-height: 80px;
-      margin-top: 12px;
-    }
+.card p{
+font-size:25px;
+font-weight:bold;
+}
 
-    button {
-      width: 100%;
-      margin-top: 15px;
-      padding: 13px;
-      border: none;
-      border-radius: 8px;
-      background: #22c55e;
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+.form-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:12px;
+}
 
-    button:hover {
-      background: #16a34a;
-    }
+label{
+display:block;
+font-size:13px;
+color:#94a3b8;
+}
 
-    .trades {
-      background: #1e293b;
-      padding: 20px;
-      border-radius: 12px;
-      overflow-x: auto;
-    }
+input,
+select,
+textarea{
+width:100%;
+margin-top:6px;
+padding:12px;
+border:none;
+border-radius:8px;
+background:#26364e;
+color:white;
+font-size:15px;
+}
 
-    .trades h2 {
-      color: #38bdf8;
-      margin-bottom: 15px;
-    }
+textarea{
+min-height:90px;
+resize:vertical;
+}
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 650px;
-    }
+button{
+border:none;
+border-radius:8px;
+padding:13px 16px;
+font-weight:bold;
+font-size:15px;
+cursor:pointer;
+}
 
-    th, td {
-      padding: 12px;
-      border-bottom: 1px solid #334155;
-      text-align: left;
-    }
+.primary{
+background:#38bdf8;
+color:#07111f;
+width:100%;
+margin-top:15px;
+}
 
-    th {
-      color: #94a3b8;
-    }
+.primary:hover{
+background:#0ea5e9;
+}
 
-    .win {
-      color: #22c55e;
-      font-weight: bold;
-    }
+.danger{
+background:#ef4444;
+color:white;
+padding:7px 10px;
+}
 
-    .loss {
-      color: #ef4444;
-      font-weight: bold;
-    }
+table{
+width:100%;
+border-collapse:collapse;
+min-width:850px;
+}
 
-    .empty {
-      text-align: center;
-      color: #94a3b8;
-      padding: 20px;
-    }
-  </style>
+.table-wrap{
+overflow-x:auto;
+}
+
+th,
+td{
+padding:10px;
+border-bottom:1px solid #26364e;
+text-align:left;
+font-size:13px;
+}
+
+th{
+color:#94a3b8;
+}
+
+.win{
+color:#22c55e;
+font-weight:bold;
+}
+
+.loss{
+color:#ef4444;
+font-weight:bold;
+}
+
+.be{
+color:#f59e0b;
+font-weight:bold;
+}
+
+.good{
+color:#22c55e;
+}
+
+.bad{
+color:#ef4444;
+}
+
+.stats{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:12px;
+}
+
+.stat-box{
+background:#18253a;
+padding:15px;
+border-radius:10px;
+}
+
+.stat-box h3{
+font-size:13px;
+color:#94a3b8;
+margin-bottom:8px;
+}
+
+.stat-box p{
+font-size:21px;
+font-weight:bold;
+}
+
+.checklist{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:10px;
+margin-top:10px;
+}
+
+.check{
+background:#18253a;
+padding:12px;
+border-radius:8px;
+}
+
+.check label{
+color:#fff;
+}
+
+.empty{
+text-align:center;
+color:#94a3b8;
+padding:25px;
+}
+
+.small{
+font-size:12px;
+color:#64748b;
+margin-top:8px;
+}
+
+</style>
 </head>
 
 <body>
 
 <div class="container">
 
-  <h1>📊 FX Trading Tracker</h1>
-  <p class="subtitle">Personal Forex Trading Performance Dashboard</p>
+<header>
 
-  <div class="cards">
+<h1>📊 OchiTracker</h1>
 
-    <div class="card">
-      <h3>Total Trades</h3>
-      <p id="totalTrades">0</p>
-    </div>
+<p>
+Personal FX Performance & Edge Analytics
+</p>
 
-    <div class="card">
-      <h3>Wins</h3>
-      <p id="wins">0</p>
-    </div>
+</header>
 
-    <div class="card">
-      <h3>Losses</h3>
-      <p id="losses">0</p>
-    </div>
 
-    <div class="card">
-      <h3>Win Rate</h3>
-      <p id="winRate">0%</p>
-    </div>
+<!-- DASHBOARD -->
 
-    <div class="card">
-      <h3>Total P/L</h3>
-      <p id="totalPL">$0.00</p>
-    </div>
+<div class="cards">
 
-  </div>
+<div class="card">
+<h3>TOTAL TRADES</h3>
+<p id="totalTrades">0</p>
+</div>
 
-  <div class="form">
+<div class="card">
+<h3>WIN RATE</h3>
+<p id="winRate">0%</p>
+</div>
 
-    <h2>➕ Add New Trade</h2>
+<div class="card">
+<h3>TOTAL P/L</h3>
+<p id="totalPL">$0.00</p>
+</div>
 
-    <div class="form-grid">
+<div class="card">
+<h3>TOTAL R</h3>
+<p id="totalR">0R</p>
+</div>
 
-      <input type="date" id="date">
+<div class="card">
+<h3>AVG R</h3>
+<p id="avgR">0R</p>
+</div>
 
-      <input type="text" id="pair" placeholder="Currency Pair e.g. EUR/USD">
+<div class="card">
+<h3>WINS</h3>
+<p id="wins">0</p>
+</div>
 
-      <select id="result">
-        <option value="Win">Win</option>
-        <option value="Loss">Loss</option>
-      </select>
+<div class="card">
+<h3>LOSSES</h3>
+<p id="losses">0</p>
+</div>
 
-      <input type="number" id="profit" placeholder="Profit / Loss ($)" step="0.01">
-
-      <input type="number" id="risk" placeholder="Risk ($)" step="0.01">
-
-    </div>
-
-    <textarea id="notes" placeholder="Trade notes / setup / lessons learned"></textarea>
-
-    <button onclick="addTrade()">Add Trade</button>
-
-  </div>
-
-  <div class="trades">
-
-    <h2>📋 Trade History</h2>
-
-    <table>
-
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Pair</th>
-          <th>Result</th>
-          <th>P/L</th>
-          <th>Risk</th>
-          <th>Notes</th>
-        </tr>
-      </thead>
-
-      <tbody id="tradeTable">
-
-        <tr>
-          <td colspan="6" class="empty">
-            No trades recorded yet.
-          </td>
-        </tr>
-
-      </tbody>
-
-    </table>
-
-  </div>
+<div class="card">
+<h3>BREAKEVEN</h3>
+<p id="breakeven">0</p>
+</div>
 
 </div>
 
+
+<!-- ADD TRADE -->
+
+<div class="section">
+
+<h2>➕ Add New Trade</h2>
+
+
+<div class="form-grid">
+
+<label>
+Date
+<input type="date" id="date">
+</label>
+
+<label>
+Currency Pair
+<input type="text" id="pair" placeholder="XAUUSD / EURUSD">
+</label>
+
+<label>
+Direction
+<select id="direction">
+<option>BUY</option>
+<option>SELL</option>
+</select>
+</label>
+
+<label>
+Session
+<select id="session">
+<option>London</option>
+<option>New York</option>
+<option>Asia</option>
+</select>
+</label>
+
+<label>
+Result
+<select id="result">
+<option>WIN</option>
+<option>LOSS</option>
+<option>BE</option>
+</select>
+</label>
+
+<label>
+Profit / Loss ($)
+<input type="number" id="profit" step="0.01" placeholder="20">
+</label>
+
+<label>
+Risk ($)
+<input type="number" id="risk" step="0.01" placeholder="20">
+</label>
+
+<label>
+R Multiple
+<input type="number" id="rMultiple" step="0.01" placeholder="3">
+</label>
+
+</div>
+
+
+<h3 style="margin-top:22px;color:#38bdf8">
+📍 MARKET ANALYSIS
+</h3>
+
+<div class="form-grid" style="margin-top:12px">
+
+<label>
+D1 Bias
+<select id="d1Bias">
+<option>Bullish</option>
+<option>Bearish</option>
+<option>Neutral</option>
+</select>
+</label>
+
+<label>
+4H Structure
+<select id="structure">
+<option>Bullish</option>
+<option>Bearish</option>
+<option>Range</option>
+<option>Choppy</option>
+</select>
+</label>
+
+<label>
+4H POI
+<select id="poi">
+<option>Valid</option>
+<option>Invalid</option>
+<option>No POI</option>
+</select>
+</label>
+
+<label>
+Liquidity Sweep
+<select id="liquidity">
+<option>Yes</option>
+<option>No</option>
+</select>
+</label>
+
+<label>
+15M MSS
+<select id="mss">
+<option>Confirmed</option>
+<option>Not Confirmed</option>
+</select>
+</label>
+
+<label>
+Entry Model
+<select id="entryModel">
+<option>FVG</option>
+<option>Order Block</option>
+<option>FVG + OB</option>
+<option>Other</option>
+</select>
+</label>
+
+<label>
+Market Condition
+<select id="condition">
+<option>Clean Trend</option>
+<option>Retracement</option>
+<option>Choppy</option>
+<option>Range</option>
+</select>
+</label>
+
+</div>
+
+
+<h3 style="margin-top:22px;color:#38bdf8">
+🧠 DISCIPLINE CHECK
+</h3>
+
+<div class="checklist">
+
+<div class="check">
+<label>
+<input type="checkbox" id="ruleFollowed">
+ Rule followed
+</label>
+</div>
+
+<div class="check">
+<label>
+<input type="checkbox" id="earlyEntry">
+ Early entry
+</label>
+</div>
+
+<div class="check">
+<label>
+<input type="checkbox" id="fomo">
+ FOMO
+</label>
+</div>
+
+<div class="check">
+<label>
+<input type="checkbox" id="revenge">
+ Revenge trade
+</label>
+</div>
+
+<div class="check">
+<label>
+<input type="checkbox" id="newsViolation">
+ News violation
+</label>
+</div>
+
+</div>
+
+
+<label style="margin-top:15px">
+Trade Notes
+<textarea
+id="notes"
+placeholder="Why did I take this trade? What happened? What did I learn?"
+></textarea>
+</label>
+
+
+<button class="primary" onclick="addTrade()">
+
+SAVE TRADE
+
+</button>
+
+</div>
+
+
+<!-- EDGE LAB -->
+
+<div class="section">
+
+<h2>🧪 Ochi Edge Lab</h2>
+
+<div class="stats">
+
+<div class="stat-box">
+<h3>4H POI Win Rate</h3>
+<p id="poiWinRate">0%</p>
+</div>
+
+<div class="stat-box">
+<h3>15M MSS Win Rate</h3>
+<p id="mssWinRate">0%</p>
+</div>
+
+<div class="stat-box">
+<h3>Clean Trend Win Rate</h3>
+<p id="trendWinRate">0%</p>
+</div>
+
+<div class="stat-box">
+<h3>Choppy Market Win Rate</h3>
+<p id="choppyWinRate">0%</p>
+</div>
+
+<div class="stat-box">
+<h3>Rule Following</h3>
+<p id="disciplineRate">0%</p>
+</div>
+
+<div class="stat-box">
+<h3>Early Entries</h3>
+<p id="earlyCount">0</p>
+</div>
+
+<div class="stat-box">
+<h3>FOMO Trades</h3>
+<p id="fomoCount">0</p>
+</div>
+
+<div class="stat-box">
+<h3>News Violations</h3>
+<p id="newsCount">0</p>
+</div>
+
+</div>
+
+<p class="small">
+The Edge Lab becomes more useful as you record more trades.
+</p>
+
+</div>
+
+
+<!-- TRADE HISTORY -->
+
+<div class="section">
+
+<h2>📋 Trade History</h2>
+
+<div class="table-wrap">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Date</th>
+<th>Pair</th>
+<th>Direction</th>
+<th>Session</th>
+<th>Setup</th>
+<th>Result</th>
+<th>P/L</th>
+<th>R</th>
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody id="tradeTable">
+
+<tr>
+<td colspan="9" class="empty">
+No trades recorded yet.
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+</div>
+
+
 <script>
 
-  let trades = [];
+/* ================================
+   OCHITRACKER DATA
+================================ */
 
-  function addTrade() {
+let trades =
+JSON.parse(localStorage.getItem("ochiTrades")) || [];
 
-    const date = document.getElementById("date").value;
-    const pair = document.getElementById("pair").value;
-    const result = document.getElementById("result").value;
-    const profit = parseFloat(document.getElementById("profit").value) || 0;
-    const risk = parseFloat(document.getElementById("risk").value) || 0;
-    const notes = document.getElementById("notes").value;
 
-    if (!date || !pair) {
-      alert("Please enter the date and currency pair.");
-      return;
-    }
+/* ================================
+   ADD TRADE
+================================ */
 
-    const trade = {
-      date,
-      pair,
-      result,
-      profit,
-      risk,
-      notes
-    };
+function addTrade(){
 
-    trades.push(trade);
+const date =
+document.getElementById("date").value;
 
-    updateDashboard();
-    displayTrades();
+const pair =
+document.getElementById("pair").value.trim().toUpperCase();
 
-    document.getElementById("date").value = "";
-    document.getElementById("pair").value = "";
-    document.getElementById("profit").value = "";
-    document.getElementById("risk").value = "";
-    document.getElementById("notes").value = "";
-  }
+const direction =
+document.getElementById("direction").value;
 
-  function updateDashboard() {
+const session =
+document.getElementById("session").value;
 
-    const total = trades.length;
+const result =
+document.getElementById("result").value;
 
-    const wins = trades.filter(trade => trade.result === "Win").length;
+const profit =
+parseFloat(document.getElementById("profit").value) || 0;
 
-    const losses = trades.filter(trade => trade.result === "Loss").length;
+const risk =
+parseFloat(document.getElementById("risk").value) || 0;
 
-    const totalPL = trades.reduce(
-      (sum, trade) => sum + trade.profit,
-      0
-    );
+const rMultiple =
+parseFloat(document.getElementById("rMultiple").value) || 0;
 
-    const winRate = total > 0
-      ? ((wins / total) * 100).toFixed(1)
-      : 0;
+if(!date || !pair){
 
-    document.getElementById("totalTrades").textContent = total;
+alert("Please enter the date and currency pair.");
 
-    document.getElementById("wins").textContent = wins;
+return;
 
-    document.getElementById("losses").textContent = losses;
+}
 
-    document.getElementById("winRate").textContent =
-      winRate + "%";
+const trade = {
 
-    document.getElementById("totalPL").textContent =
-      "$" + totalPL.toFixed(2);
-  }
+id:Date.now(),
 
-  function displayTrades() {
+date,
 
-    const table = document.getElementById("tradeTable");
+pair,
 
-    table.innerHTML = "";
+direction,
 
-    trades.forEach(trade => {
+session,
 
-      const row = document.createElement("tr");
+result,
 
-      row.innerHTML = `
-        <td>${trade.date}</td>
-        <td>${trade.pair}</td>
-        <td class="${trade.result === "Win" ? "win" : "loss"}">
-          ${trade.result}
-        </td>
-        <td>$${trade.profit.toFixed(2)}</td>
-        <td>$${trade.risk.toFixed(2)}</td>
-        <td>${trade.notes}</td>
-      `;
+profit,
 
-      table.appendChild(row);
+risk,
 
-    });
-  }
+r:rMultiple,
+
+d1Bias:document.getElementById("d1Bias").value,
+
+structure:document.getElementById("structure").value,
+
+poi:document.getElementById("poi").value,
+
+liquidity:document.getElementById("liquidity").value,
+
+mss:document.getElementById("mss").value,
+
+entryModel:document.getElementById("entryModel").value,
+
+condition:document.getElementById("condition").value,
+
+ruleFollowed:document.getElementById("ruleFollowed").checked,
+
+earlyEntry:document.getElementById("earlyEntry").checked,
+
+fomo:document.getElementById("fomo").checked,
+
+revenge:document.getElementById("revenge").checked,
+
+newsViolation:document.getElementById("newsViolation").checked,
+
+notes:document.getElementById("notes").value
+
+};
+
+trades.push(trade);
+
+saveData();
+
+updateDashboard();
+
+displayTrades();
+
+resetForm();
+
+}
+
+
+/* ================================
+   SAVE DATA
+================================ */
+
+function saveData(){
+
+localStorage.setItem(
+"ochiTrades",
+JSON.stringify(trades)
+);
+
+}
+
+
+/* ================================
+   DASHBOARD
+================================ */
+
+function updateDashboard(){
+
+const total = trades.length;
+
+const wins =
+trades.filter(t => t.result === "WIN").length;
+
+const losses =
+trades.filter(t => t.result === "LOSS").length;
+
+const be =
+trades.filter(t => t.result === "BE").length;
+
+const totalPL =
+trades.reduce((sum,t)=>sum + t.profit,0);
+
+const totalR =
+trades.reduce((sum,t)=>sum + t.r,0);
+
+const avgR =
+total > 0 ? totalR / total : 0;
+
+const winRate =
+total > 0 ? (wins / total) * 100 : 0;
+
+document.getElementById("totalTrades")
+.textContent = total;
+
+document.getElementById("wins")
+.textContent = wins;
+
+document.getElementById("losses")
+.textContent = losses;
+
+document.getElementById("breakeven")
+.textContent = be;
+
+document.getElementById("winRate")
+.textContent = winRate.toFixed(1) + "%";
+
+document.getElementById("totalPL")
+.textContent =
+(totalPL >= 0 ? "+" : "") +
+"$" + totalPL.toFixed(2);
+
+document.getElementById("totalR")
+.textContent =
+(totalR >= 0 ? "+" : "") +
+totalR.toFixed(2) + "R";
+
+document.getElementById("avgR")
+.textContent =
+(total > 0 ? avgR.toFixed(2) : "0") + "R";
+
+updateEdgeLab();
+
+}
+
+
+/* ================================
+   EDGE LAB
+================================ */
+
+function calculateWinRate(list){
+
+if(list.length === 0) return 0;
+
+const wins =
+list.filter(t => t.result === "WIN").length;
+
+return (wins / list.length) * 100;
+
+}
+
+
+function updateEdgeLab(){
+
+const poiTrades =
+trades.filter(t => t.poi === "Valid");
+
+const mssTrades =
+trades.filter(t => t.mss === "Confirmed");
+
+const trendTrades =
+trades.filter(t => t.condition === "Clean Trend");
+
+const choppyTrades =
+trades.filter(t => t.condition === "Choppy");
+
+const ruleTrades =
+trades.filter(t => t.ruleFollowed);
+
+const early =
+trades.filter(t => t.earlyEntry).length;
+
+const fomo =
+trades.filter(t => t.fomo).length;
+
+const news =
+trades.filter(t => t.newsViolation).length;
+
+
+document.getElementById("poiWinRate")
+.textContent =
+calculateWinRate(poiTrades).toFixed(1) + "%";
+
+
+document.getElementById("mssWinRate")
+.textContent =
+calculateWinRate(mssTrades).toFixed(1) + "%";
+
+
+document.getElementById("trendWinRate")
+.textContent =
+calculateWinRate(trendTrades).toFixed(1) + "%";
+
+
+document.getElementById("choppyWinRate")
+.textContent =
+calculateWinRate(choppyTrades).toFixed(1) + "%";
+
+
+document.getElementById("disciplineRate")
+.textContent =
+calculateWinRate(ruleTrades).toFixed(1) + "%";
+
+
+document.getElementById("earlyCount")
+.textContent = early;
+
+
+document.getElementById("fomoCount")
+.textContent = fomo;
+
+
+document.getElementById("newsCount")
+.textContent = news;
+
+}
+
+
+/* ================================
+   TRADE HISTORY
+================================ */
+
+function displayTrades(){
+
+const table =
+document.getElementById("tradeTable");
+
+table.innerHTML = "";
+
+if(trades.length === 0){
+
+table.innerHTML = `
+<tr>
+<td colspan="9" class="empty">
+No trades recorded yet.
+</td>
+</tr>
+`;
+
+return;
+
+}
+
+
+[...trades].reverse().forEach(trade => {
+
+const row =
+document.createElement("tr");
+
+
+let resultClass =
+trade.result === "WIN"
+? "win"
+: trade.result === "LOSS"
+? "loss"
+: "be";
+
+
+row.innerHTML = `
+
+<td>${escapeHTML(trade.date)}</td>
+
+<td>${escapeHTML(trade.pair)}</td>
+
+<td>${escapeHTML(trade.direction)}</td>
+
+<td>${escapeHTML(trade.session)}</td>
+
+<td>
+${escapeHTML(trade.entryModel)}
+</td>
+
+<td class="${resultClass}">
+${escapeHTML(trade.result)}
+</td>
+
+<td>
+${trade.profit >= 0 ? "+" : ""}
+$${trade.profit.toFixed(2)}
+</td>
+
+<td>
+${trade.r >= 0 ? "+" : ""}
+${trade.r.toFixed(2)}R
+</td>
+
+<td>
+<button
+class="danger"
+onclick="deleteTrade(${trade.id})">
+Delete
+</button>
+</td>
+
+`;
+
+table.appendChild(row);
+
+});
+
+}
+
+
+/* ================================
+   DELETE TRADE
+================================ */
+
+function deleteTrade(id){
+
+const confirmDelete =
+confirm("Delete this trade?");
+
+if(!confirmDelete) return;
+
+trades =
+trades.filter(t => t.id !== id);
+
+saveData();
+
+updateDashboard();
+
+displayTrades();
+
+}
+
+
+/* ================================
+   RESET FORM
+================================ */
+
+function resetForm(){
+
+document.getElementById("date").value = "";
+
+document.getElementById("pair").value = "";
+
+document.getElementById("profit").value = "";
+
+document.getElementById("risk").value = "";
+
+document.getElementById("rMultiple").value = "";
+
+document.getElementById("notes").value = "";
+
+document.getElementById("ruleFollowed").checked = false;
+
+document.getElementById("earlyEntry").checked = false;
+
+document.getElementById("fomo").checked = false;
+
+document.getElementById("revenge").checked = false;
+
+document.getElementById("newsViolation").checked = false;
+
+}
+
+
+/* ================================
+   SECURITY
+================================ */
+
+function escapeHTML(value){
+
+return String(value)
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
+}
+
+
+/* ================================
+   START
+================================ */
+
+updateDashboard();
+
+displayTrades();
 
 </script>
 
