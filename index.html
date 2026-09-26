@@ -1,1 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FX Trading Tracker</title>
 
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: white;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+      color: #38bdf8;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #94a3b8;
+      margin-bottom: 25px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .card {
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .card h3 {
+      color: #94a3b8;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .form {
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 25px;
+    }
+
+    .form h2 {
+      margin-bottom: 15px;
+      color: #38bdf8;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #334155;
+      color: white;
+    }
+
+    textarea {
+      min-height: 80px;
+      margin-top: 12px;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 15px;
+      padding: 13px;
+      border: none;
+      border-radius: 8px;
+      background: #22c55e;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #16a34a;
+    }
+
+    .trades {
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 12px;
+      overflow-x: auto;
+    }
+
+    .trades h2 {
+      color: #38bdf8;
+      margin-bottom: 15px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 650px;
+    }
+
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #334155;
+      text-align: left;
+    }
+
+    th {
+      color: #94a3b8;
+    }
+
+    .win {
+      color: #22c55e;
+      font-weight: bold;
+    }
+
+    .loss {
+      color: #ef4444;
+      font-weight: bold;
+    }
+
+    .empty {
+      text-align: center;
+      color: #94a3b8;
+      padding: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>📊 FX Trading Tracker</h1>
+  <p class="subtitle">Personal Forex Trading Performance Dashboard</p>
+
+  <div class="cards">
+
+    <div class="card">
+      <h3>Total Trades</h3>
+      <p id="totalTrades">0</p>
+    </div>
+
+    <div class="card">
+      <h3>Wins</h3>
+      <p id="wins">0</p>
+    </div>
+
+    <div class="card">
+      <h3>Losses</h3>
+      <p id="losses">0</p>
+    </div>
+
+    <div class="card">
+      <h3>Win Rate</h3>
+      <p id="winRate">0%</p>
+    </div>
+
+    <div class="card">
+      <h3>Total P/L</h3>
+      <p id="totalPL">$0.00</p>
+    </div>
+
+  </div>
+
+  <div class="form">
+
+    <h2>➕ Add New Trade</h2>
+
+    <div class="form-grid">
+
+      <input type="date" id="date">
+
+      <input type="text" id="pair" placeholder="Currency Pair e.g. EUR/USD">
+
+      <select id="result">
+        <option value="Win">Win</option>
+        <option value="Loss">Loss</option>
+      </select>
+
+      <input type="number" id="profit" placeholder="Profit / Loss ($)" step="0.01">
+
+      <input type="number" id="risk" placeholder="Risk ($)" step="0.01">
+
+    </div>
+
+    <textarea id="notes" placeholder="Trade notes / setup / lessons learned"></textarea>
+
+    <button onclick="addTrade()">Add Trade</button>
+
+  </div>
+
+  <div class="trades">
+
+    <h2>📋 Trade History</h2>
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Pair</th>
+          <th>Result</th>
+          <th>P/L</th>
+          <th>Risk</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+
+      <tbody id="tradeTable">
+
+        <tr>
+          <td colspan="6" class="empty">
+            No trades recorded yet.
+          </td>
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
+
+<script>
+
+  let trades = [];
+
+  function addTrade() {
+
+    const date = document.getElementById("date").value;
+    const pair = document.getElementById("pair").value;
+    const result = document.getElementById("result").value;
+    const profit = parseFloat(document.getElementById("profit").value) || 0;
+    const risk = parseFloat(document.getElementById("risk").value) || 0;
+    const notes = document.getElementById("notes").value;
+
+    if (!date || !pair) {
+      alert("Please enter the date and currency pair.");
+      return;
+    }
+
+    const trade = {
+      date,
+      pair,
+      result,
+      profit,
+      risk,
+      notes
+    };
+
+    trades.push(trade);
+
+    updateDashboard();
+    displayTrades();
+
+    document.getElementById("date").value = "";
+    document.getElementById("pair").value = "";
+    document.getElementById("profit").value = "";
+    document.getElementById("risk").value = "";
+    document.getElementById("notes").value = "";
+  }
+
+  function updateDashboard() {
+
+    const total = trades.length;
+
+    const wins = trades.filter(trade => trade.result === "Win").length;
+
+    const losses = trades.filter(trade => trade.result === "Loss").length;
+
+    const totalPL = trades.reduce(
+      (sum, trade) => sum + trade.profit,
+      0
+    );
+
+    const winRate = total > 0
+      ? ((wins / total) * 100).toFixed(1)
+      : 0;
+
+    document.getElementById("totalTrades").textContent = total;
+
+    document.getElementById("wins").textContent = wins;
+
+    document.getElementById("losses").textContent = losses;
+
+    document.getElementById("winRate").textContent =
+      winRate + "%";
+
+    document.getElementById("totalPL").textContent =
+      "$" + totalPL.toFixed(2);
+  }
+
+  function displayTrades() {
+
+    const table = document.getElementById("tradeTable");
+
+    table.innerHTML = "";
+
+    trades.forEach(trade => {
+
+      const row = document.createElement("tr");
+
+      row.innerHTML = `
+        <td>${trade.date}</td>
+        <td>${trade.pair}</td>
+        <td class="${trade.result === "Win" ? "win" : "loss"}">
+          ${trade.result}
+        </td>
+        <td>$${trade.profit.toFixed(2)}</td>
+        <td>$${trade.risk.toFixed(2)}</td>
+        <td>${trade.notes}</td>
+      `;
+
+      table.appendChild(row);
+
+    });
+  }
+
+</script>
+
+</body>
+  </html>
