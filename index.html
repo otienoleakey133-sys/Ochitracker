@@ -7,6 +7,7 @@
 <title>OchiTracker</title>
 
 <style>
+
 * {
     box-sizing: border-box;
 }
@@ -15,7 +16,7 @@ body {
     margin: 0;
     font-family: Arial, sans-serif;
     background: #07111f;
-    color: #ffffff;
+    color: white;
 }
 
 .container {
@@ -31,16 +32,13 @@ header {
 
 header h1 {
     margin: 0;
-    font-size: 32px;
     color: #00d9ff;
+    font-size: 32px;
 }
 
 header p {
-    margin-top: 8px;
     color: #9fb3c8;
 }
-
-/* SECTIONS */
 
 section {
     background: #0d1b2a;
@@ -51,9 +49,10 @@ section {
 }
 
 .section-title {
-    margin-top: 0;
     color: #00d9ff;
+    margin-top: 0;
 }
+
 
 /* DASHBOARD */
 
@@ -79,6 +78,7 @@ section {
 .card strong {
     font-size: 24px;
 }
+
 
 /* FORM */
 
@@ -145,6 +145,7 @@ button:hover {
     font-size: 14px;
 }
 
+
 /* PERFORMANCE */
 
 .performance {
@@ -152,6 +153,7 @@ button:hover {
     grid-template-columns: repeat(4, 1fr);
     gap: 12px;
 }
+
 
 /* CHARTS */
 
@@ -189,15 +191,76 @@ button:hover {
 .chart-container {
     width: 100%;
     height: 300px;
-    position: relative;
 }
 
-canvas {
-    width: 100%;
-    height: 100%;
+
+/* AI */
+
+.ai-box {
+    background: #091625;
+    border: 1px solid #1d344c;
+    border-radius: 12px;
+    padding: 20px;
 }
 
-/* EDGE LAB */
+.ai-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.ai-header h3 {
+    margin: 0;
+    color: #00d9ff;
+}
+
+.ai-badge {
+    background: #102b3d;
+    color: #00d9ff;
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+.ai-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.ai-card {
+    background: #07111f;
+    border: 1px solid #1d344c;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.ai-card h4 {
+    margin-top: 0;
+    color: #8da4ba;
+}
+
+.ai-card p {
+    margin-bottom: 0;
+    line-height: 1.5;
+}
+
+.ai-summary {
+    margin-top: 15px;
+    padding: 15px;
+    border-radius: 10px;
+    background: #102131;
+    border-left: 3px solid #00d9ff;
+    line-height: 1.6;
+}
+
+.ai-button {
+    margin-top: 15px;
+}
+
+
+/* EDGE */
 
 .edge-grid {
     display: grid;
@@ -221,6 +284,7 @@ canvas {
 .edge-card strong {
     font-size: 22px;
 }
+
 
 /* TABLE */
 
@@ -268,6 +332,7 @@ th {
     font-size: 12px;
 }
 
+
 /* MOBILE */
 
 @media (max-width: 800px) {
@@ -286,7 +351,8 @@ th {
         grid-column: auto;
     }
 
-    .chart-grid {
+    .chart-grid,
+    .ai-grid {
         grid-template-columns: 1fr;
     }
 }
@@ -296,7 +362,7 @@ th {
     .cards,
     .performance,
     .edge-grid {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(2, 1fr);
     }
 
     section {
@@ -307,16 +373,22 @@ th {
         font-size: 27px;
     }
 }
+
 </style>
 </head>
+
 
 <body>
 
 <div class="container">
 
+
 <header>
-    <h1>📊 OchiTracker</h1>
-    <p>Your Personal FX Performance Tracker</p>
+
+<h1>📊 OchiTracker</h1>
+
+<p>Your Personal FX Performance Tracker</p>
+
 </header>
 
 
@@ -369,6 +441,7 @@ th {
 </div>
 
 </div>
+
 </section>
 
 
@@ -382,175 +455,353 @@ th {
 
 <div class="form-grid">
 
+
 <div class="form-group">
+
 <label>Date</label>
-<input type="date" id="date" required>
+
+<input
+type="date"
+id="date"
+required
+>
+
 </div>
 
+
 <div class="form-group">
+
 <label>Currency Pair</label>
-<input type="text" id="pair" placeholder="e.g. EURUSD" required>
+
+<input
+type="text"
+id="pair"
+placeholder="e.g. EURUSD"
+required
+>
+
 </div>
 
+
 <div class="form-group">
+
 <label>Direction</label>
+
 <select id="direction" required>
+
 <option value="">Select</option>
+
 <option value="BUY">BUY</option>
+
 <option value="SELL">SELL</option>
+
 </select>
+
 </div>
 
+
 <div class="form-group">
+
 <label>Session</label>
+
 <select id="session">
+
 <option value="">Select</option>
+
 <option value="London">London</option>
+
 <option value="New York">New York</option>
+
 <option value="Asia">Asia</option>
+
 </select>
+
 </div>
 
+
 <div class="form-group">
+
 <label>Result</label>
+
 <select id="result" required>
+
 <option value="">Select</option>
+
 <option value="WIN">WIN</option>
+
 <option value="LOSS">LOSS</option>
+
 <option value="BE">BE</option>
+
 </select>
+
 </div>
 
-<div class="form-group">
-<label>Profit / Loss ($)</label>
-<input type="number" id="profit" step="0.01" placeholder="e.g. 20 or -10" required>
-</div>
 
 <div class="form-group">
+
+<label>P/L ($)</label>
+
+<input
+type="number"
+id="profit"
+step="0.01"
+placeholder="e.g. 20"
+required
+>
+
+</div>
+
+
+<div class="form-group">
+
 <label>Risk ($)</label>
-<input type="number" id="risk" step="0.01" placeholder="e.g. 10">
+
+<input
+type="number"
+id="risk"
+step="0.01"
+placeholder="e.g. 10"
+>
+
 </div>
 
+
 <div class="form-group">
+
 <label>R Multiple</label>
-<input type="number" id="rMultiple" step="0.01" placeholder="e.g. 2">
+
+<input
+type="number"
+id="rMultiple"
+step="0.01"
+placeholder="e.g. 2"
+>
+
 </div>
 
+
 <div class="form-group">
+
 <label>D1 Bias</label>
+
 <select id="d1Bias">
+
 <option value="">Select</option>
+
 <option value="Bullish">Bullish</option>
+
 <option value="Bearish">Bearish</option>
+
 <option value="Neutral">Neutral</option>
+
 </select>
+
 </div>
 
+
 <div class="form-group">
+
 <label>4H Structure</label>
+
 <select id="structure">
+
 <option value="">Select</option>
+
 <option value="Bullish">Bullish</option>
+
 <option value="Bearish">Bearish</option>
+
 <option value="Range">Range</option>
+
 <option value="Choppy">Choppy</option>
+
 </select>
+
 </div>
 
+
 <div class="form-group">
+
 <label>4H POI</label>
+
 <select id="poi">
+
 <option value="">Select</option>
+
 <option value="Valid">Valid</option>
+
 <option value="Invalid">Invalid</option>
+
 <option value="No POI">No POI</option>
+
 </select>
+
 </div>
 
+
 <div class="form-group">
+
 <label>Liquidity Sweep</label>
+
 <select id="liquidity">
+
 <option value="">Select</option>
+
 <option value="Yes">Yes</option>
+
 <option value="No">No</option>
+
 </select>
+
 </div>
 
+
 <div class="form-group">
+
 <label>15M MSS</label>
+
 <select id="mss">
+
 <option value="">Select</option>
+
 <option value="Confirmed">Confirmed</option>
+
 <option value="Not Confirmed">Not Confirmed</option>
+
 </select>
+
 </div>
 
+
 <div class="form-group">
+
 <label>Entry Model</label>
+
 <select id="entryModel">
+
 <option value="">Select</option>
+
 <option value="FVG">FVG</option>
+
 <option value="Order Block">Order Block</option>
+
 <option value="FVG + OB">FVG + OB</option>
+
 <option value="Other">Other</option>
+
 </select>
+
 </div>
 
+
 <div class="form-group">
+
 <label>Market Condition</label>
+
 <select id="marketCondition">
+
 <option value="">Select</option>
+
 <option value="Clean Trend">Clean Trend</option>
+
 <option value="Retracement">Retracement</option>
+
 <option value="Choppy">Choppy</option>
+
 <option value="Range">Range</option>
+
 </select>
+
 </div>
 
+
 <div class="form-group">
+
 <label>Rule Followed?</label>
+
 <select id="ruleFollowed">
+
 <option value="Yes">Yes</option>
+
 <option value="No">No</option>
+
 </select>
+
 </div>
 
+
 <div class="form-group">
+
 <label>Early Entry?</label>
+
 <select id="earlyEntry">
+
 <option value="No">No</option>
+
 <option value="Yes">Yes</option>
+
 </select>
+
 </div>
 
+
 <div class="form-group">
+
 <label>FOMO?</label>
+
 <select id="fomo">
+
 <option value="No">No</option>
+
 <option value="Yes">Yes</option>
+
 </select>
+
 </div>
 
+
 <div class="form-group">
+
 <label>Revenge Trade?</label>
+
 <select id="revenge">
+
 <option value="No">No</option>
+
 <option value="Yes">Yes</option>
+
 </select>
+
 </div>
 
+
 <div class="form-group">
+
 <label>News Violation?</label>
+
 <select id="newsViolation">
+
 <option value="No">No</option>
+
 <option value="Yes">Yes</option>
+
 </select>
+
 </div>
+
 
 <div class="form-group full">
+
 <label>Trade Notes</label>
-<textarea id="notes" placeholder="What happened during this trade?"></textarea>
+
+<textarea
+id="notes"
+placeholder="What happened during this trade?"
+></textarea>
+
 </div>
+
 
 <div class="form-group full">
 
@@ -558,9 +809,13 @@ th {
 ➕ Add Trade
 </button>
 
-<div class="status" id="status"></div>
+<div
+class="status"
+id="status"
+></div>
 
 </div>
+
 
 </div>
 
@@ -573,29 +828,153 @@ th {
 
 <section>
 
-<h2 class="section-title">💰 Account Performance</h2>
+<h2 class="section-title">
+💰 Account Performance
+</h2>
 
 <div class="performance">
 
+
 <div class="card">
+
 <h4>Starting Balance</h4>
+
 <strong>$0.00</strong>
+
 </div>
 
+
 <div class="card">
+
 <h4>Current Equity</h4>
-<strong id="currentEquity">$0.00</strong>
+
+<strong id="currentEquity">
+$0.00
+</strong>
+
 </div>
 
+
 <div class="card">
+
 <h4>Peak Equity</h4>
-<strong id="peakEquity">$0.00</strong>
+
+<strong id="peakEquity">
+$0.00
+</strong>
+
 </div>
 
+
 <div class="card">
+
 <h4>Max Drawdown</h4>
-<strong id="maxDrawdown">$0.00</strong>
+
+<strong id="maxDrawdown">
+$0.00
+</strong>
+
 </div>
+
+
+</div>
+
+</section>
+
+
+<!-- AI -->
+
+<section>
+
+<h2 class="section-title">
+🤖 Ochi AI
+</h2>
+
+
+<div class="ai-box">
+
+
+<div class="ai-header">
+
+<h3>
+Your Trading Performance Analyst
+</h3>
+
+<span class="ai-badge">
+LOCAL AI ANALYSIS
+</span>
+
+</div>
+
+
+<div class="ai-grid">
+
+
+<div class="ai-card">
+
+<h4>📊 Performance</h4>
+
+<p id="aiPerformance">
+Record some trades and Ochi AI will analyze your performance.
+</p>
+
+</div>
+
+
+<div class="ai-card">
+
+<h4>🎯 Your Edge</h4>
+
+<p id="aiEdge">
+Your strongest trading conditions will appear here.
+</p>
+
+</div>
+
+
+<div class="ai-card">
+
+<h4>⚠️ Biggest Weakness</h4>
+
+<p id="aiWeakness">
+Your recurring weaknesses will appear here.
+</p>
+
+</div>
+
+
+<div class="ai-card">
+
+<h4>🧠 Discipline</h4>
+
+<p id="aiDiscipline">
+Ochi AI will monitor your discipline statistics.
+</p>
+
+</div>
+
+
+</div>
+
+
+<div class="ai-summary">
+
+<strong>🤖 Ochi AI Summary</strong>
+
+<p id="aiSummary">
+Add your trades and Ochi AI will generate a personalized performance summary from your trading journal.
+</p>
+
+</div>
+
+
+<button
+class="ai-button"
+onclick="runAIAnalysis()"
+>
+🔄 Analyze My Trading
+</button>
+
 
 </div>
 
@@ -606,9 +985,13 @@ th {
 
 <section>
 
-<h2 class="section-title">📊 Performance Charts</h2>
+<h2 class="section-title">
+📊 Performance Charts
+</h2>
+
 
 <div class="chart-grid">
+
 
 <div class="chart-box">
 
@@ -635,7 +1018,7 @@ th {
 
 <h3>📊 Trade P/L</h3>
 
-<span>Per trade</span>
+<span>Above / Below $0</span>
 
 </div>
 
@@ -647,6 +1030,7 @@ th {
 
 </div>
 
+
 </div>
 
 </section>
@@ -656,49 +1040,101 @@ th {
 
 <section>
 
-<h2 class="section-title">🧪 Edge Lab</h2>
+<h2 class="section-title">
+🧪 Edge Lab
+</h2>
+
 
 <div class="edge-grid">
 
+
 <div class="edge-card">
+
 <h4>4H POI Win Rate</h4>
-<strong id="poiWinRate">0%</strong>
+
+<strong id="poiWinRate">
+0%
+</strong>
+
 </div>
 
+
 <div class="edge-card">
+
 <h4>15M MSS Win Rate</h4>
-<strong id="mssWinRate">0%</strong>
+
+<strong id="mssWinRate">
+0%
+</strong>
+
 </div>
 
+
 <div class="edge-card">
+
 <h4>Clean Trend Win Rate</h4>
-<strong id="trendWinRate">0%</strong>
+
+<strong id="trendWinRate">
+0%
+</strong>
+
 </div>
 
+
 <div class="edge-card">
+
 <h4>Choppy Market Win Rate</h4>
-<strong id="choppyWinRate">0%</strong>
+
+<strong id="choppyWinRate">
+0%
+</strong>
+
 </div>
 
+
 <div class="edge-card">
+
 <h4>Rule Following</h4>
-<strong id="ruleRate">0%</strong>
+
+<strong id="ruleRate">
+0%
+</strong>
+
 </div>
 
+
 <div class="edge-card">
+
 <h4>Early Entries</h4>
-<strong id="earlyRate">0%</strong>
+
+<strong id="earlyRate">
+0%
+</strong>
+
 </div>
 
+
 <div class="edge-card">
+
 <h4>FOMO Trades</h4>
-<strong id="fomoRate">0%</strong>
+
+<strong id="fomoRate">
+0%
+</strong>
+
 </div>
 
+
 <div class="edge-card">
+
 <h4>News Violations</h4>
-<strong id="newsRate">0%</strong>
+
+<strong id="newsRate">
+0%
+</strong>
+
 </div>
+
 
 </div>
 
@@ -709,7 +1145,10 @@ th {
 
 <section>
 
-<h2 class="section-title">📋 Trade History</h2>
+<h2 class="section-title">
+📋 Trade History
+</h2>
+
 
 <div class="table-container">
 
@@ -733,9 +1172,11 @@ th {
 
 </thead>
 
+
 <tbody id="tradeTable">
 
 </tbody>
+
 
 </table>
 
@@ -743,13 +1184,15 @@ th {
 
 </section>
 
+
 </div>
 
 
 <script>
 
+
 /* =========================
-   OCHITRACKER
+   STORAGE
 ========================= */
 
 const STORAGE_KEY = "ochiTrades";
@@ -758,35 +1201,41 @@ let trades = [];
 
 
 /* =========================
-   LOAD SAVED TRADES
+   LOAD
 ========================= */
 
 function loadTrades() {
 
     try {
 
-        const saved = localStorage.getItem(STORAGE_KEY);
+        const saved =
+            localStorage.getItem(STORAGE_KEY);
 
         if (saved) {
+
             trades = JSON.parse(saved);
+
         }
 
         if (!Array.isArray(trades)) {
+
             trades = [];
+
         }
 
     } catch (error) {
 
         trades = [];
 
-        console.error("Could not load trades:", error);
+        console.error(error);
 
     }
+
 }
 
 
 /* =========================
-   SAVE TRADES
+   SAVE
 ========================= */
 
 function saveTrades() {
@@ -802,25 +1251,44 @@ function saveTrades() {
 
     } catch (error) {
 
-        console.error("Could not save trades:", error);
+        console.error(error);
 
         return false;
 
     }
+
 }
 
 
 /* =========================
-   STATUS MESSAGE
+   FORMAT MONEY
 ========================= */
 
-function showStatus(message, success = true) {
+function formatMoney(value) {
 
-    const status = document.getElementById("status");
+    return "$" +
+        Number(value || 0)
+        .toFixed(2);
+
+}
+
+
+/* =========================
+   STATUS
+========================= */
+
+function showStatus(
+    message,
+    success = true
+) {
+
+    const status =
+        document.getElementById("status");
 
     status.textContent = message;
 
-    status.style.color = success
+    status.style.color =
+        success
         ? "#43e97b"
         : "#ff5c5c";
 
@@ -834,31 +1302,25 @@ function showStatus(message, success = true) {
 
 
 /* =========================
-   MONEY FORMAT
-========================= */
-
-function formatMoney(value) {
-
-    return "$" + Number(value || 0).toFixed(2);
-
-}
-
-
-/* =========================
    WIN RATE
 ========================= */
 
 function calculateWinRate(list) {
 
     if (list.length === 0) {
+
         return 0;
+
     }
 
-    const wins = list.filter(
-        trade => trade.result === "WIN"
-    ).length;
+    const wins =
+        list.filter(
+            t => t.result === "WIN"
+        ).length;
 
-    return (wins / list.length) * 100;
+    return (
+        wins / list.length
+    ) * 100;
 
 }
 
@@ -869,53 +1331,91 @@ function calculateWinRate(list) {
 
 function updateDashboard() {
 
-    const total = trades.length;
+    const total =
+        trades.length;
 
-    const wins = trades.filter(
-        t => t.result === "WIN"
-    ).length;
+    const wins =
+        trades.filter(
+            t => t.result === "WIN"
+        ).length;
 
-    const losses = trades.filter(
-        t => t.result === "LOSS"
-    ).length;
+    const losses =
+        trades.filter(
+            t => t.result === "LOSS"
+        ).length;
 
-    const be = trades.filter(
-        t => t.result === "BE"
-    ).length;
+    const be =
+        trades.filter(
+            t => t.result === "BE"
+        ).length;
 
-    const totalPL = trades.reduce(
-        (sum, trade) => sum + Number(trade.profit || 0),
-        0
-    );
 
-    const totalR = trades.reduce(
-        (sum, trade) => sum + Number(trade.rMultiple || 0),
-        0
-    );
+    const totalPL =
+        trades.reduce(
+            (sum, t) =>
+                sum + Number(t.profit || 0),
+            0
+        );
 
-    const avgR = total > 0
+
+    const totalR =
+        trades.reduce(
+            (sum, t) =>
+                sum + Number(t.rMultiple || 0),
+            0
+        );
+
+
+    const avgR =
+        total > 0
         ? totalR / total
         : 0;
 
-    document.getElementById("totalTrades").textContent = total;
 
-    document.getElementById("winRate").textContent =
-        calculateWinRate(trades).toFixed(2) + "%";
+    document.getElementById(
+        "totalTrades"
+    ).textContent = total;
 
-    document.getElementById("totalPL").textContent =
+
+    document.getElementById(
+        "winRate"
+    ).textContent =
+        calculateWinRate(trades)
+        .toFixed(2) + "%";
+
+
+    document.getElementById(
+        "totalPL"
+    ).textContent =
         formatMoney(totalPL);
 
-    document.getElementById("totalR").textContent =
+
+    document.getElementById(
+        "totalR"
+    ).textContent =
         totalR.toFixed(2) + "R";
 
-    document.getElementById("avgR").textContent =
+
+    document.getElementById(
+        "avgR"
+    ).textContent =
         avgR.toFixed(2) + "R";
 
-    document.getElementById("wins").textContent = wins;
 
-    document.getElementById("losses").textContent = losses;
+    document.getElementById(
+        "wins"
+    ).textContent = wins;
 
-    document.getElementById("breakeven").textContent = be;
+
+    document.getElementById(
+        "losses"
+    ).textContent = losses;
+
+
+    document.getElementById(
+        "breakeven"
+    ).textContent = be;
+
 
     updateAccountPerformance();
 
@@ -924,6 +1424,8 @@ function updateDashboard() {
     renderTrades();
 
     drawCharts();
+
+    runAIAnalysis();
 
 }
 
@@ -934,51 +1436,82 @@ function updateDashboard() {
 
 function updateAccountPerformance() {
 
+    const sorted =
+        [...trades].sort(
+            (a, b) => {
+
+                const dateA =
+                    new Date(a.date);
+
+                const dateB =
+                    new Date(b.date);
+
+                if (
+                    dateA - dateB !== 0
+                ) {
+
+                    return dateA - dateB;
+
+                }
+
+                return Number(a.id || 0) -
+                    Number(b.id || 0);
+
+            }
+        );
+
+
     let equity = 0;
 
     let peak = 0;
 
     let maxDrawdown = 0;
 
-    const sortedTrades = [...trades].sort(
-        (a, b) => {
 
-            const dateA = new Date(a.date);
-            const dateB = new Date(b.date);
+    sorted.forEach(trade => {
 
-            if (dateA - dateB !== 0) {
-                return dateA - dateB;
-            }
+        equity +=
+            Number(trade.profit || 0);
 
-            return Number(a.id || 0) - Number(b.id || 0);
-
-        }
-    );
-
-    sortedTrades.forEach(trade => {
-
-        equity += Number(trade.profit || 0);
 
         if (equity > peak) {
+
             peak = equity;
+
         }
 
-        const drawdown = peak - equity;
 
-        if (drawdown > maxDrawdown) {
-            maxDrawdown = drawdown;
+        const drawdown =
+            peak - equity;
+
+
+        if (
+            drawdown > maxDrawdown
+        ) {
+
+            maxDrawdown =
+                drawdown;
+
         }
 
     });
 
 
-    document.getElementById("currentEquity").textContent =
+    document.getElementById(
+        "currentEquity"
+    ).textContent =
         formatMoney(equity);
 
-    document.getElementById("peakEquity").textContent =
+
+    document.getElementById(
+        "peakEquity"
+    ).textContent =
         formatMoney(peak);
 
-    document.getElementById("maxDrawdown").textContent =
+
+    document.getElementById(
+        "maxDrawdown"
+    ).textContent =
         formatMoney(maxDrawdown);
 
 }
@@ -990,33 +1523,49 @@ function updateAccountPerformance() {
 
 function getEquityData() {
 
-    const sortedTrades = [...trades].sort(
-        (a, b) => {
+    const sorted =
+        [...trades].sort(
+            (a, b) => {
 
-            const dateA = new Date(a.date);
-            const dateB = new Date(b.date);
+                const dateA =
+                    new Date(a.date);
 
-            if (dateA - dateB !== 0) {
-                return dateA - dateB;
+                const dateB =
+                    new Date(b.date);
+
+                if (
+                    dateA - dateB !== 0
+                ) {
+
+                    return dateA - dateB;
+
+                }
+
+                return Number(a.id || 0) -
+                    Number(b.id || 0);
+
             }
+        );
 
-            return Number(a.id || 0) - Number(b.id || 0);
-
-        }
-    );
 
     let equity = 0;
 
+
     const data = [
+
         {
             date: "Start",
             equity: 0
         }
+
     ];
 
-    sortedTrades.forEach(trade => {
 
-        equity += Number(trade.profit || 0);
+    sorted.forEach(trade => {
+
+        equity +=
+            Number(trade.profit || 0);
+
 
         data.push({
 
@@ -1028,26 +1577,36 @@ function getEquityData() {
 
     });
 
+
     return data;
 
 }
 
 
 /* =========================
-   CANVAS SETUP
+   CANVAS
 ========================= */
 
 function setupCanvas(canvas) {
 
-    const rect = canvas.getBoundingClientRect();
+    const rect =
+        canvas.getBoundingClientRect();
 
-    const ratio = window.devicePixelRatio || 1;
 
-    canvas.width = rect.width * ratio;
+    const ratio =
+        window.devicePixelRatio || 1;
 
-    canvas.height = rect.height * ratio;
 
-    const ctx = canvas.getContext("2d");
+    canvas.width =
+        rect.width * ratio;
+
+    canvas.height =
+        rect.height * ratio;
+
+
+    const ctx =
+        canvas.getContext("2d");
+
 
     ctx.setTransform(
         ratio,
@@ -1058,10 +1617,15 @@ function setupCanvas(canvas) {
         0
     );
 
+
     return {
+
         ctx: ctx,
+
         width: rect.width,
+
         height: rect.height
+
     };
 
 }
@@ -1074,9 +1638,16 @@ function setupCanvas(canvas) {
 function drawEquityChart() {
 
     const canvas =
-        document.getElementById("equityChart");
+        document.getElementById(
+            "equityChart"
+        );
 
-    const {ctx, width, height} =
+
+    const {
+        ctx,
+        width,
+        height
+    } =
         setupCanvas(canvas);
 
 
@@ -1088,16 +1659,20 @@ function drawEquityChart() {
     );
 
 
-    const data = getEquityData();
+    const data =
+        getEquityData();
 
 
     if (data.length === 1) {
 
-        ctx.fillStyle = "#8da4ba";
+        ctx.fillStyle =
+            "#8da4ba";
 
-        ctx.font = "14px Arial";
+        ctx.font =
+            "14px Arial";
 
-        ctx.textAlign = "center";
+        ctx.textAlign =
+            "center";
 
         ctx.fillText(
             "Add trades to see your equity curve",
@@ -1110,78 +1685,89 @@ function drawEquityChart() {
     }
 
 
-    const paddingLeft = 60;
+    const left = 60;
 
-    const paddingRight = 20;
+    const right = 20;
 
-    const paddingTop = 25;
+    const top = 25;
 
-    const paddingBottom = 55;
+    const bottom = 55;
 
 
     const chartWidth =
-        width - paddingLeft - paddingRight;
+        width - left - right;
 
     const chartHeight =
-        height - paddingTop - paddingBottom;
+        height - top - bottom;
 
 
-    const values = data.map(
-        item => item.equity
-    );
+    const values =
+        data.map(
+            d => d.equity
+        );
 
 
-    let minValue = Math.min(
-        ...values,
-        0
-    );
-
-    let maxValue = Math.max(
-        ...values,
-        0
-    );
+    let min =
+        Math.min(
+            ...values,
+            0
+        );
 
 
-    if (minValue === maxValue) {
+    let max =
+        Math.max(
+            ...values,
+            0
+        );
 
-        minValue -= 10;
 
-        maxValue += 10;
+    if (min === max) {
+
+        min -= 10;
+
+        max += 10;
 
     }
 
 
     const range =
-        maxValue - minValue;
+        max - min;
 
 
-    minValue -= range * 0.1;
+    min -= range * 0.1;
 
-    maxValue += range * 0.1;
+    max += range * 0.1;
 
 
     /* GRID */
 
-    ctx.strokeStyle = "#1d344c";
+    ctx.strokeStyle =
+        "#1d344c";
 
     ctx.lineWidth = 1;
 
 
-    for (let i = 0; i <= 5; i++) {
+    for (
+        let i = 0;
+        i <= 5;
+        i++
+    ) {
 
         const y =
-            paddingTop +
-            (chartHeight * i / 5);
+            top +
+            chartHeight *
+            i / 5;
+
 
         ctx.beginPath();
 
         ctx.moveTo(
-            paddingLeft,
+            left,
             y
         );
 
         ctx.lineTo(
-            width - paddingRight,
+            width - right,
             y
         );
 
@@ -1189,52 +1775,63 @@ function drawEquityChart() {
 
 
         const value =
-            maxValue -
-            ((maxValue - minValue) * i / 5);
+            max -
+            (
+                (max - min) *
+                i / 5
+            );
 
 
-        ctx.fillStyle = "#8da4ba";
+        ctx.fillStyle =
+            "#8da4ba";
 
-        ctx.font = "11px Arial";
+        ctx.font =
+            "11px Arial";
 
-        ctx.textAlign = "right";
+        ctx.textAlign =
+            "right";
+
 
         ctx.fillText(
             "$" + value.toFixed(0),
-            paddingLeft - 8,
+            left - 8,
             y + 4
         );
 
     }
 
 
-    /* ZERO LINE */
+    /* ZERO */
 
     if (
-        minValue <= 0 &&
-        maxValue >= 0
+        min <= 0 &&
+        max >= 0
     ) {
 
         const zeroY =
-            paddingTop +
+            top +
             (
-                (maxValue - 0) /
-                (maxValue - minValue)
+                (max - 0) /
+                (max - min)
             ) *
             chartHeight;
 
 
-        ctx.strokeStyle = "#526b83";
+        ctx.strokeStyle =
+            "#71869b";
+
+        ctx.lineWidth = 1.5;
+
 
         ctx.beginPath();
 
         ctx.moveTo(
-            paddingLeft,
+            left,
             zeroY
         );
 
         ctx.lineTo(
-            width - paddingRight,
+            width - right,
             zeroY
         );
 
@@ -1243,46 +1840,55 @@ function drawEquityChart() {
     }
 
 
-    /* LINE */
+    /* CURVE */
 
-    ctx.strokeStyle = "#00d9ff";
+    ctx.strokeStyle =
+        "#00d9ff";
 
     ctx.lineWidth = 3;
 
     ctx.beginPath();
 
 
-    data.forEach((item, index) => {
+    data.forEach(
+        (item, index) => {
 
-        const x =
-            paddingLeft +
-            (
-                index /
-                (data.length - 1)
-            ) *
-            chartWidth;
-
-
-        const y =
-            paddingTop +
-            (
-                (maxValue - item.equity) /
-                (maxValue - minValue)
-            ) *
-            chartHeight;
+            const x =
+                left +
+                (
+                    index /
+                    (data.length - 1)
+                ) *
+                chartWidth;
 
 
-        if (index === 0) {
+            const y =
+                top +
+                (
+                    (max - item.equity) /
+                    (max - min)
+                ) *
+                chartHeight;
 
-            ctx.moveTo(x, y);
 
-        } else {
+            if (index === 0) {
 
-            ctx.lineTo(x, y);
+                ctx.moveTo(
+                    x,
+                    y
+                );
+
+            } else {
+
+                ctx.lineTo(
+                    x,
+                    y
+                );
+
+            }
 
         }
-
-    });
+    );
 
 
     ctx.stroke();
@@ -1290,109 +1896,124 @@ function drawEquityChart() {
 
     /* POINTS */
 
-    data.forEach((item, index) => {
+    data.forEach(
+        (item, index) => {
 
-        const x =
-            paddingLeft +
-            (
-                index /
-                (data.length - 1)
-            ) *
-            chartWidth;
-
-
-        const y =
-            paddingTop +
-            (
-                (maxValue - item.equity) /
-                (maxValue - minValue)
-            ) *
-            chartHeight;
+            const x =
+                left +
+                (
+                    index /
+                    (data.length - 1)
+                ) *
+                chartWidth;
 
 
-        ctx.fillStyle = "#00d9ff";
-
-        ctx.beginPath();
-
-        ctx.arc(
-            x,
-            y,
-            4,
-            0,
-            Math.PI * 2
-        );
-
-        ctx.fill();
-
-    });
+            const y =
+                top +
+                (
+                    (max - item.equity) /
+                    (max - min)
+                ) *
+                chartHeight;
 
 
-    /* X AXIS DATES */
-
-    ctx.fillStyle = "#8da4ba";
-
-    ctx.font = "11px Arial";
-
-    ctx.textAlign = "center";
+            ctx.fillStyle =
+                "#00d9ff";
 
 
-    data.forEach((item, index) => {
+            ctx.beginPath();
 
-        if (
-            data.length > 8 &&
-            index !== 0 &&
-            index !== data.length - 1 &&
-            index % Math.ceil(data.length / 7) !== 0
-        ) {
-            return;
-        }
+            ctx.arc(
+                x,
+                y,
+                4,
+                0,
+                Math.PI * 2
+            );
 
-
-        const x =
-            paddingLeft +
-            (
-                index /
-                (data.length - 1)
-            ) *
-            chartWidth;
-
-
-        let label = "Start";
-
-
-        if (item.date !== "Start") {
-
-            const date =
-                new Date(item.date + "T00:00:00");
-
-
-            label =
-                date.toLocaleDateString(
-                    "en-GB",
-                    {
-                        day: "2-digit",
-                        month: "short"
-                    }
-                );
+            ctx.fill();
 
         }
+    );
 
 
-        ctx.fillText(
-            label,
-            x,
-            height - 25
-        );
+    /* DATES */
 
-    });
+    ctx.fillStyle =
+        "#8da4ba";
+
+    ctx.font =
+        "11px Arial";
+
+    ctx.textAlign =
+        "center";
 
 
-    /* AXIS TITLES */
+    data.forEach(
+        (item, index) => {
 
-    ctx.fillStyle = "#9fb3c8";
+            if (
+                data.length > 8 &&
+                index !== 0 &&
+                index !== data.length - 1 &&
+                index %
+                Math.ceil(
+                    data.length / 7
+                ) !== 0
+            ) {
 
-    ctx.font = "12px Arial";
+                return;
 
+            }
+
+
+            const x =
+                left +
+                (
+                    index /
+                    (data.length - 1)
+                ) *
+                chartWidth;
+
+
+            let label =
+                "Start";
+
+
+            if (
+                item.date !== "Start"
+            ) {
+
+                const date =
+                    new Date(
+                        item.date +
+                        "T00:00:00"
+                    );
+
+
+                label =
+                    date.toLocaleDateString(
+                        "en-GB",
+                        {
+                            day: "2-digit",
+                            month: "short"
+                        }
+                    );
+
+            }
+
+
+            ctx.fillText(
+                label,
+                x,
+                height - 25
+            );
+
+        }
+    );
+
+
+    /* AXIS LABEL */
 
     ctx.save();
 
@@ -1401,9 +2022,18 @@ function drawEquityChart() {
         height / 2
     );
 
-    ctx.rotate(-Math.PI / 2);
+    ctx.rotate(
+        -Math.PI / 2
+    );
 
-    ctx.textAlign = "center";
+    ctx.fillStyle =
+        "#9fb3c8";
+
+    ctx.font =
+        "12px Arial";
+
+    ctx.textAlign =
+        "center";
 
     ctx.fillText(
         "Equity ($)",
@@ -1414,7 +2044,11 @@ function drawEquityChart() {
     ctx.restore();
 
 
-    ctx.textAlign = "center";
+    ctx.fillStyle =
+        "#9fb3c8";
+
+    ctx.textAlign =
+        "center";
 
     ctx.fillText(
         "Date",
@@ -1426,15 +2060,22 @@ function drawEquityChart() {
 
 
 /* =========================
-   P/L CHART
+   P/L BAR CHART
 ========================= */
 
 function drawPLChart() {
 
     const canvas =
-        document.getElementById("plChart");
+        document.getElementById(
+            "plChart"
+        );
 
-    const {ctx, width, height} =
+
+    const {
+        ctx,
+        width,
+        height
+    } =
         setupCanvas(canvas);
 
 
@@ -1448,11 +2089,14 @@ function drawPLChart() {
 
     if (trades.length === 0) {
 
-        ctx.fillStyle = "#8da4ba";
+        ctx.fillStyle =
+            "#8da4ba";
 
-        ctx.font = "14px Arial";
+        ctx.font =
+            "14px Arial";
 
-        ctx.textAlign = "center";
+        ctx.textAlign =
+            "center";
 
         ctx.fillText(
             "Add trades to see your P/L",
@@ -1465,16 +2109,24 @@ function drawPLChart() {
     }
 
 
-    const values = trades.map(
-        t => Number(t.profit || 0)
-    );
+    const values =
+        trades.map(
+            t => Number(t.profit || 0)
+        );
 
 
     let max =
-        Math.max(...values, 0);
+        Math.max(
+            ...values,
+            0
+        );
+
 
     let min =
-        Math.min(...values, 0);
+        Math.min(
+            ...values,
+            0
+        );
 
 
     if (max === min) {
@@ -1491,14 +2143,15 @@ function drawPLChart() {
 
 
     const chartWidth =
-        width - padding * 2;
+        width -
+        padding * 2;
 
 
     const chartHeight =
         height - 60;
 
 
-    /* ZERO LINE */
+    /* ZERO */
 
     const zeroY =
         20 +
@@ -1509,7 +2162,11 @@ function drawPLChart() {
         chartHeight;
 
 
-    ctx.strokeStyle = "#526b83";
+    ctx.strokeStyle =
+        "#71869b";
+
+    ctx.lineWidth = 1.5;
+
 
     ctx.beginPath();
 
@@ -1531,105 +2188,127 @@ function drawPLChart() {
     const barWidth =
         Math.max(
             5,
-            chartWidth / values.length * 0.65
+            chartWidth /
+            values.length *
+            0.65
         );
 
 
-    values.forEach((value, index) => {
+    values.forEach(
+        (value, index) => {
 
-        const x =
-            padding +
-            (
-                index /
-                values.length
-            ) *
-            chartWidth +
-            (
-                chartWidth /
-                values.length -
-                barWidth
-            ) / 2;
-
-
-        const y =
-            20 +
-            (
-                (max - Math.max(value, 0)) /
-                (max - min)
-            ) *
-            chartHeight;
+            const x =
+                padding +
+                (
+                    index /
+                    values.length
+                ) *
+                chartWidth +
+                (
+                    chartWidth /
+                    values.length -
+                    barWidth
+                ) / 2;
 
 
-        const bottom =
-            20 +
-            (
-                (max - Math.min(value, 0)) /
-                (max - min)
-            ) *
-            chartHeight;
+            const y =
+                20 +
+                (
+                    (max -
+                    Math.max(
+                        value,
+                        0
+                    )) /
+                    (max - min)
+                ) *
+                chartHeight;
 
 
-        ctx.fillStyle =
-            value >= 0
-            ? "#43e97b"
-            : "#ff5c5c";
+            const bottom =
+                20 +
+                (
+                    (max -
+                    Math.min(
+                        value,
+                        0
+                    )) /
+                    (max - min)
+                ) *
+                chartHeight;
 
 
-        ctx.fillRect(
-            x,
-            y,
-            barWidth,
-            bottom - y
-        );
-
-    });
+            ctx.fillStyle =
+                value >= 0
+                ? "#43e97b"
+                : "#ff5c5c";
 
 
-    /* LABELS */
+            ctx.fillRect(
+                x,
+                y,
+                barWidth,
+                bottom - y
+            );
 
-    ctx.fillStyle = "#8da4ba";
-
-    ctx.font = "10px Arial";
-
-    ctx.textAlign = "center";
-
-
-    values.forEach((value, index) => {
-
-        if (
-            values.length > 10 &&
-            index % Math.ceil(values.length / 8) !== 0
-        ) {
-            return;
         }
+    );
 
 
-        const x =
-            padding +
-            (
-                index /
-                values.length
-            ) *
-            chartWidth +
-            (
-                chartWidth /
-                values.length
-            ) / 2;
+    /* TRADE NUMBERS */
+
+    ctx.fillStyle =
+        "#8da4ba";
+
+    ctx.font =
+        "10px Arial";
+
+    ctx.textAlign =
+        "center";
 
 
-        ctx.fillText(
-            "#" + (index + 1),
-            x,
-            height - 12
-        );
+    values.forEach(
+        (value, index) => {
 
-    });
+            if (
+                values.length > 10 &&
+                index %
+                Math.ceil(
+                    values.length / 8
+                ) !== 0
+            ) {
+
+                return;
+
+            }
+
+
+            const x =
+                padding +
+                (
+                    index /
+                    values.length
+                ) *
+                chartWidth +
+                (
+                    chartWidth /
+                    values.length
+                ) / 2;
+
+
+            ctx.fillText(
+                "#" + (index + 1),
+                x,
+                height - 12
+            );
+
+        }
+    );
 
 }
 
 
 /* =========================
-   DRAW BOTH CHARTS
+   CHARTS
 ========================= */
 
 function drawCharts() {
@@ -1645,77 +2324,515 @@ function drawCharts() {
    EDGE LAB
 ========================= */
 
-function getWinRateForFilter(filterFunction) {
+function getWinRateForFilter(
+    filterFunction
+) {
 
     const filtered =
-        trades.filter(filterFunction);
+        trades.filter(
+            filterFunction
+        );
 
 
-    return calculateWinRate(filtered);
+    return calculateWinRate(
+        filtered
+    );
 
 }
 
 
 function updateEdgeLab() {
 
-    document.getElementById("poiWinRate").textContent =
+    document.getElementById(
+        "poiWinRate"
+    ).textContent =
         getWinRateForFilter(
             t => t.poi === "Valid"
         ).toFixed(2) + "%";
 
 
-    document.getElementById("mssWinRate").textContent =
+    document.getElementById(
+        "mssWinRate"
+    ).textContent =
         getWinRateForFilter(
             t => t.mss === "Confirmed"
         ).toFixed(2) + "%";
 
 
-    document.getElementById("trendWinRate").textContent =
+    document.getElementById(
+        "trendWinRate"
+    ).textContent =
         getWinRateForFilter(
-            t => t.marketCondition === "Clean Trend"
+            t =>
+                t.marketCondition ===
+                "Clean Trend"
         ).toFixed(2) + "%";
 
 
-    document.getElementById("choppyWinRate").textContent =
+    document.getElementById(
+        "choppyWinRate"
+    ).textContent =
         getWinRateForFilter(
-            t => t.marketCondition === "Choppy"
+            t =>
+                t.marketCondition ===
+                "Choppy"
         ).toFixed(2) + "%";
 
 
-    document.getElementById("ruleRate").textContent =
+    document.getElementById(
+        "ruleRate"
+    ).textContent =
         getWinRateForFilter(
-            t => t.ruleFollowed === "Yes"
+            t =>
+                t.ruleFollowed ===
+                "Yes"
         ).toFixed(2) + "%";
 
 
-    document.getElementById("earlyRate").textContent =
+    document.getElementById(
+        "earlyRate"
+    ).textContent =
         getWinRateForFilter(
-            t => t.earlyEntry === "Yes"
+            t =>
+                t.earlyEntry ===
+                "Yes"
         ).toFixed(2) + "%";
 
 
-    document.getElementById("fomoRate").textContent =
+    document.getElementById(
+        "fomoRate"
+    ).textContent =
         getWinRateForFilter(
-            t => t.fomo === "Yes"
+            t =>
+                t.fomo ===
+                "Yes"
         ).toFixed(2) + "%";
 
 
-    document.getElementById("newsRate").textContent =
+    document.getElementById(
+        "newsRate"
+    ).textContent =
         getWinRateForFilter(
-            t => t.newsViolation === "Yes"
+            t =>
+                t.newsViolation ===
+                "Yes"
         ).toFixed(2) + "%";
 
 }
 
 
 /* =========================
-   RENDER TRADE HISTORY
+   AI HELPERS
+========================= */
+
+function filteredTrades(
+    filter
+) {
+
+    return trades.filter(filter);
+
+}
+
+
+function winRate(
+    list
+) {
+
+    return calculateWinRate(
+        list
+    );
+
+}
+
+
+/* =========================
+   OCHI AI
+========================= */
+
+function runAIAnalysis() {
+
+    const performance =
+        document.getElementById(
+            "aiPerformance"
+        );
+
+    const edge =
+        document.getElementById(
+            "aiEdge"
+        );
+
+    const weakness =
+        document.getElementById(
+            "aiWeakness"
+        );
+
+    const discipline =
+        document.getElementById(
+            "aiDiscipline"
+        );
+
+    const summary =
+        document.getElementById(
+            "aiSummary"
+        );
+
+
+    if (trades.length === 0) {
+
+        performance.textContent =
+            "Record some trades first. Ochi AI needs your trading history to analyze your performance.";
+
+        edge.textContent =
+            "Your strongest setup will appear after you record trades.";
+
+        weakness.textContent =
+            "Your recurring weakness will appear after you record trades.";
+
+        discipline.textContent =
+            "Ochi AI will monitor your discipline once trades are recorded.";
+
+        summary.textContent =
+            "Add your trades and Ochi AI will generate a personalized performance summary.";
+
+        return;
+
+    }
+
+
+    /* BASIC PERFORMANCE */
+
+    const total =
+        trades.length;
+
+
+    const wins =
+        trades.filter(
+            t => t.result === "WIN"
+        ).length;
+
+
+    const losses =
+        trades.filter(
+            t => t.result === "LOSS"
+        ).length;
+
+
+    const totalPL =
+        trades.reduce(
+            (sum, t) =>
+                sum +
+                Number(
+                    t.profit || 0
+                ),
+            0
+        );
+
+
+    const win =
+        winRate(trades);
+
+
+    performance.textContent =
+        `You have recorded ${total} trade${total === 1 ? "" : "s"}, with ${wins} win${wins === 1 ? "" : "s"} and ${losses} loss${losses === 1 ? "" : "es"}. Your current win rate is ${win.toFixed(1)}% and your recorded P/L is ${formatMoney(totalPL)}.`;
+
+
+    /* EDGE */
+
+    const cleanTrend =
+        filteredTrades(
+            t =>
+                t.marketCondition ===
+                "Clean Trend"
+        );
+
+
+    const poi =
+        filteredTrades(
+            t =>
+                t.poi === "Valid"
+        );
+
+
+    const mss =
+        filteredTrades(
+            t =>
+                t.mss === "Confirmed"
+        );
+
+
+    const edgeCandidates = [
+
+        {
+            name: "4H Valid POI",
+            list: poi
+        },
+
+        {
+            name: "15M Confirmed MSS",
+            list: mss
+        },
+
+        {
+            name: "Clean Trend",
+            list: cleanTrend
+        }
+
+    ];
+
+
+    let bestEdge = null;
+
+
+    edgeCandidates.forEach(
+        candidate => {
+
+            if (
+                candidate.list.length === 0
+            ) {
+                return;
+            }
+
+
+            const rate =
+                winRate(
+                    candidate.list
+                );
+
+
+            if (
+                !bestEdge ||
+                rate > bestEdge.rate
+            ) {
+
+                bestEdge = {
+
+                    name:
+                        candidate.name,
+
+                    rate:
+                        rate,
+
+                    count:
+                        candidate.list.length
+
+                };
+
+            }
+
+        }
+    );
+
+
+    if (bestEdge) {
+
+        edge.textContent =
+            `${bestEdge.name} is currently showing a ${bestEdge.rate.toFixed(1)}% win rate across ${bestEdge.count} recorded trade${bestEdge.count === 1 ? "" : "s"}. Keep collecting data before drawing strong conclusions.`;
+
+    } else {
+
+        edge.textContent =
+            "Not enough setup data yet. Continue recording your 4H POI and 15M MSS information.";
+
+    }
+
+
+    /* WEAKNESSES */
+
+    const early =
+        filteredTrades(
+            t =>
+                t.earlyEntry ===
+                "Yes"
+        );
+
+
+    const fomo =
+        filteredTrades(
+            t =>
+                t.fomo ===
+                "Yes"
+        );
+
+
+    const revenge =
+        filteredTrades(
+            t =>
+                t.revenge ===
+                "Yes"
+        );
+
+
+    const news =
+        filteredTrades(
+            t =>
+                t.newsViolation ===
+                "Yes"
+        );
+
+
+    const choppy =
+        filteredTrades(
+            t =>
+                t.marketCondition ===
+                "Choppy"
+        );
+
+
+    const weaknesses = [
+
+        {
+            name: "Early entries",
+            count: early.length,
+            rate: winRate(early)
+        },
+
+        {
+            name: "FOMO",
+            count: fomo.length,
+            rate: winRate(fomo)
+        },
+
+        {
+            name: "Revenge trading",
+            count: revenge.length,
+            rate: winRate(revenge)
+        },
+
+        {
+            name: "News violations",
+            count: news.length,
+            rate: winRate(news)
+        },
+
+        {
+            name: "Choppy markets",
+            count: choppy.length,
+            rate: winRate(choppy)
+        }
+
+    ];
+
+
+    let biggest =
+        weaknesses[0];
+
+
+    weaknesses.forEach(
+        item => {
+
+            if (
+                item.count > biggest.count
+            ) {
+
+                biggest = item;
+
+            }
+
+        }
+    );
+
+
+    if (
+        biggest &&
+        biggest.count > 0
+    ) {
+
+        weakness.textContent =
+            `${biggest.name} appears ${biggest.count} time${biggest.count === 1 ? "" : "s"} in your journal. Its recorded win rate is ${biggest.rate.toFixed(1)}%. Watch this area closely.`;
+
+    } else {
+
+        weakness.textContent =
+            "No major recurring violation has appeared in your recorded data yet.";
+
+    }
+
+
+    /* DISCIPLINE */
+
+    const ruleFollowed =
+        filteredTrades(
+            t =>
+                t.ruleFollowed ===
+                "Yes"
+        );
+
+
+    const disciplineRate =
+        (
+            ruleFollowed.length /
+            trades.length
+        ) * 100;
+
+
+    discipline.textContent =
+        `You followed your recorded rules on ${disciplineRate.toFixed(1)}% of trades. The goal is not simply more trades — it is consistent execution of your defined 4H + 15M model.`;
+
+
+    /* SUMMARY */
+
+    let advice = "";
+
+
+    if (win >= 60) {
+
+        advice +=
+            "Your current sample shows a positive win-rate profile. ";
+
+    } else {
+
+        advice +=
+            "Your current sample needs more data before judging the model. ";
+
+    }
+
+
+    if (
+        disciplineRate < 80
+    ) {
+
+        advice +=
+            "Discipline appears to be an important area to monitor. ";
+
+    } else {
+
+        advice +=
+            "Your recorded rule-following is relatively consistent. ";
+
+    }
+
+
+    if (
+        choppy.length > 0 &&
+        winRate(choppy) < win
+    ) {
+
+        advice +=
+            "Your choppy-market results are below your overall win rate, so separate those conditions in your journal. ";
+
+    }
+
+
+    advice +=
+        "Continue collecting clean data before changing your trading strategy.";
+
+
+    summary.textContent =
+        advice;
+
+}
+
+
+/* =========================
+   TRADE HISTORY
 ========================= */
 
 function renderTrades() {
 
     const table =
-        document.getElementById("tradeTable");
+        document.getElementById(
+            "tradeTable"
+        );
 
 
     table.innerHTML = "";
@@ -1724,11 +2841,23 @@ function renderTrades() {
     if (trades.length === 0) {
 
         table.innerHTML = `
+
         <tr>
-            <td colspan="9" style="text-align:center;color:#8da4ba;">
-                No trades yet.
-            </td>
+
+        <td
+        colspan="9"
+        style="
+        text-align:center;
+        color:#8da4ba;
+        "
+        >
+
+        No trades yet.
+
+        </td>
+
         </tr>
+
         `;
 
         return;
@@ -1744,75 +2873,131 @@ function renderTrades() {
         );
 
 
-    sorted.forEach(trade => {
+    sorted.forEach(
+        trade => {
 
-        const row =
-            document.createElement("tr");
-
-
-        let resultClass = "";
-
-
-        if (trade.result === "WIN") {
-            resultClass = "win";
-        }
-
-        if (trade.result === "LOSS") {
-            resultClass = "loss";
-        }
-
-        if (trade.result === "BE") {
-            resultClass = "be";
-        }
+            const row =
+                document.createElement(
+                    "tr"
+                );
 
 
-        row.innerHTML = `
+            let resultClass = "";
 
-        <td>${trade.date || ""}</td>
 
-        <td>${trade.pair || ""}</td>
+            if (
+                trade.result ===
+                "WIN"
+            ) {
 
-        <td>${trade.direction || ""}</td>
+                resultClass =
+                    "win";
 
-        <td>${trade.session || ""}</td>
+            }
 
-        <td>${trade.entryModel || ""}</td>
 
-        <td class="${resultClass}">
-            ${trade.result || ""}
-        </td>
+            if (
+                trade.result ===
+                "LOSS"
+            ) {
 
-        <td>
-            ${formatMoney(trade.profit)}
-        </td>
+                resultClass =
+                    "loss";
 
-        <td>
-            ${Number(trade.rMultiple || 0).toFixed(2)}R
-        </td>
+            }
 
-        <td>
+
+            if (
+                trade.result ===
+                "BE"
+            ) {
+
+                resultClass =
+                    "be";
+
+            }
+
+
+            const displayProfit =
+                trade.result === "LOSS"
+                ? -Math.abs(
+                    Number(
+                        trade.profit || 0
+                    )
+                )
+                : trade.result === "BE"
+                ? 0
+                : Math.abs(
+                    Number(
+                        trade.profit || 0
+                    )
+                );
+
+
+            row.innerHTML = `
+
+            <td>
+                ${trade.date || ""}
+            </td>
+
+            <td>
+                ${trade.pair || ""}
+            </td>
+
+            <td>
+                ${trade.direction || ""}
+            </td>
+
+            <td>
+                ${trade.session || ""}
+            </td>
+
+            <td>
+                ${trade.entryModel || ""}
+            </td>
+
+            <td class="${resultClass}">
+                ${trade.result || ""}
+            </td>
+
+            <td>
+                ${formatMoney(displayProfit)}
+            </td>
+
+            <td>
+                ${Number(
+                    trade.rMultiple || 0
+                ).toFixed(2)}R
+            </td>
+
+            <td>
 
             <button
-                class="delete-btn"
-                onclick="deleteTrade(${trade.id})"
+            class="delete-btn"
+            onclick="deleteTrade(${trade.id})"
             >
-                Delete
+
+            Delete
+
             </button>
 
-        </td>
+            </td>
 
-        `;
+            `;
 
 
-        table.appendChild(row);
+            table.appendChild(
+                row
+            );
 
-    });
+        }
+    );
 
 }
 
 
 /* =========================
-   DELETE TRADE
+   DELETE
 ========================= */
 
 function deleteTrade(id) {
@@ -1824,13 +3009,16 @@ function deleteTrade(id) {
 
 
     if (!confirmed) {
+
         return;
+
     }
 
 
     trades =
         trades.filter(
-            trade => trade.id !== id
+            trade =>
+                trade.id !== id
         );
 
 
@@ -1854,85 +3042,168 @@ document
         event.preventDefault();
 
 
+        const result =
+            document.getElementById(
+                "result"
+            ).value;
+
+
+        /*
+        IMPORTANT:
+
+        WIN  = positive
+        LOSS = negative
+        BE   = zero
+        */
+
+        let profit =
+            Number(
+                document.getElementById(
+                    "profit"
+                ).value
+            );
+
+
+        if (result === "WIN") {
+
+            profit =
+                Math.abs(profit);
+
+        }
+
+
+        if (result === "LOSS") {
+
+            profit =
+                -Math.abs(profit);
+
+        }
+
+
+        if (result === "BE") {
+
+            profit = 0;
+
+        }
+
+
         const trade = {
 
             id: Date.now(),
 
             date:
-                document.getElementById("date").value,
+                document.getElementById(
+                    "date"
+                ).value,
 
             pair:
-                document.getElementById("pair").value
+                document.getElementById(
+                    "pair"
+                ).value
                 .trim()
                 .toUpperCase(),
 
             direction:
-                document.getElementById("direction").value,
+                document.getElementById(
+                    "direction"
+                ).value,
 
             session:
-                document.getElementById("session").value,
+                document.getElementById(
+                    "session"
+                ).value,
 
             result:
-                document.getElementById("result").value,
+                result,
 
             profit:
-                Number(
-                    document.getElementById("profit").value
-                ),
+                profit,
 
             risk:
                 Number(
-                    document.getElementById("risk").value || 0
+                    document.getElementById(
+                        "risk"
+                    ).value || 0
                 ),
 
             rMultiple:
                 Number(
-                    document.getElementById("rMultiple").value || 0
+                    document.getElementById(
+                        "rMultiple"
+                    ).value || 0
                 ),
 
             d1Bias:
-                document.getElementById("d1Bias").value,
+                document.getElementById(
+                    "d1Bias"
+                ).value,
 
             structure:
-                document.getElementById("structure").value,
+                document.getElementById(
+                    "structure"
+                ).value,
 
             poi:
-                document.getElementById("poi").value,
+                document.getElementById(
+                    "poi"
+                ).value,
 
             liquidity:
-                document.getElementById("liquidity").value,
+                document.getElementById(
+                    "liquidity"
+                ).value,
 
             mss:
-                document.getElementById("mss").value,
+                document.getElementById(
+                    "mss"
+                ).value,
 
             entryModel:
-                document.getElementById("entryModel").value,
+                document.getElementById(
+                    "entryModel"
+                ).value,
 
             marketCondition:
-                document.getElementById("marketCondition").value,
+                document.getElementById(
+                    "marketCondition"
+                ).value,
 
             ruleFollowed:
-                document.getElementById("ruleFollowed").value,
+                document.getElementById(
+                    "ruleFollowed"
+                ).value,
 
             earlyEntry:
-                document.getElementById("earlyEntry").value,
+                document.getElementById(
+                    "earlyEntry"
+                ).value,
 
             fomo:
-                document.getElementById("fomo").value,
+                document.getElementById(
+                    "fomo"
+                ).value,
 
             revenge:
-                document.getElementById("revenge").value,
+                document.getElementById(
+                    "revenge"
+                ).value,
 
             newsViolation:
-                document.getElementById("newsViolation").value,
+                document.getElementById(
+                    "newsViolation"
+                ).value,
 
             notes:
-                document.getElementById("notes").value.trim()
+                document.getElementById(
+                    "notes"
+                ).value.trim()
 
         };
 
 
-        trades.push(trade);
+        trades.push(
+            trade
+        );
 
 
         const saved =
@@ -1957,7 +3228,9 @@ document
 
 
         document
-        .getElementById("tradeForm")
+        .getElementById(
+            "tradeForm"
+        )
         .reset();
 
 
@@ -1968,7 +3241,7 @@ document
 
 
 /* =========================
-   WINDOW RESIZE
+   RESIZE
 ========================= */
 
 window.addEventListener(
@@ -1982,7 +3255,7 @@ window.addEventListener(
 
 
 /* =========================
-   START APP
+   START
 ========================= */
 
 loadTrades();
@@ -1992,4 +3265,4 @@ updateDashboard();
 </script>
 
 </body>
-</html>
+    </html>
