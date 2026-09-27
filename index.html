@@ -4,1624 +4,1102 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>OchiTracker</title>
+<title>OchiTracker — FX Trading Performance</title>
 
 <style>
-
-/* =========================================================
-   OCHITRACKER — STABLE SPACIOUS VERSION
-========================================================= */
-
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 html,
 body {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
 }
 
 body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: #07111f;
-    color: #ffffff;
-    line-height: 1.5;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #07111f;
+  color: #e8eef7;
+  line-height: 1.5;
 }
 
 .container {
-    width: min(94%, 1180px);
-    margin: 0 auto;
+  width: min(94%, 1180px);
+  margin: 0 auto;
 }
 
-
-/* =========================================================
-   HEADER
-========================================================= */
-
 header {
-    padding: 28px 0 24px;
-    text-align: center;
+  padding: 28px 0 22px;
+  border-bottom: 1px solid #17263a;
+  margin-bottom: 22px;
 }
 
 header h1 {
-    margin: 0;
-    font-size: 32px;
-    color: #00d9ff;
+  margin: 0;
+  font-size: 30px;
 }
 
 header p {
-    margin: 8px 0 0;
-    color: #9fb3c8;
+  margin: 6px 0 0;
+  color: #91a3b9;
+  font-size: 14px;
 }
-
-
-/* =========================================================
-   SECTIONS
-========================================================= */
 
 section {
-    width: 100%;
-    background: #0d1b2a;
-    border: 1px solid #1d344c;
-    border-radius: 16px;
-    padding: 22px;
-    margin-bottom: 24px;
+  width: 100%;
+  min-width: 0;
+  background: #0c1929;
+  border: 1px solid #182a40;
+  border-radius: 16px;
+  padding: 22px;
+  margin-bottom: 22px;
 }
 
-.section-title {
-    margin: 0 0 18px;
-    color: #00d9ff;
-    font-size: 20px;
+section h2 {
+  margin: 0 0 18px;
+  font-size: 20px;
 }
 
+.section-description {
+  color: #91a3b9;
+  font-size: 13px;
+  margin: -8px 0 18px;
+}
 
-/* =========================================================
-   DASHBOARD CARDS
-========================================================= */
+.grid {
+  display: grid;
+  gap: 14px;
+}
 
-.cards {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 14px;
+.dashboard-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.performance-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.analytics-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .card {
-    min-width: 0;
-    background: #091625;
-    border: 1px solid #1d344c;
-    border-radius: 12px;
-    padding: 18px;
+  min-width: 0;
+  background: #101f32;
+  border: 1px solid #1c314a;
+  border-radius: 12px;
+  padding: 17px;
 }
 
-.card h4 {
-    margin: 0 0 9px;
-    color: #8da4ba;
-    font-size: 13px;
-    font-weight: normal;
+.card-label {
+  color: #91a3b9;
+  font-size: 12px;
+  margin-bottom: 7px;
 }
 
-.card strong {
-    display: block;
-    font-size: 24px;
-    overflow-wrap: anywhere;
+.card-value {
+  font-size: 23px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
 }
 
+.small-value {
+  font-size: 18px;
+}
 
-/* =========================================================
-   FORM
-========================================================= */
+.positive {
+  color: #55d98b;
+}
+
+.negative {
+  color: #ff7373;
+}
+
+.neutral {
+  color: #d9e3ef;
+}
+
+/* FORM */
 
 .form-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 16px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
 }
 
 .form-group {
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
+  min-width: 0;
+}
+
+.form-group.full {
+  grid-column: 1 / -1;
 }
 
 label {
-    margin-bottom: 7px;
-    color: #9fb3c8;
-    font-size: 13px;
+  display: block;
+  color: #9cafc5;
+  font-size: 12px;
+  margin-bottom: 6px;
 }
 
 input,
 select,
 textarea {
-    width: 100%;
-    max-width: 100%;
-    padding: 12px;
-    border-radius: 9px;
-    border: 1px solid #29445f;
-    background: #07111f;
-    color: #ffffff;
-    outline: none;
-    font-family: inherit;
-    font-size: 14px;
+  width: 100%;
+  max-width: 100%;
+  background: #071321;
+  color: #e8eef7;
+  border: 1px solid #263b54;
+  border-radius: 9px;
+  padding: 11px 12px;
+  font-size: 14px;
+  outline: none;
 }
 
 input:focus,
 select:focus,
 textarea:focus {
-    border-color: #00d9ff;
+  border-color: #587da7;
 }
 
 textarea {
-    min-height: 100px;
-    resize: vertical;
-}
-
-.full {
-    grid-column: 1 / -1;
+  min-height: 90px;
+  resize: vertical;
 }
 
 button {
-    border: none;
-    border-radius: 9px;
-    padding: 13px 20px;
-    background: #00d9ff;
-    color: #001018;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 14px;
+  border: 0;
+  border-radius: 9px;
+  padding: 12px 18px;
+  background: #1f7ae0;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 14px;
 }
 
 button:hover {
-    opacity: 0.88;
+  background: #286fba;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
 
 .status {
-    min-height: 20px;
-    margin-top: 10px;
-    font-size: 14px;
+  color: #55d98b;
+  font-size: 13px;
 }
 
+/* ANALYTICS */
 
-/* =========================================================
-   ACCOUNT PERFORMANCE
-========================================================= */
-
-.performance {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 14px;
+.analytics-highlight {
+  background: #0f2034;
+  border: 1px solid #23415f;
 }
 
-
-/* =========================================================
-   CHARTS
-========================================================= */
-
-.chart-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 18px;
+.analytics-highlight .card-value {
+  font-size: 24px;
 }
 
-.chart-box {
-    min-width: 0;
-    background: #091625;
-    border: 1px solid #1d344c;
-    border-radius: 12px;
-    padding: 16px;
+.day-value {
+  font-size: 16px;
+  line-height: 1.35;
 }
 
-.chart-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 12px;
+/* SETUP LAB */
+
+.lab-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
 }
 
-.chart-title h3 {
-    margin: 0;
-    color: #00d9ff;
-    font-size: 17px;
+.lab-controls label {
+  margin: 0;
 }
 
-.chart-title span {
-    color: #8da4ba;
-    font-size: 12px;
-    white-space: nowrap;
+.lab-controls select {
+  width: auto;
+  min-width: 220px;
 }
 
-.chart-container {
-    width: 100%;
-    height: 300px;
-    position: relative;
+.lab-summary {
+  color: #91a3b9;
+  font-size: 13px;
+  margin-bottom: 12px;
 }
-
-canvas {
-    display: block;
-    width: 100%;
-    height: 100%;
-}
-
-
-/* =========================================================
-   OCHI AI
-========================================================= */
-
-.ai-box {
-    background: #091625;
-    border: 1px solid #1d344c;
-    border-radius: 12px;
-    padding: 20px;
-}
-
-.ai-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 18px;
-}
-
-.ai-header h3 {
-    margin: 0;
-    color: #00d9ff;
-    font-size: 18px;
-}
-
-.ai-badge {
-    flex-shrink: 0;
-    background: #102b3d;
-    color: #00d9ff;
-    padding: 6px 10px;
-    border-radius: 20px;
-    font-size: 11px;
-}
-
-.ai-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
-}
-
-.ai-card {
-    min-width: 0;
-    background: #07111f;
-    border: 1px solid #1d344c;
-    border-radius: 10px;
-    padding: 16px;
-}
-
-.ai-card h4 {
-    margin: 0 0 9px;
-    color: #9fb3c8;
-    font-size: 14px;
-}
-
-.ai-card p {
-    margin: 0;
-    color: #d7e3ee;
-    font-size: 14px;
-}
-
-.ai-summary {
-    margin-top: 15px;
-    padding: 16px;
-    border-radius: 10px;
-    background: #102131;
-    border-left: 3px solid #00d9ff;
-}
-
-.ai-summary strong {
-    color: #00d9ff;
-}
-
-.ai-summary p {
-    margin: 8px 0 0;
-    color: #d7e3ee;
-}
-
-.ai-button {
-    margin-top: 16px;
-}
-
-
-/* =========================================================
-   EDGE LAB
-========================================================= */
-
-.edge-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 14px;
-}
-
-.edge-card {
-    min-width: 0;
-    background: #091625;
-    border: 1px solid #1d344c;
-    border-radius: 12px;
-    padding: 16px;
-}
-
-.edge-card h4 {
-    margin: 0 0 9px;
-    color: #9fb3c8;
-    font-size: 13px;
-    font-weight: normal;
-}
-
-.edge-card strong {
-    font-size: 22px;
-}
-
-
-/* =========================================================
-   TRADE HISTORY
-========================================================= */
 
 .table-container {
-    width: 100%;
-    overflow-x: auto;
-    border-radius: 10px;
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid #1b3048;
+  border-radius: 10px;
 }
 
 table {
-    width: 100%;
-    min-width: 850px;
-    border-collapse: collapse;
+  width: 100%;
+  min-width: 850px;
+  border-collapse: collapse;
 }
 
 th,
 td {
-    padding: 13px 10px;
-    border-bottom: 1px solid #1d344c;
-    text-align: left;
-    font-size: 13px;
-    white-space: nowrap;
+  padding: 12px 11px;
+  text-align: left;
+  border-bottom: 1px solid #1b2c41;
+  white-space: nowrap;
+  font-size: 13px;
 }
 
 th {
-    color: #00d9ff;
-    font-weight: bold;
+  color: #91a3b9;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  background: #0a1726;
 }
 
-.win {
-    color: #43e97b;
-    font-weight: bold;
-}
-
-.loss {
-    color: #ff5c5c;
-    font-weight: bold;
-}
-
-.be {
-    color: #ffd166;
-    font-weight: bold;
+tr:last-child td {
+  border-bottom: 0;
 }
 
 .delete-btn {
-    background: #ff4d4d;
-    color: #ffffff;
-    padding: 7px 10px;
-    font-size: 12px;
+  background: #6b2530;
+  padding: 7px 10px;
+  font-size: 12px;
 }
 
-
-/* =========================================================
-   TABLET
-========================================================= */
-
-@media (max-width: 950px) {
-
-    .cards,
-    .performance {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .edge-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .form-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
+.delete-btn:hover {
+  background: #85303c;
 }
 
+/* CHARTS */
 
-/* =========================================================
-   MOBILE
-========================================================= */
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.chart-box {
+  min-width: 0;
+  height: 330px;
+  background: #091626;
+  border: 1px solid #1b3048;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.chart-box canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* AI */
+
+.ai-panel {
+  background: #091727;
+  border: 1px solid #213c59;
+  border-radius: 12px;
+  padding: 18px;
+}
+
+.ai-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.ai-card {
+  min-width: 0;
+  background: #0f2033;
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.ai-card h3 {
+  margin: 0 0 6px;
+  font-size: 13px;
+  color: #8fa6bf;
+}
+
+.ai-card p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.ai-summary {
+  margin-top: 14px;
+  padding: 15px;
+  background: #0e1d2e;
+  border-radius: 10px;
+  border: 1px solid #1c344d;
+}
+
+.ai-actions {
+  margin-top: 15px;
+}
+
+/* EDGE LAB */
+
+.edge-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.edge-card {
+  min-width: 0;
+  background: #101f32;
+  border: 1px solid #1c314a;
+  border-radius: 11px;
+  padding: 14px;
+}
+
+.edge-card h3 {
+  font-size: 13px;
+  color: #9cafc5;
+  margin: 0 0 8px;
+}
+
+.edge-card strong {
+  font-size: 20px;
+}
+
+/* FOOTER */
+
+footer {
+  text-align: center;
+  color: #657991;
+  font-size: 12px;
+  padding: 10px 0 30px;
+}
+
+/* TABLET */
+
+@media (max-width: 900px) {
+  .dashboard-grid,
+  .performance-grid,
+  .analytics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .edge-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* MOBILE */
 
 @media (max-width: 650px) {
+  .container {
+    width: 94%;
+  }
 
-    .container {
-        width: 94%;
-    }
+  section {
+    padding: 16px;
+    border-radius: 13px;
+  }
 
-    header {
-        padding: 22px 0 18px;
-    }
+  header h1 {
+    font-size: 25px;
+  }
 
-    header h1 {
-        font-size: 28px;
-    }
+  .dashboard-grid,
+  .performance-grid,
+  .analytics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+  }
 
-    section {
-        padding: 16px;
-        margin-bottom: 18px;
-        border-radius: 13px;
-    }
+  .card {
+    padding: 13px;
+  }
 
-    .section-title {
-        font-size: 18px;
-        margin-bottom: 15px;
-    }
+  .card-value {
+    font-size: 19px;
+  }
 
-    /* Dashboard stays stable: 2 columns */
-    .cards {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 10px;
-    }
+  .small-value {
+    font-size: 15px;
+  }
 
-    .card {
-        padding: 14px;
-    }
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 11px;
+  }
 
-    .card h4 {
-        font-size: 12px;
-    }
+  .form-group.full {
+    grid-column: auto;
+  }
 
-    .card strong {
-        font-size: 20px;
-    }
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
 
-    /* Form becomes one clean column */
-    .form-grid {
-        grid-template-columns: 1fr;
-        gap: 13px;
-    }
+  .chart-box {
+    height: 280px;
+  }
 
-    .full {
-        grid-column: auto;
-    }
+  .ai-grid {
+    grid-template-columns: 1fr;
+  }
 
-    /* Performance */
-    .performance {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 10px;
-    }
+  .edge-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+  }
 
-    /* Charts one at a time */
-    .chart-grid {
-        grid-template-columns: 1fr;
-        gap: 14px;
-    }
+  .lab-controls {
+    align-items: stretch;
+    flex-direction: column;
+  }
 
-    .chart-box {
-        padding: 12px;
-    }
-
-    .chart-container {
-        height: 280px;
-    }
-
-    /* AI */
-    .ai-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .ai-box {
-        padding: 15px;
-    }
-
-    .ai-header {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .ai-badge {
-        align-self: flex-start;
-    }
-
-    /* Edge Lab */
-    .edge-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 10px;
-    }
-
-    .edge-card {
-        padding: 14px;
-    }
-
-    .edge-card strong {
-        font-size: 20px;
-    }
-
+  .lab-controls select {
+    width: 100%;
+  }
 }
-
-
-/* =========================================================
-   SMALL PHONES
-========================================================= */
 
 @media (max-width: 380px) {
+  section {
+    padding: 13px;
+  }
 
-    .container {
-        width: 92%;
-    }
+  .dashboard-grid,
+  .performance-grid,
+  .analytics-grid {
+    gap: 7px;
+  }
 
-    section {
-        padding: 13px;
-    }
+  .card {
+    padding: 11px;
+  }
 
-    .cards,
-    .performance,
-    .edge-grid {
-        gap: 8px;
-    }
+  .card-value {
+    font-size: 17px;
+  }
 
-    .card {
-        padding: 12px;
-    }
-
-    .card strong {
-        font-size: 18px;
-    }
-
-    .chart-container {
-        height: 250px;
-    }
-
+  .card-label {
+    font-size: 11px;
+  }
 }
-
 </style>
 </head>
-
 
 <body>
 
 <div class="container">
 
-
-<!-- =====================================================
-     HEADER
-===================================================== -->
-
 <header>
-
-<h1>📊 OchiTracker</h1>
-
-<p>Your Personal FX Performance Tracker</p>
-
+  <h1>📊 OchiTracker</h1>
+  <p>FX Trading Performance & Analytics System</p>
 </header>
 
 
-<!-- =====================================================
+<!-- =========================================================
      DASHBOARD
-===================================================== -->
+========================================================= -->
 
 <section>
+  <h2>📈 Dashboard</h2>
 
-<h2 class="section-title">
-📈 Dashboard
-</h2>
+  <div class="grid dashboard-grid">
 
-<div class="cards">
+    <div class="card">
+      <div class="card-label">Total Trades</div>
+      <div class="card-value" id="totalTrades">0</div>
+    </div>
 
+    <div class="card">
+      <div class="card-label">Win Rate</div>
+      <div class="card-value" id="winRate">0%</div>
+    </div>
 
-<div class="card">
+    <div class="card">
+      <div class="card-label">Total P/L</div>
+      <div class="card-value" id="totalPL">$0.00</div>
+    </div>
 
-<h4>Total Trades</h4>
+    <div class="card">
+      <div class="card-label">Total R</div>
+      <div class="card-value" id="totalR">0.00R</div>
+    </div>
 
-<strong id="totalTrades">
-0
-</strong>
+    <div class="card">
+      <div class="card-label">Average R</div>
+      <div class="card-value" id="averageR">0.00R</div>
+    </div>
 
-</div>
+    <div class="card">
+      <div class="card-label">Wins</div>
+      <div class="card-value positive" id="wins">0</div>
+    </div>
 
+    <div class="card">
+      <div class="card-label">Losses</div>
+      <div class="card-value negative" id="losses">0</div>
+    </div>
 
-<div class="card">
+    <div class="card">
+      <div class="card-label">Breakeven</div>
+      <div class="card-value" id="breakeven">0</div>
+    </div>
 
-<h4>Win Rate</h4>
-
-<strong id="winRate">
-0%
-</strong>
-
-</div>
-
-
-<div class="card">
-
-<h4>Total P/L</h4>
-
-<strong id="totalPL">
-$0.00
-</strong>
-
-</div>
-
-
-<div class="card">
-
-<h4>Total R</h4>
-
-<strong id="totalR">
-0R
-</strong>
-
-</div>
-
-
-<div class="card">
-
-<h4>Average R</h4>
-
-<strong id="avgR">
-0R
-</strong>
-
-</div>
-
-
-<div class="card">
-
-<h4>Wins</h4>
-
-<strong id="wins">
-0
-</strong>
-
-</div>
-
-
-<div class="card">
-
-<h4>Losses</h4>
-
-<strong id="losses">
-0
-</strong>
-
-</div>
-
-
-<div class="card">
-
-<h4>Breakeven</h4>
-
-<strong id="breakeven">
-0
-</strong>
-
-</div>
-
-
-</div>
-
+  </div>
 </section>
 
 
-<!-- =====================================================
+<!-- =========================================================
      ADD TRADE
-===================================================== -->
+========================================================= -->
 
 <section>
-
-<h2 class="section-title">
-➕ Add New Trade
-</h2>
-
-
-<form id="tradeForm">
-
-<div class="form-grid">
-
-
-<div class="form-group">
-
-<label>Date</label>
-
-<input
-type="date"
-id="date"
-required
->
-
-</div>
-
-
-<div class="form-group">
-
-<label>Currency Pair</label>
-
-<input
-type="text"
-id="pair"
-placeholder="e.g. EURUSD"
-required
->
-
-</div>
-
-
-<div class="form-group">
-
-<label>Direction</label>
-
-<select
-id="direction"
-required
->
-
-<option value="">
-Select
-</option>
-
-<option value="BUY">
-BUY
-</option>
-
-<option value="SELL">
-SELL
-</option>
-
-</select>
-
-</div>
-
-
-<div class="form-group">
-
-<label>Session</label>
-
-<select id="session">
-
-<option value="">
-Select
-</option>
-
-<option value="London">
-London
-</option>
-
-<option value="New York">
-New York
-</option>
-
-<option value="Asia">
-Asia
-</option>
-
-</select>
-
-</div>
-
-
-<div class="form-group">
-
-<label>Result</label>
-
-<select
-id="result"
-required
->
-
-<option value="">
-Select
-</option>
-
-<option value="WIN">
-WIN
-</option>
-
-<option value="LOSS">
-LOSS
-</option>
-
-<option value="BE">
-BE
-</option>
-
-</select>
-
-</div>
-
-
-<div class="form-group">
-
-<label>P/L ($)</label>
-
-<input
-type="number"
-id="profit"
-step="0.01"
-placeholder="e.g. 20"
-required
->
-
-</div>
-
-
-<div class="form-group">
-
-<label>Risk ($)</label>
-
-<input
-type="number"
-id="risk"
-step="0.01"
-placeholder="e.g. 10"
->
-
-</div>
-
-
-<div class="form-group">
-
-<label>R Multiple</label>
-
-<input
-type="number"
-id="rMultiple"
-step="0.01"
-placeholder="e.g. 2"
->
-
-</div>
-
-
-<div class="form-group">
-
-<label>D1 Bias</label>
-
-<select id="d1Bias">
-
-<option value="">
-Select
-</option>
-
-<option value="Bullish">
-Bullish
-</option>
-
-<option value="Bearish">
-Bearish
-</option>
-
-<option value="Neutral">
-Neutral
-</option>
-
-</select>
-
-</div>
-
-
-<div class="form-group">
-
-<label>4H Structure</label>
-
-<select id="structure">
-
-<option value="">
-Select
-</option>
-
-<option value="Bullish">
-Bullish
-</option>
-
-<option value="Bearish">
-Bearish
-</option>
-
-<option value="Range">
-Range
-</option>
-
-<option value="Choppy">
-Choppy
-</option>
-
-</select>
-
-</div>
-
-
-<div class="form-group">
-
-<label>4H POI</label>
-
-<select id="poi">
-
-<option value="">
-Select
-</option>
-
-<option value="Valid">
-Valid
-</option>
-
-<option value="Invalid">
-Invalid
-</option>
-
-<option value="No POI">
-No POI
-</option>
-
-</select>
-
-</div>
-
-
-<div class="form-group">
-
-<label>Liquidity Sweep</label>
-
-<select id="liquidity">
-
-<option value="">
-Select
-</option>
-
-<option value="Yes">
-Yes
-</option>
-
-<option value="No">
-No
-</option>
-
-</select>
-
-</div>
-
-
-<div class="form-group">
-
-<label>15M MSS</label>
-
-<select id="mss">
-
-<option value="">
-Select
-</option>
-
-<option value="Confirmed">
-Confirmed
-</option>
-
-<option value="Not Confirmed">
-Not Confirmed
-</option>
-
-</select>
-
-</div>
-
-
-<div class="form-group">
-
-<label>Entry Model</label>
-
-<select id="entryModel">
-
-<option value="">
-Select
-</option>
-
-<option value="FVG">
-FVG
-</option>
-
-<option value="Order Block">
-Order Block
-</option>
-
-<option value="FVG + OB">
-FVG + OB
-</option>
-
-<option value="Other">
-Other
-</option>
-
-</select>
-
-</div>
-
-
-<div class="form-group">
-
-<label>Market Condition</label>
-
-<select id="marketCondition">
-
-<option value="">
-Select
-</option>
-
-<option value="Clean Trend">
-Clean Trend
-</option>
-
-<option value="Retracement">
-Retracement
-</option>
-
-<option value="Choppy">
-Choppy
-</option>
-
-<option value="Range">
-Range
-</option>
-
-</select>
-
-</div>
-
-
-<div class="form-group">
-
-<label>Rule Followed?</label>
-
-<select id="ruleFollowed">
-
-<option value="Yes">
-Yes
-</option>
-
-<option value="No">
-No
-</option>
-
-</select>
-
-</div>
-
-
-<div class="form-group">
-
-<label>Early Entry?</label>
-
-<select id="earlyEntry">
-
-<option value="No">
-No
-</option>
-
-<option value="Yes">
-Yes
-</option>
-
-</select>
-
-</div>
-
-
-<div class="form-group">
-
-<label>FOMO?</label>
-
-<select id="fomo">
-
-<option value="No">
-No
-</option>
-
-<option value="Yes">
-Yes
-</option>
-
-</select>
-
-</div>
-
-
-<div class="form-group">
-
-<label>Revenge Trade?</label>
-
-<select id="revenge">
-
-<option value="No">
-No
-</option>
-
-<option value="Yes">
-Yes
-</option>
-
-</select>
-
-</div>
-
-
-<div class="form-group">
-
-<label>News Violation?</label>
-
-<select id="newsViolation">
-
-<option value="No">
-No
-</option>
-
-<option value="Yes">
-Yes
-</option>
-
-</select>
-
-</div>
-
-
-<div class="form-group full">
-
-<label>
-Trade Notes
-</label>
-
-<textarea
-id="notes"
-placeholder="What happened during this trade?"
-></textarea>
-
-</div>
-
-
-<div class="form-group full">
-
-<button
-type="submit"
->
-➕ Add Trade
-</button>
-
-<div
-class="status"
-id="status"
-></div>
-
-</div>
-
-
-</div>
-
-</form>
-
+  <h2>➕ Add New Trade</h2>
+
+  <form id="tradeForm">
+
+    <div class="form-grid">
+
+      <div class="form-group">
+        <label>Date</label>
+        <input type="date" id="date" required>
+      </div>
+
+      <div class="form-group">
+        <label>Currency Pair</label>
+        <input type="text" id="pair" placeholder="e.g. XAUUSD" required>
+      </div>
+
+      <div class="form-group">
+        <label>Direction</label>
+        <select id="direction" required>
+          <option value="BUY">BUY</option>
+          <option value="SELL">SELL</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Session</label>
+        <select id="session">
+          <option value="London">London</option>
+          <option value="New York">New York</option>
+          <option value="Asia">Asia</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Result</label>
+        <select id="result" required>
+          <option value="WIN">WIN</option>
+          <option value="LOSS">LOSS</option>
+          <option value="BE">BE</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>P/L ($)</label>
+        <input type="number" id="profit" step="0.01" required>
+      </div>
+
+      <div class="form-group">
+        <label>Risk ($)</label>
+        <input type="number" id="risk" step="0.01" min="0">
+      </div>
+
+      <div class="form-group">
+        <label>R Multiple</label>
+        <input type="number" id="rMultiple" step="0.01">
+      </div>
+
+      <div class="form-group">
+        <label>D1 Bias</label>
+        <select id="d1Bias">
+          <option value="Bullish">Bullish</option>
+          <option value="Bearish">Bearish</option>
+          <option value="Neutral">Neutral</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>4H Structure</label>
+        <select id="structure4h">
+          <option value="Bullish">Bullish</option>
+          <option value="Bearish">Bearish</option>
+          <option value="Range">Range</option>
+          <option value="Choppy">Choppy</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>4H POI</label>
+        <select id="poi4h">
+          <option value="Valid">Valid</option>
+          <option value="Invalid">Invalid</option>
+          <option value="No POI">No POI</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Liquidity Sweep</label>
+        <select id="liquiditySweep">
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>15M MSS</label>
+        <select id="mss15m">
+          <option value="Confirmed">Confirmed</option>
+          <option value="Not Confirmed">Not Confirmed</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Entry Model</label>
+        <select id="entryModel">
+          <option value="FVG">FVG</option>
+          <option value="Order Block">Order Block</option>
+          <option value="FVG + OB">FVG + OB</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Market Condition</label>
+        <select id="marketCondition">
+          <option value="Clean Trend">Clean Trend</option>
+          <option value="Retracement">Retracement</option>
+          <option value="Choppy">Choppy</option>
+          <option value="Range">Range</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Rule Followed</label>
+        <select id="ruleFollowed">
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Early Entry</label>
+        <select id="earlyEntry">
+          <option value="No">No</option>
+          <option value="Yes">Yes</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>FOMO</label>
+        <select id="fomo">
+          <option value="No">No</option>
+          <option value="Yes">Yes</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Revenge Trade</label>
+        <select id="revengeTrade">
+          <option value="No">No</option>
+          <option value="Yes">Yes</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>News Violation</label>
+        <select id="newsViolation">
+          <option value="No">No</option>
+          <option value="Yes">Yes</option>
+        </select>
+      </div>
+
+      <div class="form-group full">
+        <label>Trade Notes</label>
+        <textarea id="notes" placeholder="Why did you take this trade? What happened?"></textarea>
+      </div>
+
+      <div class="form-group full">
+        <div class="form-actions">
+          <button type="submit">Save Trade</button>
+          <span class="status" id="status"></span>
+        </div>
+      </div>
+
+    </div>
+
+  </form>
 </section>
 
 
-<!-- =====================================================
+<!-- =========================================================
      ACCOUNT PERFORMANCE
-===================================================== -->
+========================================================= -->
 
 <section>
+  <h2>💰 Account Performance</h2>
 
-<h2 class="section-title">
-💰 Account Performance
-</h2>
+  <div class="grid performance-grid">
 
+    <div class="card">
+      <div class="card-label">Starting Balance</div>
+      <div class="card-value" id="startingBalance">$0.00</div>
+    </div>
 
-<div class="performance">
+    <div class="card">
+      <div class="card-label">Current Equity</div>
+      <div class="card-value" id="currentEquity">$0.00</div>
+    </div>
 
+    <div class="card">
+      <div class="card-label">Peak Equity</div>
+      <div class="card-value" id="peakEquity">$0.00</div>
+    </div>
 
-<div class="card">
+    <div class="card">
+      <div class="card-label">Max Drawdown</div>
+      <div class="card-value negative" id="maxDrawdown">$0.00</div>
+    </div>
 
-<h4>
-Starting Balance
-</h4>
-
-<strong>
-$0.00
-</strong>
-
-</div>
-
-
-<div class="card">
-
-<h4>
-Current Equity
-</h4>
-
-<strong id="currentEquity">
-$0.00
-</strong>
-
-</div>
-
-
-<div class="card">
-
-<h4>
-Peak Equity
-</h4>
-
-<strong id="peakEquity">
-$0.00
-</strong>
-
-</div>
-
-
-<div class="card">
-
-<h4>
-Max Drawdown
-</h4>
-
-<strong id="maxDrawdown">
-$0.00
-</strong>
-
-</div>
-
-
-</div>
-
+  </div>
 </section>
 
 
-<!-- =====================================================
+<!-- =========================================================
+     ADVANCED ANALYTICS
+========================================================= -->
+
+<section>
+  <h2>🧠 Ochi Advanced Analytics</h2>
+
+  <p class="section-description">
+    Statistical view of your trading performance based on the trades you have recorded.
+  </p>
+
+  <div class="grid analytics-grid">
+
+    <div class="card analytics-highlight">
+      <div class="card-label">Profit Factor</div>
+      <div class="card-value" id="profitFactor">0.00</div>
+    </div>
+
+    <div class="card analytics-highlight">
+      <div class="card-label">Expectancy / Trade</div>
+      <div class="card-value" id="expectancy">$0.00</div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Expectancy / R</div>
+      <div class="card-value" id="expectancyR">0.00R</div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Average Win</div>
+      <div class="card-value positive" id="averageWin">$0.00</div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Average Loss</div>
+      <div class="card-value negative" id="averageLoss">$0.00</div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Largest Win</div>
+      <div class="card-value positive" id="largestWin">$0.00</div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Largest Loss</div>
+      <div class="card-value negative" id="largestLoss">$0.00</div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Average Winning R</div>
+      <div class="card-value positive" id="averageWinningR">0.00R</div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Average Losing R</div>
+      <div class="card-value negative" id="averageLosingR">0.00R</div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Current Win Streak</div>
+      <div class="card-value positive" id="currentWinStreak">0</div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Current Loss Streak</div>
+      <div class="card-value negative" id="currentLossStreak">0</div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Best Win Streak</div>
+      <div class="card-value" id="bestWinStreak">0</div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Worst Loss Streak</div>
+      <div class="card-value" id="worstLossStreak">0</div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Best Trading Day</div>
+      <div class="card-value day-value positive" id="bestTradingDay">—</div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Worst Trading Day</div>
+      <div class="card-value day-value negative" id="worstTradingDay">—</div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- =========================================================
+     SETUP PERFORMANCE LAB
+========================================================= -->
+
+<section>
+  <h2>🧪 Setup Performance Lab</h2>
+
+  <p class="section-description">
+    Break down your actual recorded results by setup, market condition, execution and discipline.
+  </p>
+
+  <div class="lab-controls">
+    <label for="labFilter">Analyze by:</label>
+
+    <select id="labFilter">
+      <option value="entryModel">Entry Model</option>
+      <option value="pair">Currency Pair</option>
+      <option value="direction">Direction</option>
+      <option value="session">Session</option>
+      <option value="d1Bias">D1 Bias</option>
+      <option value="structure4h">4H Structure</option>
+      <option value="poi4h">4H POI</option>
+      <option value="liquiditySweep">Liquidity Sweep</option>
+      <option value="mss15m">15M MSS</option>
+      <option value="marketCondition">Market Condition</option>
+      <option value="ruleFollowed">Rule Followed</option>
+      <option value="earlyEntry">Early Entry</option>
+      <option value="fomo">FOMO</option>
+      <option value="revengeTrade">Revenge Trade</option>
+      <option value="newsViolation">News Violation</option>
+    </select>
+  </div>
+
+  <div class="lab-summary" id="labSummary">
+    Showing performance by Entry Model.
+  </div>
+
+  <div class="table-container">
+
+    <table>
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Trades</th>
+          <th>Wins</th>
+          <th>Losses</th>
+          <th>Win Rate</th>
+          <th>P/L</th>
+          <th>Total R</th>
+          <th>Avg R</th>
+        </tr>
+      </thead>
+
+      <tbody id="setupLabBody"></tbody>
+    </table>
+
+  </div>
+</section>
+
+
+<!-- =========================================================
+     PERFORMANCE CHARTS
+========================================================= -->
+
+<section>
+  <h2>📊 Performance Charts</h2>
+
+  <div class="charts-grid">
+
+    <div class="chart-box">
+      <canvas id="equityChart"></canvas>
+    </div>
+
+    <div class="chart-box">
+      <canvas id="plChart"></canvas>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- =========================================================
      OCHI AI
-===================================================== -->
+========================================================= -->
 
 <section>
+  <h2>🤖 Ochi AI</h2>
 
-<h2 class="section-title">
-🤖 Ochi AI
-</h2>
+  <div class="ai-panel">
 
+    <div class="ai-grid">
 
-<div class="ai-box">
+      <div class="ai-card">
+        <h3>Performance</h3>
+        <p id="aiPerformance">No analysis yet.</p>
+      </div>
 
+      <div class="ai-card">
+        <h3>Your Edge</h3>
+        <p id="aiEdge">No analysis yet.</p>
+      </div>
 
-<div class="ai-header">
+      <div class="ai-card">
+        <h3>Biggest Weakness</h3>
+        <p id="aiWeakness">No analysis yet.</p>
+      </div>
 
-<h3>
-Your Trading Performance Analyst
-</h3>
+      <div class="ai-card">
+        <h3>Discipline</h3>
+        <p id="aiDiscipline">No analysis yet.</p>
+      </div>
 
-<span class="ai-badge">
-LOCAL AI ANALYSIS
-</span>
+    </div>
 
-</div>
+    <div class="ai-summary">
+      <strong>Ochi AI Summary</strong>
+      <p id="aiSummary">
+        Add some trades and click Analyze My Trading.
+      </p>
+    </div>
 
+    <div class="ai-actions">
+      <button type="button" onclick="runAIAnalysis()">
+        Analyze My Trading
+      </button>
+    </div>
 
-<div class="ai-grid">
-
-
-<div class="ai-card">
-
-<h4>
-📊 Performance
-</h4>
-
-<p id="aiPerformance">
-Record some trades and Ochi AI will analyze your performance.
-</p>
-
-</div>
-
-
-<div class="ai-card">
-
-<h4>
-🎯 Your Edge
-</h4>
-
-<p id="aiEdge">
-Your strongest trading conditions will appear here.
-</p>
-
-</div>
-
-
-<div class="ai-card">
-
-<h4>
-⚠️ Biggest Weakness
-</h4>
-
-<p id="aiWeakness">
-Your recurring weaknesses will appear here.
-</p>
-
-</div>
-
-
-<div class="ai-card">
-
-<h4>
-🧠 Discipline
-</h4>
-
-<p id="aiDiscipline">
-Ochi AI will monitor your discipline statistics.
-</p>
-
-</div>
-
-
-</div>
-
-
-<div class="ai-summary">
-
-<strong>
-🤖 Ochi AI Summary
-</strong>
-
-<p id="aiSummary">
-Add your trades and Ochi AI will generate a personalized performance summary from your trading journal.
-</p>
-
-</div>
-
-
-<button
-class="ai-button"
-onclick="runAIAnalysis()"
->
-🔄 Analyze My Trading
-</button>
-
-
-</div>
-
+  </div>
 </section>
 
 
-<!-- =====================================================
-     CHARTS
-===================================================== -->
+<!-- =========================================================
+     EXISTING EDGE LAB
+========================================================= -->
 
 <section>
+  <h2>📐 Edge Lab</h2>
 
-<h2 class="section-title">
-📊 Performance Charts
-</h2>
+  <p class="section-description">
+    Quick checks of specific conditions in your trading model.
+  </p>
 
+  <div class="edge-grid">
 
-<div class="chart-grid">
+    <div class="edge-card">
+      <h3>4H POI Valid</h3>
+      <strong id="edgePOI">0%</strong>
+    </div>
 
+    <div class="edge-card">
+      <h3>15M MSS Confirmed</h3>
+      <strong id="edgeMSS">0%</strong>
+    </div>
 
-<div class="chart-box">
+    <div class="edge-card">
+      <h3>Clean Trend</h3>
+      <strong id="edgeTrend">0%</strong>
+    </div>
 
-<div class="chart-title">
+    <div class="edge-card">
+      <h3>Choppy Market</h3>
+      <strong id="edgeChoppy">0%</strong>
+    </div>
 
-<h3>
-📈 Equity Curve
-</h3>
+    <div class="edge-card">
+      <h3>Rule Following</h3>
+      <strong id="edgeRules">0%</strong>
+    </div>
 
-<span>
-Starts at $0
-</span>
+    <div class="edge-card">
+      <h3>Early Entries</h3>
+      <strong id="edgeEarly">0%</strong>
+    </div>
 
-</div>
+    <div class="edge-card">
+      <h3>FOMO Trades</h3>
+      <strong id="edgeFOMO">0%</strong>
+    </div>
 
+    <div class="edge-card">
+      <h3>News Violations</h3>
+      <strong id="edgeNews">0%</strong>
+    </div>
 
-<div class="chart-container">
-
-<canvas
-id="equityChart"
-></canvas>
-
-</div>
-
-</div>
-
-
-<div class="chart-box">
-
-<div class="chart-title">
-
-<h3>
-📊 Trade P/L
-</h3>
-
-<span>
-Above / Below $0
-</span>
-
-</div>
-
-
-<div class="chart-container">
-
-<canvas
-id="plChart"
-></canvas>
-
-</div>
-
-</div>
-
-
-</div>
-
+  </div>
 </section>
 
 
-<!-- =====================================================
-     EDGE LAB
-===================================================== -->
-
-<section>
-
-<h2 class="section-title">
-🧪 Edge Lab
-</h2>
-
-
-<div class="edge-grid">
-
-
-<div class="edge-card">
-
-<h4>
-4H POI Win Rate
-</h4>
-
-<strong id="poiWinRate">
-0%
-</strong>
-
-</div>
-
-
-<div class="edge-card">
-
-<h4>
-15M MSS Win Rate
-</h4>
-
-<strong id="mssWinRate">
-0%
-</strong>
-
-</div>
-
-
-<div class="edge-card">
-
-<h4>
-Clean Trend Win Rate
-</h4>
-
-<strong id="trendWinRate">
-0%
-</strong>
-
-</div>
-
-
-<div class="edge-card">
-
-<h4>
-Choppy Market Win Rate
-</h4>
-
-<strong id="choppyWinRate">
-0%
-</strong>
-
-</div>
-
-
-<div class="edge-card">
-
-<h4>
-Rule Following
-</h4>
-
-<strong id="ruleRate">
-0%
-</strong>
-
-</div>
-
-
-<div class="edge-card">
-
-<h4>
-Early Entries
-</h4>
-
-<strong id="earlyRate">
-0%
-</strong>
-
-</div>
-
-
-<div class="edge-card">
-
-<h4>
-FOMO Trades
-</h4>
-
-<strong id="fomoRate">
-0%
-</strong>
-
-</div>
-
-
-<div class="edge-card">
-
-<h4>
-News Violations
-</h4>
-
-<strong id="newsRate">
-0%
-</strong>
-
-</div>
-
-
-</div>
-
-</section>
-
-
-<!-- =====================================================
+<!-- =========================================================
      TRADE HISTORY
-===================================================== -->
+========================================================= -->
 
 <section>
+  <h2>📋 Trade History</h2>
 
-<h2 class="section-title">
-📋 Trade History
-</h2>
+  <div class="table-container">
 
+    <table>
 
-<div class="table-container">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Pair</th>
+          <th>Direction</th>
+          <th>Session</th>
+          <th>Setup</th>
+          <th>Result</th>
+          <th>P/L</th>
+          <th>R</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
 
-<table>
+      <tbody id="tradeTableBody"></tbody>
 
-<thead>
+    </table>
 
-<tr>
-
-<th>Date</th>
-<th>Pair</th>
-<th>Direction</th>
-<th>Session</th>
-<th>Setup</th>
-<th>Result</th>
-<th>P/L</th>
-<th>R</th>
-<th>Action</th>
-
-</tr>
-
-</thead>
-
-
-<tbody id="tradeTable">
-
-</tbody>
-
-
-</table>
-
-</div>
-
+  </div>
 </section>
 
+
+<footer>
+  OchiTracker • Personal FX Performance System
+</footer>
 
 </div>
 
@@ -1629,167 +1107,147 @@ News Violations
 <script>
 
 /* =========================================================
-   STORAGE
+   DATA
 ========================================================= */
-
-const STORAGE_KEY = "ochiTrades";
 
 let trades = [];
 
 
 /* =========================================================
-   LOAD TRADES
-========================================================= */
-
-function loadTrades() {
-
-    try {
-
-        const saved =
-            localStorage.getItem(
-                STORAGE_KEY
-            );
-
-        if (saved) {
-
-            trades =
-                JSON.parse(saved);
-
-        }
-
-        if (
-            !Array.isArray(trades)
-        ) {
-
-            trades = [];
-
-        }
-
-    } catch (error) {
-
-        trades = [];
-
-        console.error(
-            "Could not load trades:",
-            error
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   SAVE TRADES
+   STORAGE
 ========================================================= */
 
 function saveTrades() {
+  localStorage.setItem("ochiTrades", JSON.stringify(trades));
+}
 
-    try {
 
-        localStorage.setItem(
-            STORAGE_KEY,
-            JSON.stringify(trades)
-        );
+function loadTrades() {
 
-        return true;
+  const saved = localStorage.getItem("ochiTrades");
 
-    } catch (error) {
+  if (!saved) {
+    trades = [];
+    return;
+  }
 
-        console.error(
-            "Could not save trades:",
-            error
-        );
+  try {
 
-        return false;
+    trades = JSON.parse(saved);
 
+    if (!Array.isArray(trades)) {
+      trades = [];
+      return;
     }
 
+    /*
+      Normalize old data.
+
+      This is important because older versions may have stored
+      LOSS P/L as a positive number.
+    */
+
+    trades = trades.map(t => {
+
+      let profit = Number(t.profit || 0);
+      let r = Number(t.rMultiple || 0);
+
+      if (t.result === "WIN") {
+        profit = Math.abs(profit);
+        r = Math.abs(r);
+      }
+
+      else if (t.result === "LOSS") {
+        profit = -Math.abs(profit);
+        r = -Math.abs(r);
+      }
+
+      else if (t.result === "BE") {
+        profit = 0;
+        r = 0;
+      }
+
+      return {
+        ...t,
+        profit,
+        rMultiple: r
+      };
+
+    });
+
+    saveTrades();
+
+  } catch (error) {
+
+    console.error("Could not load trades:", error);
+    trades = [];
+
+  }
 }
 
 
 /* =========================================================
-   MONEY
+   HELPERS
 ========================================================= */
 
 function formatMoney(value) {
 
-    const number =
-        Number(value || 0);
+  const number = Number(value || 0);
 
-    return (
-        number < 0
-        ? "-$"
-        : "$"
-    ) +
-    Math.abs(number).toFixed(2);
+  const sign = number < 0 ? "-" : "";
+
+  return sign + "$" + Math.abs(number).toFixed(2);
+}
+
+
+function formatSignedR(value) {
+
+  const number = Number(value || 0);
+
+  if (number > 0) {
+    return "+" + number.toFixed(2) + "R";
+  }
+
+  return number.toFixed(2) + "R";
+}
+
+
+function calculateWinRate(list) {
+
+  if (!list.length) {
+    return 0;
+  }
+
+  const wins = list.filter(t => t.result === "WIN").length;
+
+  return (wins / list.length) * 100;
+}
+
+
+function winRate(list) {
+
+  if (!list.length) {
+    return "0.0%";
+  }
+
+  return calculateWinRate(list).toFixed(1) + "%";
+}
+
+
+function getTotalPL(list = trades) {
+
+  return list.reduce((sum, t) => {
+    return sum + Number(t.profit || 0);
+  }, 0);
 
 }
 
 
-/* =========================================================
-   STATUS
-========================================================= */
+function getTotalR(list = trades) {
 
-function showStatus(
-    message,
-    success = true
-) {
-
-    const status =
-        document.getElementById(
-            "status"
-        );
-
-    status.textContent =
-        message;
-
-    status.style.color =
-        success
-        ? "#43e97b"
-        : "#ff5c5c";
-
-    setTimeout(
-        () => {
-
-            status.textContent =
-                "";
-
-        },
-        3000
-    );
-
-}
-
-
-/* =========================================================
-   WIN RATE
-========================================================= */
-
-function calculateWinRate(
-    list
-) {
-
-    if (
-        list.length === 0
-    ) {
-
-        return 0;
-
-    }
-
-
-    const wins =
-        list.filter(
-            t =>
-                t.result === "WIN"
-        ).length;
-
-
-    return (
-        wins /
-        list.length
-    ) * 100;
+  return list.reduce((sum, t) => {
+    return sum + Number(t.rMultiple || 0);
+  }, 0);
 
 }
 
@@ -1800,123 +1258,59 @@ function calculateWinRate(
 
 function updateDashboard() {
 
-    const total =
-        trades.length;
+  const total = trades.length;
 
+  const wins = trades.filter(t => t.result === "WIN").length;
 
-    const wins =
-        trades.filter(
-            t =>
-                t.result === "WIN"
-        ).length;
+  const losses = trades.filter(t => t.result === "LOSS").length;
 
+  const be = trades.filter(t => t.result === "BE").length;
 
-    const losses =
-        trades.filter(
-            t =>
-                t.result === "LOSS"
-        ).length;
+  const totalPL = getTotalPL();
 
+  const totalR = getTotalR();
 
-    const be =
-        trades.filter(
-            t =>
-                t.result === "BE"
-        ).length;
+  const avgR = total ? totalR / total : 0;
 
+  document.getElementById("totalTrades").textContent = total;
 
-    const totalPL =
-        trades.reduce(
-            (sum, t) =>
-                sum +
-                Number(
-                    t.profit || 0
-                ),
-            0
-        );
+  document.getElementById("winRate").textContent =
+    calculateWinRate(trades).toFixed(1) + "%";
 
+  document.getElementById("totalPL").textContent =
+    formatMoney(totalPL);
 
-    const totalR =
-        trades.reduce(
-            (sum, t) =>
-                sum +
-                Number(
-                    t.rMultiple || 0
-                ),
-            0
-        );
+  document.getElementById("totalR").textContent =
+    formatSignedR(totalR);
 
+  document.getElementById("averageR").textContent =
+    formatSignedR(avgR);
 
-    const avgR =
-        total > 0
-        ? totalR / total
-        : 0;
+  document.getElementById("wins").textContent = wins;
 
+  document.getElementById("losses").textContent = losses;
 
-    document.getElementById(
-        "totalTrades"
-    ).textContent =
-        total;
+  document.getElementById("breakeven").textContent = be;
 
+  document.getElementById("totalPL").className =
+    "card-value " +
+    (totalPL > 0 ? "positive" : totalPL < 0 ? "negative" : "neutral");
 
-    document.getElementById(
-        "winRate"
-    ).textContent =
-        calculateWinRate(
-            trades
-        ).toFixed(2) +
-        "%";
+  document.getElementById("totalR").className =
+    "card-value " +
+    (totalR > 0 ? "positive" : totalR < 0 ? "negative" : "neutral");
 
+  updateAccountPerformance();
 
-    document.getElementById(
-        "totalPL"
-    ).textContent =
-        formatMoney(
-            totalPL
-        );
+  updateAdvancedAnalytics();
 
+  updateSetupLab();
 
-    document.getElementById(
-        "totalR"
-    ).textContent =
-        totalR.toFixed(2) +
-        "R";
+  updateEdgeLab();
 
+  renderTrades();
 
-    document.getElementById(
-        "avgR"
-    ).textContent =
-        avgR.toFixed(2) +
-        "R";
-
-
-    document.getElementById(
-        "wins"
-    ).textContent =
-        wins;
-
-
-    document.getElementById(
-        "losses"
-    ).textContent =
-        losses;
-
-
-    document.getElementById(
-        "breakeven"
-    ).textContent =
-        be;
-
-
-    updateAccountPerformance();
-
-    updateEdgeLab();
-
-    renderTrades();
-
-    drawCharts();
-
-    runAIAnalysis();
+  drawCharts();
 
 }
 
@@ -1927,1540 +1321,1257 @@ function updateDashboard() {
 
 function updateAccountPerformance() {
 
-    const sorted =
-        [...trades].sort(
-            (a, b) => {
+  const startingBalance = 0;
 
-                const dateA =
-                    new Date(a.date);
+  let equity = startingBalance;
 
-                const dateB =
-                    new Date(b.date);
+  let peak = startingBalance;
 
+  let maxDrawdown = 0;
 
-                if (
-                    dateA - dateB !== 0
-                ) {
+  trades.forEach(t => {
 
-                    return (
-                        dateA - dateB
-                    );
+    equity += Number(t.profit || 0);
 
-                }
+    if (equity > peak) {
+      peak = equity;
+    }
 
+    const drawdown = peak - equity;
 
-                return (
-                    Number(a.id || 0) -
-                    Number(b.id || 0)
-                );
+    if (drawdown > maxDrawdown) {
+      maxDrawdown = drawdown;
+    }
 
-            }
-        );
+  });
 
+  document.getElementById("startingBalance").textContent =
+    formatMoney(startingBalance);
 
-    let equity = 0;
+  document.getElementById("currentEquity").textContent =
+    formatMoney(equity);
 
-    let peak = 0;
+  document.getElementById("peakEquity").textContent =
+    formatMoney(peak);
 
-    let maxDrawdown = 0;
+  document.getElementById("maxDrawdown").textContent =
+    "-" + formatMoney(maxDrawdown).replace("-", "");
 
+  const equityElement = document.getElementById("currentEquity");
 
-    sorted.forEach(
-        trade => {
-
-            equity +=
-                Number(
-                    trade.profit || 0
-                );
-
-
-            if (
-                equity > peak
-            ) {
-
-                peak =
-                    equity;
-
-            }
-
-
-            const drawdown =
-                peak -
-                equity;
-
-
-            if (
-                drawdown >
-                maxDrawdown
-            ) {
-
-                maxDrawdown =
-                    drawdown;
-
-            }
-
-        }
-    );
-
-
-    document.getElementById(
-        "currentEquity"
-    ).textContent =
-        formatMoney(
-            equity
-        );
-
-
-    document.getElementById(
-        "peakEquity"
-    ).textContent =
-        formatMoney(
-            peak
-        );
-
-
-    document.getElementById(
-        "maxDrawdown"
-    ).textContent =
-        formatMoney(
-            maxDrawdown
-        );
+  equityElement.className =
+    "card-value " +
+    (equity > 0 ? "positive" :
+     equity < 0 ? "negative" : "neutral");
 
 }
 
 
 /* =========================================================
-   EQUITY DATA
+   ADVANCED ANALYTICS
 ========================================================= */
 
-function getEquityData() {
+function updateAdvancedAnalytics() {
 
-    const sorted =
-        [...trades].sort(
-            (a, b) => {
+  if (!trades.length) {
 
-                const dateA =
-                    new Date(a.date);
+    document.getElementById("profitFactor").textContent = "0.00";
+    document.getElementById("expectancy").textContent = "$0.00";
+    document.getElementById("expectancyR").textContent = "0.00R";
+    document.getElementById("averageWin").textContent = "$0.00";
+    document.getElementById("averageLoss").textContent = "$0.00";
+    document.getElementById("largestWin").textContent = "$0.00";
+    document.getElementById("largestLoss").textContent = "$0.00";
+    document.getElementById("averageWinningR").textContent = "0.00R";
+    document.getElementById("averageLosingR").textContent = "0.00R";
+    document.getElementById("currentWinStreak").textContent = "0";
+    document.getElementById("currentLossStreak").textContent = "0";
+    document.getElementById("bestWinStreak").textContent = "0";
+    document.getElementById("worstLossStreak").textContent = "0";
+    document.getElementById("bestTradingDay").textContent = "—";
+    document.getElementById("worstTradingDay").textContent = "—";
 
-                const dateB =
-                    new Date(b.date);
-
-
-                if (
-                    dateA - dateB !== 0
-                ) {
-
-                    return (
-                        dateA - dateB
-                    );
-
-                }
-
-
-                return (
-                    Number(a.id || 0) -
-                    Number(b.id || 0)
-                );
-
-            }
-        );
+    return;
+  }
 
 
-    let equity = 0;
+  /* ---------- Profit Factor ---------- */
+
+  const grossProfit = trades
+    .filter(t => Number(t.profit) > 0)
+    .reduce((sum, t) => sum + Number(t.profit), 0);
+
+  const grossLoss = Math.abs(
+    trades
+      .filter(t => Number(t.profit) < 0)
+      .reduce((sum, t) => sum + Number(t.profit), 0)
+  );
+
+  let profitFactor = 0;
+
+  if (grossLoss === 0) {
+
+    profitFactor = grossProfit > 0 ? Infinity : 0;
+
+  } else {
+
+    profitFactor = grossProfit / grossLoss;
+
+  }
+
+  document.getElementById("profitFactor").textContent =
+    profitFactor === Infinity
+      ? "∞"
+      : profitFactor.toFixed(2);
 
 
-    const data = [
+  /* ---------- Expectancy ---------- */
 
-        {
-            date: "Start",
-            equity: 0
-        }
+  const totalPL = getTotalPL();
 
-    ];
+  const totalR = getTotalR();
 
+  const expectancy = totalPL / trades.length;
 
-    sorted.forEach(
-        trade => {
+  const expectancyR = totalR / trades.length;
 
-            equity +=
-                Number(
-                    trade.profit || 0
-                );
+  document.getElementById("expectancy").textContent =
+    formatMoney(expectancy);
+
+  document.getElementById("expectancyR").textContent =
+    formatSignedR(expectancyR);
 
 
-            data.push({
+  /* ---------- Average Win ---------- */
 
-                date:
-                    trade.date,
+  const wins = trades.filter(t => t.result === "WIN");
 
-                equity:
-                    equity
+  const losses = trades.filter(t => t.result === "LOSS");
 
-            });
+  const averageWin =
+    wins.length
+      ? wins.reduce((sum, t) => sum + Number(t.profit), 0) / wins.length
+      : 0;
 
-        }
-    );
+  const averageLoss =
+    losses.length
+      ? losses.reduce((sum, t) => sum + Number(t.profit), 0) / losses.length
+      : 0;
+
+  document.getElementById("averageWin").textContent =
+    formatMoney(averageWin);
+
+  document.getElementById("averageLoss").textContent =
+    formatMoney(averageLoss);
 
 
-    return data;
+  /* ---------- Largest Win/Loss ---------- */
+
+  const largestWin = wins.length
+    ? Math.max(...wins.map(t => Number(t.profit)))
+    : 0;
+
+  const largestLoss = losses.length
+    ? Math.min(...losses.map(t => Number(t.profit)))
+    : 0;
+
+  document.getElementById("largestWin").textContent =
+    formatMoney(largestWin);
+
+  document.getElementById("largestLoss").textContent =
+    formatMoney(largestLoss);
+
+
+  /* ---------- Average R ---------- */
+
+  const averageWinningR =
+    wins.length
+      ? wins.reduce((sum, t) => sum + Number(t.rMultiple || 0), 0) / wins.length
+      : 0;
+
+  const averageLosingR =
+    losses.length
+      ? losses.reduce((sum, t) => sum + Number(t.rMultiple || 0), 0) / losses.length
+      : 0;
+
+  document.getElementById("averageWinningR").textContent =
+    formatSignedR(averageWinningR);
+
+  document.getElementById("averageLosingR").textContent =
+    formatSignedR(averageLosingR);
+
+
+  /* ---------- Streaks ---------- */
+
+  const streaks = calculateStreaks();
+
+  document.getElementById("currentWinStreak").textContent =
+    streaks.currentWin;
+
+  document.getElementById("currentLossStreak").textContent =
+    streaks.currentLoss;
+
+  document.getElementById("bestWinStreak").textContent =
+    streaks.bestWin;
+
+  document.getElementById("worstLossStreak").textContent =
+    streaks.worstLoss;
+
+
+  /* ---------- Best/Worst Trading Day ---------- */
+
+  const dayResults = {};
+
+  trades.forEach(t => {
+
+    const date = t.date || "Unknown";
+
+    if (!dayResults[date]) {
+      dayResults[date] = 0;
+    }
+
+    dayResults[date] += Number(t.profit || 0);
+
+  });
+
+  const days = Object.entries(dayResults);
+
+  if (days.length) {
+
+    days.sort((a, b) => a[1] - b[1]);
+
+    const worst = days[0];
+
+    const best = days[days.length - 1];
+
+    document.getElementById("bestTradingDay").textContent =
+      formatDayResult(best);
+
+    document.getElementById("worstTradingDay").textContent =
+      formatDayResult(worst);
+
+  }
+
+}
+
+
+function formatDayResult(entry) {
+
+  const date = entry[0];
+
+  const value = entry[1];
+
+  if (!date || date === "Unknown") {
+
+    return "Unknown: " + formatMoney(value);
+
+  }
+
+  const formattedDate = new Date(date + "T00:00:00")
+    .toLocaleDateString(undefined, {
+      day: "2-digit",
+      month: "short"
+    });
+
+  return formattedDate + ": " + formatMoney(value);
 
 }
 
 
 /* =========================================================
-   CANVAS
+   STREAK ENGINE
 ========================================================= */
 
-function setupCanvas(
-    canvas
-) {
+function calculateStreaks() {
 
-    const rect =
-        canvas.getBoundingClientRect();
+  const ordered = [...trades].sort((a, b) => {
 
+    const dateA = new Date(a.date || 0);
+    const dateB = new Date(b.date || 0);
 
-    const ratio =
-        window.devicePixelRatio ||
-        1;
+    return dateA - dateB;
 
+  });
 
-    canvas.width =
-        rect.width *
-        ratio;
+  let currentWin = 0;
+  let currentLoss = 0;
 
+  let bestWin = 0;
+  let worstLoss = 0;
 
-    canvas.height =
-        rect.height *
-        ratio;
+  for (const trade of ordered) {
 
+    if (trade.result === "WIN") {
 
-    const ctx =
-        canvas.getContext(
-            "2d"
-        );
+      currentWin++;
+      currentLoss = 0;
 
+      bestWin = Math.max(bestWin, currentWin);
 
-    ctx.setTransform(
-        ratio,
-        0,
-        0,
-        ratio,
-        0,
-        0
-    );
+    }
 
+    else if (trade.result === "LOSS") {
 
-    return {
+      currentLoss++;
+      currentWin = 0;
 
-        ctx: ctx,
+      worstLoss = Math.max(worstLoss, currentLoss);
 
-        width:
-            rect.width,
+    }
 
-        height:
-            rect.height
+    else {
 
-    };
+      currentWin = 0;
+      currentLoss = 0;
+
+    }
+
+  }
+
+  return {
+    currentWin,
+    currentLoss,
+    bestWin,
+    worstLoss
+  };
 
 }
 
 
 /* =========================================================
-   EQUITY CURVE
+   SETUP PERFORMANCE LAB
 ========================================================= */
 
-function drawEquityChart() {
+const labFields = {
 
-    const canvas =
-        document.getElementById(
-            "equityChart"
-        );
+  pair: {
+    label: "Currency Pair",
+    property: "pair"
+  },
+
+  direction: {
+    label: "Direction",
+    property: "direction"
+  },
+
+  session: {
+    label: "Session",
+    property: "session"
+  },
+
+  entryModel: {
+    label: "Entry Model",
+    property: "entryModel"
+  },
+
+  d1Bias: {
+    label: "D1 Bias",
+    property: "d1Bias"
+  },
+
+  structure4h: {
+    label: "4H Structure",
+    property: "structure4h"
+  },
+
+  poi4h: {
+    label: "4H POI",
+    property: "poi4h"
+  },
+
+  liquiditySweep: {
+    label: "Liquidity Sweep",
+    property: "liquiditySweep"
+  },
+
+  mss15m: {
+    label: "15M MSS",
+    property: "mss15m"
+  },
+
+  marketCondition: {
+    label: "Market Condition",
+    property: "marketCondition"
+  },
+
+  ruleFollowed: {
+    label: "Rule Followed",
+    property: "ruleFollowed"
+  },
+
+  earlyEntry: {
+    label: "Early Entry",
+    property: "earlyEntry"
+  },
+
+  fomo: {
+    label: "FOMO",
+    property: "fomo"
+  },
+
+  revengeTrade: {
+    label: "Revenge Trade",
+    property: "revengeTrade"
+  },
+
+  newsViolation: {
+    label: "News Violation",
+    property: "newsViolation"
+  }
+
+};
 
 
-    const {
-        ctx,
-        width,
-        height
-    } =
-        setupCanvas(
-            canvas
-        );
+function updateSetupLab() {
 
+  const selector = document.getElementById("labFilter");
 
-    ctx.clearRect(
-        0,
-        0,
-        width,
-        height
-    );
+  const selected = selector.value;
 
+  const field = labFields[selected];
 
-    const data =
-        getEquityData();
+  if (!field) {
+    return;
+  }
 
+  const groups = {};
+
+  trades.forEach(trade => {
+
+    let value = trade[field.property];
 
     if (
-        data.length === 1
+      value === undefined ||
+      value === null ||
+      String(value).trim() === ""
     ) {
 
-        ctx.fillStyle =
-            "#8da4ba";
-
-        ctx.font =
-            "14px Arial";
-
-        ctx.textAlign =
-            "center";
-
-        ctx.fillText(
-            "Add trades to see your equity curve",
-            width / 2,
-            height / 2
-        );
-
-        return;
+      value = "Not recorded";
 
     }
 
+    if (!groups[value]) {
 
-    const left = 62;
-
-    const right = 20;
-
-    const top = 25;
-
-    const bottom = 55;
-
-
-    const chartWidth =
-        width -
-        left -
-        right;
-
-
-    const chartHeight =
-        height -
-        top -
-        bottom;
-
-
-    const values =
-        data.map(
-            d =>
-                d.equity
-        );
-
-
-    let min =
-        Math.min(
-            ...values,
-            0
-        );
-
-
-    let max =
-        Math.max(
-            ...values,
-            0
-        );
-
-
-    if (
-        min === max
-    ) {
-
-        min -= 10;
-
-        max += 10;
+      groups[value] = {
+        trades: 0,
+        wins: 0,
+        losses: 0,
+        profit: 0,
+        totalR: 0
+      };
 
     }
 
+    groups[value].trades++;
 
-    const range =
-        max - min;
-
-
-    min -=
-        range * 0.1;
-
-
-    max +=
-        range * 0.1;
-
-
-    /* GRID */
-
-    ctx.strokeStyle =
-        "#1d344c";
-
-    ctx.lineWidth = 1;
-
-
-    for (
-        let i = 0;
-        i <= 5;
-        i++
-    ) {
-
-        const y =
-            top +
-            chartHeight *
-            i / 5;
-
-
-        ctx.beginPath();
-
-        ctx.moveTo(
-            left,
-            y
-        );
-
-        ctx.lineTo(
-            width - right,
-            y
-        );
-
-        ctx.stroke();
-
-
-        const value =
-            max -
-            (
-                (max - min) *
-                i / 5
-            );
-
-
-        ctx.fillStyle =
-            "#8da4ba";
-
-        ctx.font =
-            "11px Arial";
-
-        ctx.textAlign =
-            "right";
-
-
-        ctx.fillText(
-            "$" +
-            value.toFixed(0),
-            left - 8,
-            y + 4
-        );
-
+    if (trade.result === "WIN") {
+      groups[value].wins++;
     }
 
-
-    /* ZERO LINE */
-
-    if (
-        min <= 0 &&
-        max >= 0
-    ) {
-
-        const zeroY =
-            top +
-            (
-                (max - 0) /
-                (max - min)
-            ) *
-            chartHeight;
-
-
-        ctx.strokeStyle =
-            "#71869b";
-
-        ctx.lineWidth =
-            1.5;
-
-
-        ctx.beginPath();
-
-        ctx.moveTo(
-            left,
-            zeroY
-        );
-
-        ctx.lineTo(
-            width - right,
-            zeroY
-        );
-
-        ctx.stroke();
-
+    if (trade.result === "LOSS") {
+      groups[value].losses++;
     }
 
+    groups[value].profit += Number(trade.profit || 0);
 
-    /* CURVE */
+    groups[value].totalR += Number(trade.rMultiple || 0);
 
-    ctx.strokeStyle =
-        "#00d9ff";
+  });
 
-    ctx.lineWidth = 3;
 
-    ctx.beginPath();
+  const tbody = document.getElementById("setupLabBody");
 
+  tbody.innerHTML = "";
 
-    data.forEach(
-        (item, index) => {
 
-            const x =
-                left +
-                (
-                    index /
-                    (data.length - 1)
-                ) *
-                chartWidth;
+  const categories = Object.keys(groups).sort((a, b) =>
+    a.localeCompare(b)
+  );
 
 
-            const y =
-                top +
-                (
-                    (max -
-                    item.equity) /
-                    (max - min)
-                ) *
-                chartHeight;
+  categories.forEach(category => {
 
+    const data = groups[category];
 
-            if (
-                index === 0
-            ) {
+    const avgR =
+      data.trades
+        ? data.totalR / data.trades
+        : 0;
 
-                ctx.moveTo(
-                    x,
-                    y
-                );
+    const row = document.createElement("tr");
 
-            } else {
+    row.innerHTML = `
+      <td>${escapeHTML(category)}</td>
+      <td>${data.trades}</td>
+      <td>${data.wins}</td>
+      <td>${data.losses}</td>
+      <td>${winRate(
+        trades.filter(t => {
+          let value = t[field.property];
 
-                ctx.lineTo(
-                    x,
-                    y
-                );
+          if (
+            value === undefined ||
+            value === null ||
+            String(value).trim() === ""
+          ) {
+            value = "Not recorded";
+          }
 
-            }
+          return value === category;
+        })
+      )}</td>
+      <td class="${data.profit > 0 ? "positive" : data.profit < 0 ? "negative" : ""}">
+        ${formatMoney(data.profit)}
+      </td>
+      <td>${formatSignedR(data.totalR)}</td>
+      <td>${formatSignedR(avgR)}</td>
+    `;
 
-        }
-    );
+    tbody.appendChild(row);
 
+  });
 
-    ctx.stroke();
 
-
-    /* POINTS */
-
-    data.forEach(
-        (item, index) => {
-
-            const x =
-                left +
-                (
-                    index /
-                    (data.length - 1)
-                ) *
-                chartWidth;
-
-
-            const y =
-                top +
-                (
-                    (max -
-                    item.equity) /
-                    (max - min)
-                ) *
-                chartHeight;
-
-
-            ctx.fillStyle =
-                "#00d9ff";
-
-
-            ctx.beginPath();
-
-            ctx.arc(
-                x,
-                y,
-                4,
-                0,
-                Math.PI * 2
-            );
-
-            ctx.fill();
-
-        }
-    );
-
-
-    /* DATE LABELS */
-
-    ctx.fillStyle =
-        "#8da4ba";
-
-    ctx.font =
-        "11px Arial";
-
-    ctx.textAlign =
-        "center";
-
-
-    data.forEach(
-        (item, index) => {
-
-            if (
-                data.length > 8 &&
-                index !== 0 &&
-                index !== data.length - 1 &&
-                index %
-                Math.ceil(
-                    data.length / 7
-                ) !== 0
-            ) {
-
-                return;
-
-            }
-
-
-            const x =
-                left +
-                (
-                    index /
-                    (data.length - 1)
-                ) *
-                chartWidth;
-
-
-            let label =
-                "Start";
-
-
-            if (
-                item.date !== "Start"
-            ) {
-
-                const date =
-                    new Date(
-                        item.date +
-                        "T00:00:00"
-                    );
-
-
-                label =
-                    date.toLocaleDateString(
-                        "en-GB",
-                        {
-                            day:
-                                "2-digit",
-
-                            month:
-                                "short"
-                        }
-                    );
-
-            }
-
-
-            ctx.fillText(
-                label,
-                x,
-                height - 25
-            );
-
-        }
-    );
-
-
-    /* AXIS LABEL */
-
-    ctx.save();
-
-    ctx.translate(
-        15,
-        height / 2
-    );
-
-    ctx.rotate(
-        -Math.PI / 2
-    );
-
-
-    ctx.fillStyle =
-        "#9fb3c8";
-
-    ctx.font =
-        "12px Arial";
-
-    ctx.textAlign =
-        "center";
-
-
-    ctx.fillText(
-        "Equity ($)",
-        0,
-        0
-    );
-
-
-    ctx.restore();
-
-
-    ctx.fillStyle =
-        "#9fb3c8";
-
-    ctx.textAlign =
-        "center";
-
-
-    ctx.fillText(
-        "Date",
-        width / 2,
-        height - 5
-    );
+  document.getElementById("labSummary").textContent =
+    "Showing performance by " + field.label + "." +
+    (trades.length
+      ? " " + trades.length + " total recorded trade" +
+        (trades.length === 1 ? "." : "s.")
+      : " Add trades to generate statistics.");
 
 }
 
 
-/* =========================================================
-   P/L BAR CHART
-========================================================= */
-
-function drawPLChart() {
-
-    const canvas =
-        document.getElementById(
-            "plChart"
-        );
-
-
-    const {
-        ctx,
-        width,
-        height
-    } =
-        setupCanvas(
-            canvas
-        );
-
-
-    ctx.clearRect(
-        0,
-        0,
-        width,
-        height
-    );
-
-
-    if (
-        trades.length === 0
-    ) {
-
-        ctx.fillStyle =
-            "#8da4ba";
-
-        ctx.font =
-            "14px Arial";
-
-        ctx.textAlign =
-            "center";
-
-
-        ctx.fillText(
-            "Add trades to see your P/L",
-            width / 2,
-            height / 2
-        );
-
-
-        return;
-
-    }
-
-
-    const values =
-        trades.map(
-            trade =>
-                Number(
-                    trade.profit || 0
-                )
-        );
-
-
-    let max =
-        Math.max(
-            ...values,
-            0
-        );
-
-
-    let min =
-        Math.min(
-            ...values,
-            0
-        );
-
-
-    if (
-        max === min
-    ) {
-
-        max += 10;
-
-        min -= 10;
-
-    }
-
-
-    const padding =
-        45;
-
-
-    const chartWidth =
-        width -
-        padding * 2;
-
-
-    const chartHeight =
-        height -
-        60;
-
-
-    /* ZERO LINE */
-
-    const zeroY =
-        20 +
-        (
-            (max - 0) /
-            (max - min)
-        ) *
-        chartHeight;
-
-
-    ctx.strokeStyle =
-        "#71869b";
-
-    ctx.lineWidth =
-        1.5;
-
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        padding,
-        zeroY
-    );
-
-    ctx.lineTo(
-        width - padding,
-        zeroY
-    );
-
-    ctx.stroke();
-
-
-    /* BARS */
-
-    const barWidth =
-        Math.max(
-            5,
-            chartWidth /
-            values.length *
-            0.65
-        );
-
-
-    values.forEach(
-        (value, index) => {
-
-            const x =
-                padding +
-                (
-                    index /
-                    values.length
-                ) *
-                chartWidth +
-                (
-                    chartWidth /
-                    values.length -
-                    barWidth
-                ) / 2;
-
-
-            const y =
-                20 +
-                (
-                    (max -
-                    Math.max(
-                        value,
-                        0
-                    )) /
-                    (max - min)
-                ) *
-                chartHeight;
-
-
-            const bottom =
-                20 +
-                (
-                    (max -
-                    Math.min(
-                        value,
-                        0
-                    )) /
-                    (max - min)
-                ) *
-                chartHeight;
-
-
-            ctx.fillStyle =
-                value >= 0
-                ? "#43e97b"
-                : "#ff5c5c";
-
-
-            ctx.fillRect(
-                x,
-                y,
-                barWidth,
-                bottom - y
-            );
-
-        }
-    );
-
-
-    /* NUMBERS */
-
-    ctx.fillStyle =
-        "#8da4ba";
-
-    ctx.font =
-        "10px Arial";
-
-    ctx.textAlign =
-        "center";
-
-
-    values.forEach(
-        (value, index) => {
-
-            if (
-                values.length > 10 &&
-                index %
-                Math.ceil(
-                    values.length / 8
-                ) !== 0
-            ) {
-
-                return;
-
-            }
-
-
-            const x =
-                padding +
-                (
-                    index /
-                    values.length
-                ) *
-                chartWidth +
-                (
-                    chartWidth /
-                    values.length
-                ) / 2;
-
-
-            ctx.fillText(
-                "#" +
-                (index + 1),
-                x,
-                height - 12
-            );
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   CHARTS
-========================================================= */
-
-function drawCharts() {
-
-    drawEquityChart();
-
-    drawPLChart();
-
-}
+document
+  .getElementById("labFilter")
+  .addEventListener("change", updateSetupLab);
 
 
 /* =========================================================
    EDGE LAB
 ========================================================= */
 
-function getWinRateForFilter(
-    filterFunction
-) {
+function getWinRateForFilter(condition) {
 
-    const filtered =
-        trades.filter(
-            filterFunction
-        );
+  const list = trades.filter(condition);
 
-
-    return calculateWinRate(
-        filtered
-    );
+  return calculateWinRate(list);
 
 }
 
 
 function updateEdgeLab() {
 
-    document.getElementById(
-        "poiWinRate"
-    ).textContent =
-        getWinRateForFilter(
-            t =>
-                t.poi === "Valid"
-        ).toFixed(2) +
-        "%";
+  document.getElementById("edgePOI").textContent =
+    getWinRateForFilter(
+      t => t.poi4h === "Valid"
+    ).toFixed(1) + "%";
 
 
-    document.getElementById(
-        "mssWinRate"
-    ).textContent =
-        getWinRateForFilter(
-            t =>
-                t.mss === "Confirmed"
-        ).toFixed(2) +
-        "%";
+  document.getElementById("edgeMSS").textContent =
+    getWinRateForFilter(
+      t => t.mss15m === "Confirmed"
+    ).toFixed(1) + "%";
 
 
-    document.getElementById(
-        "trendWinRate"
-    ).textContent =
-        getWinRateForFilter(
-            t =>
-                t.marketCondition ===
-                "Clean Trend"
-        ).toFixed(2) +
-        "%";
+  document.getElementById("edgeTrend").textContent =
+    getWinRateForFilter(
+      t => t.marketCondition === "Clean Trend"
+    ).toFixed(1) + "%";
 
 
-    document.getElementById(
-        "choppyWinRate"
-    ).textContent =
-        getWinRateForFilter(
-            t =>
-                t.marketCondition ===
-                "Choppy"
-        ).toFixed(2) +
-        "%";
+  document.getElementById("edgeChoppy").textContent =
+    getWinRateForFilter(
+      t => t.marketCondition === "Choppy"
+    ).toFixed(1) + "%";
 
 
-    document.getElementById(
-        "ruleRate"
-    ).textContent =
-        getWinRateForFilter(
-            t =>
-                t.ruleFollowed ===
-                "Yes"
-        ).toFixed(2) +
-        "%";
+  document.getElementById("edgeRules").textContent =
+    getWinRateForFilter(
+      t => t.ruleFollowed === "Yes"
+    ).toFixed(1) + "%";
 
 
-    document.getElementById(
-        "earlyRate"
-    ).textContent =
-        getWinRateForFilter(
-            t =>
-                t.earlyEntry ===
-                "Yes"
-        ).toFixed(2) +
-        "%";
+  document.getElementById("edgeEarly").textContent =
+    getWinRateForFilter(
+      t => t.earlyEntry === "Yes"
+    ).toFixed(1) + "%";
 
 
-    document.getElementById(
-        "fomoRate"
-    ).textContent =
-        getWinRateForFilter(
-            t =>
-                t.fomo ===
-                "Yes"
-        ).toFixed(2) +
-        "%";
+  document.getElementById("edgeFOMO").textContent =
+    getWinRateForFilter(
+      t => t.fomo === "Yes"
+    ).toFixed(1) + "%";
 
 
-    document.getElementById(
-        "newsRate"
-    ).textContent =
-        getWinRateForFilter(
-            t =>
-                t.newsViolation ===
-                "Yes"
-        ).toFixed(2) +
-        "%";
+  document.getElementById("edgeNews").textContent =
+    getWinRateForFilter(
+      t => t.newsViolation === "Yes"
+    ).toFixed(1) + "%";
 
 }
 
 
 /* =========================================================
-   OCHI AI
+   CHART DATA
 ========================================================= */
 
-function filteredTrades(
-    filter
-) {
+function getEquityData() {
 
-    return trades.filter(
-        filter
-    );
+  const ordered = [...trades].sort((a, b) => {
+
+    const dateA = new Date(a.date || 0);
+    const dateB = new Date(b.date || 0);
+
+    return dateA - dateB;
+
+  });
+
+  let equity = 0;
+
+  const data = [];
+
+  ordered.forEach(trade => {
+
+    equity += Number(trade.profit || 0);
+
+    data.push({
+      date: trade.date,
+      equity
+    });
+
+  });
+
+  return data;
 
 }
 
 
-function winRate(
-    list
-) {
+/* =========================================================
+   CANVAS SETUP
+========================================================= */
 
-    return calculateWinRate(
-        list
-    );
+function setupCanvas(canvas) {
+
+  const rect = canvas.getBoundingClientRect();
+
+  const dpr = window.devicePixelRatio || 1;
+
+  canvas.width = Math.max(1, Math.floor(rect.width * dpr));
+
+  canvas.height = Math.max(1, Math.floor(rect.height * dpr));
+
+  const ctx = canvas.getContext("2d");
+
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  return {
+    ctx,
+    width: rect.width,
+    height: rect.height
+  };
 
 }
 
+
+/* =========================================================
+   EQUITY CHART
+========================================================= */
+
+function drawEquityChart() {
+
+  const canvas = document.getElementById("equityChart");
+
+  const {
+    ctx,
+    width,
+    height
+  } = setupCanvas(canvas);
+
+  ctx.clearRect(0, 0, width, height);
+
+  ctx.font = "12px Arial";
+
+  const data = getEquityData();
+
+  if (!data.length) {
+
+    ctx.fillStyle = "#91a3b9";
+
+    ctx.textAlign = "center";
+
+    ctx.fillText(
+      "Add trades to see your equity curve",
+      width / 2,
+      height / 2
+    );
+
+    return;
+
+  }
+
+
+  const padding = {
+    left: 50,
+    right: 15,
+    top: 25,
+    bottom: 35
+  };
+
+
+  const plotWidth =
+    width - padding.left - padding.right;
+
+  const plotHeight =
+    height - padding.top - padding.bottom;
+
+
+  const values = data.map(d => d.equity);
+
+  let min = Math.min(0, ...values);
+
+  let max = Math.max(0, ...values);
+
+  if (max === min) {
+    max += 1;
+    min -= 1;
+  }
+
+
+  const range = max - min;
+
+
+  function x(index) {
+
+    if (data.length === 1) {
+      return padding.left + plotWidth / 2;
+    }
+
+    return padding.left +
+      (index / (data.length - 1)) * plotWidth;
+
+  }
+
+
+  function y(value) {
+
+    return padding.top +
+      ((max - value) / range) * plotHeight;
+
+  }
+
+
+  /* Grid */
+
+  ctx.strokeStyle = "#1a2d43";
+
+  ctx.lineWidth = 1;
+
+  for (let i = 0; i <= 4; i++) {
+
+    const value = max - (range * i / 4);
+
+    const yy = y(value);
+
+    ctx.beginPath();
+
+    ctx.moveTo(padding.left, yy);
+
+    ctx.lineTo(width - padding.right, yy);
+
+    ctx.stroke();
+
+    ctx.fillStyle = "#71869d";
+
+    ctx.textAlign = "right";
+
+    ctx.fillText(
+      "$" + value.toFixed(0),
+      padding.left - 7,
+      yy + 4
+    );
+
+  }
+
+
+  /* Zero line */
+
+  const zeroY = y(0);
+
+  ctx.strokeStyle = "#43576e";
+
+  ctx.beginPath();
+
+  ctx.moveTo(padding.left, zeroY);
+
+  ctx.lineTo(width - padding.right, zeroY);
+
+  ctx.stroke();
+
+
+  /* Line */
+
+  ctx.strokeStyle = "#55d98b";
+
+  ctx.lineWidth = 2;
+
+  ctx.beginPath();
+
+  data.forEach((point, index) => {
+
+    const xx = x(index);
+    const yy = y(point.equity);
+
+    if (index === 0) {
+      ctx.moveTo(xx, yy);
+    } else {
+      ctx.lineTo(xx, yy);
+    }
+
+  });
+
+  ctx.stroke();
+
+
+  /* Points */
+
+  data.forEach((point, index) => {
+
+    ctx.beginPath();
+
+    ctx.arc(
+      x(index),
+      y(point.equity),
+      3,
+      0,
+      Math.PI * 2
+    );
+
+    ctx.fillStyle = "#55d98b";
+
+    ctx.fill();
+
+  });
+
+
+  /* X-axis labels */
+
+  ctx.fillStyle = "#71869d";
+
+  ctx.textAlign = "center";
+
+  const labelCount = Math.min(5, data.length);
+
+  for (let i = 0; i < labelCount; i++) {
+
+    const index =
+      Math.floor(
+        i * (data.length - 1) /
+        Math.max(1, labelCount - 1)
+      );
+
+    const date = data[index].date || "";
+
+    ctx.fillText(
+      date,
+      x(index),
+      height - 10
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   P/L CHART
+========================================================= */
+
+function drawPLChart() {
+
+  const canvas = document.getElementById("plChart");
+
+  const {
+    ctx,
+    width,
+    height
+  } = setupCanvas(canvas);
+
+  ctx.clearRect(0, 0, width, height);
+
+  const padding = {
+    left: 45,
+    right: 15,
+    top: 25,
+    bottom: 35
+  };
+
+  const plotWidth =
+    width - padding.left - padding.right;
+
+  const plotHeight =
+    height - padding.top - padding.bottom;
+
+
+  if (!trades.length) {
+
+    ctx.fillStyle = "#91a3b9";
+
+    ctx.textAlign = "center";
+
+    ctx.font = "12px Arial";
+
+    ctx.fillText(
+      "Add trades to see trade P/L",
+      width / 2,
+      height / 2
+    );
+
+    return;
+
+  }
+
+
+  const values = trades.map(t => Number(t.profit || 0));
+
+  let max = Math.max(0, ...values);
+
+  let min = Math.min(0, ...values);
+
+  if (max === min) {
+    max += 1;
+    min -= 1;
+  }
+
+  const range = max - min;
+
+  function y(value) {
+
+    return padding.top +
+      ((max - value) / range) * plotHeight;
+
+  }
+
+
+  /* Grid */
+
+  ctx.strokeStyle = "#1a2d43";
+
+  ctx.lineWidth = 1;
+
+  for (let i = 0; i <= 4; i++) {
+
+    const value = max - range * i / 4;
+
+    const yy = y(value);
+
+    ctx.beginPath();
+
+    ctx.moveTo(padding.left, yy);
+
+    ctx.lineTo(width - padding.right, yy);
+
+    ctx.stroke();
+
+    ctx.fillStyle = "#71869d";
+
+    ctx.textAlign = "right";
+
+    ctx.font = "11px Arial";
+
+    ctx.fillText(
+      "$" + value.toFixed(0),
+      padding.left - 7,
+      yy + 4
+    );
+
+  }
+
+
+  /* Zero line */
+
+  const zeroY = y(0);
+
+  ctx.strokeStyle = "#52667c";
+
+  ctx.beginPath();
+
+  ctx.moveTo(padding.left, zeroY);
+
+  ctx.lineTo(width - padding.right, zeroY);
+
+  ctx.stroke();
+
+
+  /* Bars */
+
+  const barGap = 5;
+
+  const barWidth =
+    Math.max(
+      3,
+      (plotWidth / trades.length) - barGap
+    );
+
+
+  trades.forEach((trade, index) => {
+
+    const value = Number(trade.profit || 0);
+
+    const x =
+      padding.left +
+      index * (plotWidth / trades.length) +
+      barGap / 2;
+
+    const valueY = y(value);
+
+    const barY = Math.min(zeroY, valueY);
+
+    const barHeight =
+      Math.abs(zeroY - valueY);
+
+
+    if (value > 0) {
+      ctx.fillStyle = "#55d98b";
+    } else if (value < 0) {
+      ctx.fillStyle = "#ff7373";
+    } else {
+      ctx.fillStyle = "#71869d";
+    }
+
+
+    ctx.fillRect(
+      x,
+      barY,
+      barWidth,
+      Math.max(2, barHeight)
+    );
+
+  });
+
+}
+
+
+/* =========================================================
+   DRAW BOTH CHARTS
+========================================================= */
+
+function drawCharts() {
+
+  requestAnimationFrame(() => {
+
+    drawEquityChart();
+
+    drawPLChart();
+
+  });
+
+}
+
+
+/* =========================================================
+   AI
+========================================================= */
 
 function runAIAnalysis() {
 
-    const performance =
-        document.getElementById(
-            "aiPerformance"
-        );
+  if (!trades.length) {
+
+    document.getElementById("aiPerformance").textContent =
+      "No trades recorded yet.";
+
+    document.getElementById("aiEdge").textContent =
+      "Add trades first.";
+
+    document.getElementById("aiWeakness").textContent =
+      "No data available.";
+
+    document.getElementById("aiDiscipline").textContent =
+      "No data available.";
+
+    document.getElementById("aiSummary").textContent =
+      "Ochi AI needs recorded trades before it can analyze your performance.";
+
+    return;
+
+  }
 
 
-    const edge =
-        document.getElementById(
-            "aiEdge"
-        );
+  const total = trades.length;
+
+  const wins = trades.filter(t => t.result === "WIN").length;
+
+  const losses = trades.filter(t => t.result === "LOSS").length;
+
+  const totalPL = getTotalPL();
+
+  const wr = calculateWinRate(trades);
 
 
-    const weakness =
-        document.getElementById(
-            "aiWeakness"
-        );
+  /* Performance */
+
+  let performanceText;
+
+  if (totalPL > 0) {
+
+    performanceText =
+      `You are currently profitable at ${formatMoney(totalPL)} across ${total} trades.`;
+
+  }
+
+  else if (totalPL < 0) {
+
+    performanceText =
+      `Your recorded trades currently show ${formatMoney(totalPL)} across ${total} trades.`;
+
+  }
+
+  else {
+
+    performanceText =
+      `Your recorded trades are currently at breakeven across ${total} trades.`;
+
+  }
+
+  document.getElementById("aiPerformance").textContent =
+    performanceText;
 
 
-    const discipline =
-        document.getElementById(
-            "aiDiscipline"
-        );
+  /* Edge */
+
+  const poiTrades =
+    trades.filter(t => t.poi4h === "Valid");
+
+  const mssTrades =
+    trades.filter(t => t.mss15m === "Confirmed");
+
+  const cleanTrendTrades =
+    trades.filter(t => t.marketCondition === "Clean Trend");
 
 
-    const summary =
-        document.getElementById(
-            "aiSummary"
-        );
+  const edgeCandidates = [
 
+    {
+      name: "4H Valid POI",
+      rate: calculateWinRate(poiTrades),
+      count: poiTrades.length
+    },
 
-    if (
-        trades.length === 0
-    ) {
+    {
+      name: "15M Confirmed MSS",
+      rate: calculateWinRate(mssTrades),
+      count: mssTrades.length
+    },
 
-        performance.textContent =
-            "Record some trades first. Ochi AI needs your trading history to analyze your performance.";
-
-
-        edge.textContent =
-            "Your strongest setup will appear after you record trades.";
-
-
-        weakness.textContent =
-            "Your recurring weakness will appear after you record trades.";
-
-
-        discipline.textContent =
-            "Ochi AI will monitor your discipline once trades are recorded.";
-
-
-        summary.textContent =
-            "Add your trades and Ochi AI will generate a personalized performance summary.";
-
-
-        return;
-
+    {
+      name: "Clean Trend",
+      rate: calculateWinRate(cleanTrendTrades),
+      count: cleanTrendTrades.length
     }
 
-
-    /* PERFORMANCE */
-
-    const total =
-        trades.length;
+  ].filter(x => x.count > 0);
 
 
-    const wins =
-        trades.filter(
-            t =>
-                t.result === "WIN"
-        ).length;
+  if (edgeCandidates.length) {
+
+    edgeCandidates.sort((a, b) => b.rate - a.rate);
+
+    const edge = edgeCandidates[0];
+
+    document.getElementById("aiEdge").textContent =
+      `${edge.name}: ${edge.rate.toFixed(1)}% win rate from ${edge.count} recorded trades.`;
+
+  } else {
+
+    document.getElementById("aiEdge").textContent =
+      "Not enough setup data yet.";
+
+  }
 
 
-    const losses =
-        trades.filter(
-            t =>
-                t.result === "LOSS"
-        ).length;
+  /* Weakness */
 
+  const weaknessCandidates = [
 
-    const totalPL =
-        trades.reduce(
-            (sum, t) =>
-                sum +
-                Number(
-                    t.profit || 0
-                ),
-            0
-        );
+    {
+      name: "Early Entry",
+      trades: trades.filter(t => t.earlyEntry === "Yes")
+    },
 
+    {
+      name: "FOMO",
+      trades: trades.filter(t => t.fomo === "Yes")
+    },
 
-    const win =
-        winRate(
-            trades
-        );
+    {
+      name: "Revenge Trading",
+      trades: trades.filter(t => t.revengeTrade === "Yes")
+    },
 
+    {
+      name: "News Violations",
+      trades: trades.filter(t => t.newsViolation === "Yes")
+    },
 
-    performance.textContent =
-        `You have recorded ${total} trade${total === 1 ? "" : "s"}, with ${wins} win${wins === 1 ? "" : "s"} and ${losses} loss${losses === 1 ? "" : "es"}. Your current win rate is ${win.toFixed(1)}% and your recorded P/L is ${formatMoney(totalPL)}.`;
-
-
-    /* EDGE */
-
-    const cleanTrend =
-        filteredTrades(
-            t =>
-                t.marketCondition ===
-                "Clean Trend"
-        );
-
-
-    const poi =
-        filteredTrades(
-            t =>
-                t.poi === "Valid"
-        );
-
-
-    const mss =
-        filteredTrades(
-            t =>
-                t.mss === "Confirmed"
-        );
-
-
-    const candidates = [
-
-        {
-            name:
-                "4H Valid POI",
-
-            list:
-                poi
-        },
-
-        {
-            name:
-                "15M Confirmed MSS",
-
-            list:
-                mss
-        },
-
-        {
-            name:
-                "Clean Trend",
-
-            list:
-                cleanTrend
-        }
-
-    ];
-
-
-    let bestEdge = null;
-
-
-    candidates.forEach(
-        candidate => {
-
-            if (
-                candidate.list.length === 0
-            ) {
-
-                return;
-
-            }
-
-
-            const rate =
-                winRate(
-                    candidate.list
-                );
-
-
-            if (
-                !bestEdge ||
-                rate >
-                bestEdge.rate
-            ) {
-
-                bestEdge = {
-
-                    name:
-                        candidate.name,
-
-                    rate:
-                        rate,
-
-                    count:
-                        candidate.list.length
-
-                };
-
-            }
-
-        }
-    );
-
-
-    if (
-        bestEdge
-    ) {
-
-        edge.textContent =
-            `${bestEdge.name} currently shows a ${bestEdge.rate.toFixed(1)}% win rate across ${bestEdge.count} recorded trade${bestEdge.count === 1 ? "" : "s"}. Keep collecting data before drawing strong conclusions.`;
-
-    } else {
-
-        edge.textContent =
-            "Not enough setup data yet. Continue recording your 4H POI and 15M MSS information.";
-
+    {
+      name: "Choppy Market",
+      trades: trades.filter(t => t.marketCondition === "Choppy")
     }
 
+  ].filter(x => x.trades.length > 0);
 
-    /* WEAKNESS */
 
-    const early =
-        filteredTrades(
-            t =>
-                t.earlyEntry ===
-                "Yes"
-        );
+  if (weaknessCandidates.length) {
 
+    weaknessCandidates.sort((a, b) => {
 
-    const fomo =
-        filteredTrades(
-            t =>
-                t.fomo ===
-                "Yes"
-        );
+      const aPL = getTotalPL(a.trades);
 
+      const bPL = getTotalPL(b.trades);
 
-    const revenge =
-        filteredTrades(
-            t =>
-                t.revenge ===
-                "Yes"
-        );
+      return aPL - bPL;
 
+    });
 
-    const news =
-        filteredTrades(
-            t =>
-                t.newsViolation ===
-                "Yes"
-        );
+    const weakness = weaknessCandidates[0];
 
+    document.getElementById("aiWeakness").textContent =
+      `${weakness.name}: ${formatMoney(getTotalPL(weakness.trades))} across ${weakness.trades.length} trade(s).`;
 
-    const choppy =
-        filteredTrades(
-            t =>
-                t.marketCondition ===
-                "Choppy"
-        );
+  } else {
 
+    document.getElementById("aiWeakness").textContent =
+      "No major weakness pattern recorded yet.";
 
-    const weaknesses = [
+  }
 
-        {
-            name:
-                "Early entries",
 
-            count:
-                early.length,
+  /* Discipline */
 
-            rate:
-                winRate(early)
-        },
+  const ruleTrades =
+    trades.filter(t => t.ruleFollowed === "Yes");
 
-        {
-            name:
-                "FOMO",
+  const disciplineRate =
+    calculateWinRate(ruleTrades);
 
-            count:
-                fomo.length,
 
-            rate:
-                winRate(fomo)
-        },
+  document.getElementById("aiDiscipline").textContent =
+    ruleTrades.length
+      ? `${disciplineRate.toFixed(1)}% win rate on ${ruleTrades.length} trades where rules were followed.`
+      : "No rule-following data recorded.";
 
-        {
-            name:
-                "Revenge trading",
 
-            count:
-                revenge.length,
+  /* Summary */
 
-            rate:
-                winRate(revenge)
-        },
+  const streaks = calculateStreaks();
 
-        {
-            name:
-                "News violations",
-
-            count:
-                news.length,
-
-            rate:
-                winRate(news)
-        },
-
-        {
-            name:
-                "Choppy markets",
-
-            count:
-                choppy.length,
-
-            rate:
-                winRate(choppy)
-        }
-
-    ];
-
-
-    let biggest =
-        weaknesses[0];
-
-
-    weaknesses.forEach(
-        item => {
-
-            if (
-                item.count >
-                biggest.count
-            ) {
-
-                biggest =
-                    item;
-
-            }
-
-        }
-    );
-
-
-    if (
-        biggest &&
-        biggest.count > 0
-    ) {
-
-        weakness.textContent =
-            `${biggest.name} appears ${biggest.count} time${biggest.count === 1 ? "" : "s"} in your journal. Its recorded win rate is ${biggest.rate.toFixed(1)}%. Watch this area closely.`;
-
-    } else {
-
-        weakness.textContent =
-            "No major recurring violation has appeared in your recorded data yet.";
-
-    }
-
-
-    /* DISCIPLINE */
-
-    const followed =
-        filteredTrades(
-            t =>
-                t.ruleFollowed ===
-                "Yes"
-        );
-
-
-    const disciplineRate =
-        (
-            followed.length /
-            trades.length
-        ) * 100;
-
-
-    discipline.textContent =
-        `You followed your recorded rules on ${disciplineRate.toFixed(1)}% of trades. The goal is consistent execution of your defined 4H + 15M model.`;
-
-
-    /* SUMMARY */
-
-    let message = "";
-
-
-    if (
-        win >= 60
-    ) {
-
-        message +=
-            "Your current sample has a win rate of at least 60%. ";
-
-    } else {
-
-        message +=
-            "Your current sample needs more data before judging the model. ";
-
-    }
-
-
-    if (
-        disciplineRate < 80
-    ) {
-
-        message +=
-            "Discipline is an important area to monitor. ";
-
-    } else {
-
-        message +=
-            "Your recorded rule-following is relatively consistent. ";
-
-    }
-
-
-    if (
-        choppy.length > 0 &&
-        winRate(choppy) < win
-    ) {
-
-        message +=
-            "Your choppy-market results are below your overall win rate, so keep separating those conditions in your journal. ";
-
-    }
-
-
-    message +=
-        "Continue collecting clean data before changing your strategy.";
-
-
-    summary.textContent =
-        message;
+  document.getElementById("aiSummary").textContent =
+    `Win rate: ${wr.toFixed(1)}%. ` +
+    `Wins: ${wins}, losses: ${losses}. ` +
+    `Total P/L: ${formatMoney(totalPL)}. ` +
+    `Current win streak: ${streaks.currentWin}. ` +
+    `Current loss streak: ${streaks.currentLoss}. ` +
+    `Use the Advanced Analytics and Setup Performance Lab to study the conditions behind these results.`;
 
 }
 
@@ -3471,200 +2582,68 @@ function runAIAnalysis() {
 
 function renderTrades() {
 
-    const table =
-        document.getElementById(
-            "tradeTable"
-        );
+  const tbody =
+    document.getElementById("tradeTableBody");
 
+  tbody.innerHTML = "";
 
-    table.innerHTML = "";
 
+  const ordered = [...trades].sort((a, b) => {
 
-    if (
-        trades.length === 0
-    ) {
+    const dateA = new Date(a.date || 0);
+    const dateB = new Date(b.date || 0);
 
-        table.innerHTML = `
+    return dateB - dateA;
 
-        <tr>
+  });
 
-        <td
-        colspan="9"
-        style="
-        text-align:center;
-        color:#8da4ba;
-        padding:25px;
-        "
-        >
 
-        No trades yet.
+  ordered.forEach(trade => {
 
-        </td>
+    const actualIndex = trades.indexOf(trade);
 
-        </tr>
+    const row = document.createElement("tr");
 
-        `;
+    const profit = Number(trade.profit || 0);
 
-        return;
+    const r = Number(trade.rMultiple || 0);
 
-    }
 
+    row.innerHTML = `
 
-    const sorted =
-        [...trades].sort(
-            (a, b) => {
+      <td>${escapeHTML(trade.date || "")}</td>
 
-                const dateDifference =
-                    new Date(b.date) -
-                    new Date(a.date);
+      <td>${escapeHTML(trade.pair || "")}</td>
 
+      <td>${escapeHTML(trade.direction || "")}</td>
 
-                if (
-                    dateDifference !== 0
-                ) {
+      <td>${escapeHTML(trade.session || "")}</td>
 
-                    return dateDifference;
+      <td>${escapeHTML(trade.entryModel || "")}</td>
 
-                }
+      <td>${escapeHTML(trade.result || "")}</td>
 
+      <td class="${profit > 0 ? "positive" : profit < 0 ? "negative" : ""}">
+        ${formatMoney(profit)}
+      </td>
 
-                return (
-                    Number(b.id || 0) -
-                    Number(a.id || 0)
-                );
+      <td class="${r > 0 ? "positive" : r < 0 ? "negative" : ""}">
+        ${formatSignedR(r)}
+      </td>
 
-            }
-        );
+      <td>
+        <button
+          class="delete-btn"
+          onclick="deleteTrade(${actualIndex})">
+          Delete
+        </button>
+      </td>
 
+    `;
 
-    sorted.forEach(
-        trade => {
+    tbody.appendChild(row);
 
-            const row =
-                document.createElement(
-                    "tr"
-                );
-
-
-            let resultClass =
-                "";
-
-
-            if (
-                trade.result ===
-                "WIN"
-            ) {
-
-                resultClass =
-                    "win";
-
-            }
-
-
-            if (
-                trade.result ===
-                "LOSS"
-            ) {
-
-                resultClass =
-                    "loss";
-
-            }
-
-
-            if (
-                trade.result ===
-                "BE"
-            ) {
-
-                resultClass =
-                    "be";
-
-            }
-
-
-            const displayProfit =
-                trade.result ===
-                "LOSS"
-
-                ? -Math.abs(
-                    Number(
-                        trade.profit ||
-                        0
-                    )
-                )
-
-                : trade.result ===
-                  "BE"
-
-                ? 0
-
-                : Math.abs(
-                    Number(
-                        trade.profit ||
-                        0
-                    )
-                );
-
-
-            row.innerHTML = `
-
-            <td>
-                ${trade.date || ""}
-            </td>
-
-            <td>
-                ${trade.pair || ""}
-            </td>
-
-            <td>
-                ${trade.direction || ""}
-            </td>
-
-            <td>
-                ${trade.session || ""}
-            </td>
-
-            <td>
-                ${trade.entryModel || ""}
-            </td>
-
-            <td class="${resultClass}">
-                ${trade.result || ""}
-            </td>
-
-            <td>
-                ${formatMoney(displayProfit)}
-            </td>
-
-            <td>
-                ${Number(
-                    trade.rMultiple || 0
-                ).toFixed(2)}R
-            </td>
-
-            <td>
-
-                <button
-                class="delete-btn"
-                onclick="deleteTrade(${trade.id})"
-                >
-
-                Delete
-
-                </button>
-
-            </td>
-
-            `;
-
-
-            table.appendChild(
-                row
-            );
-
-        }
-    );
+  });
 
 }
 
@@ -3673,306 +2652,217 @@ function renderTrades() {
    DELETE TRADE
 ========================================================= */
 
-function deleteTrade(
-    id
-) {
+function deleteTrade(index) {
 
-    const confirmed =
-        confirm(
-            "Delete this trade?"
-        );
+  const confirmed =
+    confirm("Delete this trade?");
 
+  if (!confirmed) {
+    return;
+  }
 
-    if (
-        !confirmed
-    ) {
+  trades.splice(index, 1);
 
-        return;
+  saveTrades();
 
-    }
-
-
-    trades =
-        trades.filter(
-            trade =>
-                trade.id !== id
-        );
-
-
-    saveTrades();
-
-    updateDashboard();
+  updateDashboard();
 
 }
 
 
 /* =========================================================
-   ADD TRADE
+   ESCAPE HTML
+========================================================= */
+
+function escapeHTML(value) {
+
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
+}
+
+
+/* =========================================================
+   FORM SUBMISSION
 ========================================================= */
 
 document
-.getElementById(
-    "tradeForm"
-)
-.addEventListener(
-    "submit",
-    function(event) {
+  .getElementById("tradeForm")
+  .addEventListener("submit", function(event) {
 
-        event.preventDefault();
+    event.preventDefault();
 
 
-        const result =
-            document.getElementById(
-                "result"
-            ).value;
+    const result =
+      document.getElementById("result").value;
 
 
-        /*
-        WIN  = positive
-        LOSS = negative
-        BE   = zero
-        */
+    let profit =
+      Number(
+        document.getElementById("profit").value || 0
+      );
 
 
-        let profit =
-            Number(
-                document.getElementById(
-                    "profit"
-                ).value
-            );
+    let rMultiple =
+      Number(
+        document.getElementById("rMultiple").value || 0
+      );
 
 
-        if (
-            result === "WIN"
-        ) {
+    /*
+      Always store P/L and R with the correct sign.
+    */
 
-            profit =
-                Math.abs(
-                    profit
-                );
+    if (result === "WIN") {
 
-        }
+      profit = Math.abs(profit);
 
-
-        if (
-            result === "LOSS"
-        ) {
-
-            profit =
-                -Math.abs(
-                    profit
-                );
-
-        }
-
-
-        if (
-            result === "BE"
-        ) {
-
-            profit = 0;
-
-        }
-
-
-        const trade = {
-
-            id:
-                Date.now(),
-
-            date:
-                document.getElementById(
-                    "date"
-                ).value,
-
-            pair:
-                document.getElementById(
-                    "pair"
-                ).value
-                .trim()
-                .toUpperCase(),
-
-            direction:
-                document.getElementById(
-                    "direction"
-                ).value,
-
-            session:
-                document.getElementById(
-                    "session"
-                ).value,
-
-            result:
-                result,
-
-            profit:
-                profit,
-
-            risk:
-                Number(
-                    document.getElementById(
-                        "risk"
-                    ).value ||
-                    0
-                ),
-
-            rMultiple:
-                Number(
-                    document.getElementById(
-                        "rMultiple"
-                    ).value ||
-                    0
-                ),
-
-            d1Bias:
-                document.getElementById(
-                    "d1Bias"
-                ).value,
-
-            structure:
-                document.getElementById(
-                    "structure"
-                ).value,
-
-            poi:
-                document.getElementById(
-                    "poi"
-                ).value,
-
-            liquidity:
-                document.getElementById(
-                    "liquidity"
-                ).value,
-
-            mss:
-                document.getElementById(
-                    "mss"
-                ).value,
-
-            entryModel:
-                document.getElementById(
-                    "entryModel"
-                ).value,
-
-            marketCondition:
-                document.getElementById(
-                    "marketCondition"
-                ).value,
-
-            ruleFollowed:
-                document.getElementById(
-                    "ruleFollowed"
-                ).value,
-
-            earlyEntry:
-                document.getElementById(
-                    "earlyEntry"
-                ).value,
-
-            fomo:
-                document.getElementById(
-                    "fomo"
-                ).value,
-
-            revenge:
-                document.getElementById(
-                    "revenge"
-                ).value,
-
-            newsViolation:
-                document.getElementById(
-                    "newsViolation"
-                ).value,
-
-            notes:
-                document.getElementById(
-                    "notes"
-                ).value
-                .trim()
-
-        };
-
-
-        trades.push(
-            trade
-        );
-
-
-        const saved =
-            saveTrades();
-
-
-        if (
-            !saved
-        ) {
-
-            showStatus(
-                "⚠️ Trade could not be saved.",
-                false
-            );
-
-            return;
-
-        }
-
-
-        showStatus(
-            "✅ Trade added successfully!"
-        );
-
-
-        document
-        .getElementById(
-            "tradeForm"
-        )
-        .reset();
-
-
-        updateDashboard();
+      rMultiple = Math.abs(rMultiple);
 
     }
-);
+
+    else if (result === "LOSS") {
+
+      profit = -Math.abs(profit);
+
+      rMultiple = -Math.abs(rMultiple);
+
+    }
+
+    else {
+
+      profit = 0;
+
+      rMultiple = 0;
+
+    }
+
+
+    const trade = {
+
+      id: Date.now(),
+
+      date:
+        document.getElementById("date").value,
+
+      pair:
+        document.getElementById("pair").value.trim(),
+
+      direction:
+        document.getElementById("direction").value,
+
+      session:
+        document.getElementById("session").value,
+
+      result,
+
+      profit,
+
+      risk:
+        Number(
+          document.getElementById("risk").value || 0
+        ),
+
+      rMultiple,
+
+      d1Bias:
+        document.getElementById("d1Bias").value,
+
+      structure4h:
+        document.getElementById("structure4h").value,
+
+      poi4h:
+        document.getElementById("poi4h").value,
+
+      liquiditySweep:
+        document.getElementById("liquiditySweep").value,
+
+      mss15m:
+        document.getElementById("mss15m").value,
+
+      entryModel:
+        document.getElementById("entryModel").value,
+
+      marketCondition:
+        document.getElementById("marketCondition").value,
+
+      ruleFollowed:
+        document.getElementById("ruleFollowed").value,
+
+      earlyEntry:
+        document.getElementById("earlyEntry").value,
+
+      fomo:
+        document.getElementById("fomo").value,
+
+      revengeTrade:
+        document.getElementById("revengeTrade").value,
+
+      newsViolation:
+        document.getElementById("newsViolation").value,
+
+      notes:
+        document.getElementById("notes").value.trim()
+
+    };
+
+
+    trades.push(trade);
+
+    saveTrades();
+
+    updateDashboard();
+
+
+    document.getElementById("status").textContent =
+      "Trade saved ✓";
+
+
+    this.reset();
+
+
+    /*
+      Keep the date populated with today's date after reset.
+    */
+
+    document.getElementById("date").value =
+      new Date().toISOString().split("T")[0];
+
+
+    setTimeout(() => {
+
+      document.getElementById("status").textContent = "";
+
+    }, 2500);
+
+  });
 
 
 /* =========================================================
-   RESIZE
+   WINDOW RESIZE
 ========================================================= */
 
-let resizeTimer;
-
-
-window.addEventListener(
-    "resize",
-    function() {
-
-        clearTimeout(
-            resizeTimer
-        );
-
-
-        resizeTimer =
-            setTimeout(
-                () => {
-
-                    drawCharts();
-
-                },
-                150
-            );
-
-    }
-);
+window.addEventListener("resize", drawCharts);
 
 
 /* =========================================================
-   START OCHITRACKER
+   START APP
 ========================================================= */
 
 loadTrades();
 
+document.getElementById("date").value =
+  new Date().toISOString().split("T")[0];
+
 updateDashboard();
+
+runAIAnalysis();
 
 </script>
 
 </body>
-    </html>
+</html>
