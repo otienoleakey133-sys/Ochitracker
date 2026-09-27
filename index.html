@@ -1,10 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>OchiTracker</title>
+<title>OchiTracker V2</title>
 
 <style>
 
@@ -22,7 +23,7 @@ padding:16px;
 }
 
 .container{
-max-width:1100px;
+max-width:1150px;
 margin:auto;
 }
 
@@ -32,7 +33,7 @@ padding:15px 0 25px;
 }
 
 header h1{
-font-size:32px;
+font-size:34px;
 color:#38bdf8;
 }
 
@@ -41,12 +42,17 @@ color:#94a3b8;
 margin-top:6px;
 }
 
+/* =========================
+   SECTIONS
+========================= */
+
 .section{
 background:#111c30;
 border:1px solid #23324b;
-border-radius:14px;
+border-radius:16px;
 padding:18px;
 margin-bottom:18px;
+box-shadow:0 8px 25px rgba(0,0,0,.15);
 }
 
 .section h2{
@@ -54,31 +60,115 @@ color:#38bdf8;
 margin-bottom:15px;
 }
 
+/* =========================
+   DASHBOARD CARDS
+========================= */
+
 .cards{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(145px,1fr));
 gap:12px;
 margin-bottom:18px;
 }
 
 .card{
 background:#18253a;
-padding:18px;
+padding:18px 12px;
 border-radius:12px;
 text-align:center;
 border:1px solid #263751;
 }
 
 .card h3{
-font-size:13px;
+font-size:12px;
 color:#94a3b8;
 margin-bottom:8px;
 }
 
 .card p{
-font-size:25px;
+font-size:24px;
 font-weight:bold;
 }
+
+/* =========================
+   PERFORMANCE CARDS
+========================= */
+
+.performance-cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+gap:12px;
+margin-bottom:18px;
+}
+
+.performance-card{
+background:#18253a;
+border:1px solid #263751;
+border-radius:12px;
+padding:15px;
+}
+
+.performance-card h3{
+font-size:12px;
+color:#94a3b8;
+margin-bottom:8px;
+}
+
+.performance-card p{
+font-size:21px;
+font-weight:bold;
+}
+
+/* =========================
+   CHARTS
+========================= */
+
+.chart-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:18px;
+}
+
+.chart-box{
+background:#18253a;
+border:1px solid #263751;
+border-radius:14px;
+padding:15px;
+min-width:0;
+}
+
+.chart-title{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:12px;
+}
+
+.chart-title h3{
+font-size:16px;
+color:#fff;
+}
+
+.chart-title span{
+font-size:12px;
+color:#64748b;
+}
+
+.chart-container{
+position:relative;
+height:300px;
+width:100%;
+}
+
+canvas{
+width:100%;
+height:100%;
+display:block;
+}
+
+/* =========================
+   FORM
+========================= */
 
 .form-grid{
 display:grid;
@@ -98,11 +188,18 @@ textarea{
 width:100%;
 margin-top:6px;
 padding:12px;
-border:none;
+border:1px solid #334765;
 border-radius:8px;
 background:#26364e;
 color:white;
 font-size:15px;
+outline:none;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+border-color:#38bdf8;
 }
 
 textarea{
@@ -135,6 +232,10 @@ background:#ef4444;
 color:white;
 padding:7px 10px;
 }
+
+/* =========================
+   TABLE
+========================= */
 
 table{
 width:100%;
@@ -173,17 +274,13 @@ color:#f59e0b;
 font-weight:bold;
 }
 
-.good{
-color:#22c55e;
-}
-
-.bad{
-color:#ef4444;
-}
+/* =========================
+   EDGE LAB
+========================= */
 
 .stats{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
 gap:12px;
 }
 
@@ -191,6 +288,7 @@ gap:12px;
 background:#18253a;
 padding:15px;
 border-radius:10px;
+border:1px solid #263751;
 }
 
 .stat-box h3{
@@ -203,6 +301,10 @@ margin-bottom:8px;
 font-size:21px;
 font-weight:bold;
 }
+
+/* =========================
+   CHECKLIST
+========================= */
 
 .checklist{
 display:grid;
@@ -233,6 +335,34 @@ color:#64748b;
 margin-top:8px;
 }
 
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:750px){
+
+body{
+padding:10px;
+}
+
+header h1{
+font-size:28px;
+}
+
+.chart-grid{
+grid-template-columns:1fr;
+}
+
+.chart-container{
+height:260px;
+}
+
+.section{
+padding:14px;
+}
+
+}
+
 </style>
 </head>
 
@@ -251,7 +381,9 @@ Personal FX Performance & Edge Analytics
 </header>
 
 
-<!-- DASHBOARD -->
+<!-- =========================
+     MAIN DASHBOARD
+========================= -->
 
 <div class="cards">
 
@@ -298,7 +430,90 @@ Personal FX Performance & Edge Analytics
 </div>
 
 
-<!-- ADD TRADE -->
+<!-- =========================
+     ACCOUNT PERFORMANCE
+========================= -->
+
+<div class="section">
+
+<h2>💰 Account Performance</h2>
+
+<div class="performance-cards">
+
+<div class="performance-card">
+<h3>STARTING BALANCE</h3>
+<p>$46.00</p>
+</div>
+
+<div class="performance-card">
+<h3>CURRENT EQUITY</h3>
+<p id="currentEquity">$46.00</p>
+</div>
+
+<div class="performance-card">
+<h3>PEAK EQUITY</h3>
+<p id="peakEquity">$46.00</p>
+</div>
+
+<div class="performance-card">
+<h3>MAX DRAWDOWN</h3>
+<p id="maxDrawdown">$0.00</p>
+</div>
+
+</div>
+
+
+<!-- =========================
+     CHARTS
+========================= -->
+
+<div class="chart-grid">
+
+<div class="chart-box">
+
+<div class="chart-title">
+
+<h3>📈 Equity Curve</h3>
+
+<span>Starting: $46</span>
+
+</div>
+
+<div class="chart-container">
+
+<canvas id="equityChart"></canvas>
+
+</div>
+
+</div>
+
+
+<div class="chart-box">
+
+<div class="chart-title">
+
+<h3>📊 Trade P/L</h3>
+
+<span>Per trade</span>
+
+</div>
+
+<div class="chart-container">
+
+<canvas id="plChart"></canvas>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =========================
+     ADD TRADE
+========================= -->
 
 <div class="section">
 
@@ -479,11 +694,14 @@ Market Condition
 
 
 <label style="margin-top:15px">
+
 Trade Notes
+
 <textarea
 id="notes"
 placeholder="Why did I take this trade? What happened? What did I learn?"
 ></textarea>
+
 </label>
 
 
@@ -496,7 +714,9 @@ SAVE TRADE
 </div>
 
 
-<!-- EDGE LAB -->
+<!-- =========================
+     EDGE LAB
+========================= -->
 
 <div class="section">
 
@@ -553,7 +773,9 @@ The Edge Lab becomes more useful as you record more trades.
 </div>
 
 
-<!-- TRADE HISTORY -->
+<!-- =========================
+     TRADE HISTORY
+========================= -->
 
 <div class="section">
 
@@ -603,17 +825,19 @@ No trades recorded yet.
 
 <script>
 
-/* ================================
+/* =====================================
    OCHITRACKER DATA
-================================ */
+===================================== */
+
+const STARTING_BALANCE = 46;
 
 let trades =
 JSON.parse(localStorage.getItem("ochiTrades")) || [];
 
 
-/* ================================
+/* =====================================
    ADD TRADE
-================================ */
+===================================== */
 
 function addTrade(){
 
@@ -641,6 +865,7 @@ parseFloat(document.getElementById("risk").value) || 0;
 const rMultiple =
 parseFloat(document.getElementById("rMultiple").value) || 0;
 
+
 if(!date || !pair){
 
 alert("Please enter the date and currency pair.");
@@ -648,6 +873,7 @@ alert("Please enter the date and currency pair.");
 return;
 
 }
+
 
 const trade = {
 
@@ -697,6 +923,7 @@ notes:document.getElementById("notes").value
 
 };
 
+
 trades.push(trade);
 
 saveData();
@@ -710,9 +937,9 @@ resetForm();
 }
 
 
-/* ================================
+/* =====================================
    SAVE DATA
-================================ */
+===================================== */
 
 function saveData(){
 
@@ -724,9 +951,9 @@ JSON.stringify(trades)
 }
 
 
-/* ================================
+/* =====================================
    DASHBOARD
-================================ */
+===================================== */
 
 function updateDashboard(){
 
@@ -742,16 +969,19 @@ const be =
 trades.filter(t => t.result === "BE").length;
 
 const totalPL =
-trades.reduce((sum,t)=>sum + t.profit,0);
+trades.reduce((sum,t)=>sum + Number(t.profit || 0),0);
 
 const totalR =
-trades.reduce((sum,t)=>sum + t.r,0);
+trades.reduce((sum,t)=>sum + Number(t.r || 0),0);
 
 const avgR =
 total > 0 ? totalR / total : 0;
 
 const winRate =
 total > 0 ? (wins / total) * 100 : 0;
+
+
+/* Main cards */
 
 document.getElementById("totalTrades")
 .textContent = total;
@@ -766,7 +996,8 @@ document.getElementById("breakeven")
 .textContent = be;
 
 document.getElementById("winRate")
-.textContent = winRate.toFixed(1) + "%";
+.textContent =
+winRate.toFixed(1) + "%";
 
 document.getElementById("totalPL")
 .textContent =
@@ -782,257 +1013,552 @@ document.getElementById("avgR")
 .textContent =
 (total > 0 ? avgR.toFixed(2) : "0") + "R";
 
+
+updateAccountPerformance();
+
 updateEdgeLab();
 
-}
-
-
-/* ================================
-   EDGE LAB
-================================ */
-
-function calculateWinRate(list){
-
-if(list.length === 0) return 0;
-
-const wins =
-list.filter(t => t.result === "WIN").length;
-
-return (wins / list.length) * 100;
+drawCharts();
 
 }
 
 
-function updateEdgeLab(){
+/* =====================================
+   ACCOUNT PERFORMANCE
+===================================== */
 
-const poiTrades =
-trades.filter(t => t.poi === "Valid");
+function getEquityData(){
 
-const mssTrades =
-trades.filter(t => t.mss === "Confirmed");
+let equity = STARTING_BALANCE;
 
-const trendTrades =
-trades.filter(t => t.condition === "Clean Trend");
+let peak = equity;
 
-const choppyTrades =
-trades.filter(t => t.condition === "Choppy");
+let maxDrawdown = 0;
 
-const ruleTrades =
-trades.filter(t => t.ruleFollowed);
+const data = [
 
-const early =
-trades.filter(t => t.earlyEntry).length;
+{
 
-const fomo =
-trades.filter(t => t.fomo).length;
+trade:0,
 
-const news =
-trades.filter(t => t.newsViolation).length;
+equity:STARTING_BALANCE,
 
+profit:0
 
-document.getElementById("poiWinRate")
-.textContent =
-calculateWinRate(poiTrades).toFixed(1) + "%";
+}
+
+];
 
 
-document.getElementById("mssWinRate")
-.textContent =
-calculateWinRate(mssTrades).toFixed(1) + "%";
+trades.forEach((trade,index)=>{
 
+equity += Number(trade.profit || 0);
 
-document.getElementById("trendWinRate")
-.textContent =
-calculateWinRate(trendTrades).toFixed(1) + "%";
+if(equity > peak){
 
+peak = equity;
 
-document.getElementById("choppyWinRate")
-.textContent =
-calculateWinRate(choppyTrades).toFixed(1) + "%";
+}
 
+const drawdown =
+peak - equity;
 
-document.getElementById("disciplineRate")
-.textContent =
-calculateWinRate(ruleTrades).toFixed(1) + "%";
+if(drawdown > maxDrawdown){
 
-
-document.getElementById("earlyCount")
-.textContent = early;
-
-
-document.getElementById("fomoCount")
-.textContent = fomo;
-
-
-document.getElementById("newsCount")
-.textContent = news;
+maxDrawdown = drawdown;
 
 }
 
 
-/* ================================
-   TRADE HISTORY
-================================ */
+data.push({
 
-function displayTrades(){
+trade:index + 1,
 
-const table =
-document.getElementById("tradeTable");
+equity,
 
-table.innerHTML = "";
+profit:Number(trade.profit || 0)
 
-if(trades.length === 0){
+});
 
-table.innerHTML = `
-<tr>
-<td colspan="9" class="empty">
-No trades recorded yet.
-</td>
-</tr>
-`;
+});
+
+
+return {
+
+data,
+
+equity,
+
+peak,
+
+maxDrawdown
+
+};
+
+}
+
+
+function updateAccountPerformance(){
+
+const result =
+getEquityData();
+
+
+document.getElementById("currentEquity")
+.textContent =
+"$" + result.equity.toFixed(2);
+
+
+document.getElementById("peakEquity")
+.textContent =
+"$" + result.peak.toFixed(2);
+
+
+document.getElementById("maxDrawdown")
+.textContent =
+"-$" + result.maxDrawdown.toFixed(2);
+
+}
+
+
+/* =====================================
+   CANVAS CHART ENGINE
+===================================== */
+
+function setupCanvas(canvas){
+
+const rect =
+canvas.getBoundingClientRect();
+
+const dpr =
+window.devicePixelRatio || 1;
+
+canvas.width =
+rect.width * dpr;
+
+canvas.height =
+rect.height * dpr;
+
+const ctx =
+canvas.getContext("2d");
+
+ctx.setTransform(dpr,0,0,dpr,0,0);
+
+return {
+
+ctx,
+
+width:rect.width,
+
+height:rect.height
+
+};
+
+}
+
+
+/* =====================================
+   EQUITY CURVE
+===================================== */
+
+function drawEquityChart(){
+
+const canvas =
+document.getElementById("equityChart");
+
+const {
+
+ctx,
+
+width,
+
+height
+
+} =
+setupCanvas(canvas);
+
+
+ctx.clearRect(0,0,width,height);
+
+
+const data =
+getEquityData().data;
+
+
+const padding = {
+
+left:48,
+
+right:18,
+
+top:20,
+
+bottom:35
+
+};
+
+
+const chartWidth =
+width -
+padding.left -
+padding.right;
+
+const chartHeight =
+height -
+padding.top -
+padding.bottom;
+
+
+const values =
+data.map(d=>d.equity);
+
+
+let min =
+Math.min(...values);
+
+let max =
+Math.max(...values);
+
+
+if(min === max){
+
+min -= 5;
+
+max += 5;
+
+}
+
+const range =
+max - min;
+
+
+/* Grid */
+
+ctx.strokeStyle =
+"#26364e";
+
+ctx.lineWidth = 1;
+
+ctx.font = "11px Arial";
+
+ctx.fillStyle =
+"#64748b";
+
+for(let i=0;i<=4;i++){
+
+const y =
+padding.top +
+(chartHeight / 4) * i;
+
+ctx.beginPath();
+
+ctx.moveTo(
+padding.left,
+y
+);
+
+ctx.lineTo(
+width-padding.right,
+y
+);
+
+ctx.stroke();
+
+
+const value =
+max -
+(range / 4) * i;
+
+ctx.fillText(
+"$" + value.toFixed(0),
+5,
+y + 4
+);
+
+}
+
+
+/* Line */
+
+ctx.beginPath();
+
+data.forEach((point,index)=>{
+
+const x =
+padding.left +
+(index / Math.max(data.length-1,1))
+*
+chartWidth;
+
+const y =
+padding.top +
+((max-point.equity)/range)
+*
+chartHeight;
+
+
+if(index === 0){
+
+ctx.moveTo(x,y);
+
+}else{
+
+ctx.lineTo(x,y);
+
+}
+
+});
+
+
+ctx.strokeStyle =
+"#38bdf8";
+
+ctx.lineWidth = 3;
+
+ctx.stroke();
+
+
+/* Points */
+
+data.forEach((point,index)=>{
+
+const x =
+padding.left +
+(index / Math.max(data.length-1,1))
+*
+chartWidth;
+
+const y =
+padding.top +
+((max-point.equity)/range)
+*
+chartHeight;
+
+
+ctx.beginPath();
+
+ctx.arc(
+x,
+y,
+4,
+0,
+Math.PI*2
+);
+
+ctx.fillStyle =
+"#38bdf8";
+
+ctx.fill();
+
+});
+
+
+/* Starting line */
+
+const startY =
+padding.top +
+((max-STARTING_BALANCE)/range)
+*
+chartHeight;
+
+
+ctx.setLineDash([5,5]);
+
+ctx.strokeStyle =
+"#64748b";
+
+ctx.beginPath();
+
+ctx.moveTo(
+padding.left,
+startY
+);
+
+ctx.lineTo(
+width-padding.right,
+startY
+);
+
+ctx.stroke();
+
+ctx.setLineDash([]);
+
+
+/* X labels */
+
+ctx.fillStyle =
+"#64748b";
+
+ctx.font =
+"11px Arial";
+
+ctx.fillText(
+"Start",
+padding.left,
+height-10
+);
+
+if(data.length > 1){
+
+ctx.fillText(
+"Trade " + (data.length-1),
+width-70,
+height-10
+);
+
+}
+
+}
+
+
+/* =====================================
+   P/L BAR CHART
+===================================== */
+
+function drawPLChart(){
+
+const canvas =
+document.getElementById("plChart");
+
+const {
+
+ctx,
+
+width,
+
+height
+
+} =
+setupCanvas(canvas);
+
+
+ctx.clearRect(0,0,width,height);
+
+
+const data =
+trades.map((trade,index)=>({
+
+trade:index+1,
+
+profit:Number(trade.profit || 0)
+
+}));
+
+
+if(data.length === 0){
+
+ctx.fillStyle =
+"#64748b";
+
+ctx.font =
+"14px Arial";
+
+ctx.textAlign =
+"center";
+
+ctx.fillText(
+"Your P/L bars will appear here",
+width/2,
+height/2
+);
+
+ctx.textAlign =
+"left";
 
 return;
 
 }
 
 
-[...trades].reverse().forEach(trade => {
+const padding = {
 
-const row =
-document.createElement("tr");
+left:45,
 
+right:15,
 
-let resultClass =
-trade.result === "WIN"
-? "win"
-: trade.result === "LOSS"
-? "loss"
-: "be";
+top:20,
 
+bottom:35
 
-row.innerHTML = `
-
-<td>${escapeHTML(trade.date)}</td>
-
-<td>${escapeHTML(trade.pair)}</td>
-
-<td>${escapeHTML(trade.direction)}</td>
-
-<td>${escapeHTML(trade.session)}</td>
-
-<td>
-${escapeHTML(trade.entryModel)}
-</td>
-
-<td class="${resultClass}">
-${escapeHTML(trade.result)}
-</td>
-
-<td>
-${trade.profit >= 0 ? "+" : ""}
-$${trade.profit.toFixed(2)}
-</td>
-
-<td>
-${trade.r >= 0 ? "+" : ""}
-${trade.r.toFixed(2)}R
-</td>
-
-<td>
-<button
-class="danger"
-onclick="deleteTrade(${trade.id})">
-Delete
-</button>
-</td>
-
-`;
-
-table.appendChild(row);
-
-});
-
-}
+};
 
 
-/* ================================
-   DELETE TRADE
-================================ */
+const chartWidth =
+width-padding.left-padding.right;
 
-function deleteTrade(id){
-
-const confirmDelete =
-confirm("Delete this trade?");
-
-if(!confirmDelete) return;
-
-trades =
-trades.filter(t => t.id !== id);
-
-saveData();
-
-updateDashboard();
-
-displayTrades();
-
-}
+const chartHeight =
+height-padding.top-padding.bottom;
 
 
-/* ================================
-   RESET FORM
-================================ */
-
-function resetForm(){
-
-document.getElementById("date").value = "";
-
-document.getElementById("pair").value = "";
-
-document.getElementById("profit").value = "";
-
-document.getElementById("risk").value = "";
-
-document.getElementById("rMultiple").value = "";
-
-document.getElementById("notes").value = "";
-
-document.getElementById("ruleFollowed").checked = false;
-
-document.getElementById("earlyEntry").checked = false;
-
-document.getElementById("fomo").checked = false;
-
-document.getElementById("revenge").checked = false;
-
-document.getElementById("newsViolation").checked = false;
-
-}
+const values =
+data.map(d=>d.profit);
 
 
-/* ================================
-   SECURITY
-================================ */
-
-function escapeHTML(value){
-
-return String(value)
-.replace(/&/g,"&amp;")
-.replace(/</g,"&lt;")
-.replace(/>/g,"&gt;")
-.replace(/"/g,"&quot;")
-.replace(/'/g,"&#039;");
-
-}
+let maxAbs =
+Math.max(
+...values.map(v=>Math.abs(v)),
+1
+);
 
 
-/* ================================
-   START
-================================ */
+const zeroY =
+padding.top +
+chartHeight/2;
 
-updateDashboard();
 
-displayTrades();
+/* Grid */
 
-</script>
+ctx.strokeStyle =
+"#26364e";
 
-</body>
-  </html>
+ctx.lineWidth = 1;
+
+ctx.beginPath();
+
+ctx.moveTo(
+padding.left,
+zeroY
+);
+
+ctx.lineTo(
+width-padding.right,
+zeroY
+);
+
+ctx.stroke();
+
+
+/* Y labels */
+
+ctx.fillStyle =
+"#64748b";
+
+ctx.font =
+"11px Arial";
+
+ctx.fillText(
+"+$" + maxAbs.toFixed(0),
+5,
+padding.top+4
+);
+
+ctx.fillText(
+"$0",
+20,
+zeroY+4
+);
+
+ctx.fillText(
+"-$" + maxAbs.toFixed(0),
+5,
+height-padding.bottom
+);
+
+
+/* Bars */
+
+const gap = 5;
+
+const barWidth =
+Math.max(
+5
