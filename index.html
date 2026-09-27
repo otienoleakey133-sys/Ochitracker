@@ -8,61 +8,88 @@
 
 <style>
 
+/* =========================================================
+   OCHITRACKER — STABLE SPACIOUS VERSION
+========================================================= */
+
 * {
     box-sizing: border-box;
 }
 
+html,
+body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     background: #07111f;
-    color: white;
+    color: #ffffff;
+    line-height: 1.5;
 }
 
 .container {
-    width: 94%;
-    max-width: 1200px;
-    margin: auto;
+    width: min(94%, 1180px);
+    margin: 0 auto;
 }
 
+
+/* =========================================================
+   HEADER
+========================================================= */
+
 header {
-    padding: 25px 0;
+    padding: 28px 0 24px;
     text-align: center;
 }
 
 header h1 {
     margin: 0;
-    color: #00d9ff;
     font-size: 32px;
+    color: #00d9ff;
 }
 
 header p {
+    margin: 8px 0 0;
     color: #9fb3c8;
 }
 
+
+/* =========================================================
+   SECTIONS
+========================================================= */
+
 section {
+    width: 100%;
     background: #0d1b2a;
     border: 1px solid #1d344c;
-    border-radius: 14px;
-    padding: 20px;
-    margin-bottom: 22px;
+    border-radius: 16px;
+    padding: 22px;
+    margin-bottom: 24px;
 }
 
 .section-title {
+    margin: 0 0 18px;
     color: #00d9ff;
-    margin-top: 0;
+    font-size: 20px;
 }
 
 
-/* DASHBOARD */
+/* =========================================================
+   DASHBOARD CARDS
+========================================================= */
 
 .cards {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
 }
 
 .card {
+    min-width: 0;
     background: #091625;
     border: 1px solid #1d344c;
     border-radius: 12px;
@@ -70,31 +97,37 @@ section {
 }
 
 .card h4 {
-    margin: 0 0 8px;
+    margin: 0 0 9px;
     color: #8da4ba;
     font-size: 13px;
+    font-weight: normal;
 }
 
 .card strong {
+    display: block;
     font-size: 24px;
+    overflow-wrap: anywhere;
 }
 
 
-/* FORM */
+/* =========================================================
+   FORM
+========================================================= */
 
 .form-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
 }
 
 .form-group {
+    min-width: 0;
     display: flex;
     flex-direction: column;
 }
 
 label {
-    margin-bottom: 6px;
+    margin-bottom: 7px;
     color: #9fb3c8;
     font-size: 13px;
 }
@@ -103,17 +136,15 @@ input,
 select,
 textarea {
     width: 100%;
-    padding: 11px;
-    border-radius: 8px;
+    max-width: 100%;
+    padding: 12px;
+    border-radius: 9px;
     border: 1px solid #29445f;
     background: #07111f;
-    color: white;
+    color: #ffffff;
     outline: none;
-}
-
-textarea {
-    min-height: 90px;
-    resize: vertical;
+    font-family: inherit;
+    font-size: 14px;
 }
 
 input:focus,
@@ -122,59 +153,72 @@ textarea:focus {
     border-color: #00d9ff;
 }
 
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
 .full {
     grid-column: 1 / -1;
 }
 
 button {
     border: none;
-    border-radius: 8px;
-    padding: 12px 20px;
+    border-radius: 9px;
+    padding: 13px 20px;
     background: #00d9ff;
     color: #001018;
     font-weight: bold;
     cursor: pointer;
+    font-size: 14px;
 }
 
 button:hover {
-    opacity: 0.85;
+    opacity: 0.88;
 }
 
 .status {
-    margin-top: 12px;
+    min-height: 20px;
+    margin-top: 10px;
     font-size: 14px;
 }
 
 
-/* PERFORMANCE */
+/* =========================================================
+   ACCOUNT PERFORMANCE
+========================================================= */
 
 .performance {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
 }
 
 
-/* CHARTS */
+/* =========================================================
+   CHARTS
+========================================================= */
 
 .chart-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 18px;
 }
 
 .chart-box {
+    min-width: 0;
     background: #091625;
     border: 1px solid #1d344c;
     border-radius: 12px;
-    padding: 15px;
+    padding: 16px;
 }
 
 .chart-title {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    gap: 10px;
+    margin-bottom: 12px;
 }
 
 .chart-title h3 {
@@ -186,15 +230,25 @@ button:hover {
 .chart-title span {
     color: #8da4ba;
     font-size: 12px;
+    white-space: nowrap;
 }
 
 .chart-container {
     width: 100%;
     height: 300px;
+    position: relative;
+}
+
+canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
 }
 
 
-/* AI */
+/* =========================================================
+   OCHI AI
+========================================================= */
 
 .ai-box {
     background: #091625;
@@ -207,78 +261,96 @@ button:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 12px;
     margin-bottom: 18px;
 }
 
 .ai-header h3 {
     margin: 0;
     color: #00d9ff;
+    font-size: 18px;
 }
 
 .ai-badge {
+    flex-shrink: 0;
     background: #102b3d;
     color: #00d9ff;
     padding: 6px 10px;
     border-radius: 20px;
-    font-size: 12px;
+    font-size: 11px;
 }
 
 .ai-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
 }
 
 .ai-card {
+    min-width: 0;
     background: #07111f;
     border: 1px solid #1d344c;
     border-radius: 10px;
-    padding: 15px;
+    padding: 16px;
 }
 
 .ai-card h4 {
-    margin-top: 0;
-    color: #8da4ba;
+    margin: 0 0 9px;
+    color: #9fb3c8;
+    font-size: 14px;
 }
 
 .ai-card p {
-    margin-bottom: 0;
-    line-height: 1.5;
+    margin: 0;
+    color: #d7e3ee;
+    font-size: 14px;
 }
 
 .ai-summary {
     margin-top: 15px;
-    padding: 15px;
+    padding: 16px;
     border-radius: 10px;
     background: #102131;
     border-left: 3px solid #00d9ff;
-    line-height: 1.6;
+}
+
+.ai-summary strong {
+    color: #00d9ff;
+}
+
+.ai-summary p {
+    margin: 8px 0 0;
+    color: #d7e3ee;
 }
 
 .ai-button {
-    margin-top: 15px;
+    margin-top: 16px;
 }
 
 
-/* EDGE */
+/* =========================================================
+   EDGE LAB
+========================================================= */
 
 .edge-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
 }
 
 .edge-card {
+    min-width: 0;
     background: #091625;
     border: 1px solid #1d344c;
     border-radius: 12px;
-    padding: 15px;
+    padding: 16px;
 }
 
 .edge-card h4 {
-    margin: 0 0 8px;
+    margin: 0 0 9px;
     color: #9fb3c8;
     font-size: 13px;
+    font-weight: normal;
 }
 
 .edge-card strong {
@@ -286,28 +358,34 @@ button:hover {
 }
 
 
-/* TABLE */
+/* =========================================================
+   TRADE HISTORY
+========================================================= */
 
 .table-container {
+    width: 100%;
     overflow-x: auto;
+    border-radius: 10px;
 }
 
 table {
     width: 100%;
+    min-width: 850px;
     border-collapse: collapse;
-    min-width: 900px;
 }
 
 th,
 td {
-    padding: 12px 10px;
+    padding: 13px 10px;
     border-bottom: 1px solid #1d344c;
     text-align: left;
     font-size: 13px;
+    white-space: nowrap;
 }
 
 th {
     color: #00d9ff;
+    font-weight: bold;
 }
 
 .win {
@@ -327,51 +405,178 @@ th {
 
 .delete-btn {
     background: #ff4d4d;
-    color: white;
+    color: #ffffff;
     padding: 7px 10px;
     font-size: 12px;
 }
 
 
-/* MOBILE */
+/* =========================================================
+   TABLET
+========================================================= */
 
-@media (max-width: 800px) {
+@media (max-width: 950px) {
 
     .cards,
-    .performance,
+    .performance {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
     .edge-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .form-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
+
+    .container {
+        width: 94%;
+    }
+
+    header {
+        padding: 22px 0 18px;
+    }
+
+    header h1 {
+        font-size: 28px;
+    }
+
+    section {
+        padding: 16px;
+        margin-bottom: 18px;
+        border-radius: 13px;
+    }
+
+    .section-title {
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+
+    /* Dashboard stays stable: 2 columns */
+    .cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .card {
+        padding: 14px;
+    }
+
+    .card h4 {
+        font-size: 12px;
+    }
+
+    .card strong {
+        font-size: 20px;
+    }
+
+    /* Form becomes one clean column */
+    .form-grid {
         grid-template-columns: 1fr;
+        gap: 13px;
     }
 
     .full {
         grid-column: auto;
     }
 
-    .chart-grid,
+    /* Performance */
+    .performance {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    /* Charts one at a time */
+    .chart-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .chart-box {
+        padding: 12px;
+    }
+
+    .chart-container {
+        height: 280px;
+    }
+
+    /* AI */
     .ai-grid {
         grid-template-columns: 1fr;
     }
+
+    .ai-box {
+        padding: 15px;
+    }
+
+    .ai-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .ai-badge {
+        align-self: flex-start;
+    }
+
+    /* Edge Lab */
+    .edge-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .edge-card {
+        padding: 14px;
+    }
+
+    .edge-card strong {
+        font-size: 20px;
+    }
+
 }
 
-@media (max-width: 500px) {
+
+/* =========================================================
+   SMALL PHONES
+========================================================= */
+
+@media (max-width: 380px) {
+
+    .container {
+        width: 92%;
+    }
+
+    section {
+        padding: 13px;
+    }
 
     .cards,
     .performance,
     .edge-grid {
-        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
     }
 
-    section {
-        padding: 14px;
+    .card {
+        padding: 12px;
     }
 
-    header h1 {
-        font-size: 27px;
+    .card strong {
+        font-size: 18px;
     }
+
+    .chart-container {
+        height: 250px;
+    }
+
 }
 
 </style>
@@ -383,6 +588,10 @@ th {
 <div class="container">
 
 
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
 <header>
 
 <h1>📊 OchiTracker</h1>
@@ -392,64 +601,122 @@ th {
 </header>
 
 
-<!-- DASHBOARD -->
+<!-- =====================================================
+     DASHBOARD
+===================================================== -->
 
 <section>
 
-<h2 class="section-title">📈 Dashboard</h2>
+<h2 class="section-title">
+📈 Dashboard
+</h2>
 
 <div class="cards">
 
+
 <div class="card">
+
 <h4>Total Trades</h4>
-<strong id="totalTrades">0</strong>
+
+<strong id="totalTrades">
+0
+</strong>
+
 </div>
 
+
 <div class="card">
+
 <h4>Win Rate</h4>
-<strong id="winRate">0%</strong>
+
+<strong id="winRate">
+0%
+</strong>
+
 </div>
 
+
 <div class="card">
+
 <h4>Total P/L</h4>
-<strong id="totalPL">$0.00</strong>
+
+<strong id="totalPL">
+$0.00
+</strong>
+
 </div>
 
+
 <div class="card">
+
 <h4>Total R</h4>
-<strong id="totalR">0R</strong>
+
+<strong id="totalR">
+0R
+</strong>
+
 </div>
 
+
 <div class="card">
+
 <h4>Average R</h4>
-<strong id="avgR">0R</strong>
+
+<strong id="avgR">
+0R
+</strong>
+
 </div>
 
+
 <div class="card">
+
 <h4>Wins</h4>
-<strong id="wins">0</strong>
+
+<strong id="wins">
+0
+</strong>
+
 </div>
 
+
 <div class="card">
+
 <h4>Losses</h4>
-<strong id="losses">0</strong>
+
+<strong id="losses">
+0
+</strong>
+
 </div>
 
+
 <div class="card">
+
 <h4>Breakeven</h4>
-<strong id="breakeven">0</strong>
+
+<strong id="breakeven">
+0
+</strong>
+
 </div>
+
 
 </div>
 
 </section>
 
 
-<!-- ADD TRADE -->
+<!-- =====================================================
+     ADD TRADE
+===================================================== -->
 
 <section>
 
-<h2 class="section-title">➕ Add New Trade</h2>
+<h2 class="section-title">
+➕ Add New Trade
+</h2>
+
 
 <form id="tradeForm">
 
@@ -487,13 +754,22 @@ required
 
 <label>Direction</label>
 
-<select id="direction" required>
+<select
+id="direction"
+required
+>
 
-<option value="">Select</option>
+<option value="">
+Select
+</option>
 
-<option value="BUY">BUY</option>
+<option value="BUY">
+BUY
+</option>
 
-<option value="SELL">SELL</option>
+<option value="SELL">
+SELL
+</option>
 
 </select>
 
@@ -506,13 +782,21 @@ required
 
 <select id="session">
 
-<option value="">Select</option>
+<option value="">
+Select
+</option>
 
-<option value="London">London</option>
+<option value="London">
+London
+</option>
 
-<option value="New York">New York</option>
+<option value="New York">
+New York
+</option>
 
-<option value="Asia">Asia</option>
+<option value="Asia">
+Asia
+</option>
 
 </select>
 
@@ -523,15 +807,26 @@ required
 
 <label>Result</label>
 
-<select id="result" required>
+<select
+id="result"
+required
+>
 
-<option value="">Select</option>
+<option value="">
+Select
+</option>
 
-<option value="WIN">WIN</option>
+<option value="WIN">
+WIN
+</option>
 
-<option value="LOSS">LOSS</option>
+<option value="LOSS">
+LOSS
+</option>
 
-<option value="BE">BE</option>
+<option value="BE">
+BE
+</option>
 
 </select>
 
@@ -587,13 +882,21 @@ placeholder="e.g. 2"
 
 <select id="d1Bias">
 
-<option value="">Select</option>
+<option value="">
+Select
+</option>
 
-<option value="Bullish">Bullish</option>
+<option value="Bullish">
+Bullish
+</option>
 
-<option value="Bearish">Bearish</option>
+<option value="Bearish">
+Bearish
+</option>
 
-<option value="Neutral">Neutral</option>
+<option value="Neutral">
+Neutral
+</option>
 
 </select>
 
@@ -606,15 +909,25 @@ placeholder="e.g. 2"
 
 <select id="structure">
 
-<option value="">Select</option>
+<option value="">
+Select
+</option>
 
-<option value="Bullish">Bullish</option>
+<option value="Bullish">
+Bullish
+</option>
 
-<option value="Bearish">Bearish</option>
+<option value="Bearish">
+Bearish
+</option>
 
-<option value="Range">Range</option>
+<option value="Range">
+Range
+</option>
 
-<option value="Choppy">Choppy</option>
+<option value="Choppy">
+Choppy
+</option>
 
 </select>
 
@@ -627,13 +940,21 @@ placeholder="e.g. 2"
 
 <select id="poi">
 
-<option value="">Select</option>
+<option value="">
+Select
+</option>
 
-<option value="Valid">Valid</option>
+<option value="Valid">
+Valid
+</option>
 
-<option value="Invalid">Invalid</option>
+<option value="Invalid">
+Invalid
+</option>
 
-<option value="No POI">No POI</option>
+<option value="No POI">
+No POI
+</option>
 
 </select>
 
@@ -646,11 +967,17 @@ placeholder="e.g. 2"
 
 <select id="liquidity">
 
-<option value="">Select</option>
+<option value="">
+Select
+</option>
 
-<option value="Yes">Yes</option>
+<option value="Yes">
+Yes
+</option>
 
-<option value="No">No</option>
+<option value="No">
+No
+</option>
 
 </select>
 
@@ -663,11 +990,17 @@ placeholder="e.g. 2"
 
 <select id="mss">
 
-<option value="">Select</option>
+<option value="">
+Select
+</option>
 
-<option value="Confirmed">Confirmed</option>
+<option value="Confirmed">
+Confirmed
+</option>
 
-<option value="Not Confirmed">Not Confirmed</option>
+<option value="Not Confirmed">
+Not Confirmed
+</option>
 
 </select>
 
@@ -680,15 +1013,25 @@ placeholder="e.g. 2"
 
 <select id="entryModel">
 
-<option value="">Select</option>
+<option value="">
+Select
+</option>
 
-<option value="FVG">FVG</option>
+<option value="FVG">
+FVG
+</option>
 
-<option value="Order Block">Order Block</option>
+<option value="Order Block">
+Order Block
+</option>
 
-<option value="FVG + OB">FVG + OB</option>
+<option value="FVG + OB">
+FVG + OB
+</option>
 
-<option value="Other">Other</option>
+<option value="Other">
+Other
+</option>
 
 </select>
 
@@ -701,15 +1044,25 @@ placeholder="e.g. 2"
 
 <select id="marketCondition">
 
-<option value="">Select</option>
+<option value="">
+Select
+</option>
 
-<option value="Clean Trend">Clean Trend</option>
+<option value="Clean Trend">
+Clean Trend
+</option>
 
-<option value="Retracement">Retracement</option>
+<option value="Retracement">
+Retracement
+</option>
 
-<option value="Choppy">Choppy</option>
+<option value="Choppy">
+Choppy
+</option>
 
-<option value="Range">Range</option>
+<option value="Range">
+Range
+</option>
 
 </select>
 
@@ -722,9 +1075,13 @@ placeholder="e.g. 2"
 
 <select id="ruleFollowed">
 
-<option value="Yes">Yes</option>
+<option value="Yes">
+Yes
+</option>
 
-<option value="No">No</option>
+<option value="No">
+No
+</option>
 
 </select>
 
@@ -737,9 +1094,13 @@ placeholder="e.g. 2"
 
 <select id="earlyEntry">
 
-<option value="No">No</option>
+<option value="No">
+No
+</option>
 
-<option value="Yes">Yes</option>
+<option value="Yes">
+Yes
+</option>
 
 </select>
 
@@ -752,9 +1113,13 @@ placeholder="e.g. 2"
 
 <select id="fomo">
 
-<option value="No">No</option>
+<option value="No">
+No
+</option>
 
-<option value="Yes">Yes</option>
+<option value="Yes">
+Yes
+</option>
 
 </select>
 
@@ -767,9 +1132,13 @@ placeholder="e.g. 2"
 
 <select id="revenge">
 
-<option value="No">No</option>
+<option value="No">
+No
+</option>
 
-<option value="Yes">Yes</option>
+<option value="Yes">
+Yes
+</option>
 
 </select>
 
@@ -782,9 +1151,13 @@ placeholder="e.g. 2"
 
 <select id="newsViolation">
 
-<option value="No">No</option>
+<option value="No">
+No
+</option>
 
-<option value="Yes">Yes</option>
+<option value="Yes">
+Yes
+</option>
 
 </select>
 
@@ -793,7 +1166,9 @@ placeholder="e.g. 2"
 
 <div class="form-group full">
 
-<label>Trade Notes</label>
+<label>
+Trade Notes
+</label>
 
 <textarea
 id="notes"
@@ -805,7 +1180,9 @@ placeholder="What happened during this trade?"
 
 <div class="form-group full">
 
-<button type="submit">
+<button
+type="submit"
+>
 ➕ Add Trade
 </button>
 
@@ -824,7 +1201,9 @@ id="status"
 </section>
 
 
-<!-- ACCOUNT PERFORMANCE -->
+<!-- =====================================================
+     ACCOUNT PERFORMANCE
+===================================================== -->
 
 <section>
 
@@ -832,21 +1211,28 @@ id="status"
 💰 Account Performance
 </h2>
 
+
 <div class="performance">
 
 
 <div class="card">
 
-<h4>Starting Balance</h4>
+<h4>
+Starting Balance
+</h4>
 
-<strong>$0.00</strong>
+<strong>
+$0.00
+</strong>
 
 </div>
 
 
 <div class="card">
 
-<h4>Current Equity</h4>
+<h4>
+Current Equity
+</h4>
 
 <strong id="currentEquity">
 $0.00
@@ -857,7 +1243,9 @@ $0.00
 
 <div class="card">
 
-<h4>Peak Equity</h4>
+<h4>
+Peak Equity
+</h4>
 
 <strong id="peakEquity">
 $0.00
@@ -868,7 +1256,9 @@ $0.00
 
 <div class="card">
 
-<h4>Max Drawdown</h4>
+<h4>
+Max Drawdown
+</h4>
 
 <strong id="maxDrawdown">
 $0.00
@@ -882,7 +1272,9 @@ $0.00
 </section>
 
 
-<!-- AI -->
+<!-- =====================================================
+     OCHI AI
+===================================================== -->
 
 <section>
 
@@ -912,7 +1304,9 @@ LOCAL AI ANALYSIS
 
 <div class="ai-card">
 
-<h4>📊 Performance</h4>
+<h4>
+📊 Performance
+</h4>
 
 <p id="aiPerformance">
 Record some trades and Ochi AI will analyze your performance.
@@ -923,7 +1317,9 @@ Record some trades and Ochi AI will analyze your performance.
 
 <div class="ai-card">
 
-<h4>🎯 Your Edge</h4>
+<h4>
+🎯 Your Edge
+</h4>
 
 <p id="aiEdge">
 Your strongest trading conditions will appear here.
@@ -934,7 +1330,9 @@ Your strongest trading conditions will appear here.
 
 <div class="ai-card">
 
-<h4>⚠️ Biggest Weakness</h4>
+<h4>
+⚠️ Biggest Weakness
+</h4>
 
 <p id="aiWeakness">
 Your recurring weaknesses will appear here.
@@ -945,7 +1343,9 @@ Your recurring weaknesses will appear here.
 
 <div class="ai-card">
 
-<h4>🧠 Discipline</h4>
+<h4>
+🧠 Discipline
+</h4>
 
 <p id="aiDiscipline">
 Ochi AI will monitor your discipline statistics.
@@ -959,7 +1359,9 @@ Ochi AI will monitor your discipline statistics.
 
 <div class="ai-summary">
 
-<strong>🤖 Ochi AI Summary</strong>
+<strong>
+🤖 Ochi AI Summary
+</strong>
 
 <p id="aiSummary">
 Add your trades and Ochi AI will generate a personalized performance summary from your trading journal.
@@ -981,7 +1383,9 @@ onclick="runAIAnalysis()"
 </section>
 
 
-<!-- CHARTS -->
+<!-- =====================================================
+     CHARTS
+===================================================== -->
 
 <section>
 
@@ -997,15 +1401,22 @@ onclick="runAIAnalysis()"
 
 <div class="chart-title">
 
-<h3>📈 Equity Curve</h3>
+<h3>
+📈 Equity Curve
+</h3>
 
-<span>Starts at $0</span>
+<span>
+Starts at $0
+</span>
 
 </div>
 
+
 <div class="chart-container">
 
-<canvas id="equityChart"></canvas>
+<canvas
+id="equityChart"
+></canvas>
 
 </div>
 
@@ -1016,15 +1427,22 @@ onclick="runAIAnalysis()"
 
 <div class="chart-title">
 
-<h3>📊 Trade P/L</h3>
+<h3>
+📊 Trade P/L
+</h3>
 
-<span>Above / Below $0</span>
+<span>
+Above / Below $0
+</span>
 
 </div>
 
+
 <div class="chart-container">
 
-<canvas id="plChart"></canvas>
+<canvas
+id="plChart"
+></canvas>
 
 </div>
 
@@ -1036,7 +1454,9 @@ onclick="runAIAnalysis()"
 </section>
 
 
-<!-- EDGE LAB -->
+<!-- =====================================================
+     EDGE LAB
+===================================================== -->
 
 <section>
 
@@ -1050,7 +1470,9 @@ onclick="runAIAnalysis()"
 
 <div class="edge-card">
 
-<h4>4H POI Win Rate</h4>
+<h4>
+4H POI Win Rate
+</h4>
 
 <strong id="poiWinRate">
 0%
@@ -1061,7 +1483,9 @@ onclick="runAIAnalysis()"
 
 <div class="edge-card">
 
-<h4>15M MSS Win Rate</h4>
+<h4>
+15M MSS Win Rate
+</h4>
 
 <strong id="mssWinRate">
 0%
@@ -1072,7 +1496,9 @@ onclick="runAIAnalysis()"
 
 <div class="edge-card">
 
-<h4>Clean Trend Win Rate</h4>
+<h4>
+Clean Trend Win Rate
+</h4>
 
 <strong id="trendWinRate">
 0%
@@ -1083,7 +1509,9 @@ onclick="runAIAnalysis()"
 
 <div class="edge-card">
 
-<h4>Choppy Market Win Rate</h4>
+<h4>
+Choppy Market Win Rate
+</h4>
 
 <strong id="choppyWinRate">
 0%
@@ -1094,7 +1522,9 @@ onclick="runAIAnalysis()"
 
 <div class="edge-card">
 
-<h4>Rule Following</h4>
+<h4>
+Rule Following
+</h4>
 
 <strong id="ruleRate">
 0%
@@ -1105,7 +1535,9 @@ onclick="runAIAnalysis()"
 
 <div class="edge-card">
 
-<h4>Early Entries</h4>
+<h4>
+Early Entries
+</h4>
 
 <strong id="earlyRate">
 0%
@@ -1116,7 +1548,9 @@ onclick="runAIAnalysis()"
 
 <div class="edge-card">
 
-<h4>FOMO Trades</h4>
+<h4>
+FOMO Trades
+</h4>
 
 <strong id="fomoRate">
 0%
@@ -1127,7 +1561,9 @@ onclick="runAIAnalysis()"
 
 <div class="edge-card">
 
-<h4>News Violations</h4>
+<h4>
+News Violations
+</h4>
 
 <strong id="newsRate">
 0%
@@ -1141,7 +1577,9 @@ onclick="runAIAnalysis()"
 </section>
 
 
-<!-- TRADE HISTORY -->
+<!-- =====================================================
+     TRADE HISTORY
+===================================================== -->
 
 <section>
 
@@ -1190,34 +1628,38 @@ onclick="runAIAnalysis()"
 
 <script>
 
-
-/* =========================
+/* =========================================================
    STORAGE
-========================= */
+========================================================= */
 
 const STORAGE_KEY = "ochiTrades";
 
 let trades = [];
 
 
-/* =========================
-   LOAD
-========================= */
+/* =========================================================
+   LOAD TRADES
+========================================================= */
 
 function loadTrades() {
 
     try {
 
         const saved =
-            localStorage.getItem(STORAGE_KEY);
+            localStorage.getItem(
+                STORAGE_KEY
+            );
 
         if (saved) {
 
-            trades = JSON.parse(saved);
+            trades =
+                JSON.parse(saved);
 
         }
 
-        if (!Array.isArray(trades)) {
+        if (
+            !Array.isArray(trades)
+        ) {
 
             trades = [];
 
@@ -1227,16 +1669,19 @@ function loadTrades() {
 
         trades = [];
 
-        console.error(error);
+        console.error(
+            "Could not load trades:",
+            error
+        );
 
     }
 
 }
 
 
-/* =========================
-   SAVE
-========================= */
+/* =========================================================
+   SAVE TRADES
+========================================================= */
 
 function saveTrades() {
 
@@ -1251,7 +1696,10 @@ function saveTrades() {
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "Could not save trades:",
+            error
+        );
 
         return false;
 
@@ -1260,22 +1708,28 @@ function saveTrades() {
 }
 
 
-/* =========================
-   FORMAT MONEY
-========================= */
+/* =========================================================
+   MONEY
+========================================================= */
 
 function formatMoney(value) {
 
-    return "$" +
-        Number(value || 0)
-        .toFixed(2);
+    const number =
+        Number(value || 0);
+
+    return (
+        number < 0
+        ? "-$"
+        : "$"
+    ) +
+    Math.abs(number).toFixed(2);
 
 }
 
 
-/* =========================
+/* =========================================================
    STATUS
-========================= */
+========================================================= */
 
 function showStatus(
     message,
@@ -1283,77 +1737,101 @@ function showStatus(
 ) {
 
     const status =
-        document.getElementById("status");
+        document.getElementById(
+            "status"
+        );
 
-    status.textContent = message;
+    status.textContent =
+        message;
 
     status.style.color =
         success
         ? "#43e97b"
         : "#ff5c5c";
 
-    setTimeout(() => {
+    setTimeout(
+        () => {
 
-        status.textContent = "";
+            status.textContent =
+                "";
 
-    }, 3000);
+        },
+        3000
+    );
 
 }
 
 
-/* =========================
+/* =========================================================
    WIN RATE
-========================= */
+========================================================= */
 
-function calculateWinRate(list) {
+function calculateWinRate(
+    list
+) {
 
-    if (list.length === 0) {
+    if (
+        list.length === 0
+    ) {
 
         return 0;
 
     }
 
+
     const wins =
         list.filter(
-            t => t.result === "WIN"
+            t =>
+                t.result === "WIN"
         ).length;
 
+
     return (
-        wins / list.length
+        wins /
+        list.length
     ) * 100;
 
 }
 
 
-/* =========================
+/* =========================================================
    DASHBOARD
-========================= */
+========================================================= */
 
 function updateDashboard() {
 
     const total =
         trades.length;
 
+
     const wins =
         trades.filter(
-            t => t.result === "WIN"
+            t =>
+                t.result === "WIN"
         ).length;
+
 
     const losses =
         trades.filter(
-            t => t.result === "LOSS"
+            t =>
+                t.result === "LOSS"
         ).length;
+
 
     const be =
         trades.filter(
-            t => t.result === "BE"
+            t =>
+                t.result === "BE"
         ).length;
 
 
     const totalPL =
         trades.reduce(
             (sum, t) =>
-                sum + Number(t.profit || 0),
+                sum +
+                Number(
+                    t.profit || 0
+                ),
             0
         );
 
@@ -1361,7 +1839,10 @@ function updateDashboard() {
     const totalR =
         trades.reduce(
             (sum, t) =>
-                sum + Number(t.rMultiple || 0),
+                sum +
+                Number(
+                    t.rMultiple || 0
+                ),
             0
         );
 
@@ -1374,47 +1855,57 @@ function updateDashboard() {
 
     document.getElementById(
         "totalTrades"
-    ).textContent = total;
+    ).textContent =
+        total;
 
 
     document.getElementById(
         "winRate"
     ).textContent =
-        calculateWinRate(trades)
-        .toFixed(2) + "%";
+        calculateWinRate(
+            trades
+        ).toFixed(2) +
+        "%";
 
 
     document.getElementById(
         "totalPL"
     ).textContent =
-        formatMoney(totalPL);
+        formatMoney(
+            totalPL
+        );
 
 
     document.getElementById(
         "totalR"
     ).textContent =
-        totalR.toFixed(2) + "R";
+        totalR.toFixed(2) +
+        "R";
 
 
     document.getElementById(
         "avgR"
     ).textContent =
-        avgR.toFixed(2) + "R";
+        avgR.toFixed(2) +
+        "R";
 
 
     document.getElementById(
         "wins"
-    ).textContent = wins;
+    ).textContent =
+        wins;
 
 
     document.getElementById(
         "losses"
-    ).textContent = losses;
+    ).textContent =
+        losses;
 
 
     document.getElementById(
         "breakeven"
-    ).textContent = be;
+    ).textContent =
+        be;
 
 
     updateAccountPerformance();
@@ -1430,9 +1921,9 @@ function updateDashboard() {
 }
 
 
-/* =========================
+/* =========================================================
    ACCOUNT PERFORMANCE
-========================= */
+========================================================= */
 
 function updateAccountPerformance() {
 
@@ -1446,16 +1937,22 @@ function updateAccountPerformance() {
                 const dateB =
                     new Date(b.date);
 
+
                 if (
                     dateA - dateB !== 0
                 ) {
 
-                    return dateA - dateB;
+                    return (
+                        dateA - dateB
+                    );
 
                 }
 
-                return Number(a.id || 0) -
-                    Number(b.id || 0);
+
+                return (
+                    Number(a.id || 0) -
+                    Number(b.id || 0)
+                );
 
             }
         );
@@ -1468,58 +1965,73 @@ function updateAccountPerformance() {
     let maxDrawdown = 0;
 
 
-    sorted.forEach(trade => {
+    sorted.forEach(
+        trade => {
 
-        equity +=
-            Number(trade.profit || 0);
+            equity +=
+                Number(
+                    trade.profit || 0
+                );
 
 
-        if (equity > peak) {
+            if (
+                equity > peak
+            ) {
 
-            peak = equity;
+                peak =
+                    equity;
+
+            }
+
+
+            const drawdown =
+                peak -
+                equity;
+
+
+            if (
+                drawdown >
+                maxDrawdown
+            ) {
+
+                maxDrawdown =
+                    drawdown;
+
+            }
 
         }
-
-
-        const drawdown =
-            peak - equity;
-
-
-        if (
-            drawdown > maxDrawdown
-        ) {
-
-            maxDrawdown =
-                drawdown;
-
-        }
-
-    });
+    );
 
 
     document.getElementById(
         "currentEquity"
     ).textContent =
-        formatMoney(equity);
+        formatMoney(
+            equity
+        );
 
 
     document.getElementById(
         "peakEquity"
     ).textContent =
-        formatMoney(peak);
+        formatMoney(
+            peak
+        );
 
 
     document.getElementById(
         "maxDrawdown"
     ).textContent =
-        formatMoney(maxDrawdown);
+        formatMoney(
+            maxDrawdown
+        );
 
 }
 
 
-/* =========================
+/* =========================================================
    EQUITY DATA
-========================= */
+========================================================= */
 
 function getEquityData() {
 
@@ -1533,16 +2045,22 @@ function getEquityData() {
                 const dateB =
                     new Date(b.date);
 
+
                 if (
                     dateA - dateB !== 0
                 ) {
 
-                    return dateA - dateB;
+                    return (
+                        dateA - dateB
+                    );
 
                 }
 
-                return Number(a.id || 0) -
-                    Number(b.id || 0);
+
+                return (
+                    Number(a.id || 0) -
+                    Number(b.id || 0)
+                );
 
             }
         );
@@ -1561,21 +2079,27 @@ function getEquityData() {
     ];
 
 
-    sorted.forEach(trade => {
+    sorted.forEach(
+        trade => {
 
-        equity +=
-            Number(trade.profit || 0);
+            equity +=
+                Number(
+                    trade.profit || 0
+                );
 
 
-        data.push({
+            data.push({
 
-            date: trade.date,
+                date:
+                    trade.date,
 
-            equity: equity
+                equity:
+                    equity
 
-        });
+            });
 
-    });
+        }
+    );
 
 
     return data;
@@ -1583,29 +2107,37 @@ function getEquityData() {
 }
 
 
-/* =========================
+/* =========================================================
    CANVAS
-========================= */
+========================================================= */
 
-function setupCanvas(canvas) {
+function setupCanvas(
+    canvas
+) {
 
     const rect =
         canvas.getBoundingClientRect();
 
 
     const ratio =
-        window.devicePixelRatio || 1;
+        window.devicePixelRatio ||
+        1;
 
 
     canvas.width =
-        rect.width * ratio;
+        rect.width *
+        ratio;
+
 
     canvas.height =
-        rect.height * ratio;
+        rect.height *
+        ratio;
 
 
     const ctx =
-        canvas.getContext("2d");
+        canvas.getContext(
+            "2d"
+        );
 
 
     ctx.setTransform(
@@ -1622,18 +2154,20 @@ function setupCanvas(canvas) {
 
         ctx: ctx,
 
-        width: rect.width,
+        width:
+            rect.width,
 
-        height: rect.height
+        height:
+            rect.height
 
     };
 
 }
 
 
-/* =========================
+/* =========================================================
    EQUITY CURVE
-========================= */
+========================================================= */
 
 function drawEquityChart() {
 
@@ -1648,7 +2182,9 @@ function drawEquityChart() {
         width,
         height
     } =
-        setupCanvas(canvas);
+        setupCanvas(
+            canvas
+        );
 
 
     ctx.clearRect(
@@ -1663,7 +2199,9 @@ function drawEquityChart() {
         getEquityData();
 
 
-    if (data.length === 1) {
+    if (
+        data.length === 1
+    ) {
 
         ctx.fillStyle =
             "#8da4ba";
@@ -1685,7 +2223,7 @@ function drawEquityChart() {
     }
 
 
-    const left = 60;
+    const left = 62;
 
     const right = 20;
 
@@ -1695,15 +2233,21 @@ function drawEquityChart() {
 
 
     const chartWidth =
-        width - left - right;
+        width -
+        left -
+        right;
+
 
     const chartHeight =
-        height - top - bottom;
+        height -
+        top -
+        bottom;
 
 
     const values =
         data.map(
-            d => d.equity
+            d =>
+                d.equity
         );
 
 
@@ -1721,7 +2265,9 @@ function drawEquityChart() {
         );
 
 
-    if (min === max) {
+    if (
+        min === max
+    ) {
 
         min -= 10;
 
@@ -1734,9 +2280,12 @@ function drawEquityChart() {
         max - min;
 
 
-    min -= range * 0.1;
+    min -=
+        range * 0.1;
 
-    max += range * 0.1;
+
+    max +=
+        range * 0.1;
 
 
     /* GRID */
@@ -1793,7 +2342,8 @@ function drawEquityChart() {
 
 
         ctx.fillText(
-            "$" + value.toFixed(0),
+            "$" +
+            value.toFixed(0),
             left - 8,
             y + 4
         );
@@ -1801,7 +2351,7 @@ function drawEquityChart() {
     }
 
 
-    /* ZERO */
+    /* ZERO LINE */
 
     if (
         min <= 0 &&
@@ -1820,7 +2370,8 @@ function drawEquityChart() {
         ctx.strokeStyle =
             "#71869b";
 
-        ctx.lineWidth = 1.5;
+        ctx.lineWidth =
+            1.5;
 
 
         ctx.beginPath();
@@ -1865,13 +2416,16 @@ function drawEquityChart() {
             const y =
                 top +
                 (
-                    (max - item.equity) /
+                    (max -
+                    item.equity) /
                     (max - min)
                 ) *
                 chartHeight;
 
 
-            if (index === 0) {
+            if (
+                index === 0
+            ) {
 
                 ctx.moveTo(
                     x,
@@ -1911,7 +2465,8 @@ function drawEquityChart() {
             const y =
                 top +
                 (
-                    (max - item.equity) /
+                    (max -
+                    item.equity) /
                     (max - min)
                 ) *
                 chartHeight;
@@ -1937,7 +2492,7 @@ function drawEquityChart() {
     );
 
 
-    /* DATES */
+    /* DATE LABELS */
 
     ctx.fillStyle =
         "#8da4ba";
@@ -1995,8 +2550,11 @@ function drawEquityChart() {
                     date.toLocaleDateString(
                         "en-GB",
                         {
-                            day: "2-digit",
-                            month: "short"
+                            day:
+                                "2-digit",
+
+                            month:
+                                "short"
                         }
                     );
 
@@ -2026,6 +2584,7 @@ function drawEquityChart() {
         -Math.PI / 2
     );
 
+
     ctx.fillStyle =
         "#9fb3c8";
 
@@ -2035,11 +2594,13 @@ function drawEquityChart() {
     ctx.textAlign =
         "center";
 
+
     ctx.fillText(
         "Equity ($)",
         0,
         0
     );
+
 
     ctx.restore();
 
@@ -2050,6 +2611,7 @@ function drawEquityChart() {
     ctx.textAlign =
         "center";
 
+
     ctx.fillText(
         "Date",
         width / 2,
@@ -2059,9 +2621,9 @@ function drawEquityChart() {
 }
 
 
-/* =========================
+/* =========================================================
    P/L BAR CHART
-========================= */
+========================================================= */
 
 function drawPLChart() {
 
@@ -2076,7 +2638,9 @@ function drawPLChart() {
         width,
         height
     } =
-        setupCanvas(canvas);
+        setupCanvas(
+            canvas
+        );
 
 
     ctx.clearRect(
@@ -2087,7 +2651,9 @@ function drawPLChart() {
     );
 
 
-    if (trades.length === 0) {
+    if (
+        trades.length === 0
+    ) {
 
         ctx.fillStyle =
             "#8da4ba";
@@ -2098,11 +2664,13 @@ function drawPLChart() {
         ctx.textAlign =
             "center";
 
+
         ctx.fillText(
             "Add trades to see your P/L",
             width / 2,
             height / 2
         );
+
 
         return;
 
@@ -2111,7 +2679,10 @@ function drawPLChart() {
 
     const values =
         trades.map(
-            t => Number(t.profit || 0)
+            trade =>
+                Number(
+                    trade.profit || 0
+                )
         );
 
 
@@ -2129,7 +2700,9 @@ function drawPLChart() {
         );
 
 
-    if (max === min) {
+    if (
+        max === min
+    ) {
 
         max += 10;
 
@@ -2148,10 +2721,11 @@ function drawPLChart() {
 
 
     const chartHeight =
-        height - 60;
+        height -
+        60;
 
 
-    /* ZERO */
+    /* ZERO LINE */
 
     const zeroY =
         20 +
@@ -2165,7 +2739,8 @@ function drawPLChart() {
     ctx.strokeStyle =
         "#71869b";
 
-    ctx.lineWidth = 1.5;
+    ctx.lineWidth =
+        1.5;
 
 
     ctx.beginPath();
@@ -2254,7 +2829,7 @@ function drawPLChart() {
     );
 
 
-    /* TRADE NUMBERS */
+    /* NUMBERS */
 
     ctx.fillStyle =
         "#8da4ba";
@@ -2296,7 +2871,8 @@ function drawPLChart() {
 
 
             ctx.fillText(
-                "#" + (index + 1),
+                "#" +
+                (index + 1),
                 x,
                 height - 12
             );
@@ -2307,9 +2883,9 @@ function drawPLChart() {
 }
 
 
-/* =========================
+/* =========================================================
    CHARTS
-========================= */
+========================================================= */
 
 function drawCharts() {
 
@@ -2320,9 +2896,9 @@ function drawCharts() {
 }
 
 
-/* =========================
+/* =========================================================
    EDGE LAB
-========================= */
+========================================================= */
 
 function getWinRateForFilter(
     filterFunction
@@ -2347,16 +2923,20 @@ function updateEdgeLab() {
         "poiWinRate"
     ).textContent =
         getWinRateForFilter(
-            t => t.poi === "Valid"
-        ).toFixed(2) + "%";
+            t =>
+                t.poi === "Valid"
+        ).toFixed(2) +
+        "%";
 
 
     document.getElementById(
         "mssWinRate"
     ).textContent =
         getWinRateForFilter(
-            t => t.mss === "Confirmed"
-        ).toFixed(2) + "%";
+            t =>
+                t.mss === "Confirmed"
+        ).toFixed(2) +
+        "%";
 
 
     document.getElementById(
@@ -2366,7 +2946,8 @@ function updateEdgeLab() {
             t =>
                 t.marketCondition ===
                 "Clean Trend"
-        ).toFixed(2) + "%";
+        ).toFixed(2) +
+        "%";
 
 
     document.getElementById(
@@ -2376,7 +2957,8 @@ function updateEdgeLab() {
             t =>
                 t.marketCondition ===
                 "Choppy"
-        ).toFixed(2) + "%";
+        ).toFixed(2) +
+        "%";
 
 
     document.getElementById(
@@ -2386,7 +2968,8 @@ function updateEdgeLab() {
             t =>
                 t.ruleFollowed ===
                 "Yes"
-        ).toFixed(2) + "%";
+        ).toFixed(2) +
+        "%";
 
 
     document.getElementById(
@@ -2396,7 +2979,8 @@ function updateEdgeLab() {
             t =>
                 t.earlyEntry ===
                 "Yes"
-        ).toFixed(2) + "%";
+        ).toFixed(2) +
+        "%";
 
 
     document.getElementById(
@@ -2406,7 +2990,8 @@ function updateEdgeLab() {
             t =>
                 t.fomo ===
                 "Yes"
-        ).toFixed(2) + "%";
+        ).toFixed(2) +
+        "%";
 
 
     document.getElementById(
@@ -2416,20 +3001,23 @@ function updateEdgeLab() {
             t =>
                 t.newsViolation ===
                 "Yes"
-        ).toFixed(2) + "%";
+        ).toFixed(2) +
+        "%";
 
 }
 
 
-/* =========================
-   AI HELPERS
-========================= */
+/* =========================================================
+   OCHI AI
+========================================================= */
 
 function filteredTrades(
     filter
 ) {
 
-    return trades.filter(filter);
+    return trades.filter(
+        filter
+    );
 
 }
 
@@ -2445,10 +3033,6 @@ function winRate(
 }
 
 
-/* =========================
-   OCHI AI
-========================= */
-
 function runAIAnalysis() {
 
     const performance =
@@ -2456,20 +3040,24 @@ function runAIAnalysis() {
             "aiPerformance"
         );
 
+
     const edge =
         document.getElementById(
             "aiEdge"
         );
+
 
     const weakness =
         document.getElementById(
             "aiWeakness"
         );
 
+
     const discipline =
         document.getElementById(
             "aiDiscipline"
         );
+
 
     const summary =
         document.getElementById(
@@ -2477,29 +3065,36 @@ function runAIAnalysis() {
         );
 
 
-    if (trades.length === 0) {
+    if (
+        trades.length === 0
+    ) {
 
         performance.textContent =
             "Record some trades first. Ochi AI needs your trading history to analyze your performance.";
 
+
         edge.textContent =
             "Your strongest setup will appear after you record trades.";
+
 
         weakness.textContent =
             "Your recurring weakness will appear after you record trades.";
 
+
         discipline.textContent =
             "Ochi AI will monitor your discipline once trades are recorded.";
 
+
         summary.textContent =
             "Add your trades and Ochi AI will generate a personalized performance summary.";
+
 
         return;
 
     }
 
 
-    /* BASIC PERFORMANCE */
+    /* PERFORMANCE */
 
     const total =
         trades.length;
@@ -2507,13 +3102,15 @@ function runAIAnalysis() {
 
     const wins =
         trades.filter(
-            t => t.result === "WIN"
+            t =>
+                t.result === "WIN"
         ).length;
 
 
     const losses =
         trades.filter(
-            t => t.result === "LOSS"
+            t =>
+                t.result === "LOSS"
         ).length;
 
 
@@ -2529,7 +3126,9 @@ function runAIAnalysis() {
 
 
     const win =
-        winRate(trades);
+        winRate(
+            trades
+        );
 
 
     performance.textContent =
@@ -2560,21 +3159,30 @@ function runAIAnalysis() {
         );
 
 
-    const edgeCandidates = [
+    const candidates = [
 
         {
-            name: "4H Valid POI",
-            list: poi
+            name:
+                "4H Valid POI",
+
+            list:
+                poi
         },
 
         {
-            name: "15M Confirmed MSS",
-            list: mss
+            name:
+                "15M Confirmed MSS",
+
+            list:
+                mss
         },
 
         {
-            name: "Clean Trend",
-            list: cleanTrend
+            name:
+                "Clean Trend",
+
+            list:
+                cleanTrend
         }
 
     ];
@@ -2583,13 +3191,15 @@ function runAIAnalysis() {
     let bestEdge = null;
 
 
-    edgeCandidates.forEach(
+    candidates.forEach(
         candidate => {
 
             if (
                 candidate.list.length === 0
             ) {
+
                 return;
+
             }
 
 
@@ -2601,7 +3211,8 @@ function runAIAnalysis() {
 
             if (
                 !bestEdge ||
-                rate > bestEdge.rate
+                rate >
+                bestEdge.rate
             ) {
 
                 bestEdge = {
@@ -2623,10 +3234,12 @@ function runAIAnalysis() {
     );
 
 
-    if (bestEdge) {
+    if (
+        bestEdge
+    ) {
 
         edge.textContent =
-            `${bestEdge.name} is currently showing a ${bestEdge.rate.toFixed(1)}% win rate across ${bestEdge.count} recorded trade${bestEdge.count === 1 ? "" : "s"}. Keep collecting data before drawing strong conclusions.`;
+            `${bestEdge.name} currently shows a ${bestEdge.rate.toFixed(1)}% win rate across ${bestEdge.count} recorded trade${bestEdge.count === 1 ? "" : "s"}. Keep collecting data before drawing strong conclusions.`;
 
     } else {
 
@@ -2636,7 +3249,7 @@ function runAIAnalysis() {
     }
 
 
-    /* WEAKNESSES */
+    /* WEAKNESS */
 
     const early =
         filteredTrades(
@@ -2681,33 +3294,58 @@ function runAIAnalysis() {
     const weaknesses = [
 
         {
-            name: "Early entries",
-            count: early.length,
-            rate: winRate(early)
+            name:
+                "Early entries",
+
+            count:
+                early.length,
+
+            rate:
+                winRate(early)
         },
 
         {
-            name: "FOMO",
-            count: fomo.length,
-            rate: winRate(fomo)
+            name:
+                "FOMO",
+
+            count:
+                fomo.length,
+
+            rate:
+                winRate(fomo)
         },
 
         {
-            name: "Revenge trading",
-            count: revenge.length,
-            rate: winRate(revenge)
+            name:
+                "Revenge trading",
+
+            count:
+                revenge.length,
+
+            rate:
+                winRate(revenge)
         },
 
         {
-            name: "News violations",
-            count: news.length,
-            rate: winRate(news)
+            name:
+                "News violations",
+
+            count:
+                news.length,
+
+            rate:
+                winRate(news)
         },
 
         {
-            name: "Choppy markets",
-            count: choppy.length,
-            rate: winRate(choppy)
+            name:
+                "Choppy markets",
+
+            count:
+                choppy.length,
+
+            rate:
+                winRate(choppy)
         }
 
     ];
@@ -2721,10 +3359,12 @@ function runAIAnalysis() {
         item => {
 
             if (
-                item.count > biggest.count
+                item.count >
+                biggest.count
             ) {
 
-                biggest = item;
+                biggest =
+                    item;
 
             }
 
@@ -2750,7 +3390,7 @@ function runAIAnalysis() {
 
     /* DISCIPLINE */
 
-    const ruleFollowed =
+    const followed =
         filteredTrades(
             t =>
                 t.ruleFollowed ===
@@ -2760,28 +3400,30 @@ function runAIAnalysis() {
 
     const disciplineRate =
         (
-            ruleFollowed.length /
+            followed.length /
             trades.length
         ) * 100;
 
 
     discipline.textContent =
-        `You followed your recorded rules on ${disciplineRate.toFixed(1)}% of trades. The goal is not simply more trades — it is consistent execution of your defined 4H + 15M model.`;
+        `You followed your recorded rules on ${disciplineRate.toFixed(1)}% of trades. The goal is consistent execution of your defined 4H + 15M model.`;
 
 
     /* SUMMARY */
 
-    let advice = "";
+    let message = "";
 
 
-    if (win >= 60) {
+    if (
+        win >= 60
+    ) {
 
-        advice +=
-            "Your current sample shows a positive win-rate profile. ";
+        message +=
+            "Your current sample has a win rate of at least 60%. ";
 
     } else {
 
-        advice +=
+        message +=
             "Your current sample needs more data before judging the model. ";
 
     }
@@ -2791,12 +3433,12 @@ function runAIAnalysis() {
         disciplineRate < 80
     ) {
 
-        advice +=
-            "Discipline appears to be an important area to monitor. ";
+        message +=
+            "Discipline is an important area to monitor. ";
 
     } else {
 
-        advice +=
+        message +=
             "Your recorded rule-following is relatively consistent. ";
 
     }
@@ -2807,25 +3449,25 @@ function runAIAnalysis() {
         winRate(choppy) < win
     ) {
 
-        advice +=
-            "Your choppy-market results are below your overall win rate, so separate those conditions in your journal. ";
+        message +=
+            "Your choppy-market results are below your overall win rate, so keep separating those conditions in your journal. ";
 
     }
 
 
-    advice +=
-        "Continue collecting clean data before changing your trading strategy.";
+    message +=
+        "Continue collecting clean data before changing your strategy.";
 
 
     summary.textContent =
-        advice;
+        message;
 
 }
 
 
-/* =========================
+/* =========================================================
    TRADE HISTORY
-========================= */
+========================================================= */
 
 function renderTrades() {
 
@@ -2838,7 +3480,9 @@ function renderTrades() {
     table.innerHTML = "";
 
 
-    if (trades.length === 0) {
+    if (
+        trades.length === 0
+    ) {
 
         table.innerHTML = `
 
@@ -2849,6 +3493,7 @@ function renderTrades() {
         style="
         text-align:center;
         color:#8da4ba;
+        padding:25px;
         "
         >
 
@@ -2867,9 +3512,28 @@ function renderTrades() {
 
     const sorted =
         [...trades].sort(
-            (a, b) =>
-                new Date(b.date) -
-                new Date(a.date)
+            (a, b) => {
+
+                const dateDifference =
+                    new Date(b.date) -
+                    new Date(a.date);
+
+
+                if (
+                    dateDifference !== 0
+                ) {
+
+                    return dateDifference;
+
+                }
+
+
+                return (
+                    Number(b.id || 0) -
+                    Number(a.id || 0)
+                );
+
+            }
         );
 
 
@@ -2882,7 +3546,8 @@ function renderTrades() {
                 );
 
 
-            let resultClass = "";
+            let resultClass =
+                "";
 
 
             if (
@@ -2919,17 +3584,25 @@ function renderTrades() {
 
 
             const displayProfit =
-                trade.result === "LOSS"
+                trade.result ===
+                "LOSS"
+
                 ? -Math.abs(
                     Number(
-                        trade.profit || 0
+                        trade.profit ||
+                        0
                     )
                 )
-                : trade.result === "BE"
+
+                : trade.result ===
+                  "BE"
+
                 ? 0
+
                 : Math.abs(
                     Number(
-                        trade.profit || 0
+                        trade.profit ||
+                        0
                     )
                 );
 
@@ -2972,14 +3645,14 @@ function renderTrades() {
 
             <td>
 
-            <button
-            class="delete-btn"
-            onclick="deleteTrade(${trade.id})"
-            >
+                <button
+                class="delete-btn"
+                onclick="deleteTrade(${trade.id})"
+                >
 
-            Delete
+                Delete
 
-            </button>
+                </button>
 
             </td>
 
@@ -2996,11 +3669,13 @@ function renderTrades() {
 }
 
 
-/* =========================
-   DELETE
-========================= */
+/* =========================================================
+   DELETE TRADE
+========================================================= */
 
-function deleteTrade(id) {
+function deleteTrade(
+    id
+) {
 
     const confirmed =
         confirm(
@@ -3008,7 +3683,9 @@ function deleteTrade(id) {
         );
 
 
-    if (!confirmed) {
+    if (
+        !confirmed
+    ) {
 
         return;
 
@@ -3029,12 +3706,14 @@ function deleteTrade(id) {
 }
 
 
-/* =========================
+/* =========================================================
    ADD TRADE
-========================= */
+========================================================= */
 
 document
-.getElementById("tradeForm")
+.getElementById(
+    "tradeForm"
+)
 .addEventListener(
     "submit",
     function(event) {
@@ -3049,12 +3728,11 @@ document
 
 
         /*
-        IMPORTANT:
-
         WIN  = positive
         LOSS = negative
         BE   = zero
         */
+
 
         let profit =
             Number(
@@ -3064,23 +3742,33 @@ document
             );
 
 
-        if (result === "WIN") {
+        if (
+            result === "WIN"
+        ) {
 
             profit =
-                Math.abs(profit);
+                Math.abs(
+                    profit
+                );
 
         }
 
 
-        if (result === "LOSS") {
+        if (
+            result === "LOSS"
+        ) {
 
             profit =
-                -Math.abs(profit);
+                -Math.abs(
+                    profit
+                );
 
         }
 
 
-        if (result === "BE") {
+        if (
+            result === "BE"
+        ) {
 
             profit = 0;
 
@@ -3089,7 +3777,8 @@ document
 
         const trade = {
 
-            id: Date.now(),
+            id:
+                Date.now(),
 
             date:
                 document.getElementById(
@@ -3123,14 +3812,16 @@ document
                 Number(
                     document.getElementById(
                         "risk"
-                    ).value || 0
+                    ).value ||
+                    0
                 ),
 
             rMultiple:
                 Number(
                     document.getElementById(
                         "rMultiple"
-                    ).value || 0
+                    ).value ||
+                    0
                 ),
 
             d1Bias:
@@ -3196,7 +3887,8 @@ document
             notes:
                 document.getElementById(
                     "notes"
-                ).value.trim()
+                ).value
+                .trim()
 
         };
 
@@ -3210,7 +3902,9 @@ document
             saveTrades();
 
 
-        if (!saved) {
+        if (
+            !saved
+        ) {
 
             showStatus(
                 "⚠️ Trade could not be saved.",
@@ -3240,23 +3934,39 @@ document
 );
 
 
-/* =========================
+/* =========================================================
    RESIZE
-========================= */
+========================================================= */
+
+let resizeTimer;
+
 
 window.addEventListener(
     "resize",
     function() {
 
-        drawCharts();
+        clearTimeout(
+            resizeTimer
+        );
+
+
+        resizeTimer =
+            setTimeout(
+                () => {
+
+                    drawCharts();
+
+                },
+                150
+            );
 
     }
 );
 
 
-/* =========================
-   START
-========================= */
+/* =========================================================
+   START OCHITRACKER
+========================================================= */
 
 loadTrades();
 
