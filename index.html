@@ -455,6 +455,30 @@ canvas{
   display:block;
 }
 
+.report-history-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
+}
+
+.report-history-header h3{
+  margin:0;
+}
+
+.reset-history-box{
+  margin-top:15px;
+  padding:14px;
+  border:1px solid #5a3037;
+  background:#1b1015;
+  border-radius:11px;
+}
+
+.reset-history-box strong{
+  color:#f08b96;
+}
+
 footer{
   text-align:center;
   padding:30px 0 45px;
@@ -541,6 +565,11 @@ hr{
 
   .calendar-trades{
     display:none;
+  }
+
+  .report-history-header{
+    align-items:flex-start;
+    flex-direction:column;
   }
 }
 
@@ -1259,8 +1288,31 @@ hr{
 
   <hr>
 
-  <h3>Report History</h3>
+  <div class="report-history-header">
+    <h3>Report History</h3>
+  </div>
+
   <div id="reportHistory"></div>
+
+  <!-- NEW: REPORT HISTORY RESET -->
+  <div class="reset-history-box">
+
+    <strong>🧹 Reset Report History</strong>
+
+    <div class="small muted" style="margin-top:5px;margin-bottom:12px">
+      This removes only previously generated reports. Your trades, Risk Engine
+      settings and backups will remain untouched.
+    </div>
+
+    <button
+      class="danger"
+      type="button"
+      onclick="resetReportHistory()">
+      Reset Report History
+    </button>
+
+  </div>
+
 </section>
 
 <!-- PHASE 6 -->
@@ -2722,18 +2774,9 @@ function renderOchiAI(){
 
   }else{
 
-    if(s.winRate>=60){
-
-      insights.push(
-        `Historical win rate is ${pct(s.winRate)} across ${s.total} trades.`
-      );
-
-    }else{
-
-      insights.push(
-        `Historical win rate is ${pct(s.winRate)} across ${s.total} trades.`
-      );
-    }
+    insights.push(
+      `Historical win rate is ${pct(s.winRate)} across ${s.total} trades.`
+    );
 
     const violations=
       trades.filter(t=>
@@ -2966,7 +3009,7 @@ function generateReport(){
 
   const bestDay=
     dayEntries.length
-      ? dayEntries.sort((a,b)=>b[1]-a[1])[0]
+      ? [...dayEntries].sort((a,b)=>b[1]-a[1])[0]
       : ["—",0];
 
   const worstDay=
@@ -3121,6 +3164,10 @@ function generateReport(){
 }
 
 
+/* =========================================================
+   REPORT HISTORY
+========================================================= */
+
 function renderReportHistory(){
 
   const history=loadReportHistory();
@@ -3174,6 +3221,58 @@ function renderReportHistory(){
   `;
 
   document.getElementById("reportHistory").innerHTML=html;
+}
+
+
+/* =========================================================
+   NEW — RESET ONLY REPORT HISTORY
+========================================================= */
+
+function resetReportHistory(){
+
+  const history=loadReportHistory();
+
+  if(!history.length){
+
+    alert("Report History is already empty.");
+
+    return;
+  }
+
+  const firstConfirm=
+    confirm(
+      `Reset Report History?\n\n`+
+      `${history.length} saved report(s) will be removed.\n\n`+
+      `Your actual trades, Risk Engine settings and backups will NOT be affected.`
+    );
+
+  if(!firstConfirm){
+    return;
+  }
+
+  const secondConfirm=
+    confirm(
+      "FINAL CONFIRMATION:\n\n"+
+      "Only Report History will be deleted.\n"+
+      "Your trading journal will remain untouched.\n\n"+
+      "Continue?"
+    );
+
+  if(!secondConfirm){
+    return;
+  }
+
+  localStorage.removeItem(REPORT_KEY);
+
+  document.getElementById("reportOutput").innerHTML="";
+
+  renderReportHistory();
+
+  renderBackupOverview();
+
+  alert(
+    "Report History has been reset successfully. Your trading journal was not affected."
+  );
 }
 
 
@@ -3802,9 +3901,6 @@ function deleteTrade(id){
    PHASE 6 — DATA PROTECTION
 ========================================================= */
 
-
-/* ---------- BACKUP METADATA ---------- */
-
 function getLastBackup(){
 
   const value=
@@ -3838,8 +3934,6 @@ function updateLastBackup(){
 }
 
 
-/* ---------- FILENAME ---------- */
-
 function backupDateString(){
 
   const d=new Date();
@@ -3847,8 +3941,6 @@ function backupDateString(){
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
 }
 
-
-/* ---------- DOWNLOAD ---------- */
 
 function downloadJSON(data,filename){
 
@@ -3896,8 +3988,6 @@ function downloadJSON(data,filename){
 }
 
 
-/* ---------- JOURNAL EXPORT ---------- */
-
 function exportJournal(){
 
   const data={
@@ -3930,8 +4020,6 @@ function exportJournal(){
   }
 }
 
-
-/* ---------- FULL BACKUP ---------- */
 
 function exportFullBackup(){
 
@@ -3969,8 +4057,6 @@ function exportFullBackup(){
   }
 }
 
-
-/* ---------- READ FILE ---------- */
 
 async function readBackupFile(){
 
@@ -4025,8 +4111,6 @@ async function readBackupFile(){
   return data;
 }
 
-
-/* ---------- VALIDATION ---------- */
 
 function validateBackup(data){
 
@@ -4088,8 +4172,6 @@ function validateBackup(data){
   }
 }
 
-
-/* ---------- PREVIEW ---------- */
 
 async function previewBackup(){
 
@@ -4164,8 +4246,6 @@ async function previewBackup(){
 }
 
 
-/* ---------- TRADE FINGERPRINT ---------- */
-
 function tradeFingerprint(t){
 
   return [
@@ -4193,8 +4273,6 @@ function tradeFingerprint(t){
   ].join("|");
 }
 
-
-/* ---------- MERGE ---------- */
 
 async function mergeBackup(){
 
@@ -4262,8 +4340,6 @@ async function mergeBackup(){
   }
 }
 
-
-/* ---------- FULL RESTORE ---------- */
 
 async function restoreFullBackup(){
 
@@ -4346,8 +4422,6 @@ async function restoreFullBackup(){
 }
 
 
-/* ---------- CLEAR ALL ---------- */
-
 function clearAllData(){
 
   const first=
@@ -4396,8 +4470,6 @@ function clearAllData(){
   );
 }
 
-
-/* ---------- DATA HEALTH ---------- */
 
 function getDataHealth(){
 
