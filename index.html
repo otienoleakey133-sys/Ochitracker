@@ -1758,6 +1758,126 @@ footer{
   .database-grid{grid-template-columns:1fr;}
 }
 
+
+/* =========================================================
+   PHASE 7.4 — OCHI TRADE SYNCHRONIZATION
+========================================================= */
+.sync-panel{
+  margin-top:18px;
+  padding:18px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:18px;
+  background:rgba(255,255,255,.025);
+}
+.sync-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+  flex-wrap:wrap;
+}
+.sync-title{
+  margin:0;
+  font-size:20px;
+  font-weight:800;
+}
+.sync-subtitle{
+  margin-top:5px;
+  color:#9aa7b8;
+  font-size:13px;
+}
+.phase74-badge{
+  display:inline-flex;
+  align-items:center;
+  padding:7px 10px;
+  border-radius:999px;
+  background:rgba(255,193,7,.10);
+  color:#ffd66b;
+  border:1px solid rgba(255,193,7,.23);
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.7px;
+}
+.sync-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+  margin-top:15px;
+}
+.sync-card{
+  padding:14px;
+  border-radius:14px;
+  background:rgba(0,0,0,.16);
+  border:1px solid rgba(255,255,255,.07);
+}
+.sync-label{
+  font-size:11px;
+  color:#8f9aaa;
+  text-transform:uppercase;
+  letter-spacing:.7px;
+}
+.sync-value{
+  margin-top:6px;
+  font-weight:750;
+  word-break:break-word;
+}
+.sync-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
+  margin-top:14px;
+}
+.sync-btn{
+  border:0;
+  border-radius:11px;
+  padding:11px 15px;
+  font-weight:750;
+  cursor:pointer;
+}
+.sync-btn.primary{background:#238636;color:#fff;}
+.sync-btn.secondary{
+  background:#21262d;
+  color:#e6edf3;
+  border:1px solid rgba(255,255,255,.09);
+}
+.sync-btn.warning{background:#9a6700;color:#fff;}
+.sync-message{
+  margin-top:12px;
+  padding:11px 13px;
+  border-radius:11px;
+  background:rgba(255,193,7,.07);
+  border:1px solid rgba(255,193,7,.15);
+  color:#ffe4a1;
+  font-size:13px;
+  line-height:1.5;
+}
+.sync-note{
+  margin-top:12px;
+  color:#8f9aaa;
+  font-size:12px;
+  line-height:1.55;
+}
+.sync-progress{
+  margin-top:11px;
+  height:6px;
+  border-radius:999px;
+  background:rgba(255,255,255,.07);
+  overflow:hidden;
+}
+.sync-progress-bar{
+  height:100%;
+  width:0%;
+  border-radius:999px;
+  background:rgba(255,193,7,.85);
+  transition:width .25s ease;
+}
+@media(max-width:900px){
+  .sync-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+@media(max-width:560px){
+  .sync-grid{grid-template-columns:1fr;}
+}
+
 </style>
 </head>
 
@@ -3544,7 +3664,58 @@ footer{
     </div>
 
     <div class="database-note">
-      <strong>Phase 7.3 scope:</strong> this introduces a structured browser database using IndexedDB and a provider-neutral database adapter. Existing Phase 6 localStorage keys remain the source of truth during this foundation phase. No external cloud provider, API key, or network connection is required yet. The adapter is designed so a real cloud database can be connected in the later synchronization phases.
+      <strong>Phase 7.3 scope:</strong> this introduces a structured browser database using IndexedDB and a provider-neutral database adapter. Existing Phase 6 localStorage keys remain the source of truth during this foundation phase. No external cloud provider, API key, or network connection is required yet. The adapter is designed so a real cloud database can be connected after the local synchronization foundation is proven.
+    </div>
+  </div>
+
+  <!-- =====================================================
+       PHASE 7.4 — OCHI TRADE SYNCHRONIZATION
+  ====================================================== -->
+  <div class="sync-panel" id="ochiTradeSyncPanel">
+    <div class="sync-head">
+      <div>
+        <h3 class="sync-title">🔄 Trade Synchronization</h3>
+        <div class="sync-subtitle">Phase 7.4 · Local app ↔ structured database</div>
+      </div>
+      <span class="phase74-badge">PHASE 7.4</span>
+    </div>
+
+    <div class="sync-grid">
+      <div class="sync-card">
+        <div class="sync-label">App Trades</div>
+        <div class="sync-value" id="ochiSyncLocalCount">0</div>
+      </div>
+      <div class="sync-card">
+        <div class="sync-label">Database Trades</div>
+        <div class="sync-value" id="ochiSyncDatabaseCount">0</div>
+      </div>
+      <div class="sync-card">
+        <div class="sync-label">Sync Status</div>
+        <div class="sync-value" id="ochiSyncStatus">Not synced</div>
+      </div>
+      <div class="sync-card">
+        <div class="sync-label">Last Sync</div>
+        <div class="sync-value" id="ochiSyncLastSync">Never</div>
+      </div>
+    </div>
+
+    <div class="sync-actions">
+      <button class="sync-btn primary" type="button" onclick="syncOchiTradesNow()">🔄 Sync Now</button>
+      <button class="sync-btn secondary" type="button" onclick="pushOchiTradesToDatabase()">↑ Push App → Database</button>
+      <button class="sync-btn warning" type="button" onclick="pullOchiTradesFromDatabase()">↓ Pull Database → App</button>
+      <button class="sync-btn secondary" type="button" onclick="compareOchiTradeStores()">Compare Stores</button>
+    </div>
+
+    <div class="sync-progress" aria-hidden="true">
+      <div class="sync-progress-bar" id="ochiSyncProgress"></div>
+    </div>
+
+    <div class="sync-message" id="ochiSyncMessage">
+      Trade synchronization is ready. Your existing local OchiTracker data remains the working dataset until you choose to synchronize it into the database.
+    </div>
+
+    <div class="sync-note">
+      <strong>Phase 7.4 scope:</strong> this is synchronization between the browser app and the local IndexedDB database created in Phase 7.3. It is <strong>not internet/cloud synchronization yet</strong>. “Sync Now” uses the app's current trade journal as the source and safely writes it to the local database. Pulling from the database requires confirmation because it replaces the current app trade list.
     </div>
   </div>
 
@@ -3667,6 +3838,10 @@ function saveTrades(){
     TRADE_KEY,
     JSON.stringify(trades)
   );
+
+  if(typeof scheduleOchiTradeSync==="function"){
+    scheduleOchiTradeSync();
+  }
 
 }
 
@@ -8588,13 +8763,13 @@ initialize();
 ========================================================= */
 
 const OCHI_CLOUD_ARCHITECTURE = Object.freeze({
-  version:"7.3",
+  version:"7.4",
   mode:"local-first",
   provider:"IndexedDB-local",
   environment:"development",
   account:{enabled:true,authenticated:false},
   database:{enabled:true,connected:false},
-  sync:{enabled:false,status:"local-only",lastSync:null},
+  sync:{enabled:true,status:"local-only",lastSync:null},
   storageKeys:Object.freeze({
     trades:"ochiTrades",
     riskSettings:"ochiRiskSettings",
@@ -9156,6 +9331,381 @@ window.OCHI_DATABASE = Object.freeze({
 });
 
 initializeOchiDatabase();
+
+
+/* =========================================================
+   PHASE 7.4 — OCHI TRADE SYNCHRONIZATION
+   Local app storage <-> local IndexedDB.
+   Remote cloud sync is intentionally not active yet.
+========================================================= */
+
+const OCHI_SYNC_STATE_KEY = "ochiSyncState";
+
+const OCHI_SYNC_RUNTIME = {
+  status:"not-synced",
+  syncing:false,
+  lastSync:null,
+  direction:"none"
+};
+
+window.OCHI_SYNC_RUNTIME=OCHI_SYNC_RUNTIME;
+
+function getOchiSyncState(){
+  try{
+    const raw=localStorage.getItem(OCHI_SYNC_STATE_KEY);
+    return raw ? JSON.parse(raw) : {};
+  }catch(error){
+    return {};
+  }
+}
+
+function saveOchiSyncState(state){
+  try{
+    localStorage.setItem(OCHI_SYNC_STATE_KEY,JSON.stringify(state));
+  }catch(error){}
+}
+
+function formatOchiSyncTime(value){
+  if(!value) return "Never";
+  try{
+    return new Date(value).toLocaleString();
+  }catch(error){
+    return "Unknown";
+  }
+}
+
+function setOchiSyncProgress(percent){
+  const bar=document.getElementById("ochiSyncProgress");
+  if(bar) bar.style.width=`${Math.max(0,Math.min(100,percent))}%`;
+}
+
+function setOchiSyncMessage(message,isError=false){
+  const el=document.getElementById("ochiSyncMessage");
+  if(!el) return;
+
+  el.textContent=message;
+  el.style.color=isError ? "#ffb4b4" : "#ffe4a1";
+  el.style.borderColor=isError ? "rgba(255,100,100,.22)" : "rgba(255,193,7,.15)";
+  el.style.background=isError ? "rgba(255,70,70,.08)" : "rgba(255,193,7,.07)";
+}
+
+async function getOchiDatabaseTradeRows(){
+  try{
+    return await ochiDatabaseGetAll(OCHI_DATABASE_STORES.trades);
+  }catch(error){
+    return [];
+  }
+}
+
+function getOchiLocalTradeRows(){
+  return Array.isArray(trades) ? trades.map((trade,index)=>normalizeDatabaseTrade(trade,index)) : [];
+}
+
+function buildOchiTradeMap(list){
+  const map=new Map();
+  (Array.isArray(list)?list:[]).forEach((trade,index)=>{
+    const id=String(trade?.id ?? `index-${index}`);
+    map.set(id,trade);
+  });
+  return map;
+}
+
+function compareOchiTradeLists(localRows,databaseRows){
+  const localMap=buildOchiTradeMap(localRows);
+  const dbMap=buildOchiTradeMap(databaseRows);
+
+  const onlyLocal=[];
+  const onlyDatabase=[];
+  const changed=[];
+
+  localMap.forEach((localTrade,id)=>{
+    if(!dbMap.has(id)){
+      onlyLocal.push(localTrade);
+      return;
+    }
+
+    const localFingerprint=JSON.stringify(localTrade);
+    const databaseFingerprint=JSON.stringify(dbMap.get(id));
+
+    if(localFingerprint!==databaseFingerprint){
+      changed.push({
+        id,
+        local:localTrade,
+        database:dbMap.get(id)
+      });
+    }
+  });
+
+  dbMap.forEach((dbTrade,id)=>{
+    if(!localMap.has(id)){
+      onlyDatabase.push(dbTrade);
+    }
+  });
+
+  return {
+    localCount:localRows.length,
+    databaseCount:databaseRows.length,
+    onlyLocal,
+    onlyDatabase,
+    changed,
+    identical:onlyLocal.length===0 && onlyDatabase.length===0 && changed.length===0
+  };
+}
+
+async function compareOchiTradeStores(showMessage=true){
+  try{
+    const localRows=getOchiLocalTradeRows();
+    const databaseRows=await getOchiDatabaseTradeRows();
+    const comparison=compareOchiTradeLists(localRows,databaseRows);
+
+    if(showMessage){
+      if(comparison.identical){
+        setOchiSyncMessage(
+          `Stores match exactly: ${comparison.localCount} trade(s) in the app and ${comparison.databaseCount} trade(s) in the database.`,
+          false
+        );
+      }else{
+        setOchiSyncMessage(
+          `Stores differ — App: ${comparison.localCount}, Database: ${comparison.databaseCount}, App-only: ${comparison.onlyLocal.length}, Database-only: ${comparison.onlyDatabase.length}, Changed: ${comparison.changed.length}.`,
+          false
+        );
+      }
+    }
+
+    updateOchiSyncUI(comparison);
+    return comparison;
+  }catch(error){
+    setOchiSyncMessage("Could not compare the app and database trade stores.",true);
+    return null;
+  }
+}
+
+async function pushOchiTradesToDatabase(){
+  if(OCHI_SYNC_RUNTIME.syncing) return false;
+
+  OCHI_SYNC_RUNTIME.syncing=true;
+  OCHI_SYNC_RUNTIME.status="syncing";
+  OCHI_SYNC_RUNTIME.direction="app-to-database";
+  setOchiSyncProgress(15);
+  updateOchiSyncUI();
+
+  try{
+    await openOchiDatabase();
+    setOchiSyncProgress(35);
+
+    const db=await openOchiDatabase();
+
+    await new Promise((resolve,reject)=>{
+      const tx=db.transaction(
+        [OCHI_DATABASE_STORES.trades,OCHI_DATABASE_STORES.metadata],
+        "readwrite"
+      );
+
+      const tradeStore=tx.objectStore(OCHI_DATABASE_STORES.trades);
+      const metadataStore=tx.objectStore(OCHI_DATABASE_STORES.metadata);
+
+      tradeStore.clear();
+
+      getOchiLocalTradeRows().forEach(trade=>{
+        tradeStore.put(trade);
+      });
+
+      const now=new Date().toISOString();
+
+      metadataStore.put({
+        id:"tradeSync",
+        lastSyncAt:now,
+        direction:"app-to-database",
+        localTradeCount:Array.isArray(trades)?trades.length:0,
+        databaseVersion:OCHI_DATABASE_VERSION
+      });
+
+      tx.oncomplete=()=>resolve();
+      tx.onerror=()=>reject(tx.error || new Error("Trade sync write failed."));
+      tx.onabort=()=>reject(tx.error || new Error("Trade sync write aborted."));
+    });
+
+    setOchiSyncProgress(85);
+
+    const now=new Date().toISOString();
+    OCHI_SYNC_RUNTIME.status="synced";
+    OCHI_SYNC_RUNTIME.lastSync=now;
+
+    saveOchiSyncState({
+      lastSyncAt:now,
+      direction:"app-to-database",
+      tradeCount:Array.isArray(trades)?trades.length:0
+    });
+
+    setOchiSyncProgress(100);
+    setOchiSyncMessage(
+      `Trade synchronization complete. ${Array.isArray(trades)?trades.length:0} trade(s) copied from the app into the local database.`,
+      false
+    );
+
+    await compareOchiTradeStores(false);
+    if(typeof refreshOchiDatabaseStatus==="function") await refreshOchiDatabaseStatus();
+
+    return true;
+  }catch(error){
+    OCHI_SYNC_RUNTIME.status="error";
+    setOchiSyncMessage("Trade synchronization failed. Your existing app data was not deleted.",true);
+    return false;
+  }finally{
+    OCHI_SYNC_RUNTIME.syncing=false;
+    setTimeout(()=>setOchiSyncProgress(0),700);
+    updateOchiSyncUI();
+  }
+}
+
+async function pullOchiTradesFromDatabase(){
+  if(OCHI_SYNC_RUNTIME.syncing) return false;
+
+  const databaseRows=await getOchiDatabaseTradeRows();
+
+  if(!databaseRows.length){
+    setOchiSyncMessage(
+      "The database contains no trades to pull. Use “Push App → Database” first if you want to initialize it from your current journal.",
+      true
+    );
+    return false;
+  }
+
+  const confirmed=window.confirm(
+    `Pull ${databaseRows.length} trade(s) from the database into OchiTracker?\\n\\nThis will replace the current in-app trade list. Use your Phase 6 backup first if you need a recovery point.`
+  );
+
+  if(!confirmed) return false;
+
+  OCHI_SYNC_RUNTIME.syncing=true;
+  OCHI_SYNC_RUNTIME.status="syncing";
+  OCHI_SYNC_RUNTIME.direction="database-to-app";
+  setOchiSyncProgress(20);
+  updateOchiSyncUI();
+
+  try{
+    const normalized=normalizeTrades(databaseRows);
+    trades=normalized;
+    setOchiSyncProgress(55);
+
+    saveTrades();
+    setOchiSyncProgress(75);
+
+    const now=new Date().toISOString();
+
+    saveOchiSyncState({
+      lastSyncAt:now,
+      direction:"database-to-app",
+      tradeCount:trades.length
+    });
+
+    OCHI_SYNC_RUNTIME.status="synced";
+    OCHI_SYNC_RUNTIME.lastSync=now;
+
+    renderEverything();
+
+    setOchiSyncProgress(100);
+    setOchiSyncMessage(
+      `Database pull complete. ${trades.length} trade(s) are now loaded into the app.`,
+      false
+    );
+
+    await compareOchiTradeStores(false);
+    return true;
+  }catch(error){
+    OCHI_SYNC_RUNTIME.status="error";
+    setOchiSyncMessage("Database pull failed. The current app dataset was not intentionally cleared.",true);
+    return false;
+  }finally{
+    OCHI_SYNC_RUNTIME.syncing=false;
+    setTimeout(()=>setOchiSyncProgress(0),700);
+    updateOchiSyncUI();
+  }
+}
+
+async function syncOchiTradesNow(){
+  return pushOchiTradesToDatabase();
+}
+
+function updateOchiSyncUI(comparison=null){
+  const localEl=document.getElementById("ochiSyncLocalCount");
+  const dbEl=document.getElementById("ochiSyncDatabaseCount");
+  const statusEl=document.getElementById("ochiSyncStatus");
+  const lastEl=document.getElementById("ochiSyncLastSync");
+
+  const localCount=Array.isArray(trades)?trades.length:0;
+
+  if(localEl) localEl.textContent=String(localCount);
+
+  if(dbEl && comparison){
+    dbEl.textContent=String(comparison.databaseCount);
+  }else if(dbEl){
+    dbEl.textContent="—";
+  }
+
+  const persisted=getOchiSyncState();
+  const lastSync=OCHI_SYNC_RUNTIME.lastSync || persisted.lastSyncAt || null;
+
+  if(statusEl){
+    if(OCHI_SYNC_RUNTIME.syncing) statusEl.textContent="Syncing…";
+    else if(OCHI_SYNC_RUNTIME.status==="synced") statusEl.textContent="Synced";
+    else if(OCHI_SYNC_RUNTIME.status==="error") statusEl.textContent="Error";
+    else statusEl.textContent="Not synced";
+  }
+
+  if(lastEl) lastEl.textContent=formatOchiSyncTime(lastSync);
+
+  const cloudRuntime=window.OCHI_CLOUD_RUNTIME;
+  if(cloudRuntime){
+    cloudRuntime.sync=cloudRuntime.sync || {};
+    cloudRuntime.sync.enabled=true;
+    cloudRuntime.sync.status=OCHI_SYNC_RUNTIME.status;
+    cloudRuntime.sync.lastSync=lastSync;
+    cloudRuntime.sync.direction=OCHI_SYNC_RUNTIME.direction;
+  }
+
+  if(typeof renderOchiCloud==="function"){
+    renderOchiCloud();
+  }
+}
+
+function scheduleOchiTradeSync(){
+  if(!ochiDatabaseReady) return;
+  if(OCHI_SYNC_RUNTIME.syncing) return;
+
+  clearTimeout(window.__ochiTradeSyncTimer);
+  window.__ochiTradeSyncTimer=setTimeout(()=>{
+    pushOchiTradesToDatabase();
+  },500);
+}
+
+async function initializeOchiTradeSync(){
+  const persisted=getOchiSyncState();
+  if(persisted.lastSyncAt){
+    OCHI_SYNC_RUNTIME.lastSync=persisted.lastSyncAt;
+    OCHI_SYNC_RUNTIME.direction=persisted.direction || "none";
+    OCHI_SYNC_RUNTIME.status="synced";
+  }
+
+  updateOchiSyncUI();
+
+  try{
+    await openOchiDatabase();
+    const comparison=await compareOchiTradeStores(false);
+
+    if(comparison && comparison.identical && comparison.localCount>0){
+      OCHI_SYNC_RUNTIME.status="synced";
+    }
+
+    updateOchiSyncUI(comparison);
+  }catch(error){
+    OCHI_SYNC_RUNTIME.status="not-synced";
+    updateOchiSyncUI();
+  }
+}
+
+initializeOchiTradeSync();
+
 </script>
 
 </body>
