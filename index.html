@@ -1477,6 +1477,47 @@ footer{
   outline:2px solid var(--blue);
   outline-offset:2px;
 }
+
+
+/* =========================================================
+   PHASE 7.1 — OCHI CLOUD ARCHITECTURE
+========================================================= */
+
+.cloud-command{
+  margin:18px 0 24px;
+  padding:18px;
+  border:1px solid rgba(77,163,255,.30);
+  border-radius:18px;
+  background:linear-gradient(135deg,rgba(16,34,55,.96),rgba(7,17,31,.96));
+  box-shadow:0 12px 35px rgba(0,0,0,.22);
+}
+.cloud-command-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:16px}
+.cloud-brand{display:flex;align-items:center;gap:12px}
+.cloud-icon{width:42px;height:42px;display:grid;place-items:center;border-radius:12px;background:rgba(77,163,255,.12);border:1px solid rgba(77,163,255,.25);font-size:21px}
+.cloud-title{font-size:19px;font-weight:850;margin:0}
+.cloud-subtitle{font-size:12px;color:var(--muted);margin-top:3px}
+.cloud-status{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:.4px;background:rgba(242,200,97,.10);border:1px solid rgba(242,200,97,.24);color:var(--yellow)}
+.cloud-dot{width:7px;height:7px;border-radius:50%;background:var(--yellow)}
+.cloud-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.cloud-card{padding:13px;border:1px solid var(--border);border-radius:13px;background:rgba(10,25,42,.72)}
+.cloud-label{font-size:10px;color:var(--muted2);text-transform:uppercase;letter-spacing:.7px;font-weight:800}
+.cloud-value{font-size:14px;font-weight:800;margin-top:5px}
+.cloud-note{margin-top:14px;padding:11px 12px;border-radius:11px;background:rgba(67,209,125,.06);border:1px solid rgba(67,209,125,.15);font-size:12px;color:var(--muted)}
+.cloud-note strong{color:var(--text)}
+.cloud-architecture{margin-top:14px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.cloud-node{padding:10px;border-radius:10px;text-align:center;border:1px solid var(--border);background:rgba(255,255,255,.02);font-size:11px;font-weight:750}
+.cloud-arrow{display:none}
+.phase71-badge{display:inline-flex;align-items:center;padding:5px 8px;border-radius:999px;font-size:10px;font-weight:900;letter-spacing:.7px;color:var(--cyan);background:rgba(85,216,255,.08);border:1px solid rgba(85,216,255,.18)}
+@media(max-width:760px){
+  .cloud-command-head{flex-direction:column}
+  .cloud-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cloud-architecture{grid-template-columns:1fr 1fr}
+}
+@media(max-width:420px){
+  .cloud-grid{grid-template-columns:1fr 1fr}
+  .cloud-command{padding:14px}
+}
+
 </style>
 </head>
 
@@ -3130,6 +3171,47 @@ footer{
 
   </div>
 
+</section>
+
+
+
+<!-- =======================================================
+     PHASE 7.1 — OCHI CLOUD ARCHITECTURE
+======================================================= -->
+<section id="ochiCloud" class="cloud-command">
+  <div class="cloud-command-head">
+    <div class="cloud-brand">
+      <div class="cloud-icon">☁️</div>
+      <div>
+        <h2 class="cloud-title">Ochi Cloud</h2>
+        <div class="cloud-subtitle">Phase 7.1 · Cloud architecture foundation</div>
+      </div>
+    </div>
+    <span class="phase71-badge">PHASE 7.1</span>
+  </div>
+
+  <div class="cloud-status">
+    <span class="cloud-dot"></span>
+    <span id="ochiCloudStatus">LOCAL-FIRST · CLOUD NOT CONNECTED</span>
+  </div>
+
+  <div class="cloud-grid" style="margin-top:14px">
+    <div class="cloud-card"><div class="cloud-label">Account</div><div class="cloud-value" id="cloudAccountStatus">Not connected</div></div>
+    <div class="cloud-card"><div class="cloud-label">Database</div><div class="cloud-value" id="cloudDatabaseStatus">Not connected</div></div>
+    <div class="cloud-card"><div class="cloud-label">Sync</div><div class="cloud-value" id="cloudSyncStatus">Local only</div></div>
+    <div class="cloud-card"><div class="cloud-label">Local Data</div><div class="cloud-value" id="cloudLocalDataStatus">Protected</div></div>
+  </div>
+
+  <div class="cloud-architecture">
+    <div class="cloud-node">📱 OchiTracker UI</div>
+    <div class="cloud-node">💾 Local Data Layer</div>
+    <div class="cloud-node">🔄 Sync Engine</div>
+    <div class="cloud-node">☁️ Ochi Cloud</div>
+  </div>
+
+  <div class="cloud-note">
+    <strong>Phase 7.1 foundation:</strong> OchiTracker remains local-first. Your existing Phase 6 storage keys stay untouched. Authentication, database connection and live synchronization will be activated in later phases.
+  </div>
 </section>
 
 </main>
@@ -8161,6 +8243,82 @@ window.addEventListener(
 
 initialize();
 
+
+
+/* =========================================================
+   PHASE 7.1 — OCHI CLOUD ARCHITECTURE LAYER
+   Local-first foundation only. No external network calls.
+========================================================= */
+
+const OCHI_CLOUD_ARCHITECTURE = Object.freeze({
+  version:"7.1",
+  mode:"local-first",
+  provider:null,
+  environment:"development",
+  account:{enabled:false,authenticated:false},
+  database:{enabled:false,connected:false},
+  sync:{enabled:false,status:"local-only",lastSync:null},
+  storageKeys:Object.freeze({
+    trades:"ochiTrades",
+    riskSettings:"ochiRiskSettings",
+    reportHistory:"ochiReportHistory",
+    lastBackup:"ochiLastBackup"
+  })
+});
+
+function getOchiCloudState(){
+  return {
+    ...OCHI_CLOUD_ARCHITECTURE,
+    account:{...OCHI_CLOUD_ARCHITECTURE.account},
+    database:{...OCHI_CLOUD_ARCHITECTURE.database},
+    sync:{...OCHI_CLOUD_ARCHITECTURE.sync},
+    storageKeys:{...OCHI_CLOUD_ARCHITECTURE.storageKeys}
+  };
+}
+
+function getOchiCloudLocalHealth(){
+  try{
+    const tradeRaw=localStorage.getItem(TRADE_KEY);
+    const riskRaw=localStorage.getItem(RISK_KEY);
+    const reportRaw=localStorage.getItem(REPORT_KEY);
+    return {
+      available:true,
+      tradesStored:Array.isArray(trades),
+      riskStored:!!riskRaw,
+      reportsStored:!!reportRaw,
+      localStorageAvailable:true,
+      tradeCount:Array.isArray(trades)?trades.length:0
+    };
+  }catch(error){
+    return {available:false,localStorageAvailable:false,tradeCount:0};
+  }
+}
+
+function renderOchiCloud(){
+  const state=getOchiCloudState();
+  const health=getOchiCloudLocalHealth();
+  const status=document.getElementById("ochiCloudStatus");
+  const account=document.getElementById("cloudAccountStatus");
+  const database=document.getElementById("cloudDatabaseStatus");
+  const sync=document.getElementById("cloudSyncStatus");
+  const local=document.getElementById("cloudLocalDataStatus");
+  if(!status)return;
+
+  status.textContent=state.database.connected
+    ? "CLOUD CONNECTED"
+    : "LOCAL-FIRST · CLOUD NOT CONNECTED";
+  account.textContent=state.account.authenticated ? "Authenticated" : "Not connected";
+  database.textContent=state.database.connected ? "Connected" : "Not connected";
+  sync.textContent=state.sync.enabled ? state.sync.status : "Local only";
+  local.textContent=health.available && health.localStorageAvailable ? "Protected" : "Check storage";
+}
+
+function initializeOchiCloudArchitecture(){
+  renderOchiCloud();
+}
+
+
+  initializeOchiCloudArchitecture();
 </script>
 
 </body>
