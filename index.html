@@ -1518,6 +1518,138 @@ footer{
   .cloud-command{padding:14px}
 }
 
+
+/* =========================================================
+   PHASE 7.2 — OCHI ACCOUNT / AUTHENTICATION FOUNDATION
+========================================================= */
+.ochi-account-panel{
+  margin-top:18px;
+  padding:18px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:18px;
+  background:rgba(255,255,255,.025);
+}
+.account-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+  flex-wrap:wrap;
+}
+.account-title{
+  margin:0;
+  font-size:20px;
+  font-weight:800;
+}
+.account-subtitle{
+  margin-top:5px;
+  color:#9aa7b8;
+  font-size:13px;
+}
+.phase72-badge{
+  display:inline-flex;
+  align-items:center;
+  padding:7px 10px;
+  border-radius:999px;
+  background:rgba(88,166,255,.12);
+  color:#79b8ff;
+  border:1px solid rgba(88,166,255,.25);
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.7px;
+}
+.account-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+  margin-top:15px;
+}
+.account-card{
+  padding:14px;
+  border-radius:14px;
+  background:rgba(0,0,0,.16);
+  border:1px solid rgba(255,255,255,.07);
+}
+.account-label{
+  font-size:11px;
+  color:#8f9aaa;
+  text-transform:uppercase;
+  letter-spacing:.7px;
+}
+.account-value{
+  margin-top:6px;
+  font-weight:750;
+  word-break:break-word;
+}
+.account-form{
+  display:grid;
+  grid-template-columns:1fr 1fr auto;
+  gap:10px;
+  margin-top:15px;
+}
+.account-form input{
+  width:100%;
+  min-width:0;
+  padding:12px 13px;
+  border-radius:11px;
+  border:1px solid rgba(255,255,255,.10);
+  background:#0d1118;
+  color:#fff;
+  outline:none;
+}
+.account-form input:focus{
+  border-color:rgba(88,166,255,.55);
+}
+.account-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
+  margin-top:11px;
+}
+.account-btn{
+  border:0;
+  border-radius:11px;
+  padding:11px 15px;
+  font-weight:750;
+  cursor:pointer;
+}
+.account-btn.primary{
+  background:#238636;
+  color:#fff;
+}
+.account-btn.secondary{
+  background:#21262d;
+  color:#e6edf3;
+  border:1px solid rgba(255,255,255,.09);
+}
+.account-btn.danger{
+  background:#7d1d1d;
+  color:#fff;
+}
+.account-message{
+  margin-top:12px;
+  padding:11px 13px;
+  border-radius:11px;
+  background:rgba(88,166,255,.08);
+  border:1px solid rgba(88,166,255,.16);
+  color:#b9d8ff;
+  font-size:13px;
+  line-height:1.5;
+}
+.account-note{
+  margin-top:12px;
+  color:#8f9aaa;
+  font-size:12px;
+  line-height:1.55;
+}
+.account-signed{
+  display:none;
+}
+@media(max-width:760px){
+  .account-grid{grid-template-columns:1fr;}
+  .account-form{grid-template-columns:1fr;}
+}
+
 </style>
 </head>
 
@@ -3210,7 +3342,58 @@ footer{
   </div>
 
   <div class="cloud-note">
-    <strong>Phase 7.1 foundation:</strong> OchiTracker remains local-first. Your existing Phase 6 storage keys stay untouched. Authentication, database connection and live synchronization will be activated in later phases.
+    <strong>Phase 7.1 foundation:</strong> OchiTracker remains local-first. Your existing Phase 6 storage keys stay untouched. The Phase 7.2 account layer is now available locally; secure server authentication, database connection and live synchronization will be activated in later phases.
+  </div>
+
+  <!-- =====================================================
+       PHASE 7.2 — OCHI ACCOUNT / AUTHENTICATION FOUNDATION
+  ====================================================== -->
+  <div class="ochi-account-panel" id="ochiAccountPanel">
+    <div class="account-head">
+      <div>
+        <h3 class="account-title">👤 Ochi Account</h3>
+        <div class="account-subtitle">Phase 7.2 · Account and authentication foundation</div>
+      </div>
+      <span class="phase72-badge">PHASE 7.2</span>
+    </div>
+
+    <div class="account-grid">
+      <div class="account-card">
+        <div class="account-label">Session</div>
+        <div class="account-value" id="ochiAccountSession">Signed out</div>
+      </div>
+      <div class="account-card">
+        <div class="account-label">Account ID</div>
+        <div class="account-value" id="ochiAccountId">—</div>
+      </div>
+      <div class="account-card">
+        <div class="account-label">Profile</div>
+        <div class="account-value" id="ochiAccountProfile">No local profile</div>
+      </div>
+    </div>
+
+    <div id="ochiAccountSignedOut">
+      <div class="account-form">
+        <input id="ochiAccountName" type="text" maxlength="80" placeholder="Display name">
+        <input id="ochiAccountEmail" type="email" maxlength="160" placeholder="Email address">
+        <button class="account-btn primary" type="button" onclick="createOchiLocalAccount()">Create / Sign in</button>
+      </div>
+    </div>
+
+    <div id="ochiAccountSignedIn" class="account-signed">
+      <div class="account-actions">
+        <button class="account-btn secondary" type="button" onclick="signOutOchiAccount()">Sign out</button>
+        <button class="account-btn danger" type="button" onclick="deleteOchiLocalAccount()">Delete local account</button>
+      </div>
+    </div>
+
+    <div class="account-message" id="ochiAccountMessage">
+      No account session is active. Your existing trades and Phase 6 data remain local and are not affected.
+    </div>
+
+    <div class="account-note">
+      <strong>Phase 7.2 scope:</strong> this is the account-layer foundation only. It creates a local development profile and session state without storing passwords or sending data to a server. Real secure authentication, server-side sessions and cloud identity will be connected after the backend/database foundation is ready.
+    </div>
   </div>
 </section>
 
@@ -8255,7 +8438,7 @@ const OCHI_CLOUD_ARCHITECTURE = Object.freeze({
   mode:"local-first",
   provider:null,
   environment:"development",
-  account:{enabled:false,authenticated:false},
+  account:{enabled:true,authenticated:false},
   database:{enabled:false,connected:false},
   sync:{enabled:false,status:"local-only",lastSync:null},
   storageKeys:Object.freeze({
@@ -8307,7 +8490,8 @@ function renderOchiCloud(){
   status.textContent=state.database.connected
     ? "CLOUD CONNECTED"
     : "LOCAL-FIRST · CLOUD NOT CONNECTED";
-  account.textContent=state.account.authenticated ? "Authenticated" : "Not connected";
+  const accountState=typeof getOchiAccountState==="function" ? getOchiAccountState() : state.account;
+  account.textContent=accountState.authenticated ? "Authenticated · Local" : "Not connected";
   database.textContent=state.database.connected ? "Connected" : "Not connected";
   sync.textContent=state.sync.enabled ? state.sync.status : "Local only";
   local.textContent=health.available && health.localStorageAvailable ? "Protected" : "Check storage";
@@ -8319,6 +8503,180 @@ function initializeOchiCloudArchitecture(){
 
 
   initializeOchiCloudArchitecture();
+
+
+/* =========================================================
+   PHASE 7.2 — OCHI ACCOUNT / AUTHENTICATION FOUNDATION
+   Local development account only. No passwords/network calls.
+========================================================= */
+
+const OCHI_ACCOUNT_KEY = "ochiAccount";
+
+function getOchiAccount(){
+  try{
+    const raw=localStorage.getItem(OCHI_ACCOUNT_KEY);
+    if(!raw) return null;
+    const account=JSON.parse(raw);
+    if(!account || typeof account!=="object") return null;
+    return account;
+  }catch(error){
+    return null;
+  }
+}
+
+function saveOchiAccount(account){
+  localStorage.setItem(OCHI_ACCOUNT_KEY, JSON.stringify(account));
+}
+
+function clearOchiAccount(){
+  localStorage.removeItem(OCHI_ACCOUNT_KEY);
+}
+
+function generateOchiAccountId(){
+  const bytes=new Uint8Array(8);
+  if(window.crypto && crypto.getRandomValues){
+    crypto.getRandomValues(bytes);
+    return "OCHI-" + Array.from(bytes).map(b=>b.toString(16).padStart(2,"0")).join("").toUpperCase();
+  }
+  return "OCHI-" + Date.now().toString(36).toUpperCase();
+}
+
+function sanitizeAccountText(value,maxLength){
+  return String(value ?? "").trim().slice(0,maxLength);
+}
+
+function createOchiLocalAccount(){
+  const name=sanitizeAccountText(document.getElementById("ochiAccountName")?.value,80);
+  const email=sanitizeAccountText(document.getElementById("ochiAccountEmail")?.value,160).toLowerCase();
+
+  if(!name){
+    setOchiAccountMessage("Enter a display name to create the local account profile.",true);
+    return;
+  }
+
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    setOchiAccountMessage("Enter a valid email address.",true);
+    return;
+  }
+
+  const existing=getOchiAccount();
+  const account={
+    accountId:existing?.accountId || generateOchiAccountId(),
+    displayName:name,
+    email,
+    createdAt:existing?.createdAt || new Date().toISOString(),
+    lastSignInAt:new Date().toISOString(),
+    authenticated:true,
+    environment:"local-development",
+    authProvider:"local-placeholder"
+  };
+
+  try{
+    saveOchiAccount(account);
+    renderOchiAccount();
+    renderOchiCloud();
+    setOchiAccountMessage(
+      "Local account session created. No password was stored and no data was sent to a server. Your trading data remains in this browser.",
+      false
+    );
+  }catch(error){
+    setOchiAccountMessage("The local account could not be saved in this browser.",true);
+  }
+}
+
+function signOutOchiAccount(){
+  const account=getOchiAccount();
+  if(!account) return;
+
+  const signedOut={
+    ...account,
+    authenticated:false,
+    lastSignOutAt:new Date().toISOString()
+  };
+
+  try{
+    saveOchiAccount(signedOut);
+    renderOchiAccount();
+    renderOchiCloud();
+    setOchiAccountMessage("Signed out of the local development session. Your trading data remains stored locally.",false);
+  }catch(error){
+    setOchiAccountMessage("Could not update the local session.",true);
+  }
+}
+
+function deleteOchiLocalAccount(){
+  const account=getOchiAccount();
+  if(!account) return;
+
+  const confirmed=window.confirm(
+    "Delete the local Ochi Account profile?\\n\\nThis does NOT delete your trades, risk settings or reports."
+  );
+  if(!confirmed) return;
+
+  try{
+    clearOchiAccount();
+    renderOchiAccount();
+    renderOchiCloud();
+    setOchiAccountMessage("Local account profile deleted. Your OchiTracker trading data was not deleted.",false);
+  }catch(error){
+    setOchiAccountMessage("Could not delete the local account profile.",true);
+  }
+}
+
+function setOchiAccountMessage(message,isError){
+  const el=document.getElementById("ochiAccountMessage");
+  if(!el) return;
+  el.textContent=message;
+  el.style.color=isError ? "#ffb4b4" : "#b9d8ff";
+  el.style.borderColor=isError ? "rgba(255,100,100,.22)" : "rgba(88,166,255,.16)";
+  el.style.background=isError ? "rgba(255,70,70,.08)" : "rgba(88,166,255,.08)";
+}
+
+function renderOchiAccount(){
+  const session=document.getElementById("ochiAccountSession");
+  const accountId=document.getElementById("ochiAccountId");
+  const profile=document.getElementById("ochiAccountProfile");
+  const signedOut=document.getElementById("ochiAccountSignedOut");
+  const signedIn=document.getElementById("ochiAccountSignedIn");
+  if(!session || !accountId || !profile) return;
+
+  const account=getOchiAccount();
+  const authenticated=!!(account && account.authenticated);
+
+  session.textContent=authenticated ? "Authenticated · Local" : "Signed out";
+  accountId.textContent=account?.accountId || "—";
+  profile.textContent=authenticated
+    ? `${account.displayName} · ${account.email}`
+    : "No active local profile";
+
+  if(signedOut) signedOut.style.display=authenticated ? "none" : "block";
+  if(signedIn) signedIn.style.display=authenticated ? "block" : "none";
+
+  const nameInput=document.getElementById("ochiAccountName");
+  const emailInput=document.getElementById("ochiAccountEmail");
+  if(nameInput && authenticated) nameInput.value=account.displayName || "";
+  if(emailInput && authenticated) emailInput.value=account.email || "";
+}
+
+function getOchiAccountState(){
+  const account=getOchiAccount();
+  return {
+    enabled:true,
+    authenticated:!!(account && account.authenticated),
+    accountId:account?.accountId || null,
+    displayName:account?.displayName || null,
+    email:account?.email || null,
+    provider:account?.authProvider || null,
+    environment:account?.environment || "local-development"
+  };
+}
+
+function initializeOchiAccount(){
+  renderOchiAccount();
+  renderOchiCloud();
+}
+
+initializeOchiAccount();
 </script>
 
 </body>
