@@ -762,6 +762,121 @@ button.danger{
   border-color:#b63b47;
 }
 
+/* =========================================================
+   PHASE 7.6 — TRADE REVIEW
+========================================================= */
+.trade-view-btn{
+  background:#142c44;
+  border:1px solid #2b4c69;
+  color:#dcecff;
+  border-radius:8px;
+  padding:6px 9px;
+  font-size:10px;
+  width:auto;
+  cursor:pointer;
+}
+.trade-view-btn:hover{
+  filter:brightness(1.12);
+}
+.trade-review-overlay{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  background:rgba(1,8,15,.78);
+  backdrop-filter:blur(7px);
+}
+.trade-review-overlay.visible{
+  display:flex;
+}
+.trade-review-modal{
+  width:min(920px,100%);
+  max-height:90vh;
+  overflow:auto;
+  border:1px solid rgba(77,163,255,.20);
+  border-radius:20px;
+  background:#081522;
+  box-shadow:0 24px 70px rgba(0,0,0,.45);
+  padding:20px;
+}
+.trade-review-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:14px;
+  margin-bottom:16px;
+}
+.trade-review-title{
+  margin:0;
+  font-size:22px;
+  font-weight:850;
+}
+.trade-review-subtitle{
+  margin-top:5px;
+  color:#8fa4ba;
+  font-size:12px;
+}
+.trade-review-close{
+  width:auto;
+  padding:8px 12px;
+  background:#142c44;
+  border-color:#2b4c69;
+}
+.trade-review-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+}
+.trade-review-card{
+  padding:12px;
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:12px;
+  background:rgba(255,255,255,.025);
+}
+.trade-review-label{
+  color:#7f93a8;
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.7px;
+}
+.trade-review-value{
+  margin-top:5px;
+  color:#e8f1fb;
+  font-size:13px;
+  font-weight:750;
+  word-break:break-word;
+}
+.trade-review-section{
+  margin-top:18px;
+}
+.trade-review-section h4{
+  margin:0 0 9px;
+  font-size:13px;
+  color:#cfe3f8;
+}
+.trade-review-notes{
+  white-space:pre-wrap;
+  line-height:1.6;
+  color:#b6c5d5;
+  padding:13px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.07);
+  background:rgba(255,255,255,.025);
+}
+@media(max-width:700px){
+  .trade-review-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+@media(max-width:480px){
+  .trade-review-overlay{padding:8px;}
+  .trade-review-modal{padding:14px;border-radius:16px;max-height:94vh;}
+  .trade-review-grid{grid-template-columns:1fr;}
+  .trade-review-head{align-items:center;}
+  .trade-review-title{font-size:19px;}
+}
+
 button:disabled{
   opacity:.45;
   cursor:not-allowed;
@@ -3585,6 +3700,7 @@ footer{
           <th>P/L</th>
           <th>R</th>
           <th>Risk</th>
+          <th>View</th>
           <th>Delete</th>
 
         </tr>
@@ -3625,6 +3741,27 @@ footer{
 
 </section>
 
+
+
+<!-- =======================================================
+     PHASE 7.6 — TRADE REVIEW
+======================================================= -->
+<div class="trade-review-overlay" id="tradeReviewOverlay" role="dialog" aria-modal="true" aria-labelledby="tradeReviewTitle">
+  <div class="trade-review-modal">
+    <div class="trade-review-head">
+      <div>
+        <h3 class="trade-review-title" id="tradeReviewTitle">Trade Review</h3>
+        <div class="trade-review-subtitle" id="tradeReviewSubtitle">Full journal record for this trade.</div>
+      </div>
+      <button class="trade-review-close" type="button" onclick="closeTradeReview()">Close</button>
+    </div>
+    <div class="trade-review-grid" id="tradeReviewGrid"></div>
+    <div class="trade-review-section">
+      <h4>Trade Notes</h4>
+      <div class="trade-review-notes" id="tradeReviewNotes">No notes recorded.</div>
+    </div>
+  </div>
+</div>
 
 
 <!-- =======================================================
@@ -7741,7 +7878,7 @@ function renderTradeHistory(){
     body.innerHTML=`
       <tr>
         <td
-          colspan="10"
+          colspan="11"
           class="muted"
           style="text-align:center;padding:25px">
           No trades recorded yet.
@@ -7835,6 +7972,15 @@ function renderTradeHistory(){
 
         <td>
           <button
+            class="trade-view-btn"
+            type="button"
+            data-trade-view="${escapeHTML(String(t.id))}">
+            View
+          </button>
+        </td>
+
+        <td>
+          <button
             class="danger"
             type="button"
             style="padding:6px 9px;font-size:10px;width:auto"
@@ -7846,8 +7992,87 @@ function renderTradeHistory(){
     `;
   }).join("");
 
+  body.querySelectorAll("[data-trade-view]").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      showTradeReview(btn.getAttribute("data-trade-view"));
+    });
+  });
+
   updateTradeHistoryStatus(ordered.length);
 }
+
+
+function showTradeReview(tradeId){
+
+  const trade=trades.find(t=>String(t.id)===String(tradeId));
+  const overlay=document.getElementById("tradeReviewOverlay");
+  const grid=document.getElementById("tradeReviewGrid");
+  const title=document.getElementById("tradeReviewTitle");
+  const subtitle=document.getElementById("tradeReviewSubtitle");
+  const notes=document.getElementById("tradeReviewNotes");
+
+  if(!trade||!overlay||!grid){
+    return;
+  }
+
+  const result=String(trade.result||"BE").toUpperCase();
+  const profit=safeNumber(trade.profit);
+  const r=safeNumber(trade.rMultiple);
+  const risk=safeNumber(trade.risk);
+
+  title.textContent=`${trade.pair||"Trade"} · ${trade.direction||""} · ${result}`;
+  subtitle.textContent=`Complete journal review · ${trade.date||"Date not recorded"}`;
+
+  const fields=[
+    ["Date",trade.date||"Not recorded"],
+    ["Currency Pair",trade.pair||"Not recorded"],
+    ["Direction",trade.direction||"Not recorded"],
+    ["Session",trade.session||"Not recorded"],
+    ["Result",result],
+    ["P/L",money(profit)],
+    ["Risk",money(risk)],
+    ["R Multiple",`${r.toFixed(2)}R`],
+    ["D1 Bias",trade.d1Bias||"Not recorded"],
+    ["4H Structure",trade.structure4h||"Not recorded"],
+    ["4H POI",trade.poi4h||"Not recorded"],
+    ["Liquidity Sweep",trade.liquiditySweep||"Not recorded"],
+    ["15M MSS",trade.mss15||"Not recorded"],
+    ["Entry Model",trade.entryModel||"Not recorded"],
+    ["Market Condition",trade.marketCondition||"Not recorded"],
+    ["Rule Followed",trade.ruleFollowed||"Not recorded"],
+    ["Early Entry",trade.earlyEntry||"Not recorded"],
+    ["FOMO",trade.fomo||"Not recorded"],
+    ["Revenge Trade",trade.revenge||"Not recorded"],
+    ["News Violation",trade.newsViolation||"Not recorded"]
+  ];
+
+  grid.innerHTML=fields.map(([label,value])=>`
+    <div class="trade-review-card">
+      <div class="trade-review-label">${escapeHTML(label)}</div>
+      <div class="trade-review-value">${escapeHTML(value)}</div>
+    </div>
+  `).join("");
+
+  notes.textContent=trade.notes&&String(trade.notes).trim()
+    ? String(trade.notes)
+    : "No notes recorded.";
+
+  overlay.classList.add("visible");
+  document.body.style.overflow="hidden";
+}
+
+function closeTradeReview(){
+  const overlay=document.getElementById("tradeReviewOverlay");
+  if(overlay){
+    overlay.classList.remove("visible");
+  }
+  document.body.style.overflow="";
+}
+
+document.addEventListener("keydown",event=>{
+  if(event.key==="Escape") closeTradeReview();
+});
+
 
 
 function updateTradeHistoryStatus(count){
