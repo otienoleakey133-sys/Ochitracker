@@ -1878,6 +1878,42 @@ footer{
   .sync-grid{grid-template-columns:1fr;}
 }
 
+
+/* =========================================================
+   PHASE 7.5 — DYNAMIC ASSET PERFORMANCE LEADERBOARD
+========================================================= */
+.asset-leaderboard-panel{margin-top:20px;padding:18px;border:1px solid rgba(255,255,255,.10);border-radius:18px;background:rgba(255,255,255,.025)}
+.asset-leaderboard-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.asset-leaderboard-title{margin:0;font-size:20px;font-weight:800}
+.asset-leaderboard-subtitle{margin-top:5px;color:#9aa7b8;font-size:13px;line-height:1.5}
+.phase75-badge{display:inline-flex;align-items:center;padding:7px 10px;border-radius:999px;background:rgba(77,163,255,.10);color:#8fc4ff;border:1px solid rgba(77,163,255,.23);font-size:11px;font-weight:800;letter-spacing:.7px}
+.asset-leaderboard-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:15px}
+.asset-summary-card{padding:14px;border-radius:14px;background:rgba(0,0,0,.16);border:1px solid rgba(255,255,255,.07)}
+.asset-summary-label{font-size:11px;color:#8f9aaa;text-transform:uppercase;letter-spacing:.7px}
+.asset-summary-value{margin-top:6px;font-size:19px;font-weight:800;word-break:break-word}
+.asset-summary-note{margin-top:4px;color:#7f8da0;font-size:11px;line-height:1.4}
+.asset-leaderboard-table-wrap{margin-top:15px;overflow-x:auto}
+.asset-leaderboard-table-wrap table{min-width:920px}
+.asset-rank{font-weight:850;white-space:nowrap}
+.asset-name{font-weight:800;letter-spacing:.3px}
+.asset-pnl-positive{color:#67e39a;font-weight:800}
+.asset-pnl-negative{color:#ff8e8e;font-weight:800}
+.asset-pnl-neutral{color:#c6d0dc;font-weight:800}
+.asset-share-positive{color:#67e39a;font-weight:750}
+.asset-share-negative{color:#ff8e8e;font-weight:750}
+.asset-leaderboard-message{margin-top:12px;padding:11px 13px;border-radius:11px;background:rgba(77,163,255,.06);border:1px solid rgba(77,163,255,.14);color:#b9d7f6;font-size:12px;line-height:1.5}
+.asset-detail-panel{display:none;margin-top:15px;padding:15px;border-radius:15px;background:rgba(0,0,0,.14);border:1px solid rgba(255,255,255,.08)}
+.asset-detail-panel.visible{display:block}
+.asset-detail-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.asset-detail-title{font-size:16px;font-weight:800}
+.asset-detail-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:12px}
+.asset-detail-card{padding:11px;border-radius:12px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06)}
+.asset-detail-label{font-size:10px;color:#8997a8;text-transform:uppercase;letter-spacing:.65px}
+.asset-detail-value{margin-top:5px;font-size:14px;font-weight:750;word-break:break-word}
+.asset-select-btn{width:auto;margin:0;padding:8px 11px;border-radius:10px;border:1px solid rgba(255,255,255,.10);background:#21262d;color:#e6edf3;font-weight:750;cursor:pointer}
+@media(max-width:900px){.asset-leaderboard-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.asset-detail-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.asset-leaderboard-summary{grid-template-columns:1fr}.asset-detail-grid{grid-template-columns:1fr}.asset-leaderboard-panel{padding:14px}}
+
 </style>
 </head>
 
@@ -2596,6 +2632,36 @@ footer{
   </div>
 
 </section>
+<!-- =======================================================
+     PHASE 7.5 — DYNAMIC ASSET PERFORMANCE LEADERBOARD
+======================================================= -->
+<div class="asset-leaderboard-panel" id="assetPerformanceLeaderboard">
+  <div class="asset-leaderboard-head">
+    <div>
+      <h3 class="asset-leaderboard-title">🏆 Asset Performance Leaderboard</h3>
+      <div class="asset-leaderboard-subtitle">Dynamic performance ranking for every asset recorded in your journal — Forex, Gold, Indices, Commodities, Crypto and future instruments.</div>
+    </div>
+    <span class="phase75-badge">PHASE 7.5</span>
+  </div>
+  <div class="asset-leaderboard-summary">
+    <div class="asset-summary-card"><div class="asset-summary-label">Assets Traded</div><div class="asset-summary-value" id="assetLeaderboardCount">0</div><div class="asset-summary-note">Unique recorded instruments</div></div>
+    <div class="asset-summary-card"><div class="asset-summary-label">Leader</div><div class="asset-summary-value" id="assetLeaderboardLeader">—</div><div class="asset-summary-note" id="assetLeaderboardLeaderNote">Waiting for trade data</div></div>
+    <div class="asset-summary-card"><div class="asset-summary-label">Leader P/L</div><div class="asset-summary-value" id="assetLeaderboardLeaderPnl">$0.00</div><div class="asset-summary-note">Best net P/L among assets</div></div>
+    <div class="asset-summary-card"><div class="asset-summary-label">Portfolio P/L</div><div class="asset-summary-value" id="assetLeaderboardPortfolioPnl">$0.00</div><div class="asset-summary-note">All recorded assets combined</div></div>
+  </div>
+  <div class="table-container asset-leaderboard-table-wrap">
+    <table>
+      <thead><tr><th>Rank</th><th>Asset</th><th>Trades</th><th>Win Rate</th><th>Net P/L</th><th>P/L Share</th><th>Total R</th><th>Avg R</th><th>Profit Factor</th><th></th></tr></thead>
+      <tbody id="assetLeaderboardBody"></tbody>
+    </table>
+  </div>
+  <div class="asset-leaderboard-message" id="assetLeaderboardMessage">Asset performance will appear automatically as soon as trades are recorded.</div>
+  <div class="asset-detail-panel" id="assetDetailPanel">
+    <div class="asset-detail-head"><div class="asset-detail-title" id="assetDetailTitle">Asset Detail</div><button class="asset-select-btn" type="button" onclick="closeAssetDetail()">Close</button></div>
+    <div class="asset-detail-grid" id="assetDetailGrid"></div>
+  </div>
+</div>
+
 
 
 <!-- =======================================================
@@ -8798,6 +8864,106 @@ function renderBackupOverview(){
    RENDER EVERYTHING
 ========================================================= */
 
+
+/* =========================================================
+   PHASE 7.5 — DYNAMIC ASSET PERFORMANCE LEADERBOARD
+========================================================= */
+let selectedAssetForDetail=null;
+
+function normalizeAssetName(value){
+  const raw=String(value??"").trim();
+  return raw?raw.replace(/\s+/g," ").toUpperCase():"NOT RECORDED";
+}
+
+function calculateAssetPerformance(){
+  const groups=new Map();
+  trades.forEach(t=>{
+    const asset=normalizeAssetName(t.pair);
+    if(!groups.has(asset)) groups.set(asset,{asset,trades:0,wins:0,losses:0,breakeven:0,pnl:0,totalR:0,grossProfit:0,grossLoss:0,riskUsed:0,bestTrade:null,worstTrade:null,ruleFollowed:0,validPoi:0,liquiditySweep:0,mss15:0,earlyEntry:0,fomo:0,revenge:0,newsViolation:0});
+    const g=groups.get(asset);
+    const profit=safeNumber(t.profit), r=safeNumber(t.rMultiple);
+    g.trades++; g.pnl+=profit; g.totalR+=r; g.riskUsed+=Math.abs(safeNumber(t.risk));
+    if(t.result==="WIN"){g.wins++;g.grossProfit+=Math.max(0,profit);} else if(t.result==="LOSS"){g.losses++;g.grossLoss+=Math.abs(Math.min(0,profit));} else g.breakeven++;
+    if(g.bestTrade===null||profit>g.bestTrade)g.bestTrade=profit;
+    if(g.worstTrade===null||profit<g.worstTrade)g.worstTrade=profit;
+    if(String(t.ruleFollowed).toLowerCase()==="yes")g.ruleFollowed++;
+    if(String(t.poi4h).toLowerCase()==="valid")g.validPoi++;
+    if(String(t.liquiditySweep).toLowerCase()==="yes")g.liquiditySweep++;
+    if(String(t.mss15).toLowerCase()==="confirmed")g.mss15++;
+    if(String(t.earlyEntry).toLowerCase()==="yes")g.earlyEntry++;
+    if(String(t.fomo).toLowerCase()==="yes")g.fomo++;
+    if(String(t.revenge).toLowerCase()==="yes")g.revenge++;
+    if(String(t.newsViolation).toLowerCase()==="yes")g.newsViolation++;
+  });
+  const portfolioPnl=[...groups.values()].reduce((sum,g)=>sum+g.pnl,0);
+  const rows=[...groups.values()].map(g=>{
+    const decided=g.wins+g.losses;
+    return {...g,winRate:decided?g.wins/decided*100:0,avgR:g.trades?g.totalR/g.trades:0,profitFactor:g.grossLoss>0?g.grossProfit/g.grossLoss:(g.grossProfit>0?Infinity:0),pnlShare:portfolioPnl?(g.pnl/portfolioPnl)*100:0};
+  });
+  rows.sort((a,b)=>b.pnl-a.pnl||b.totalR-a.totalR||b.winRate-a.winRate||b.trades-a.trades);
+  return {rows,portfolioPnl};
+}
+
+function assetPnlClass(value){const n=safeNumber(value);return n>0?"asset-pnl-positive":n<0?"asset-pnl-negative":"asset-pnl-neutral";}
+
+function assetRankLabel(index){return index===0?"🥇":index===1?"🥈":index===2?"🥉":`#${index+1}`;}
+
+function renderAssetPerformanceLeaderboard(){
+  const body=document.getElementById("assetLeaderboardBody");
+  if(!body)return;
+  const countEl=document.getElementById("assetLeaderboardCount"),leaderEl=document.getElementById("assetLeaderboardLeader"),leaderPnlEl=document.getElementById("assetLeaderboardLeaderPnl"),portfolioEl=document.getElementById("assetLeaderboardPortfolioPnl"),noteEl=document.getElementById("assetLeaderboardLeaderNote"),messageEl=document.getElementById("assetLeaderboardMessage");
+  const {rows,portfolioPnl}=calculateAssetPerformance();
+  if(countEl)countEl.textContent=String(rows.length);
+  if(portfolioEl){portfolioEl.textContent=money(portfolioPnl);portfolioEl.className=`asset-summary-value ${assetPnlClass(portfolioPnl)}`;}
+  if(!rows.length){
+    body.innerHTML=`<tr><td colspan="10" style="text-align:center;padding:24px;color:#8f9aaa">No asset performance data yet. Record your first trade to activate the leaderboard.</td></tr>`;
+    if(leaderEl)leaderEl.textContent="—"; if(leaderPnlEl)leaderPnlEl.textContent="$0.00"; if(noteEl)noteEl.textContent="Waiting for trade data";
+    if(messageEl)messageEl.textContent="Asset performance will appear automatically as soon as trades are recorded.";
+    closeAssetDetail();
+    return;
+  }
+  const leader=rows[0], runnerUp=rows[1];
+  if(leaderEl)leaderEl.textContent=leader.asset;
+  if(leaderPnlEl){leaderPnlEl.textContent=money(leader.pnl);leaderPnlEl.className=`asset-summary-value ${assetPnlClass(leader.pnl)}`;}
+  if(noteEl)noteEl.textContent=runnerUp?`#1 by ${money(leader.pnl-runnerUp.pnl)}`:"Only recorded asset";
+  body.innerHTML=rows.map((g,index)=>{
+    const pf=g.profitFactor===Infinity?"∞":g.profitFactor.toFixed(2);
+    const shareClass=g.pnlShare>0?"asset-share-positive":g.pnlShare<0?"asset-share-negative":"";
+    return `<tr><td class="asset-rank">${assetRankLabel(index)}</td><td class="asset-name">${escapeHTML(g.asset)}</td><td>${g.trades}</td><td>${pct(g.winRate)}</td><td class="${assetPnlClass(g.pnl)}">${money(g.pnl)}</td><td class="${shareClass}">${pct(g.pnlShare)}</td><td>${g.totalR.toFixed(2)}R</td><td>${g.avgR.toFixed(2)}R</td><td>${pf}</td><td><button class="asset-select-btn" type="button" data-asset-detail="${escapeHTML(g.asset)}">View</button></td></tr>`;
+  }).join("");
+  body.querySelectorAll("[data-asset-detail]").forEach(btn=>btn.addEventListener("click",()=>showAssetDetail(btn.getAttribute("data-asset-detail"))));
+  if(messageEl){
+    if(runnerUp){
+      const gap=leader.pnl-runnerUp.pnl;
+      const denominator=Math.abs(runnerUp.pnl);
+      const gapText=denominator>0?`${money(gap)} (${pct(gap/denominator*100)})`:money(gap);
+      messageEl.textContent=`${leader.asset} is currently leading ${runnerUp.asset} by ${gapText}. Rankings are based on historical recorded performance, not future predictions.`;
+    }else messageEl.textContent=`${leader.asset} is currently the only recorded asset. Add more instruments to compare their performance dynamically.`;
+  }
+  if(selectedAssetForDetail && rows.some(r=>r.asset===selectedAssetForDetail))renderAssetDetail(selectedAssetForDetail);
+}
+
+function showAssetDetail(asset){selectedAssetForDetail=normalizeAssetName(asset);renderAssetDetail(selectedAssetForDetail);}
+function closeAssetDetail(){selectedAssetForDetail=null;const panel=document.getElementById("assetDetailPanel");if(panel)panel.classList.remove("visible");}
+
+function renderAssetDetail(asset){
+  const panel=document.getElementById("assetDetailPanel"),title=document.getElementById("assetDetailTitle"),grid=document.getElementById("assetDetailGrid");
+  if(!panel||!title||!grid)return;
+  const {rows}=calculateAssetPerformance(),g=rows.find(row=>row.asset===normalizeAssetName(asset));
+  if(!g){panel.classList.remove("visible");return;}
+  title.textContent=`${g.asset} · Performance Detail`;
+  const decided=g.wins+g.losses;
+  const items=[
+    ["Trades",g.trades], ["Wins / Losses / BE",`${g.wins} / ${g.losses} / ${g.breakeven}`], ["Win Rate",pct(g.winRate)],
+    ["Net P/L",money(g.pnl)], ["P/L Share",pct(g.pnlShare)], ["Total R",`${g.totalR.toFixed(2)}R`], ["Average R",`${g.avgR.toFixed(2)}R`], ["Profit Factor",g.profitFactor===Infinity?"∞":g.profitFactor.toFixed(2)],
+    ["Best Trade",money(g.bestTrade||0)], ["Worst Trade",money(g.worstTrade||0)], ["Risk Used",money(g.riskUsed)], ["Rule Adherence",decided||g.trades?pct(g.ruleFollowed/g.trades*100):"0.00%"],
+    ["Valid 4H POI",String(g.validPoi)], ["Liquidity Sweep",String(g.liquiditySweep)], ["15M MSS Confirmed",String(g.mss15)], ["Early Entry",String(g.earlyEntry)], ["FOMO",String(g.fomo)], ["Revenge",String(g.revenge)], ["News Violations",String(g.newsViolation)]
+  ];
+  grid.innerHTML=items.map(([label,value])=>`<div class="asset-detail-card"><div class="asset-detail-label">${escapeHTML(label)}</div><div class="asset-detail-value ${label.includes("P/L")||label.includes("Trade")||label==="Risk Used"?assetPnlClass(typeof value==="number"?value:0):""}">${escapeHTML(value)}</div></div>`).join("");
+  panel.classList.add("visible");
+}
+
+
 function renderEverything(){
 
   const steps=[
@@ -8805,6 +8971,7 @@ function renderEverything(){
     renderHero,
     renderAccountPerformance,
     renderAdvancedAnalytics,
+    renderAssetPerformanceLeaderboard,
     renderBasicRisk,
     renderRiskEngine,
     renderIntelligence,
@@ -8923,7 +9090,7 @@ initialize();
 ========================================================= */
 
 const OCHI_CLOUD_ARCHITECTURE = Object.freeze({
-  version:"7.4",
+  version:"7.5",
   mode:"local-first",
   provider:"IndexedDB-local",
   environment:"development",
