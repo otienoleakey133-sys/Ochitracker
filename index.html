@@ -879,6 +879,37 @@ button.danger{
 
 
 /* =========================================================
+   PHASE 7.10 — DISCIPLINE & TRADER SCORE
+========================================================= */
+.discipline-score-section{margin-top:18px;}
+.discipline-score-hero{display:grid;grid-template-columns:minmax(230px,1fr) 2fr;gap:14px;margin-bottom:14px;}
+.discipline-score-main{padding:20px;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:rgba(255,255,255,.025);text-align:center;}
+.discipline-score-number{font-size:48px;font-weight:900;line-height:1;margin-top:5px;}
+.discipline-score-grade{margin-top:8px;font-size:13px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;}
+.discipline-score-bar{height:10px;border-radius:999px;background:rgba(255,255,255,.07);overflow:hidden;margin-top:14px;}
+.discipline-score-fill{height:100%;width:0%;border-radius:999px;background:currentColor;transition:width .25s ease;}
+.discipline-score-note{margin-top:9px;color:#8fa4ba;font-size:11px;line-height:1.5;}
+.discipline-score-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;}
+.discipline-score-card{padding:13px;border:1px solid rgba(255,255,255,.07);border-radius:12px;background:rgba(255,255,255,.025);}
+.discipline-score-card-label{color:#7f93a8;font-size:10px;text-transform:uppercase;letter-spacing:.7px;}
+.discipline-score-card-value{margin-top:6px;color:#e8f1fb;font-size:18px;font-weight:850;}
+.discipline-score-card-copy{margin-top:5px;color:#8fa4ba;font-size:11px;line-height:1.45;}
+.discipline-breakdown{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px;}
+.discipline-breakdown-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:11px 12px;border:1px solid rgba(255,255,255,.06);border-radius:10px;background:rgba(255,255,255,.02);}
+.discipline-breakdown-title{font-size:12px;font-weight:750;color:#dce8f4;}
+.discipline-breakdown-copy{font-size:10px;color:#8195aa;margin-top:3px;}
+.discipline-breakdown-value{font-size:12px;font-weight:850;}
+.discipline-good{color:#9be7c2;}
+.discipline-warn{color:#ffd18a;}
+.discipline-bad{color:#ff9f9f;}
+.discipline-neutral{color:#aab9c8;}
+@media(max-width:760px){
+  .discipline-score-hero{grid-template-columns:1fr;}
+  .discipline-score-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .discipline-breakdown{grid-template-columns:1fr;}
+}
+
+/* =========================================================
    PHASE 7.7 — TRADE MANAGEMENT JOURNAL
 ========================================================= */
 .trade-manage-btn{
@@ -3954,6 +3985,25 @@ footer{
     <span class="phase-badge">TIME EDGE</span>
   </div>
   <div id="sessionTimeIntelligenceContent"></div>
+</section>
+
+<!-- =======================================================
+     PHASE 7.10 — DISCIPLINE & TRADER SCORE
+======================================================= -->
+<section id="disciplineTraderScore" class="panel discipline-score-section">
+  <div class="section-heading">
+    <div class="section-title">
+      <div class="section-icon">🧠</div>
+      <div>
+        <h2>Phase 7.10 — Discipline & Trader Score</h2>
+        <div class="section-description">
+          Convert your recorded execution behavior into a historical discipline score without changing trade P/L.
+        </div>
+      </div>
+    </div>
+    <span class="phase-badge">DISCIPLINE</span>
+  </div>
+  <div id="disciplineTraderScoreContent"></div>
 </section>
 
 <!-- =======================================================
@@ -9898,6 +9948,140 @@ function renderAssetDetail(asset){
 }
 
 
+function disciplineValueState(value){
+  const v=String(value===undefined||value===null?"Not recorded":value).trim();
+  if(v==="Yes") return {score:0,max:1,state:"bad",label:"Violation"};
+  if(v==="No") return {score:1,max:1,state:"good",label:"Clean"};
+  return {score:0,max:0,state:"neutral",label:"Not recorded"};
+}
+
+function calculateDisciplineTraderScore(){
+  const all=Array.isArray(trades)?trades:[];
+  const disciplineFields=[
+    ["Rule Followed","ruleFollowed","Did the trade follow the planned rules?"],
+    ["Early Entry","earlyEntry","Was entry timing controlled?",true],
+    ["FOMO","fomo","Was the trade free from FOMO?",true],
+    ["Revenge Trade","revengeTrade","Was the trade free from revenge behavior?",true],
+    ["News Violation","newsViolation","Was the trade free from a recorded news violation?",true]
+  ];
+
+  const rows=disciplineFields.map(([label,key,copy,inverse])=>{
+    const clean=all.map(t=>{
+      const raw=t? t[key] : "Not recorded";
+      if(inverse){
+        if(String(raw)==="No") return {score:1,max:1,state:"good"};
+        if(String(raw)==="Yes") return {score:0,max:1,state:"bad"};
+      }else{
+        if(String(raw)==="Yes") return {score:1,max:1,state:"good"};
+        if(String(raw)==="No") return {score:0,max:1,state:"bad"};
+      }
+      return {score:0,max:0,state:"neutral"};
+    });
+    const recorded=clean.filter(x=>x.max>0);
+    const points=recorded.reduce((a,x)=>a+x.score,0);
+    const max=recorded.length;
+    return {label,key,copy,inverse,points,max,rate:max?points/max*100:0,recorded:max};
+  });
+
+  const managementReviewed=all.filter(hasManagementRecord).map(normalizeManagementFields);
+  const managementRated=managementReviewed.filter(t=>["Disciplined","Acceptable","Early","Late","Emotional"].includes(String(t.managementGrade||"")));
+  const managementPoints=managementRated.reduce((sum,t)=>sum+(t.managementGrade==="Disciplined"?1:t.managementGrade==="Acceptable"?.75:0),0);
+  const managementMax=managementRated.length;
+  const managementRate=managementMax?managementPoints/managementMax*100:0;
+
+  const riskSetting=Number(riskSettings&&riskSettings.riskPercent);
+  const accountSize=Number(riskSettings&&riskSettings.accountSize);
+  const riskReviewed=all.filter(t=>Number.isFinite(Number(t.risk)) && Number(t.risk)>0);
+  let riskPoints=0,riskMax=0;
+  riskReviewed.forEach(t=>{
+    if(accountSize>0 && riskSetting>0){
+      riskMax++;
+      const allowed=accountSize*(riskSetting/100);
+      if(Number(t.risk)<=allowed*1.000001) riskPoints++;
+    }
+  });
+  const riskRate=riskMax?riskPoints/riskMax*100:0;
+
+  const baseRows=rows.filter(r=>r.max>0);
+  const basePoints=baseRows.reduce((a,r)=>a+r.points,0);
+  const baseMax=baseRows.reduce((a,r)=>a+r.max,0);
+  const baseRate=baseMax?basePoints/baseMax*100:null;
+
+  let scoreParts=[];
+  if(baseRate!==null) scoreParts.push({weight:70,value:baseRate});
+  if(managementMax>0) scoreParts.push({weight:20,value:managementRate});
+  if(riskMax>0) scoreParts.push({weight:10,value:riskRate});
+  const weightTotal=scoreParts.reduce((a,x)=>a+x.weight,0);
+  const score=weightTotal?scoreParts.reduce((a,x)=>a+x.value*x.weight,0)/weightTotal:0;
+
+  const violations=all.filter(t=>{
+    const vals=[t.ruleFollowed,t.earlyEntry,t.fomo,t.revengeTrade,t.newsViolation];
+    return vals.some((v,i)=>i===0?String(v)==="No":String(v)==="Yes");
+  }).length;
+
+  let currentClean=0;
+  for(let i=all.length-1;i>=0;i--){
+    const t=all[i];
+    const vals=[t.ruleFollowed,t.earlyEntry,t.fomo,t.revengeTrade,t.newsViolation];
+    const recorded=vals.filter(v=>String(v)==="Yes"||String(v)==="No");
+    if(!recorded.length) continue;
+    const clean=String(t.ruleFollowed)==="Yes" && String(t.earlyEntry)!=="Yes" && String(t.fomo)!=="Yes" && String(t.revengeTrade)!=="Yes" && String(t.newsViolation)!=="Yes";
+    if(clean) currentClean++; else break;
+  }
+
+  return {rows,score,baseRate,managementRate,riskRate,managementMax,riskMax,baseMax,violations,currentClean,totalTrades:all.length};
+}
+
+function disciplineScoreGrade(score){
+  if(score>=90) return {grade:"Elite Discipline",state:"good",copy:"Excellent recorded execution discipline."};
+  if(score>=80) return {grade:"Strong",state:"good",copy:"Strong discipline with room for refinement."};
+  if(score>=70) return {grade:"Controlled",state:"warn",copy:"Generally controlled, but some behaviors need attention."};
+  if(score>=60) return {grade:"Inconsistent",state:"warn",copy:"Execution discipline is inconsistent across the journal."};
+  return {grade:"Needs Work",state:"bad",copy:"The journal shows meaningful discipline weaknesses."};
+}
+
+function renderDisciplineTraderScore(){
+  const target=document.getElementById("disciplineTraderScoreContent");
+  if(!target) return;
+  const d=calculateDisciplineTraderScore();
+  const score=Math.round(d.score*10)/10;
+  const grade=disciplineScoreGrade(score);
+  const coverage=d.baseMax+d.managementMax+d.riskMax;
+  const coverageLabel=d.totalTrades?`${Math.round((coverage/(d.totalTrades*5))*100)}% recorded behavior coverage`:`No trade data yet`;
+  const colorClass=grade.state==="good"?"discipline-good":grade.state==="warn"?"discipline-warn":"discipline-bad";
+
+  const breakdown=[
+    ...d.rows.map(r=>({label:r.label,copy:r.copy,value:r.max?`${r.rate.toFixed(0)}% · ${r.max} recorded`:"Not recorded",state:r.max?(r.rate>=80?"good":r.rate>=60?"warn":"bad"):"neutral"})),
+    {label:"Management Quality",copy:"Disciplined/Acceptable management records.",value:d.managementMax?`${d.managementRate.toFixed(0)}% · ${d.managementMax} rated`:"Not recorded",state:d.managementMax?(d.managementRate>=80?"good":d.managementRate>=60?"warn":"bad"):"neutral"},
+    {label:"Risk Discipline",copy:"Uses configured risk % when account size and risk settings are available.",value:d.riskMax?`${d.riskRate.toFixed(0)}% · ${d.riskMax} checked`:"Not scored",state:d.riskMax?(d.riskRate>=80?"good":d.riskRate>=60?"warn":"bad"):"neutral"}
+  ];
+
+  target.innerHTML=`
+    <div class="discipline-score-hero">
+      <div class="discipline-score-main">
+        <div class="discipline-score-card-label">Trader Score</div>
+        <div class="discipline-score-number ${colorClass}">${d.totalTrades?score.toFixed(1):"—"}</div>
+        <div class="discipline-score-grade ${colorClass}">${d.totalTrades?grade.grade:"Awaiting Data"}</div>
+        <div class="discipline-score-bar ${colorClass}"><div class="discipline-score-fill" style="width:${d.totalTrades?Math.max(0,Math.min(100,score)):0}%"></div></div>
+        <div class="discipline-score-note">${d.totalTrades?grade.copy:"Record trades and discipline fields to generate a score."}<br>${coverageLabel}</div>
+      </div>
+      <div class="discipline-score-grid">
+        <div class="discipline-score-card"><div class="discipline-score-card-label">Clean Trade Streak</div><div class="discipline-score-card-value">${d.currentClean}</div><div class="discipline-score-card-copy">Most recent consecutive trades with no recorded discipline violation.</div></div>
+        <div class="discipline-score-card"><div class="discipline-score-card-label">Violation Trades</div><div class="discipline-score-card-value">${d.violations}</div><div class="discipline-score-card-copy">Trades containing at least one recorded discipline violation.</div></div>
+        <div class="discipline-score-card"><div class="discipline-score-card-label">Rule Score</div><div class="discipline-score-card-value">${d.baseRate===null?"—":d.baseRate.toFixed(0)+"%"}</div><div class="discipline-score-card-copy">Rule following, early entry, FOMO, revenge and news behavior.</div></div>
+        <div class="discipline-score-card"><div class="discipline-score-card-label">Management Score</div><div class="discipline-score-card-value">${d.managementMax?d.managementRate.toFixed(0)+"%":"—"}</div><div class="discipline-score-card-copy">Based only on rated management records.</div></div>
+        <div class="discipline-score-card"><div class="discipline-score-card-label">Risk Score</div><div class="discipline-score-card-value">${d.riskMax?d.riskRate.toFixed(0)+"%":"—"}</div><div class="discipline-score-card-copy">Only scored when account size and risk % are configured.</div></div>
+        <div class="discipline-score-card"><div class="discipline-score-card-label">Trades</div><div class="discipline-score-card-value">${d.totalTrades}</div><div class="discipline-score-card-copy">Historical trades currently in the journal.</div></div>
+      </div>
+    </div>
+    <div class="section-description" style="margin-bottom:10px;">Discipline Breakdown</div>
+    <div class="discipline-breakdown">
+      ${breakdown.map(r=>`<div class="discipline-breakdown-row"><div><div class="discipline-breakdown-title">${escapeHTML(r.label)}</div><div class="discipline-breakdown-copy">${escapeHTML(r.copy)}</div></div><div class="discipline-breakdown-value discipline-${r.state}">${escapeHTML(r.value)}</div></div>`).join("")}
+    </div>
+    <div class="info-box" style="margin-top:12px;"><strong>Scoring rule:</strong> this is a historical journal score, not a prediction of profitability. Unrecorded fields are excluded rather than treated as violations. The score weights recorded execution discipline most heavily, then management quality, then configured risk discipline.</div>
+  `;
+}
+
 function renderEverything(){
 
   const steps=[
@@ -9941,6 +10125,7 @@ function renderEverything(){
     renderTradeHistory();
     renderTradeManagementSummary();
     renderSessionTimeIntelligence();
+    renderDisciplineTraderScore();
 
   }catch(error){
 
