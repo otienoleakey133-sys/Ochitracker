@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#07111f">
-<title>OchiTracker — Professional FX Trading System</title>
+<title>OchiTracker — Historical Data & Sync Stable</title>
 
 <style>
 /* =========================================================
@@ -3904,7 +3904,7 @@ footer{
       <div class="section-icon">📚</div>
 
       <div>
-        <h2>Trade History</h2>
+        <h2>Historical Trade Records</h2>
         <div class="section-description">
           Your complete recorded trading journal.
         </div>
@@ -3953,7 +3953,7 @@ footer{
     color:#8fa4ba;
     font-size:11px;
   ">
-  Trade History: loading…
+  Historical Records: loading…
   <button
     type="button"
     onclick="reloadOchiTradeHistory()"
@@ -3964,7 +3964,7 @@ footer{
       margin-top:-2px;
       font-size:10px;
     ">
-    ↻ Reload History
+    ↻ Reload Records
   </button>
 </div>
 
@@ -4382,7 +4382,40 @@ footer{
 
 </main>
 
+<!-- =======================================================
+     HISTORICAL DATA & SYNC CENTER
+======================================================= -->
+<section id="historicalDataCenter" class="panel" style="margin-top:18px;">
+  <div class="section-heading">
+    <div class="section-title">
+      <div class="section-icon">🗂️</div>
+      <div>
+        <h2>Historical Data & Sync Center</h2>
+        <div class="section-description">
+          One clean place to verify your recorded history, local database copy and synchronization status.
+        </div>
+      </div>
+    </div>
+    <span class="phase-badge">DATA</span>
+  </div>
 
+  <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));">
+    <div class="card"><div class="card-label">Historical Trades</div><div class="card-value" id="historicalTradeCount">0</div></div>
+    <div class="card"><div class="card-label">Trading Days</div><div class="card-value" id="historicalDayCount">0</div></div>
+    <div class="card"><div class="card-label">Database Copy</div><div class="card-value" id="historicalDbCount">—</div></div>
+    <div class="card"><div class="card-label">Data Health</div><div class="card-value" id="historicalHealth">HEALTHY</div></div>
+  </div>
+
+  <div class="button-row" style="margin-top:13px;">
+    <button type="button" onclick="syncHistoricalDataCenter()">🔄 Sync Historical Data</button>
+    <button type="button" class="secondary" onclick="refreshHistoricalDataCenter()">↻ Refresh Status</button>
+    <button type="button" class="secondary" onclick="document.getElementById('history').scrollIntoView({behavior:'smooth'})">📚 Open Historical Records</button>
+  </div>
+
+  <div id="historicalDataMessage" class="info-box" style="margin-top:13px;">
+    Historical data is stored locally. Sync copies the current journal into the browser database; it does not send data to the internet.
+  </div>
+</section>
 
 <!-- =======================================================
      PHASE 7.11 — ADVANCED EQUITY & DRAWDOWN ANALYTICS
@@ -4659,7 +4692,13 @@ function normalizeTrades(list){
       );
 
     const result =
-      String(t.result || "BE")
+      String(
+        t.result ??
+        t.outcome ??
+        t.tradeResult ??
+        t.status ??
+        "BE"
+      )
       .toUpperCase();
 
     if(result==="WIN"){
@@ -4693,10 +4732,13 @@ function normalizeTrades(list){
 
       pair:
         t.pair ||
+        t.symbol ||
+        t.asset ||
         "Not recorded",
 
       direction:
         t.direction ||
+        t.side ||
         "BUY",
 
       session:
@@ -4743,6 +4785,8 @@ function normalizeTrades(list){
 
       entryModel:
         t.entryModel ||
+        t.setup ||
+        t.entrySetup ||
         "Not recorded",
 
       marketCondition:
@@ -11490,6 +11534,42 @@ function refreshAdvancedEquityAnalytics(){
   renderAdvancedDrawdownTable(data.series);
 }
 
+function refreshHistoricalDataCenter(){
+  const count=document.getElementById("historicalTradeCount");
+  const days=document.getElementById("historicalDayCount");
+  const db=document.getElementById("historicalDbCount");
+  const health=document.getElementById("historicalHealth");
+  if(count) count.textContent=String(Array.isArray(trades)?trades.length:0);
+  if(days) days.textContent=String(typeof tradingDays==="function"?tradingDays():0);
+  if(health){
+    const issues=typeof getDataHealth==="function"?getDataHealth():0;
+    health.textContent=issues===0?"HEALTHY":`${issues} ISSUE${issues===1?"":"S"}`;
+  }
+  if(db){
+    const el=document.getElementById("ochiSyncDatabaseCount");
+    db.textContent=el && el.textContent && el.textContent!=="—" ? el.textContent : "—";
+  }
+}
+
+async function syncHistoricalDataCenter(){
+  const msg=document.getElementById("historicalDataMessage");
+  if(msg) msg.textContent="Synchronizing historical trade data…";
+  try{
+    if(typeof syncOchiTradesNow!=="function") throw new Error("Sync engine is unavailable.");
+    await syncOchiTradesNow();
+    refreshHistoricalDataCenter();
+    if(msg) msg.textContent="Historical data synchronized successfully. Your current journal remains the working dataset.";
+  }catch(error){
+    refreshHistoricalDataCenter();
+    if(msg) msg.textContent=`Historical data sync could not complete: ${error.message}`;
+  }
+}
+
+function initializeHistoricalDataCenter(){
+  refreshHistoricalDataCenter();
+  setTimeout(refreshHistoricalDataCenter,400);
+}
+
 function initializeAdvancedEquityAnalytics(){
   const select=document.getElementById("equityAnalyticsScope");
   if(select && !select.dataset.bound){
@@ -11504,5 +11584,9 @@ window.addEventListener("resize",()=>{clearTimeout(window.__ochiEquityResizeTime
 </script>
 
 <script>document.addEventListener("DOMContentLoaded",()=>setTimeout(initializeAdvancedEquityAnalytics,120));</script>
-<script>document.addEventListener("DOMContentLoaded",()=>setTimeout(initializeSetupIntelligence,100));</script></body>
+<script>document.addEventListener("DOMContentLoaded",()=>setTimeout(initializeSetupIntelligence,100));</script>
+<script>document.addEventListener("DOMContentLoaded",()=>setTimeout(initializeHistoricalDataCenter,140));</script>
+<script>window.addEventListener("error",function(e){var box=document.getElementById("ochiBootError");if(box){box.style.display="block";box.textContent="OchiTracker startup warning: "+(e.error&&e.error.message?e.error.message:e.message)+". Your stored data was not intentionally deleted.";}});</script>
+<div id="ochiBootError" style="display:none;position:fixed;left:12px;right:12px;bottom:12px;z-index:99999;padding:12px 14px;border:1px solid rgba(255,120,120,.35);border-radius:12px;background:#241216;color:#ffd5d5;font:600 12px/1.5 system-ui,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.35);"></div>
+</body>
         </html>
