@@ -2225,6 +2225,37 @@ footer{
 
 /* Phase 7.8 */
 .setup-intel{margin-top:22px}.setup-intel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}.setup-intel-sub{color:var(--muted);font-size:13px;margin-top:5px;line-height:1.5}.setup-intel-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:16px}.setup-intel-card{background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:14px;padding:15px}.setup-intel-label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}.setup-intel-value{font-size:22px;font-weight:800;margin-top:7px}.setup-intel-table-wrap{overflow-x:auto;margin-top:16px;border:1px solid var(--border);border-radius:14px}.setup-intel-table{width:100%;border-collapse:collapse;min-width:760px}.setup-intel-table th,.setup-intel-table td{padding:11px 12px;border-bottom:1px solid var(--border);text-align:left;font-size:12px;white-space:nowrap}.setup-intel-table th{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.06em}.setup-intel-table tr:last-child td{border-bottom:0}.setup-intel-rank{font-weight:800}.setup-intel-positive{color:#70e6a1}.setup-intel-negative{color:#ff7d8a}.setup-intel-badge{display:inline-flex;border:1px solid var(--border);border-radius:999px;padding:4px 8px;font-size:10px;font-weight:800}.setup-intel-best{border-color:rgba(112,230,161,.45);color:#70e6a1}.setup-intel-weak{border-color:rgba(255,125,138,.45);color:#ff7d8a}.setup-intel-controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.setup-intel-select{min-width:180px}.setup-intel-detail{margin-top:16px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.setup-intel-note{margin-top:14px;padding:12px 14px;border-left:3px solid var(--accent);background:rgba(255,255,255,.025);border-radius:8px;color:var(--muted);font-size:12px;line-height:1.55}@media(max-width:900px){.setup-intel-grid,.setup-intel-detail{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:560px){.setup-intel-grid,.setup-intel-detail{grid-template-columns:1fr}.setup-intel-table th,.setup-intel-table td{padding:9px 10px}}
+
+/* =========================================================
+   PHASE 7.11 — ADVANCED EQUITY & DRAWDOWN ANALYTICS
+========================================================= */
+.equity-analytics-section{margin-top:18px;}
+.equity-analytics-controls{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:13px;}
+.equity-analytics-controls select{width:auto;min-width:150px;}
+.equity-analytics-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;}
+.equity-analytics-card{padding:13px;border:1px solid rgba(255,255,255,.07);border-radius:12px;background:rgba(255,255,255,.025);}
+.equity-analytics-label{color:#7f93a8;font-size:10px;text-transform:uppercase;letter-spacing:.7px;}
+.equity-analytics-value{margin-top:6px;color:#e8f1fb;font-size:18px;font-weight:850;}
+.equity-analytics-copy{margin-top:5px;color:#8fa4ba;font-size:10px;line-height:1.45;}
+.equity-analytics-chart{margin-top:12px;padding:12px;border:1px solid rgba(255,255,255,.07);border-radius:13px;background:rgba(0,0,0,.12);}
+.equity-analytics-chart-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px;}
+.equity-analytics-chart-title{font-size:12px;font-weight:850;}
+.equity-analytics-chart-subtitle{font-size:10px;color:#7189a2;margin-top:2px;}
+.equity-analytics-canvas-wrap{height:285px;position:relative;overflow:hidden;}
+.equity-analytics-canvas-wrap canvas{width:100%;height:100%;}
+.equity-analytics-insight{margin-top:12px;padding:12px;border-radius:11px;border:1px solid rgba(77,163,255,.14);background:rgba(77,163,255,.035);color:#a8bdd1;font-size:11px;line-height:1.55;}
+.equity-analytics-insight strong{color:#e7f1fb;}
+.equity-analytics-dd-table{margin-top:12px;}
+.equity-analytics-dd-table table{min-width:650px;}
+.equity-dd-good{color:#9be7c2}.equity-dd-warn{color:#ffd18a}.equity-dd-bad{color:#ff9f9f}
+@media(max-width:900px){.equity-analytics-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media(max-width:560px){
+  .equity-analytics-grid{grid-template-columns:1fr 1fr;}
+  .equity-analytics-controls select{width:100%;}
+  .equity-analytics-canvas-wrap{height:245px;}
+}
+@media(max-width:380px){.equity-analytics-grid{gap:7px}.equity-analytics-card{padding:9px}.equity-analytics-value{font-size:16px}}
+
 </style>
 </head>
 
@@ -4351,6 +4382,74 @@ footer{
 
 </main>
 
+
+
+<!-- =======================================================
+     PHASE 7.11 — ADVANCED EQUITY & DRAWDOWN ANALYTICS
+======================================================= -->
+<section id="advancedEquityAnalytics" class="equity-analytics-section">
+  <div class="section-heading">
+    <div class="section-title">
+      <div class="section-icon">📈</div>
+      <div>
+        <h2>Phase 7.11 — Advanced Equity & Drawdown Analytics</h2>
+        <div class="section-description">
+          Measure equity growth, peak-to-trough drawdown, recovery and risk behavior from the recorded trade history.
+        </div>
+      </div>
+    </div>
+    <span class="phase-badge">EQUITY</span>
+  </div>
+
+  <div class="equity-analytics-controls">
+    <select id="equityAnalyticsScope" aria-label="Equity analytics scope">
+      <option value="all">All recorded trades</option>
+      <option value="wins-losses">Wins & losses only</option>
+      <option value="last20">Last 20 trades</option>
+      <option value="last50">Last 50 trades</option>
+    </select>
+    <button type="button" class="secondary" onclick="refreshAdvancedEquityAnalytics()">Refresh Analytics</button>
+  </div>
+
+  <div class="equity-analytics-grid" id="advancedEquityMetrics"></div>
+
+  <div class="equity-analytics-chart">
+    <div class="equity-analytics-chart-head">
+      <div>
+        <div class="equity-analytics-chart-title">Equity & Drawdown Path</div>
+        <div class="equity-analytics-chart-subtitle">Equity starts at $0; drawdown is measured from the running equity peak.</div>
+      </div>
+      <span class="status neutral" id="equityAnalyticsStatus">WAITING</span>
+    </div>
+    <div class="equity-analytics-canvas-wrap">
+      <canvas id="advancedEquityCanvas"></canvas>
+    </div>
+  </div>
+
+  <div class="equity-analytics-insight" id="advancedEquityInsight">
+    Add completed trades to activate advanced equity and drawdown analytics.
+  </div>
+
+  <div class="equity-analytics-dd-table">
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Drawdown Event</th>
+            <th>Peak</th>
+            <th>Trough</th>
+            <th>Depth</th>
+            <th>Trades</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="advancedDrawdownBody">
+          <tr><td colspan="6">No drawdown events yet.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
 
 <footer>
 
@@ -11178,7 +11277,232 @@ function setupQuality78(t){let n=0;if(String(t.poi4h||'').toLowerCase()==='valid
 function setupGroups78(){const g={};trades.forEach(t=>{const key=[t.poi4h,t.liquiditySweep,t.mss15,t.entryModel,t.marketCondition].map(x=>String(x||'Not recorded')).join(' • ');if(!g[key])g[key]={key,trades:[],wins:0,losses:0,be:0,profit:0,totalR:0,quality:0,risk:0};const x=g[key],r=String(t.result||'BE').toUpperCase(),p=safeNumber(t.profit);x.trades.push(t);if(r==='WIN')x.wins++;else if(r==='LOSS')x.losses++;else x.be++;x.profit+=p;x.totalR+=safeNumber(t.rMultiple);x.quality+=setupQuality78(t);x.risk+=safeNumber(t.risk);});return Object.values(g).filter(x=>x.trades.length>=3).map(x=>{let w=0,l=0;x.trades.forEach(t=>{const p=safeNumber(t.profit);if(p>0)w+=p;if(p<0)l+=Math.abs(p)});return {...x,winRate:x.wins/x.trades.length*100,avgR:x.totalR/x.trades.length,avgQuality:x.quality/x.trades.length,pf:l?w/l:(w?Infinity:0)};});}
 function renderSetupIntelligence(){const body=document.getElementById('setupIntelBody');if(!body)return;let rows=setupGroups78();const mode=document.getElementById('setupIntelSort')?.value||'profit';rows.sort((a,b)=>mode==='expectancy'?b.avgR-a.avgR:mode==='winrate'?b.winRate-a.winRate:mode==='quality'?b.avgQuality-a.avgQuality:b.profit-a.profit);const best=rows[0];document.getElementById('setupIntelCount').textContent=rows.length;document.getElementById('setupIntelBest').textContent=best?best.key.split(' • ')[3]:'—';document.getElementById('setupIntelBestR').textContent=best?best.avgR.toFixed(2)+'R':'—';document.getElementById('setupIntelBestWin').textContent=best?best.winRate.toFixed(1)+'%':'—';if(!rows.length){body.innerHTML='<tr><td colspan="10">No qualifying setup combinations yet.</td></tr>';return;}body.innerHTML=rows.map((x,i)=>`<tr><td class="setup-intel-rank">${i+1}</td><td>${escapeHTML(x.key)}</td><td>${x.trades.length}</td><td>${x.winRate.toFixed(1)}%</td><td class="${x.profit>=0?'setup-intel-positive':'setup-intel-negative'}">${money(x.profit)}</td><td>${x.totalR.toFixed(2)}R</td><td>${x.avgR.toFixed(2)}R</td><td>${Number.isFinite(x.pf)?x.pf.toFixed(2):'∞'}</td><td>${x.avgQuality.toFixed(1)}/8</td><td><span class="setup-intel-badge ${x.avgR>0?'setup-intel-best':'setup-intel-weak'}">${x.avgR>0?'Positive':'Weak'}</span></td></tr>`).join('');const d=best;document.getElementById('setupIntelDetail').innerHTML=d?['Wins','Losses','Breakeven','Risk Used'].map((k,i)=>{const v=[d.wins,d.losses,d.be,money(d.risk)][i];return `<div class="setup-intel-card"><div class="setup-intel-label">${k}</div><div class="setup-intel-value">${escapeHTML(String(v))}</div></div>`}).join(''):'';document.getElementById('setupIntelInsight').textContent=d?`Top historical combination: ${d.key}. ${d.trades.length} trades, ${d.winRate.toFixed(1)}% win rate and ${d.avgR.toFixed(2)}R average R.`:'Add at least three matching trades.';}
 function initializeSetupIntelligence(){document.getElementById('setupIntelSort')?.addEventListener('change',renderSetupIntelligence);renderSetupIntelligence();}
+
+/* =========================================================
+   PHASE 7.11 — ADVANCED EQUITY & DRAWDOWN ANALYTICS
+========================================================= */
+function equityAnalyticsTrades(){
+  const scope=document.getElementById("equityAnalyticsScope")?.value || "all";
+  let list=Array.isArray(trades)?trades.slice():[];
+
+  if(scope==="wins-losses"){
+    list=list.filter(t=>["WIN","LOSS"].includes(String(t.result||"").toUpperCase()));
+  }
+  if(scope==="last20") list=list.slice(-20);
+  if(scope==="last50") list=list.slice(-50);
+
+  return list.filter(t=>Number.isFinite(Number(t.profit)));
+}
+
+function buildAdvancedEquitySeries(list){
+  let equity=0,peak=0,peakIndex=0;
+  const series=[];
+  let maxDD=0,maxDDIndex=0;
+  let currentDDStreak=0,longestDDStreak=0;
+  let recoveryCount=0;
+
+  list.forEach((t,i)=>{
+    equity+=safeNumber(t.profit);
+    if(equity>=peak){
+      if(peak>0 && equity>peak) recoveryCount++;
+      peak=equity;
+      peakIndex=i;
+      currentDDStreak=0;
+    }else{
+      currentDDStreak++;
+      longestDDStreak=Math.max(longestDDStreak,currentDDStreak);
+    }
+    const dd=equity-peak;
+    if(dd<maxDD){
+      maxDD=dd;
+      maxDDIndex=i;
+    }
+    series.push({
+      index:i+1,
+      equity,
+      peak,
+      drawdown:dd,
+      trade:t,
+      peakIndex
+    });
+  });
+
+  const totalProfit=equity;
+  const currentDD=series.length?series[series.length-1].drawdown:0;
+  const maxPeak=series.length?Math.max(...series.map(x=>x.peak)):0;
+  const recoveryFactor=maxDD<0 ? totalProfit/Math.abs(maxDD) : (totalProfit>0 ? Infinity : 0);
+  const winCount=list.filter(t=>String(t.result||"").toUpperCase()==="WIN").length;
+  const lossCount=list.filter(t=>String(t.result||"").toUpperCase()==="LOSS").length;
+  const grossProfit=list.reduce((a,t)=>a+Math.max(0,safeNumber(t.profit)),0);
+  const grossLoss=Math.abs(list.reduce((a,t)=>a+Math.min(0,safeNumber(t.profit)),0));
+  const profitFactor=grossLoss?grossProfit/grossLoss:(grossProfit?Infinity:0);
+
+  return {series,totalProfit,currentDD,maxDD,maxPeak,recoveryFactor,winCount,lossCount,grossProfit,grossLoss,profitFactor,longestDDStreak,recoveryCount,maxDDIndex};
+}
+
+function drawAdvancedEquityChart(series){
+  const canvas=document.getElementById("advancedEquityCanvas");
+  if(!canvas)return;
+  const wrap=canvas.parentElement;
+  const rect=wrap.getBoundingClientRect();
+  const dpr=window.devicePixelRatio||1;
+  const w=Math.max(320,Math.floor(rect.width));
+  const h=Math.max(210,Math.floor(rect.height));
+  canvas.width=w*dpr; canvas.height=h*dpr;
+  const ctx=canvas.getContext("2d");
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.clearRect(0,0,w,h);
+
+  const pad={l:50,r:16,t:18,b:30};
+  const allVals=series.flatMap(x=>[x.equity,x.drawdown,x.peak,0]);
+  const minV=Math.min(...allVals,0);
+  const maxV=Math.max(...allVals,0);
+  const span=Math.max(1,maxV-minV);
+  const x=i=>pad.l+(series.length<=1?0:i/(series.length-1))*(w-pad.l-pad.r);
+  const y=v=>pad.t+(maxV-v)/span*(h-pad.t-pad.b);
+
+  ctx.font="10px Inter, Arial, sans-serif";
+  ctx.fillStyle="#7189a2";
+  ctx.strokeStyle="rgba(255,255,255,.07)";
+  ctx.lineWidth=1;
+
+  for(let g=0;g<=4;g++){
+    const val=maxV-(span*g/4), yy=y(val);
+    ctx.beginPath();ctx.moveTo(pad.l,yy);ctx.lineTo(w-pad.r,yy);ctx.stroke();
+    ctx.fillText(money(val),5,yy+3);
+  }
+
+  const zeroY=y(0);
+  ctx.strokeStyle="rgba(255,255,255,.16)";
+  ctx.beginPath();ctx.moveTo(pad.l,zeroY);ctx.lineTo(w-pad.r,zeroY);ctx.stroke();
+
+  if(!series.length){
+    ctx.fillStyle="#7189a2";
+    ctx.textAlign="center";
+    ctx.fillText("No completed trades available for this view.",w/2,h/2);
+    ctx.textAlign="left";
+    return;
+  }
+
+  const drawLine=(key,dash)=>{
+    ctx.beginPath();
+    series.forEach((p,i)=>{const xx=x(i),yy=y(p[key]);i?ctx.lineTo(xx,yy):ctx.moveTo(xx,yy)});
+    ctx.setLineDash(dash||[]);
+    ctx.strokeStyle=key==="drawdown" ? "#ff6874" : "#4da3ff";
+    ctx.lineWidth=2;
+    ctx.stroke();
+    ctx.setLineDash([]);
+  };
+  drawLine("equity");
+  drawLine("drawdown",[5,4]);
+
+  ctx.fillStyle="#8fa4ba";
+  ctx.textAlign="right";
+  ctx.fillText(`Trades: ${series.length}`,w-pad.r,h-7);
+  ctx.textAlign="left";
+}
+
+function calculateDrawdownEvents(series){
+  const events=[];
+  let active=null;
+
+  series.forEach((p,i)=>{
+    if(p.drawdown<0 && !active){
+      active={peak:p.peak,start:i,peakIndex:p.peakIndex,trough:p.equity,troughIndex:i};
+    }else if(p.drawdown<0 && active){
+      if(p.equity<active.trough){active.trough=p.equity;active.troughIndex=i;}
+    }else if(p.drawdown===0 && active){
+      active.end=i;
+      active.recovered=true;
+      events.push(active);
+      active=null;
+    }
+  });
+  if(active){
+    active.end=series.length-1;
+    active.recovered=false;
+    events.push(active);
+  }
+  return events.sort((a,b)=>(b.peak-a.trough)-(a.peak-b.trough));
+}
+
+function renderAdvancedDrawdownTable(series){
+  const body=document.getElementById("advancedDrawdownBody");
+  if(!body)return;
+  const events=calculateDrawdownEvents(series).slice(0,8);
+  if(!events.length){
+    body.innerHTML='<tr><td colspan="6">No drawdown events yet. A drawdown begins after equity moves below a previous peak.</td></tr>';
+    return;
+  }
+  body.innerHTML=events.map((e,i)=>{
+    const depth=e.trough-e.peak;
+    const duration=e.end-e.start+1;
+    const status=e.recovered?'<span class="equity-dd-good">Recovered</span>':'<span class="equity-dd-warn">Open</span>';
+    return `<tr>
+      <td>#${i+1}</td>
+      <td>${money(e.peak)}</td>
+      <td>${money(e.trough)}</td>
+      <td class="equity-dd-bad">${money(depth)}</td>
+      <td>${duration}</td>
+      <td>${status}</td>
+    </tr>`;
+  }).join("");
+}
+
+function refreshAdvancedEquityAnalytics(){
+  const metrics=document.getElementById("advancedEquityMetrics");
+  const insight=document.getElementById("advancedEquityInsight");
+  const status=document.getElementById("equityAnalyticsStatus");
+  const list=equityAnalyticsTrades();
+  const data=buildAdvancedEquitySeries(list);
+  if(!metrics||!insight||!status)return;
+
+  const currentEquity=data.series.length?data.series[data.series.length-1].equity:0;
+  const ddPct=data.maxPeak>0 ? Math.abs(data.maxDD)/data.maxPeak*100 : 0;
+  const currentDDPct=data.maxPeak>0 ? Math.abs(data.currentDD)/data.maxPeak*100 : 0;
+  const recovery=data.recoveryFactor;
+
+  const cards=[
+    ["Net Equity",money(currentEquity),"Cumulative P/L from the selected trade set."],
+    ["Max Drawdown",money(data.maxDD),`${ddPct.toFixed(2)}% of the highest recorded equity peak.`],
+    ["Current Drawdown",money(data.currentDD),`${currentDDPct.toFixed(2)}% below the current equity peak.`],
+    ["Recovery Factor",Number.isFinite(recovery)?recovery.toFixed(2):"∞","Net profit divided by maximum drawdown."],
+    ["Profit Factor",Number.isFinite(data.profitFactor)?data.profitFactor.toFixed(2):"∞","Gross profit divided by gross loss."],
+    ["DD Duration",`${data.longestDDStreak} trades`,"Longest consecutive period spent below an equity peak."],
+    ["Peak Equity",money(data.maxPeak),"Highest running equity level reached."],
+    ["New Highs",String(data.recoveryCount),"Count of upward new-high events after a prior peak."]
+  ];
+  metrics.innerHTML=cards.map(c=>`<div class="equity-analytics-card"><div class="equity-analytics-label">${c[0]}</div><div class="equity-analytics-value">${c[1]}</div><div class="equity-analytics-copy">${c[2]}</div></div>`).join("");
+
+  if(!list.length){
+    status.textContent="WAITING"; status.className="status neutral";
+    insight.innerHTML="<strong>Advanced analytics is waiting.</strong> Record completed trades with valid P/L to build the equity path.";
+  }else{
+    const open=data.currentDD<0;
+    status.textContent=open?"IN DRAWDOWN":"AT / ABOVE PEAK";
+    status.className=`status ${open?"caution":"ready"}`;
+    const bestTrade=list.reduce((a,t)=>safeNumber(t.profit)>safeNumber(a.profit)?t:a,list[0]);
+    const worstTrade=list.reduce((a,t)=>safeNumber(t.profit)<safeNumber(a.profit)?t:a,list[0]);
+    insight.innerHTML=`<strong>Equity read:</strong> ${list.length} trades produced ${money(currentEquity)} net P/L. Maximum drawdown reached ${money(data.maxDD)}. ${open?"The account is currently below its peak; protect capital until a valid recovery occurs.":"Equity is currently at a recorded peak."} Best recorded trade: ${money(bestTrade.profit)}; worst: ${money(worstTrade.profit)}.`;
+  }
+
+  drawAdvancedEquityChart(data.series);
+  renderAdvancedDrawdownTable(data.series);
+}
+
+function initializeAdvancedEquityAnalytics(){
+  const select=document.getElementById("equityAnalyticsScope");
+  if(select && !select.dataset.bound){
+    select.addEventListener("change",refreshAdvancedEquityAnalytics);
+    select.dataset.bound="1";
+  }
+  refreshAdvancedEquityAnalytics();
+}
+
+window.addEventListener("resize",()=>{clearTimeout(window.__ochiEquityResizeTimer);window.__ochiEquityResizeTimer=setTimeout(refreshAdvancedEquityAnalytics,120);});
+
 </script>
 
+<script>document.addEventListener("DOMContentLoaded",()=>setTimeout(initializeAdvancedEquityAnalytics,120));</script>
 <script>document.addEventListener("DOMContentLoaded",()=>setTimeout(initializeSetupIntelligence,100));</script></body>
         </html>
