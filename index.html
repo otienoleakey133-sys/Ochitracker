@@ -877,6 +877,168 @@ button.danger{
   .trade-review-title{font-size:19px;}
 }
 
+
+/* =========================================================
+   PHASE 7.7 — TRADE MANAGEMENT JOURNAL
+========================================================= */
+.trade-manage-btn{
+  background:#183b31;
+  border:1px solid #2d6956;
+  color:#dff9ee;
+  border-radius:8px;
+  padding:6px 9px;
+  font-size:10px;
+  width:auto;
+  cursor:pointer;
+}
+.trade-manage-btn:hover{filter:brightness(1.12);}
+.trade-management-section{
+  margin-top:18px;
+}
+.trade-management-grid{
+  display:grid;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  gap:10px;
+}
+.trade-management-card{
+  padding:13px;
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:12px;
+  background:rgba(255,255,255,.025);
+}
+.trade-management-label{
+  color:#7f93a8;
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.7px;
+}
+.trade-management-value{
+  margin-top:6px;
+  color:#e8f1fb;
+  font-size:17px;
+  font-weight:850;
+}
+.trade-management-copy{
+  margin-top:5px;
+  color:#8fa4ba;
+  font-size:11px;
+  line-height:1.5;
+}
+.trade-management-overlay{
+  position:fixed;
+  inset:0;
+  z-index:10000;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  background:rgba(1,8,15,.82);
+  backdrop-filter:blur(7px);
+}
+.trade-management-overlay.visible{display:flex;}
+.trade-management-modal{
+  width:min(980px,100%);
+  max-height:92vh;
+  overflow:auto;
+  border:1px solid rgba(77,163,255,.20);
+  border-radius:20px;
+  background:#081522;
+  box-shadow:0 24px 70px rgba(0,0,0,.48);
+  padding:20px;
+}
+.trade-management-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:14px;
+  margin-bottom:16px;
+}
+.trade-management-title{
+  margin:0;
+  font-size:22px;
+  font-weight:850;
+}
+.trade-management-subtitle{
+  margin-top:5px;
+  color:#8fa4ba;
+  font-size:12px;
+}
+.trade-management-form-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+}
+.trade-management-field{
+  min-width:0;
+}
+.trade-management-field label{
+  display:block;
+  margin-bottom:6px;
+  color:#9eb1c5;
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.65px;
+}
+.trade-management-field input,
+.trade-management-field select,
+.trade-management-field textarea{
+  width:100%;
+}
+.trade-management-field textarea{
+  min-height:105px;
+  resize:vertical;
+}
+.trade-management-wide{grid-column:1/-1;}
+.trade-management-note{
+  margin:14px 0 0;
+  padding:11px 12px;
+  border-radius:11px;
+  border:1px solid rgba(77,163,255,.14);
+  background:rgba(77,163,255,.035);
+  color:#9fb3c7;
+  font-size:11px;
+  line-height:1.55;
+}
+.trade-management-modal-actions{
+  display:flex;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+  gap:9px;
+  margin-top:16px;
+}
+.trade-management-status{
+  margin-top:12px;
+  color:#8fa4ba;
+  font-size:11px;
+}
+.trade-management-grade{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:4px 7px;
+  border-radius:999px;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.3px;
+}
+.trade-management-grade.good{background:rgba(49,183,124,.12);color:#8ee6bf;border:1px solid rgba(49,183,124,.25);}
+.trade-management-grade.warn{background:rgba(255,190,70,.10);color:#ffd37a;border:1px solid rgba(255,190,70,.24);}
+.trade-management-grade.bad{background:rgba(255,92,92,.10);color:#ffaaaa;border:1px solid rgba(255,92,92,.24);}
+@media(max-width:900px){
+  .trade-management-grid{grid-template-columns:repeat(3,minmax(0,1fr));}
+  .trade-management-form-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+@media(max-width:600px){
+  .trade-management-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .trade-management-form-grid{grid-template-columns:1fr;}
+  .trade-management-wide{grid-column:auto;}
+}
+@media(max-width:480px){
+  .trade-management-overlay{padding:8px;}
+  .trade-management-modal{padding:14px;border-radius:16px;max-height:94vh;}
+  .trade-management-title{font-size:19px;}
+}
+
 button:disabled{
   opacity:.45;
   cursor:not-allowed;
@@ -3701,6 +3863,7 @@ footer{
           <th>R</th>
           <th>Risk</th>
           <th>View</th>
+          <th>Manage</th>
           <th>Delete</th>
 
         </tr>
@@ -3759,6 +3922,162 @@ footer{
     <div class="trade-review-section">
       <h4>Trade Notes</h4>
       <div class="trade-review-notes" id="tradeReviewNotes">No notes recorded.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- =======================================================
+     PHASE 7.7 — TRADE MANAGEMENT JOURNAL
+======================================================= -->
+<section id="tradeManagementLab" class="trade-management-section">
+  <div class="section-heading">
+    <div class="section-title">
+      <div class="section-icon">🎯</div>
+      <div>
+        <h2>Phase 7.7 — Trade Management Journal</h2>
+        <div class="section-description">
+          Study what happened after entry: break-even decisions, manual exits, MFE/MAE and management quality.
+        </div>
+      </div>
+    </div>
+    <span class="phase-badge">MANAGEMENT</span>
+  </div>
+
+  <div class="trade-management-grid" id="tradeManagementSummary"></div>
+
+  <div class="info-box" style="margin-top:12px;">
+    <strong>Management Lab:</strong> use <strong>Manage</strong> beside a trade to record what happened after entry. These fields do not change the original P/L or R result.
+  </div>
+</section>
+
+
+<!-- =======================================================
+     PHASE 7.7 — TRADE MANAGEMENT MODAL
+======================================================= -->
+<div class="trade-management-overlay" id="tradeManagementOverlay" role="dialog" aria-modal="true" aria-labelledby="tradeManagementTitle">
+  <div class="trade-management-modal">
+    <div class="trade-management-head">
+      <div>
+        <h3 class="trade-management-title" id="tradeManagementTitle">Trade Management</h3>
+        <div class="trade-management-subtitle" id="tradeManagementSubtitle">Post-entry management record.</div>
+      </div>
+      <button class="trade-review-close" type="button" onclick="closeTradeManagement()">Close</button>
+    </div>
+
+    <div class="trade-management-form-grid">
+      <div class="trade-management-field">
+        <label for="tmExitType">Exit Type</label>
+        <select id="tmExitType">
+          <option>Not recorded</option>
+          <option>Planned TP</option>
+          <option>Planned SL</option>
+          <option>Break-even</option>
+          <option>Manual Profit</option>
+          <option>Manual Loss</option>
+          <option>Partial + Final</option>
+        </select>
+      </div>
+
+      <div class="trade-management-field">
+        <label for="tmMovedBE">Moved SL to BE?</label>
+        <select id="tmMovedBE">
+          <option>No</option>
+          <option>Yes</option>
+          <option>Not recorded</option>
+        </select>
+      </div>
+
+      <div class="trade-management-field">
+        <label for="tmBETriggerR">BE Trigger (R)</label>
+        <input type="number" id="tmBETriggerR" step="0.01" min="0" placeholder="e.g. 1.00">
+      </div>
+
+      <div class="trade-management-field">
+        <label for="tmPartialTaken">Partial Taken?</label>
+        <select id="tmPartialTaken">
+          <option>No</option>
+          <option>Yes</option>
+          <option>Not recorded</option>
+        </select>
+      </div>
+
+      <div class="trade-management-field">
+        <label for="tmManualExit">Manual Exit?</label>
+        <select id="tmManualExit">
+          <option>No</option>
+          <option>Yes</option>
+          <option>Not recorded</option>
+        </select>
+      </div>
+
+      <div class="trade-management-field">
+        <label for="tmExitReason">Exit Reason</label>
+        <select id="tmExitReason">
+          <option>Not recorded</option>
+          <option>Planned TP</option>
+          <option>Planned SL</option>
+          <option>Market Invalidation</option>
+          <option>Manual Profit Protection</option>
+          <option>Manual Loss</option>
+          <option>Early Exit</option>
+          <option>News / Volatility</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="trade-management-field">
+        <label for="tmPlannedTPR">Planned TP (R)</label>
+        <input type="number" id="tmPlannedTPR" step="0.01" min="0" placeholder="e.g. 3.00">
+      </div>
+
+      <div class="trade-management-field">
+        <label for="tmMFER">MFE (R)</label>
+        <input type="number" id="tmMFER" step="0.01" placeholder="Maximum favorable excursion">
+      </div>
+
+      <div class="trade-management-field">
+        <label for="tmMAER">MAE (R)</label>
+        <input type="number" id="tmMAER" step="0.01" min="0" placeholder="Maximum adverse excursion">
+      </div>
+
+      <div class="trade-management-field">
+        <label for="tmTPAfterManual">TP Reached After Manual Exit?</label>
+        <select id="tmTPAfterManual">
+          <option>Unknown</option>
+          <option>Yes</option>
+          <option>No</option>
+          <option>Not applicable</option>
+        </select>
+      </div>
+
+      <div class="trade-management-field">
+        <label for="tmGrade">Management Grade</label>
+        <select id="tmGrade">
+          <option>Not rated</option>
+          <option>Disciplined</option>
+          <option>Acceptable</option>
+          <option>Early</option>
+          <option>Late</option>
+          <option>Emotional</option>
+        </select>
+      </div>
+
+      <div class="trade-management-field trade-management-wide">
+        <label for="tmNotes">Management Notes</label>
+        <textarea id="tmNotes" placeholder="Why did you move to BE, take profit, close manually, or hold to the plan? Record the lesson."></textarea>
+      </div>
+    </div>
+
+    <div class="trade-management-note">
+      <strong>MFE</strong> = maximum favorable excursion. <strong>MAE</strong> = maximum adverse excursion. Enter them in R when known. This lets OchiTracker study whether exits and break-even decisions are helping or hurting your edge.
+    </div>
+
+    <div class="trade-management-status" id="tradeManagementStatus">No management record loaded.</div>
+
+    <div class="trade-management-modal-actions">
+      <button type="button" class="secondary" onclick="closeTradeManagement()">Cancel</button>
+      <button type="button" onclick="saveTradeManagement()">Save Management</button>
     </div>
   </div>
 </div>
@@ -4267,6 +4586,58 @@ function normalizeTrades(list){
       newsViolation:
         t.newsViolation ||
         "Not recorded",
+
+      managementStatus:
+        t.managementStatus ||
+        "Not Reviewed",
+
+      exitType:
+        t.exitType ||
+        "Not recorded",
+
+      movedToBE:
+        t.movedToBE ||
+        "Not recorded",
+
+      beTriggerR:
+        safeNumber(t.beTriggerR),
+
+      partialTaken:
+        t.partialTaken ||
+        "Not recorded",
+
+      manualExit:
+        t.manualExit ||
+        "Not recorded",
+
+      exitReason:
+        t.exitReason ||
+        "Not recorded",
+
+      plannedTPR:
+        safeNumber(t.plannedTPR),
+
+      mfeR:
+        safeNumber(t.mfeR),
+
+      maeR:
+        safeNumber(t.maeR),
+
+      tpReachedAfterManual:
+        t.tpReachedAfterManual ||
+        "Unknown",
+
+      managementGrade:
+        t.managementGrade ||
+        "Not rated",
+
+      managementNotes:
+        t.managementNotes ||
+        "",
+
+      managementUpdatedAt:
+        t.managementUpdatedAt ||
+        "",
 
       notes:
         t.notes ||
@@ -7878,7 +8249,7 @@ function renderTradeHistory(){
     body.innerHTML=`
       <tr>
         <td
-          colspan="11"
+          colspan="12"
           class="muted"
           style="text-align:center;padding:25px">
           No trades recorded yet.
@@ -7981,6 +8352,15 @@ function renderTradeHistory(){
 
         <td>
           <button
+            class="trade-manage-btn"
+            type="button"
+            data-trade-manage="${escapeHTML(String(t.id))}">
+            ${t.managementStatus === "Reviewed" ? "Edit" : "Manage"}
+          </button>
+        </td>
+
+        <td>
+          <button
             class="danger"
             type="button"
             style="padding:6px 9px;font-size:10px;width:auto"
@@ -7998,7 +8378,14 @@ function renderTradeHistory(){
     });
   });
 
+  body.querySelectorAll("[data-trade-manage]").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      openTradeManagement(btn.getAttribute("data-trade-manage"));
+    });
+  });
+
   updateTradeHistoryStatus(ordered.length);
+  renderTradeManagementSummary();
 }
 
 
@@ -8043,7 +8430,19 @@ function showTradeReview(tradeId){
     ["Early Entry",trade.earlyEntry||"Not recorded"],
     ["FOMO",trade.fomo||"Not recorded"],
     ["Revenge Trade",trade.revenge||"Not recorded"],
-    ["News Violation",trade.newsViolation||"Not recorded"]
+    ["News Violation",trade.newsViolation||"Not recorded"],
+    ["Management Status",trade.managementStatus||"Not Reviewed"],
+    ["Exit Type",trade.exitType||"Not recorded"],
+    ["Moved SL to BE",trade.movedToBE||"Not recorded"],
+    ["BE Trigger",trade.beTriggerR ? `${safeNumber(trade.beTriggerR).toFixed(2)}R` : "Not recorded"],
+    ["Partial Taken",trade.partialTaken||"Not recorded"],
+    ["Manual Exit",trade.manualExit||"Not recorded"],
+    ["Exit Reason",trade.exitReason||"Not recorded"],
+    ["Planned TP",trade.plannedTPR ? `${safeNumber(trade.plannedTPR).toFixed(2)}R` : "Not recorded"],
+    ["MFE",trade.mfeR ? `${safeNumber(trade.mfeR).toFixed(2)}R` : "Not recorded"],
+    ["MAE",trade.maeR ? `${safeNumber(trade.maeR).toFixed(2)}R` : "Not recorded"],
+    ["TP After Manual Exit",trade.tpReachedAfterManual||"Unknown"],
+    ["Management Grade",trade.managementGrade||"Not rated"]
   ];
 
   grid.innerHTML=fields.map(([label,value])=>`
@@ -8056,6 +8455,12 @@ function showTradeReview(tradeId){
   notes.textContent=trade.notes&&String(trade.notes).trim()
     ? String(trade.notes)
     : "No notes recorded.";
+
+  const managementNotes=trade.managementNotes&&String(trade.managementNotes).trim()
+    ? String(trade.managementNotes)
+    : "No management notes recorded.";
+
+  notes.textContent += `\n\nManagement Notes: ${managementNotes}`;
 
   overlay.classList.add("visible");
   document.body.style.overflow="hidden";
@@ -8070,10 +8475,131 @@ function closeTradeReview(){
 }
 
 document.addEventListener("keydown",event=>{
-  if(event.key==="Escape") closeTradeReview();
+  if(event.key!=="Escape") return;
+  closeTradeReview();
+  closeTradeManagement();
 });
 
 
+
+
+let activeTradeManagementId=null;
+
+function getManagementGradeClass(grade){
+  const value=String(grade||"");
+  if(value==="Disciplined" || value==="Acceptable") return "good";
+  if(value==="Early" || value==="Late") return "warn";
+  if(value==="Emotional") return "bad";
+  return "";
+}
+
+function openTradeManagement(tradeId){
+  const trade=trades.find(t=>String(t.id)===String(tradeId));
+  const overlay=document.getElementById("tradeManagementOverlay");
+  if(!trade||!overlay) return;
+
+  activeTradeManagementId=trade.id;
+
+  document.getElementById("tradeManagementTitle").textContent=
+    `${trade.pair||"Trade"} · ${trade.direction||""} · ${String(trade.result||"BE").toUpperCase()}`;
+  document.getElementById("tradeManagementSubtitle").textContent=
+    `Post-entry management · ${trade.date||"Date not recorded"}`;
+
+  document.getElementById("tmExitType").value=trade.exitType||"Not recorded";
+  document.getElementById("tmMovedBE").value=trade.movedToBE||"Not recorded";
+  document.getElementById("tmBETriggerR").value=trade.beTriggerR ? safeNumber(trade.beTriggerR) : "";
+  document.getElementById("tmPartialTaken").value=trade.partialTaken||"Not recorded";
+  document.getElementById("tmManualExit").value=trade.manualExit||"Not recorded";
+  document.getElementById("tmExitReason").value=trade.exitReason||"Not recorded";
+  document.getElementById("tmPlannedTPR").value=trade.plannedTPR ? safeNumber(trade.plannedTPR) : "";
+  document.getElementById("tmMFER").value=trade.mfeR ? safeNumber(trade.mfeR) : "";
+  document.getElementById("tmMAER").value=trade.maeR ? safeNumber(trade.maeR) : "";
+  document.getElementById("tmTPAfterManual").value=trade.tpReachedAfterManual||"Unknown";
+  document.getElementById("tmGrade").value=trade.managementGrade||"Not rated";
+  document.getElementById("tmNotes").value=trade.managementNotes||"";
+
+  const status=document.getElementById("tradeManagementStatus");
+  if(status){
+    status.textContent=trade.managementStatus==="Reviewed"
+      ? `Management last updated: ${trade.managementUpdatedAt ? new Date(trade.managementUpdatedAt).toLocaleString() : "Recorded"}`
+      : "No management record has been saved for this trade yet.";
+  }
+
+  overlay.classList.add("visible");
+  document.body.style.overflow="hidden";
+}
+
+function closeTradeManagement(){
+  const overlay=document.getElementById("tradeManagementOverlay");
+  if(overlay) overlay.classList.remove("visible");
+  activeTradeManagementId=null;
+  document.body.style.overflow="";
+}
+
+function saveTradeManagement(){
+  if(activeTradeManagementId===null) return;
+
+  const trade=trades.find(t=>String(t.id)===String(activeTradeManagementId));
+  if(!trade) return;
+
+  trade.managementStatus="Reviewed";
+  trade.exitType=document.getElementById("tmExitType").value;
+  trade.movedToBE=document.getElementById("tmMovedBE").value;
+  trade.beTriggerR=safeNumber(document.getElementById("tmBETriggerR").value);
+  trade.partialTaken=document.getElementById("tmPartialTaken").value;
+  trade.manualExit=document.getElementById("tmManualExit").value;
+  trade.exitReason=document.getElementById("tmExitReason").value;
+  trade.plannedTPR=safeNumber(document.getElementById("tmPlannedTPR").value);
+  trade.mfeR=safeNumber(document.getElementById("tmMFER").value);
+  trade.maeR=safeNumber(document.getElementById("tmMAER").value);
+  trade.tpReachedAfterManual=document.getElementById("tmTPAfterManual").value;
+  trade.managementGrade=document.getElementById("tmGrade").value;
+  trade.managementNotes=document.getElementById("tmNotes").value.trim();
+  trade.managementUpdatedAt=new Date().toISOString();
+
+  saveTrades();
+  renderTradeHistory();
+  renderTradeManagementSummary();
+  closeTradeManagement();
+
+  alert("Trade management saved successfully.");
+}
+
+function renderTradeManagementSummary(){
+  const target=document.getElementById("tradeManagementSummary");
+  if(!target) return;
+
+  const reviewed=trades.filter(t=>t.managementStatus==="Reviewed");
+  const beMoves=reviewed.filter(t=>t.movedToBE==="Yes").length;
+  const manualExits=reviewed.filter(t=>t.manualExit==="Yes").length;
+  const early=reviewed.filter(t=>t.managementGrade==="Early").length;
+  const emotional=reviewed.filter(t=>t.managementGrade==="Emotional").length;
+  const tpAfterManual=reviewed.filter(t=>t.manualExit==="Yes" && t.tpReachedAfterManual==="Yes").length;
+
+  const mfeValues=reviewed.map(t=>safeNumber(t.mfeR)).filter(v=>v>0);
+  const maeValues=reviewed.map(t=>safeNumber(t.maeR)).filter(v=>v>0);
+  const avgMFE=mfeValues.length ? mfeValues.reduce((a,b)=>a+b,0)/mfeValues.length : 0;
+  const avgMAE=maeValues.length ? maeValues.reduce((a,b)=>a+b,0)/maeValues.length : 0;
+
+  const cards=[
+    ["Reviewed",reviewed.length,"Trades with a completed management record."],
+    ["BE Moves",beMoves,"Trades where the stop was moved to break-even."],
+    ["Manual Exits",manualExits,"Trades closed manually rather than at the planned exit."],
+    ["Early Grades",early,"Management records marked Early."],
+    ["TP After Manual",tpAfterManual,"Manual exits where price later reached the planned TP."],
+    ["Avg MFE",mfeValues.length ? `${avgMFE.toFixed(2)}R` : "—","Average maximum favorable excursion."],
+    ["Avg MAE",maeValues.length ? `${avgMAE.toFixed(2)}R` : "—","Average maximum adverse excursion."],
+    ["Emotional",emotional,"Management records marked Emotional."]
+  ];
+
+  target.innerHTML=cards.map(([label,value,copy])=>`
+    <div class="trade-management-card">
+      <div class="trade-management-label">${escapeHTML(label)}</div>
+      <div class="trade-management-value">${escapeHTML(String(value))}</div>
+      <div class="trade-management-copy">${escapeHTML(copy)}</div>
+    </div>
+  `).join("");
+}
 
 function updateTradeHistoryStatus(count){
 
@@ -8736,6 +9262,34 @@ async function mergeBackup(){
         existingFingerprints
           .has(fingerprint)
       ){
+
+        const existing=trades.find(
+          current=>tradeFingerprint(current)===fingerprint
+        );
+
+        if(
+          existing &&
+          t.managementStatus==="Reviewed" &&
+          (
+            existing.managementStatus!=="Reviewed" ||
+            String(t.managementUpdatedAt||"") > String(existing.managementUpdatedAt||"")
+          )
+        ){
+          existing.managementStatus=t.managementStatus;
+          existing.exitType=t.exitType;
+          existing.movedToBE=t.movedToBE;
+          existing.beTriggerR=t.beTriggerR;
+          existing.partialTaken=t.partialTaken;
+          existing.manualExit=t.manualExit;
+          existing.exitReason=t.exitReason;
+          existing.plannedTPR=t.plannedTPR;
+          existing.mfeR=t.mfeR;
+          existing.maeR=t.maeR;
+          existing.tpReachedAfterManual=t.tpReachedAfterManual;
+          existing.managementGrade=t.managementGrade;
+          existing.managementNotes=t.managementNotes;
+          existing.managementUpdatedAt=t.managementUpdatedAt;
+        }
 
         return;
 
