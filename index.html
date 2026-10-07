@@ -1,11 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#07111f">
-<title>OchiTracker — Historical Data & Sync Stable</title>
-
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="#07111f" name="theme-color"/>
+<title>OchiTracker — Historical Data &amp; Sync Stable</title>
 <style>
 /* =========================================================
    OCHITRACKER PHASE 6.5 — PREMIUM UI
@@ -2257,1694 +2257,1145 @@ footer{
 @media(max-width:380px){.equity-analytics-grid{gap:7px}.equity-analytics-card{padding:9px}.equity-analytics-value{font-size:16px}}
 
 </style>
-</head>
-
+<style>
+/* 7.13 layout refinement */
+#evidenceLab{scroll-margin-top:18px}
+#advancedEquityAnalytics,#evidenceLab{order:initial}
+#dataProtection,#ochiCloud,#historicalDataCenter{margin-top:18px}
+#dataProtection .phase-badge,
+#ochiCloud .phase71-badge,
+#ochiCloud .phase72-badge,
+#ochiCloud .phase73-badge,
+#ochiCloud .phase74-badge,
+#ochiTradeSyncPanel .phase74-badge{display:none!important}
+#ochiCloud .cloud-subtitle,
+#ochiCloud .account-subtitle,
+#ochiCloud .database-subtitle,
+#ochiTradeSyncPanel .sync-subtitle{font-size:0}
+#ochiCloud .cloud-subtitle:after{content:'Local data architecture and storage';font-size:13px}
+#ochiCloud .account-subtitle:after{content:'Local account layer';font-size:13px}
+#ochiCloud .database-subtitle:after{content:'Structured local database';font-size:13px}
+#ochiTradeSyncPanel .sync-subtitle:after{content:'Local app ↔ database synchronization';font-size:13px}
+</style></head>
 <body>
-
 <header>
-  <div class="container">
-
-    <div class="header-shell">
-
-      <div class="brand-wrap">
-
-        <div class="brand-line">
-
-          <div class="brand-mark">O</div>
-
-          <div>
-
-            <div class="brand">
+<div class="container">
+<div class="header-shell">
+<div class="brand-wrap">
+<div class="brand-line">
+<div class="brand-mark">O</div>
+<div>
+<div class="brand">
               Ochi<span>Tracker</span>
+</div>
+<div class="subtitle">
+              Professional FX Trading Performance &amp; Intelligence System
             </div>
-
-            <div class="subtitle">
-              Professional FX Trading Performance & Intelligence System
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      <div class="system-status">
-        <span class="status-dot"></span>
+</div>
+</div>
+</div>
+<div class="system-status">
+<span class="status-dot"></span>
         LOCAL SYSTEM ONLINE
       </div>
-
-    </div>
-
-  </div>
+</div>
+</div>
 </header>
-
-
 <main class="container">
-
 <!-- =======================================================
      QUICK NAV
 ======================================================= -->
-
 <nav class="quick-nav">
-
-  <a href="#dashboard">Dashboard</a>
-  <a href="#tradeEntry">Record Trade</a>
-  <a href="#riskEngine">Risk</a>
-  <a href="#intelligence">Intelligence</a>
-  <a href="#reports">Reports</a>
-  <a href="#calendarSection">Calendar</a>
-  <a href="#charts">Charts</a>
-  <a href="#history">History</a>
-
+<a href="#dashboard">Dashboard</a>
+<a href="#tradeEntry">Record Trade</a><a href="#evidenceLab">Evidence</a>
+<a href="#riskEngine">Risk</a>
+<a href="#intelligence">Intelligence</a>
+<a href="#reports">Reports</a>
+<a href="#calendarSection">Calendar</a>
+<a href="#charts">Charts</a>
+<a href="#history">History</a>
 </nav>
-
-
 <!-- =======================================================
      HERO
 ======================================================= -->
-
 <section class="hero">
-
-  <div class="hero-content">
-
-    <div>
-
-      <div class="eyebrow">
+<div class="hero-content">
+<div>
+<div class="eyebrow">
         OCHI SYSTEM // TRADING COMMAND CENTER
       </div>
-
-      <h1>
-        Trade with data.<br>
+<h1>
+        Trade with data.<br/>
         Build your edge.
       </h1>
-
-      <div class="hero-copy">
+<div class="hero-copy">
         Your private trading journal, risk engine, performance laboratory
         and historical intelligence system — in one place.
       </div>
-
-    </div>
-
-    <div class="hero-actions">
-
-      <button
-        type="button"
-        onclick="document.getElementById('tradeEntry').scrollIntoView()">
+</div>
+<div class="hero-actions">
+<button onclick="document.getElementById('tradeEntry').scrollIntoView({behavior:'smooth'})" type="button">
         + Record Trade
       </button>
-
-      <button
-        type="button"
-        class="secondary"
-        onclick="document.getElementById('dataProtection').scrollIntoView()">
+<button class="secondary" onclick="document.getElementById('dataProtection').scrollIntoView()" type="button">
         🛡️ Data Protection
       </button>
-
-    </div>
-
-  </div>
-
-  <div class="control-panel">
-
-    <div class="control-card">
-
-      <div class="control-label">
+</div>
+</div>
+<div class="control-panel">
+<div class="control-card">
+<div class="control-label">
         Current Equity
       </div>
-
-      <div
-        class="control-value"
-        id="heroEquity">
+<div class="control-value" id="heroEquity">
         $0.00
       </div>
-
-    </div>
-
-    <div class="control-card">
-
-      <div class="control-label">
+</div>
+<div class="control-card">
+<div class="control-label">
         Today P/L
       </div>
-
-      <div
-        class="control-value"
-        id="heroTodayProfit">
+<div class="control-value" id="heroTodayProfit">
         $0.00
       </div>
-
-    </div>
-
-    <div class="control-card">
-
-      <div class="control-label">
+</div>
+<div class="control-card">
+<div class="control-label">
         Risk Used
       </div>
-
-      <div
-        class="control-value"
-        id="heroTodayRisk">
+<div class="control-value" id="heroTodayRisk">
         $0.00
       </div>
-
-    </div>
-
-    <div class="control-card">
-
-      <div class="control-label">
+</div>
+<div class="control-card">
+<div class="control-label">
         System State
       </div>
-
-      <div
-        class="control-value"
-        id="heroLock">
+<div class="control-value" id="heroLock">
         READY
       </div>
-
-    </div>
-
-  </div>
-
+</div>
+</div>
 </section>
-
-
 <!-- =======================================================
      DASHBOARD
 ======================================================= -->
-
 <section id="dashboard">
-
-  <div class="section-heading">
-
-    <div>
-
-      <div class="section-title">
-
-        <div class="section-icon">📊</div>
-
-        <div>
-
-          <h2>Dashboard</h2>
-
-          <div class="section-description">
+<div class="section-heading">
+<div>
+<div class="section-title">
+<div class="section-icon">📊</div>
+<div>
+<h2>Dashboard</h2>
+<div class="section-description">
             Your trading performance at a glance.
           </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-    <span class="phase-badge">
+</div>
+</div>
+</div>
+<span class="phase-badge">
       CORE
     </span>
-
-  </div>
-
-
-  <div class="grid dashboard-grid">
-
-    <div class="card">
-      <div class="card-label">Total Trades</div>
-      <div class="card-value" id="totalTrades">0</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Win Rate</div>
-      <div class="card-value" id="winRate">0%</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Total P/L</div>
-      <div class="card-value" id="totalProfit">$0.00</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Total R</div>
-      <div class="card-value" id="totalR">0.00R</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Average R</div>
-      <div class="card-value" id="averageR">0.00R</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Wins</div>
-      <div class="card-value positive" id="wins">0</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Losses</div>
-      <div class="card-value negative" id="losses">0</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Breakeven</div>
-      <div class="card-value" id="breakeven">0</div>
-    </div>
-
-  </div>
-
+</div>
+<div class="grid dashboard-grid">
+<div class="card">
+<div class="card-label">Total Trades</div>
+<div class="card-value" id="totalTrades">0</div>
+</div>
+<div class="card">
+<div class="card-label">Win Rate</div>
+<div class="card-value" id="winRate">0%</div>
+</div>
+<div class="card">
+<div class="card-label">Total P/L</div>
+<div class="card-value" id="totalProfit">$0.00</div>
+</div>
+<div class="card">
+<div class="card-label">Total R</div>
+<div class="card-value" id="totalR">0.00R</div>
+</div>
+<div class="card">
+<div class="card-label">Average R</div>
+<div class="card-value" id="averageR">0.00R</div>
+</div>
+<div class="card">
+<div class="card-label">Wins</div>
+<div class="card-value positive" id="wins">0</div>
+</div>
+<div class="card">
+<div class="card-label">Losses</div>
+<div class="card-value negative" id="losses">0</div>
+</div>
+<div class="card">
+<div class="card-label">Breakeven</div>
+<div class="card-value" id="breakeven">0</div>
+</div>
+</div>
 </section>
-
-
 <!-- =======================================================
      ADD TRADE
 ======================================================= -->
-
 <section id="tradeEntry">
-
-  <div class="section-heading">
-
-    <div>
-
-      <div class="section-title">
-
-        <div class="section-icon">➕</div>
-
-        <div>
-
-          <h2>Record New Trade</h2>
-
-          <div class="section-description">
+<div class="section-heading">
+<div>
+<div class="section-title">
+<div class="section-icon">➕</div>
+<div>
+<h2>Record New Trade</h2>
+<div class="section-description">
             Capture the setup, execution and discipline behind every position.
           </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-    <span class="phase-badge">
+</div>
+</div>
+</div>
+<span class="phase-badge">
       JOURNAL
     </span>
-
-  </div>
-
-
-  <div class="readiness">
-
-    <div>
-
-      <div class="readiness-title">
+</div>
+<div class="readiness">
+<div>
+<div class="readiness-title">
         🧭 Trade Journal Readiness
       </div>
-
-      <div class="readiness-copy">
+<div class="readiness-copy">
         Record the context before the memory fades.
       </div>
-
-    </div>
-
-    <span
-      class="status neutral"
-      id="tradeReadiness">
+</div>
+<span class="status neutral" id="tradeReadiness">
       READY TO RECORD
     </span>
-
-  </div>
-
-
-  <form id="tradeForm">
-
-    <!-- CORE TRADE -->
-
-    <div class="form-block">
-
-      <div class="form-block-title">
-        <span>01</span>
+</div>
+<form id="tradeForm">
+<!-- CORE TRADE -->
+<div class="form-block">
+<div class="form-block-title">
+<span>01</span>
         Trade Core
       </div>
-
-      <div class="form-grid">
-
-        <div class="field">
-          <label>Date</label>
-          <input type="date" id="date" required>
-        </div>
-
-        <div class="field">
-          <label>Currency Pair</label>
-          <input
-            type="text"
-            id="pair"
-            placeholder="e.g. XAUUSD / USDJPY"
-            required>
-        </div>
-
-        <div class="field">
-          <label>Direction</label>
-          <select id="direction">
-            <option>BUY</option>
-            <option>SELL</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label>Session</label>
-          <select id="session">
-            <option>London</option>
-            <option>New York</option>
-            <option>Asia</option>
-            <option>Not recorded</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label>Entry Time</label>
-          <input type="time" id="entryTime">
-        </div>
-
-        <div class="field">
-          <label>Result</label>
-          <select id="result">
-            <option>WIN</option>
-            <option>LOSS</option>
-            <option>BE</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label>P/L ($)</label>
-          <input
-            type="number"
-            id="profit"
-            step="0.01"
-            placeholder="e.g. 20">
-        </div>
-
-        <div class="field">
-          <label>Risk ($)</label>
-          <input
-            type="number"
-            id="risk"
-            step="0.01"
-            placeholder="e.g. 10">
-        </div>
-
-        <div class="field">
-          <label>R Multiple</label>
-          <input
-            type="number"
-            id="rMultiple"
-            step="0.01"
-            placeholder="e.g. 2">
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <!-- MARKET CONTEXT -->
-
-    <div class="form-block">
-
-      <div class="form-block-title">
-        <span>02</span>
+<div class="form-grid">
+<div class="field">
+<label>Date</label>
+<input id="date" required="" type="date"/>
+</div>
+<div class="field">
+<label>Currency Pair</label>
+<input id="pair" placeholder="e.g. XAUUSD / USDJPY" required="" type="text"/>
+</div>
+<div class="field">
+<label>Direction</label>
+<select id="direction">
+<option>BUY</option>
+<option>SELL</option>
+</select>
+</div>
+<div class="field">
+<label>Session</label>
+<select id="session">
+<option>London</option>
+<option>New York</option>
+<option>Asia</option>
+<option>Not recorded</option>
+</select>
+</div>
+<div class="field">
+<label>Entry Time</label>
+<input id="entryTime" type="time"/>
+</div>
+<div class="field">
+<label>Result</label>
+<select id="result">
+<option>WIN</option>
+<option>LOSS</option>
+<option>BE</option>
+</select>
+</div>
+<div class="field">
+<label>P/L ($)</label>
+<input id="profit" placeholder="e.g. 20" step="0.01" type="number"/>
+</div>
+<div class="field">
+<label>Risk ($)</label>
+<input id="risk" placeholder="e.g. 10" step="0.01" type="number"/>
+</div>
+<div class="field">
+<label>R Multiple</label>
+<input id="rMultiple" placeholder="e.g. 2" step="0.01" type="number"/>
+</div>
+</div>
+</div>
+<!-- MARKET CONTEXT -->
+<div class="form-block">
+<div class="form-block-title">
+<span>02</span>
         Market Context
       </div>
-
-      <div class="form-grid">
-
-        <div class="field">
-          <label>D1 Bias</label>
-          <select id="d1Bias">
-            <option>Bullish</option>
-            <option>Bearish</option>
-            <option>Neutral</option>
-            <option>Not recorded</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label>4H Structure</label>
-          <select id="structure4h">
-            <option>Bullish</option>
-            <option>Bearish</option>
-            <option>Range</option>
-            <option>Choppy</option>
-            <option>Not recorded</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label>4H POI</label>
-          <select id="poi4h">
-            <option>Valid</option>
-            <option>Invalid</option>
-            <option>No POI</option>
-            <option>Not recorded</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label>Liquidity Sweep</label>
-          <select id="liquiditySweep">
-            <option>Yes</option>
-            <option>No</option>
-            <option>Not recorded</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label>15M MSS</label>
-          <select id="mss15">
-            <option>Confirmed</option>
-            <option>Not Confirmed</option>
-            <option>Not recorded</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label>Entry Model</label>
-          <select id="entryModel">
-            <option>FVG</option>
-            <option>Order Block</option>
-            <option>FVG + OB</option>
-            <option>Other</option>
-            <option>Not recorded</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label>Market Condition</label>
-          <select id="marketCondition">
-            <option>Clean Trend</option>
-            <option>Retracement</option>
-            <option>Choppy</option>
-            <option>Range</option>
-            <option>Not recorded</option>
-          </select>
-        </div>
-
+<div class="form-grid">
+<div class="field">
+<label>D1 Bias</label>
+<select id="d1Bias">
+<option>Bullish</option>
+<option>Bearish</option>
+<option>Neutral</option>
+<option>Not recorded</option>
+</select>
+</div>
+<div class="field">
+<label>4H Structure</label>
+<select id="structure4h">
+<option>Bullish</option>
+<option>Bearish</option>
+<option>Range</option>
+<option>Choppy</option>
+<option>Not recorded</option>
+</select>
+</div>
+<div class="field">
+<label>4H POI</label>
+<select id="poi4h">
+<option>Valid</option>
+<option>Invalid</option>
+<option>No POI</option>
+<option>Not recorded</option>
+</select>
+</div>
+<div class="field">
+<label>Liquidity Sweep</label>
+<select id="liquiditySweep">
+<option>Yes</option>
+<option>No</option>
+<option>Not recorded</option>
+</select>
+</div>
+<div class="field">
+<label>15M MSS</label>
+<select id="mss15">
+<option>Confirmed</option>
+<option>Not Confirmed</option>
+<option>Not recorded</option>
+</select>
+</div>
+<div class="field">
+<label>Entry Model</label>
+<select id="entryModel">
+<option>FVG</option>
+<option>Order Block</option>
+<option>FVG + OB</option>
+<option>Other</option>
+<option>Not recorded</option>
+</select>
+</div>
+<div class="field">
+<label>Market Condition</label>
+<select id="marketCondition">
+<option>Clean Trend</option>
+<option>Retracement</option>
+<option>Choppy</option>
+<option>Range</option>
+<option>Not recorded</option>
+</select>
+</div>
+</div>
+</div>
+<!-- DISCIPLINE -->
+<div class="form-block">
+<div class="form-block-title">
+<span>03</span>
+        Execution &amp; Discipline
       </div>
-
-    </div>
-
-
-    <!-- DISCIPLINE -->
-
-    <div class="form-block">
-
-      <div class="form-block-title">
-        <span>03</span>
-        Execution & Discipline
-      </div>
-
-      <div class="form-grid">
-
-        <div class="field">
-          <label>Rule Followed</label>
-          <select id="ruleFollowed">
-            <option>Yes</option>
-            <option>No</option>
-            <option>Not recorded</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label>Early Entry</label>
-          <select id="earlyEntry">
-            <option>No</option>
-            <option>Yes</option>
-            <option>Not recorded</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label>FOMO</label>
-          <select id="fomo">
-            <option>No</option>
-            <option>Yes</option>
-            <option>Not recorded</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label>Revenge Trade</label>
-          <select id="revenge">
-            <option>No</option>
-            <option>Yes</option>
-            <option>Not recorded</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label>News Violation</label>
-          <select id="newsViolation">
-            <option>No</option>
-            <option>Yes</option>
-            <option>Not recorded</option>
-          </select>
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <div class="field">
-
-      <label>Trade Notes</label>
-
-      <textarea
-        id="notes"
-        placeholder="What happened? What did you learn? What would you repeat or avoid?"></textarea>
-
-    </div>
-
-
-    <div class="button-row">
-
-      <button type="submit">
+<div class="form-grid">
+<div class="field">
+<label>Rule Followed</label>
+<select id="ruleFollowed">
+<option>Yes</option>
+<option>No</option>
+<option>Not recorded</option>
+</select>
+</div>
+<div class="field">
+<label>Early Entry</label>
+<select id="earlyEntry">
+<option>No</option>
+<option>Yes</option>
+<option>Not recorded</option>
+</select>
+</div>
+<div class="field">
+<label>FOMO</label>
+<select id="fomo">
+<option>No</option>
+<option>Yes</option>
+<option>Not recorded</option>
+</select>
+</div>
+<div class="field">
+<label>Revenge Trade</label>
+<select id="revenge">
+<option>No</option>
+<option>Yes</option>
+<option>Not recorded</option>
+</select>
+</div>
+<div class="field">
+<label>News Violation</label>
+<select id="newsViolation">
+<option>No</option>
+<option>Yes</option>
+<option>Not recorded</option>
+</select>
+</div>
+</div>
+</div>
+<div class="field">
+<label>Trade Notes</label>
+<textarea id="notes" placeholder="What happened? What did you learn? What would you repeat or avoid?"></textarea>
+</div>
+<div class="button-row">
+<button type="submit">
         Save Trade
       </button>
-
-      <button
-        type="button"
-        class="secondary"
-        onclick="resetTradeForm()">
+<button class="secondary" onclick="resetTradeForm()" type="button">
         Reset Form
       </button>
-
-    </div>
-
-  </form>
-
+</div>
+</form>
+</section><section id="evidenceLab">
+<div class="ev-head">
+<div>
+<div class="ev-kicker">Execution journal</div>
+<div class="ev-title">Trade &amp; Session Evidence</div>
+<div class="ev-sub">Capture the plan before the market, preserve the setup visually, then record what actually happened. OchiTracker will keep <b>Target R</b> and <b>Result R</b> side by side.</div>
+</div>
+</div>
+<div class="ev-grid">
+<div class="ev-field"><label>Date</label><input id="evDate" type="date"/></div>
+<div class="ev-field"><label>Session Time</label><input id="evTime" type="time"/></div>
+<div class="ev-field"><label>Pair / Instrument</label><input id="evPair" placeholder="EURUSD"/></div>
+<div class="ev-field"><label>Session</label><select id="evSession"><option>London</option><option>New York</option><option>London + New York</option><option>Asia</option><option>Other</option></select></div>
+<div class="ev-field"><label>Planned Direction</label><select id="evDirection"><option>BUY</option><option>SELL</option><option>WAIT / NO TRADE</option></select></div>
+<div class="ev-field"><label>Target R</label><input id="evTargetR" placeholder="3.0" step="0.1" type="number"/></div>
+<div class="ev-field"><label>Risk ($)</label><input id="evRisk" placeholder="20" step="0.01" type="number"/></div>
+<div class="ev-field"><label>Setup Type</label><input id="evSetup" placeholder="4H POI + 15M MSS"/></div>
+<div class="ev-field ev-span2"><label>Pre-session plan</label><textarea id="evPlan" placeholder="4H location, liquidity, expected path, invalidation, news conditions..."></textarea></div>
+<div class="ev-field ev-span2"><label>Key level / POI</label><textarea id="evPOI" placeholder="Record the level, zone or liquidity area that mattered."></textarea></div>
+</div>
+<div class="ev-stage">
+<div class="ev-stage-head"><div><div class="ev-stage-title">Before Session</div><div class="ev-stage-note">Market context + original plan</div></div></div>
+<label class="ev-upload">Tap to attach pre-session screenshot(s)
+      <input accept="image/*" id="evBeforeFiles" multiple="" type="file"/>
+</label>
+<div class="ev-preview" id="evBeforePreview"></div>
+</div>
+<div class="ev-stage">
+<div class="ev-stage-head"><div><div class="ev-stage-title">Entry / Setup Evidence</div><div class="ev-stage-note">Show the actual MSS, FVG, OB or execution context</div></div></div>
+<label class="ev-upload">Tap to attach setup screenshot(s)
+      <input accept="image/*" id="evSetupFiles" multiple="" type="file"/>
+</label>
+<div class="ev-preview" id="evSetupPreview"></div>
+</div>
+<div class="ev-grid" style="margin-top:16px">
+<div class="ev-field"><label>Actual Result R</label><input id="evResultR" placeholder="2.4" step="0.1" type="number"/></div>
+<div class="ev-field"><label>Result ($)</label><input id="evResultPnl" placeholder="48" step="0.01" type="number"/></div>
+<div class="ev-field"><label>Outcome</label><select id="evOutcome"><option>Win</option><option>Loss</option><option>Breakeven</option><option>No Trade</option></select></div>
+<div class="ev-field"><label>Management</label><select id="evManagement"><option>Plan followed</option><option>Manual exit</option><option>Moved to BE</option><option>Partial taken</option><option>Rule violation</option></select></div>
+<div class="ev-field ev-span2"><label>Post-session result / what happened</label><textarea id="evResultNote" placeholder="Compare the actual move with the plan."></textarea></div>
+<div class="ev-field ev-span2"><label>Lesson / execution note</label><textarea id="evLesson" placeholder="What should be repeated, changed or protected next time?"></textarea></div>
+</div>
+<div class="ev-stage">
+<div class="ev-stage-head"><div><div class="ev-stage-title">After Session</div><div class="ev-stage-note">Final chart state + outcome evidence</div></div></div>
+<label class="ev-upload">Tap to attach post-session screenshot(s)
+      <input accept="image/*" id="evAfterFiles" multiple="" type="file"/>
+</label>
+<div class="ev-preview" id="evAfterPreview"></div>
+</div>
+<div class="ev-actions">
+<button class="ev-btn primary" id="evSave">Save Evidence Record</button>
+<button class="ev-btn" id="evReset">Clear Form</button>
+</div>
+<div class="ev-summary">
+<div class="ev-stat"><small>Records</small><strong id="evCount">0</strong></div>
+<div class="ev-stat"><small>Average Target R</small><strong id="evAvgTarget">—</strong></div>
+<div class="ev-stat"><small>Average Result R</small><strong id="evAvgResult">—</strong></div>
+<div class="ev-stat"><small>Target Achievement</small><strong id="evAchievement">—</strong></div>
+</div>
+<div class="ev-table-wrap">
+<table class="ev-table">
+<thead><tr><th>Date / Time</th><th>Pair</th><th>Direction</th><th>Target R</th><th>Result R</th><th>Outcome</th><th>Evidence</th><th></th></tr></thead>
+<tbody id="evRows"><tr><td class="ev-empty" colspan="8">No evidence records yet.</td></tr></tbody>
+</table>
+</div>
 </section>
-
-
 <!-- =======================================================
      ACCOUNT PERFORMANCE
 ======================================================= -->
-
 <section>
-
-  <div class="section-heading">
-
-    <div class="section-title">
-
-      <div class="section-icon">💰</div>
-
-      <div>
-        <h2>Account Performance</h2>
-        <div class="section-description">
+<div class="section-heading">
+<div class="section-title">
+<div class="section-icon">💰</div>
+<div>
+<h2>Account Performance</h2>
+<div class="section-description">
           Track equity growth and drawdown from your journal.
         </div>
-      </div>
-
-    </div>
-
-    <span class="phase-badge">PERFORMANCE</span>
-
-  </div>
-
-  <div class="grid performance-grid">
-
-    <div class="card">
-      <div class="card-label">Starting Balance</div>
-      <div class="card-value">$0.00</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Current Equity</div>
-      <div class="card-value" id="currentEquity">$0.00</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Peak Equity</div>
-      <div class="card-value" id="peakEquity">$0.00</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Max Drawdown</div>
-      <div class="card-value negative" id="maxDrawdown">$0.00</div>
-    </div>
-
-  </div>
-
+</div>
+</div>
+<span class="phase-badge">PERFORMANCE</span>
+</div>
+<div class="grid performance-grid">
+<div class="card">
+<div class="card-label">Starting Balance</div>
+<div class="card-value">$0.00</div>
+</div>
+<div class="card">
+<div class="card-label">Current Equity</div>
+<div class="card-value" id="currentEquity">$0.00</div>
+</div>
+<div class="card">
+<div class="card-label">Peak Equity</div>
+<div class="card-value" id="peakEquity">$0.00</div>
+</div>
+<div class="card">
+<div class="card-label">Max Drawdown</div>
+<div class="card-value negative" id="maxDrawdown">$0.00</div>
+</div>
+</div>
 </section>
-
-
 <!-- =======================================================
      ADVANCED ANALYTICS
 ======================================================= -->
-
 <section>
-
-  <div class="section-heading">
-
-    <div class="section-title">
-
-      <div class="section-icon">📈</div>
-
-      <div>
-        <h2>Advanced Analytics</h2>
-        <div class="section-description">
+<div class="section-heading">
+<div class="section-title">
+<div class="section-icon">📈</div>
+<div>
+<h2>Advanced Analytics</h2>
+<div class="section-description">
           Measure the statistical behaviour of your recorded results.
         </div>
-      </div>
-
-    </div>
-
-    <span class="phase-badge">ANALYTICS</span>
-
+</div>
+</div>
+<span class="phase-badge">ANALYTICS</span>
+</div>
+<div class="grid analytics-grid">
+<div class="card">
+<div class="card-label">Profit Factor</div>
+<div class="card-value" id="profitFactor">0.00</div>
+</div>
+<div class="card">
+<div class="card-label">Expectancy / Trade</div>
+<div class="card-value" id="expectancyTrade">$0.00</div>
+</div>
+<div class="card">
+<div class="card-label">Expectancy / R</div>
+<div class="card-value" id="expectancyR">0.00R</div>
+</div>
+<div class="card">
+<div class="card-label">Average Win</div>
+<div class="card-value positive" id="averageWin">$0.00</div>
+</div>
+<div class="card">
+<div class="card-label">Average Loss</div>
+<div class="card-value negative" id="averageLoss">$0.00</div>
+</div>
+<div class="card">
+<div class="card-label">Largest Win</div>
+<div class="card-value positive" id="largestWin">$0.00</div>
+</div>
+<div class="card">
+<div class="card-label">Largest Loss</div>
+<div class="card-value negative" id="largestLoss">$0.00</div>
+</div>
+<div class="card">
+<div class="card-label">Current Win Streak</div>
+<div class="card-value" id="currentWinStreak">0</div>
+</div>
+<div class="card">
+<div class="card-label">Current Loss Streak</div>
+<div class="card-value" id="currentLossStreak">0</div>
+</div>
+<div class="card">
+<div class="card-label">Best Win Streak</div>
+<div class="card-value positive" id="bestWinStreak">0</div>
+</div>
+<div class="card">
+<div class="card-label">Worst Loss Streak</div>
+<div class="card-value negative" id="worstLossStreak">0</div>
+</div>
+<div class="card">
+<div class="card-label">Best Trading Day</div>
+<div class="card-value" id="bestTradingDay">—</div>
+</div>
+</div>
+</section><section class="equity-analytics-section" id="advancedEquityAnalytics">
+<div class="section-heading">
+<div class="section-title">
+<div class="section-icon">📈</div>
+<div>
+<h2>Advanced Equity &amp; Drawdown Analytics</h2>
+<div class="section-description">
+          Measure equity growth, peak-to-trough drawdown, recovery and risk behavior from the recorded trade history.
+        </div>
+</div>
+</div>
+<span class="phase-badge">EQUITY</span>
+</div>
+<div class="equity-analytics-controls">
+<select aria-label="Equity analytics scope" id="equityAnalyticsScope">
+<option value="all">All recorded trades</option>
+<option value="wins-losses">Wins &amp; losses only</option>
+<option value="last20">Last 20 trades</option>
+<option value="last50">Last 50 trades</option>
+</select>
+<button class="secondary" onclick="refreshAdvancedEquityAnalytics()" type="button">Refresh Analytics</button>
+</div>
+<div class="equity-analytics-grid" id="advancedEquityMetrics"></div>
+<div class="equity-analytics-chart">
+<div class="equity-analytics-chart-head">
+<div>
+<div class="equity-analytics-chart-title">Equity &amp; Drawdown Path</div>
+<div class="equity-analytics-chart-subtitle">Equity starts at $0; drawdown is measured from the running equity peak.</div>
+</div>
+<span class="status neutral" id="equityAnalyticsStatus">WAITING</span>
+</div>
+<div class="equity-analytics-canvas-wrap">
+<canvas id="advancedEquityCanvas"></canvas>
+</div>
+</div>
+<div class="equity-analytics-insight" id="advancedEquityInsight">
+    Add completed trades to activate advanced equity and drawdown analytics.
   </div>
-
-  <div class="grid analytics-grid">
-
-    <div class="card">
-      <div class="card-label">Profit Factor</div>
-      <div class="card-value" id="profitFactor">0.00</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Expectancy / Trade</div>
-      <div class="card-value" id="expectancyTrade">$0.00</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Expectancy / R</div>
-      <div class="card-value" id="expectancyR">0.00R</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Average Win</div>
-      <div class="card-value positive" id="averageWin">$0.00</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Average Loss</div>
-      <div class="card-value negative" id="averageLoss">$0.00</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Largest Win</div>
-      <div class="card-value positive" id="largestWin">$0.00</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Largest Loss</div>
-      <div class="card-value negative" id="largestLoss">$0.00</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Current Win Streak</div>
-      <div class="card-value" id="currentWinStreak">0</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Current Loss Streak</div>
-      <div class="card-value" id="currentLossStreak">0</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Best Win Streak</div>
-      <div class="card-value positive" id="bestWinStreak">0</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Worst Loss Streak</div>
-      <div class="card-value negative" id="worstLossStreak">0</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Best Trading Day</div>
-      <div class="card-value" id="bestTradingDay">—</div>
-    </div>
-
-  </div>
-
+<div class="equity-analytics-dd-table">
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Drawdown Event</th>
+<th>Peak</th>
+<th>Trough</th>
+<th>Depth</th>
+<th>Trades</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody id="advancedDrawdownBody">
+<tr><td colspan="6">No drawdown events yet.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
 </section>
 <!-- =======================================================
      PHASE 7.5 — DYNAMIC ASSET PERFORMANCE LEADERBOARD
 ======================================================= -->
 <div class="asset-leaderboard-panel" id="assetPerformanceLeaderboard">
-  <div class="asset-leaderboard-head">
-    <div>
-      <h3 class="asset-leaderboard-title">🏆 Asset Performance Leaderboard</h3>
-      <div class="asset-leaderboard-subtitle">Dynamic performance ranking for every asset recorded in your journal — Forex, Gold, Indices, Commodities, Crypto and future instruments.</div>
-    </div>
-    <span class="phase75-badge">PHASE 7.5</span>
-  </div>
-  <div class="asset-leaderboard-summary">
-    <div class="asset-summary-card"><div class="asset-summary-label">Assets Traded</div><div class="asset-summary-value" id="assetLeaderboardCount">0</div><div class="asset-summary-note">Unique recorded instruments</div></div>
-    <div class="asset-summary-card"><div class="asset-summary-label">Leader</div><div class="asset-summary-value" id="assetLeaderboardLeader">—</div><div class="asset-summary-note" id="assetLeaderboardLeaderNote">Waiting for trade data</div></div>
-    <div class="asset-summary-card"><div class="asset-summary-label">Leader P/L</div><div class="asset-summary-value" id="assetLeaderboardLeaderPnl">$0.00</div><div class="asset-summary-note">Best net P/L among assets</div></div>
-    <div class="asset-summary-card"><div class="asset-summary-label">Portfolio P/L</div><div class="asset-summary-value" id="assetLeaderboardPortfolioPnl">$0.00</div><div class="asset-summary-note">All recorded assets combined</div></div>
-  </div>
-  <div class="table-container asset-leaderboard-table-wrap">
-    <table>
-      <thead><tr><th>Rank</th><th>Asset</th><th>Trades</th><th>Win Rate</th><th>Net P/L</th><th>P/L Share</th><th>Total R</th><th>Avg R</th><th>Profit Factor</th><th></th></tr></thead>
-      <tbody id="assetLeaderboardBody"></tbody>
-    </table>
-  </div>
-  <div class="asset-leaderboard-message" id="assetLeaderboardMessage">Asset performance will appear automatically as soon as trades are recorded.</div>
-  <div class="asset-detail-panel" id="assetDetailPanel">
-    <div class="asset-detail-head"><div class="asset-detail-title" id="assetDetailTitle">Asset Detail</div><button class="asset-select-btn" type="button" onclick="closeAssetDetail()">Close</button></div>
-    <div class="asset-detail-grid" id="assetDetailGrid"></div>
-  </div>
+<div class="asset-leaderboard-head">
+<div>
+<h3 class="asset-leaderboard-title">🏆 Asset Performance Leaderboard</h3>
+<div class="asset-leaderboard-subtitle">Dynamic performance ranking for every asset recorded in your journal — Forex, Gold, Indices, Commodities, Crypto and future instruments.</div>
 </div>
-
-
-
+<span class="phase75-badge">PHASE 7.5</span>
+</div>
+<div class="asset-leaderboard-summary">
+<div class="asset-summary-card"><div class="asset-summary-label">Assets Traded</div><div class="asset-summary-value" id="assetLeaderboardCount">0</div><div class="asset-summary-note">Unique recorded instruments</div></div>
+<div class="asset-summary-card"><div class="asset-summary-label">Leader</div><div class="asset-summary-value" id="assetLeaderboardLeader">—</div><div class="asset-summary-note" id="assetLeaderboardLeaderNote">Waiting for trade data</div></div>
+<div class="asset-summary-card"><div class="asset-summary-label">Leader P/L</div><div class="asset-summary-value" id="assetLeaderboardLeaderPnl">$0.00</div><div class="asset-summary-note">Best net P/L among assets</div></div>
+<div class="asset-summary-card"><div class="asset-summary-label">Portfolio P/L</div><div class="asset-summary-value" id="assetLeaderboardPortfolioPnl">$0.00</div><div class="asset-summary-note">All recorded assets combined</div></div>
+</div>
+<div class="table-container asset-leaderboard-table-wrap">
+<table>
+<thead><tr><th>Rank</th><th>Asset</th><th>Trades</th><th>Win Rate</th><th>Net P/L</th><th>P/L Share</th><th>Total R</th><th>Avg R</th><th>Profit Factor</th><th></th></tr></thead>
+<tbody id="assetLeaderboardBody"></tbody>
+</table>
+</div>
+<div class="asset-leaderboard-message" id="assetLeaderboardMessage">Asset performance will appear automatically as soon as trades are recorded.</div>
+<div class="asset-detail-panel" id="assetDetailPanel">
+<div class="asset-detail-head"><div class="asset-detail-title" id="assetDetailTitle">Asset Detail</div><button class="asset-select-btn" onclick="closeAssetDetail()" type="button">Close</button></div>
+<div class="asset-detail-grid" id="assetDetailGrid"></div>
+</div>
+</div>
 <!-- =======================================================
      BASIC RISK
 ======================================================= -->
-
 <section>
-
-  <div class="section-heading">
-
-    <div class="section-title">
-
-      <div class="section-icon">🛡️</div>
-
-      <div>
-        <h2>Risk Management Center</h2>
-        <div class="section-description">
+<div class="section-heading">
+<div class="section-title">
+<div class="section-icon">🛡️</div>
+<div>
+<h2>Risk Management Center</h2>
+<div class="section-description">
           Your daily trading control layer.
         </div>
-      </div>
-
-    </div>
-
-    <span class="phase-badge">RISK CONTROL</span>
-
-  </div>
-
-  <div class="grid risk-grid">
-
-    <div class="card">
-      <div class="card-label">Average Risk / Trade</div>
-      <div class="card-value" id="averageRisk">$0.00</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Largest Risk</div>
-      <div class="card-value" id="largestRisk">$0.00</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Trades Today</div>
-      <div class="card-value" id="tradesToday">0</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Today's P/L</div>
-      <div class="card-value" id="todayProfit">$0.00</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Today's Risk Used</div>
-      <div class="card-value" id="todayRisk">$0.00</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Daily Risk Limit</div>
-      <div class="card-value">$20.00</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Daily Risk Status</div>
-      <div class="card-value" id="dailyRiskStatus">READY</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Rule Violations</div>
-      <div class="card-value" id="ruleViolations">0</div>
-    </div>
-
-  </div>
-
+</div>
+</div>
+<span class="phase-badge">RISK CONTROL</span>
+</div>
+<div class="grid risk-grid">
+<div class="card">
+<div class="card-label">Average Risk / Trade</div>
+<div class="card-value" id="averageRisk">$0.00</div>
+</div>
+<div class="card">
+<div class="card-label">Largest Risk</div>
+<div class="card-value" id="largestRisk">$0.00</div>
+</div>
+<div class="card">
+<div class="card-label">Trades Today</div>
+<div class="card-value" id="tradesToday">0</div>
+</div>
+<div class="card">
+<div class="card-label">Today's P/L</div>
+<div class="card-value" id="todayProfit">$0.00</div>
+</div>
+<div class="card">
+<div class="card-label">Today's Risk Used</div>
+<div class="card-value" id="todayRisk">$0.00</div>
+</div>
+<div class="card">
+<div class="card-label">Daily Risk Limit</div>
+<div class="card-value">$20.00</div>
+</div>
+<div class="card">
+<div class="card-label">Daily Risk Status</div>
+<div class="card-value" id="dailyRiskStatus">READY</div>
+</div>
+<div class="card">
+<div class="card-label">Rule Violations</div>
+<div class="card-value" id="ruleViolations">0</div>
+</div>
+</div>
 </section>
-
-
 <!-- =======================================================
      RISK ENGINE
 ======================================================= -->
-
 <section id="riskEngine">
-
-  <div class="section-heading">
-
-    <div class="section-title">
-
-      <div class="section-icon">⚙️</div>
-
-      <div>
-        <h2>Ochi Risk Engine</h2>
-        <div class="section-description">
+<div class="section-heading">
+<div class="section-title">
+<div class="section-icon">⚙️</div>
+<div>
+<h2>Ochi Risk Engine</h2>
+<div class="section-description">
           Configure your risk boundaries and calculate position size.
         </div>
-      </div>
-
-    </div>
-
-    <span class="phase-badge">PHASE 4</span>
-
-  </div>
-
-  <div class="grid risk-grid">
-
-    <div class="card">
-      <div class="card-label">Account Size</div>
-      <div class="card-value" id="engineAccountSize">$0.00</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Risk / Trade</div>
-      <div class="card-value" id="engineRiskPercent">1%</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Daily Risk Limit %</div>
-      <div class="card-value" id="engineDailyRiskPercent">2%</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Max Trades / Day</div>
-      <div class="card-value" id="engineMaxTrades">3</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Max Consecutive Losses</div>
-      <div class="card-value" id="engineMaxLosses">3</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Max Personal DD %</div>
-      <div class="card-value" id="engineMaxDD">5%</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Configured Daily Risk</div>
-      <div class="card-value" id="configuredDailyRisk">$0.00</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Today's Risk Used %</div>
-      <div class="card-value" id="todayRiskPercent">0%</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Remaining Daily Risk</div>
-      <div class="card-value" id="remainingDailyRisk">$0.00</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Loss Streak</div>
-      <div class="card-value" id="engineLossStreak">0</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Current Drawdown</div>
-      <div class="card-value" id="engineCurrentDD">$0.00</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Current DD %</div>
-      <div class="card-value" id="engineCurrentDDPercent">0%</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Risk Consistency</div>
-      <div class="card-value" id="riskConsistency">STABLE</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Risk Spikes</div>
-      <div class="card-value" id="riskSpikes">0</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Discipline Lock</div>
-      <div class="card-value" id="disciplineLock">READY</div>
-    </div>
-
-  </div>
-
-  <hr>
-
-  <div class="form-block">
-
-    <div class="form-block-title">
-      <span>CALCULATOR</span>
+</div>
+</div>
+<span class="phase-badge">PHASE 4</span>
+</div>
+<div class="grid risk-grid">
+<div class="card">
+<div class="card-label">Account Size</div>
+<div class="card-value" id="engineAccountSize">$0.00</div>
+</div>
+<div class="card">
+<div class="card-label">Risk / Trade</div>
+<div class="card-value" id="engineRiskPercent">1%</div>
+</div>
+<div class="card">
+<div class="card-label">Daily Risk Limit %</div>
+<div class="card-value" id="engineDailyRiskPercent">2%</div>
+</div>
+<div class="card">
+<div class="card-label">Max Trades / Day</div>
+<div class="card-value" id="engineMaxTrades">3</div>
+</div>
+<div class="card">
+<div class="card-label">Max Consecutive Losses</div>
+<div class="card-value" id="engineMaxLosses">3</div>
+</div>
+<div class="card">
+<div class="card-label">Max Personal DD %</div>
+<div class="card-value" id="engineMaxDD">5%</div>
+</div>
+<div class="card">
+<div class="card-label">Configured Daily Risk</div>
+<div class="card-value" id="configuredDailyRisk">$0.00</div>
+</div>
+<div class="card">
+<div class="card-label">Today's Risk Used %</div>
+<div class="card-value" id="todayRiskPercent">0%</div>
+</div>
+<div class="card">
+<div class="card-label">Remaining Daily Risk</div>
+<div class="card-value" id="remainingDailyRisk">$0.00</div>
+</div>
+<div class="card">
+<div class="card-label">Loss Streak</div>
+<div class="card-value" id="engineLossStreak">0</div>
+</div>
+<div class="card">
+<div class="card-label">Current Drawdown</div>
+<div class="card-value" id="engineCurrentDD">$0.00</div>
+</div>
+<div class="card">
+<div class="card-label">Current DD %</div>
+<div class="card-value" id="engineCurrentDDPercent">0%</div>
+</div>
+<div class="card">
+<div class="card-label">Risk Consistency</div>
+<div class="card-value" id="riskConsistency">STABLE</div>
+</div>
+<div class="card">
+<div class="card-label">Risk Spikes</div>
+<div class="card-value" id="riskSpikes">0</div>
+</div>
+<div class="card">
+<div class="card-label">Discipline Lock</div>
+<div class="card-value" id="disciplineLock">READY</div>
+</div>
+</div>
+<hr/>
+<div class="form-block">
+<div class="form-block-title">
+<span>CALCULATOR</span>
       🧮 Pre-Trade Risk Calculator
     </div>
-
-    <div class="form-grid">
-
-      <div class="field">
-        <label>Account Size ($)</label>
-        <input type="number" id="calcAccount" step="0.01">
-      </div>
-
-      <div class="field">
-        <label>Risk %</label>
-        <input type="number" id="calcRiskPercent" step="0.01">
-      </div>
-
-      <div class="field">
-        <label>SL Pips</label>
-        <input type="number" id="calcSL" step="0.1">
-      </div>
-
-      <div class="field">
-        <label>Pip Value / 1 Lot ($)</label>
-        <input type="number" id="calcPipValue" step="0.01" value="10">
-      </div>
-
-    </div>
-
-    <div class="grid dashboard-grid" style="margin-top:12px">
-
-      <div class="card">
-        <div class="card-label">Risk Amount</div>
-        <div class="card-value" id="calcRiskAmount">$0.00</div>
-      </div>
-
-      <div class="card">
-        <div class="card-label">Estimated Position Size</div>
-        <div class="card-value" id="calcLotSize">0.00 lots</div>
-      </div>
-
-      <div class="card">
-        <div class="card-label">1R Dollar Value</div>
-        <div class="card-value" id="calcOneR">$0.00</div>
-      </div>
-
-    </div>
-
-    <div class="info-box small" style="margin-top:12px;margin-bottom:0">
+<div class="form-grid">
+<div class="field">
+<label>Account Size ($)</label>
+<input id="calcAccount" step="0.01" type="number"/>
+</div>
+<div class="field">
+<label>Risk %</label>
+<input id="calcRiskPercent" step="0.01" type="number"/>
+</div>
+<div class="field">
+<label>SL Pips</label>
+<input id="calcSL" step="0.1" type="number"/>
+</div>
+<div class="field">
+<label>Pip Value / 1 Lot ($)</label>
+<input id="calcPipValue" step="0.01" type="number" value="10"/>
+</div>
+</div>
+<div class="grid dashboard-grid" style="margin-top:12px">
+<div class="card">
+<div class="card-label">Risk Amount</div>
+<div class="card-value" id="calcRiskAmount">$0.00</div>
+</div>
+<div class="card">
+<div class="card-label">Estimated Position Size</div>
+<div class="card-value" id="calcLotSize">0.00 lots</div>
+</div>
+<div class="card">
+<div class="card-label">1R Dollar Value</div>
+<div class="card-value" id="calcOneR">$0.00</div>
+</div>
+</div>
+<div class="info-box small" style="margin-top:12px;margin-bottom:0">
       Position sizing is an approximate FX calculation. Broker, pair and
       contract specifications can differ.
     </div>
-
-  </div>
-
-
-  <hr>
-
-
-  <div class="form-block">
-
-    <div class="form-block-title">
-      <span>SETTINGS</span>
+</div>
+<hr/>
+<div class="form-block">
+<div class="form-block-title">
+<span>SETTINGS</span>
       Risk Engine Settings
     </div>
-
-    <div class="form-grid">
-
-      <div class="field">
-        <label>Account Size</label>
-        <input type="number" id="settingAccount" step="0.01">
-      </div>
-
-      <div class="field">
-        <label>Risk % / Trade</label>
-        <input type="number" id="settingRiskPercent" step="0.01">
-      </div>
-
-      <div class="field">
-        <label>Daily Risk Limit %</label>
-        <input type="number" id="settingDailyRiskPercent" step="0.01">
-      </div>
-
-      <div class="field">
-        <label>Daily Risk Limit $</label>
-        <input type="number" id="settingDailyRiskDollar" step="0.01">
-      </div>
-
-      <div class="field">
-        <label>Max Trades / Day</label>
-        <input type="number" id="settingMaxTrades" step="1">
-      </div>
-
-      <div class="field">
-        <label>Max Consecutive Losses</label>
-        <input type="number" id="settingMaxLosses" step="1">
-      </div>
-
-      <div class="field">
-        <label>Max Drawdown %</label>
-        <input type="number" id="settingMaxDD" step="0.1">
-      </div>
-
-    </div>
-
-    <div class="button-row" style="margin-top:13px">
-
-      <button onclick="saveRiskSettings()">
+<div class="form-grid">
+<div class="field">
+<label>Account Size</label>
+<input id="settingAccount" step="0.01" type="number"/>
+</div>
+<div class="field">
+<label>Risk % / Trade</label>
+<input id="settingRiskPercent" step="0.01" type="number"/>
+</div>
+<div class="field">
+<label>Daily Risk Limit %</label>
+<input id="settingDailyRiskPercent" step="0.01" type="number"/>
+</div>
+<div class="field">
+<label>Daily Risk Limit $</label>
+<input id="settingDailyRiskDollar" step="0.01" type="number"/>
+</div>
+<div class="field">
+<label>Max Trades / Day</label>
+<input id="settingMaxTrades" step="1" type="number"/>
+</div>
+<div class="field">
+<label>Max Consecutive Losses</label>
+<input id="settingMaxLosses" step="1" type="number"/>
+</div>
+<div class="field">
+<label>Max Drawdown %</label>
+<input id="settingMaxDD" step="0.1" type="number"/>
+</div>
+</div>
+<div class="button-row" style="margin-top:13px">
+<button onclick="saveRiskSettings()">
         Save Risk Settings
       </button>
-
-    </div>
-
-  </div>
-
+</div>
+</div>
 </section>
-
-
 <!-- =======================================================
      INTELLIGENCE
 ======================================================= -->
-
 <section id="intelligence">
-
-  <div class="section-heading">
-
-    <div class="section-title">
-
-      <div class="section-icon">🧠</div>
-
-      <div>
-        <h2>Ochi Intelligence</h2>
-        <div class="section-description">
+<div class="section-heading">
+<div class="section-title">
+<div class="section-icon">🧠</div>
+<div>
+<h2>Ochi Intelligence</h2>
+<div class="section-description">
           Discover historical relationships inside your journal.
         </div>
-      </div>
-
-    </div>
-
-    <span class="phase-badge">PHASE 3</span>
-
-  </div>
-
-  <div class="grid intelligence-grid">
-
-    <div class="card">
-      <div class="card-label">Trades Analyzed</div>
-      <div class="card-value" id="intelTrades">0</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Trading Days</div>
-      <div class="card-value" id="intelDays">0</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Overall Win Rate</div>
-      <div class="card-value" id="intelWinRate">0%</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Expectancy</div>
-      <div class="card-value" id="intelExpectancy">$0.00</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Rule Adherence</div>
-      <div class="card-value" id="intelRuleAdherence">0%</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Discipline Violations</div>
-      <div class="card-value" id="intelViolations">0</div>
-    </div>
-
-  </div>
-
-  <hr>
-
-  <h3>🔎 Intelligence Explorer</h3>
-
-  <div class="form-grid">
-
-    <div class="field">
-
-      <label>Analyze By</label>
-
-      <select id="intelDimension">
-
-        <option value="entryModel">Entry Model</option>
-        <option value="pair">Currency Pair</option>
-        <option value="session">Session</option>
-        <option value="marketCondition">Market Condition</option>
-        <option value="direction">Direction</option>
-        <option value="structure4h">4H Structure</option>
-        <option value="d1Bias">D1 Bias</option>
-        <option value="poi4h">4H POI</option>
-        <option value="liquiditySweep">Liquidity Sweep</option>
-        <option value="mss15">15M MSS</option>
-        <option value="ruleFollowed">Rule Followed</option>
-        <option value="earlyEntry">Early Entry</option>
-        <option value="fomo">FOMO</option>
-        <option value="revenge">Revenge Trade</option>
-        <option value="newsViolation">News Violation</option>
-
-      </select>
-
-    </div>
-
-  </div>
-
-  <div id="intelExplorer" style="margin-top:14px"></div>
-
-  <hr>
-
-  <h3>🔬 Pattern Detector</h3>
-
-  <div id="patternDetector"></div>
-
-  <hr>
-
-  <h3>🎯 Trade Quality Scorecard</h3>
-
-  <div id="qualityScorecard"></div>
-
-  <hr>
-
-  <h3>🤖 Ochi AI</h3>
-
-  <div id="ochiAI"></div>
-
+</div>
+</div>
+<span class="phase-badge">PHASE 3</span>
+</div>
+<div class="grid intelligence-grid">
+<div class="card">
+<div class="card-label">Trades Analyzed</div>
+<div class="card-value" id="intelTrades">0</div>
+</div>
+<div class="card">
+<div class="card-label">Trading Days</div>
+<div class="card-value" id="intelDays">0</div>
+</div>
+<div class="card">
+<div class="card-label">Overall Win Rate</div>
+<div class="card-value" id="intelWinRate">0%</div>
+</div>
+<div class="card">
+<div class="card-label">Expectancy</div>
+<div class="card-value" id="intelExpectancy">$0.00</div>
+</div>
+<div class="card">
+<div class="card-label">Rule Adherence</div>
+<div class="card-value" id="intelRuleAdherence">0%</div>
+</div>
+<div class="card">
+<div class="card-label">Discipline Violations</div>
+<div class="card-value" id="intelViolations">0</div>
+</div>
+</div>
+<hr/>
+<h3>🔎 Intelligence Explorer</h3>
+<div class="form-grid">
+<div class="field">
+<label>Analyze By</label>
+<select id="intelDimension">
+<option value="entryModel">Entry Model</option>
+<option value="pair">Currency Pair</option>
+<option value="session">Session</option>
+<option value="marketCondition">Market Condition</option>
+<option value="direction">Direction</option>
+<option value="structure4h">4H Structure</option>
+<option value="d1Bias">D1 Bias</option>
+<option value="poi4h">4H POI</option>
+<option value="liquiditySweep">Liquidity Sweep</option>
+<option value="mss15">15M MSS</option>
+<option value="ruleFollowed">Rule Followed</option>
+<option value="earlyEntry">Early Entry</option>
+<option value="fomo">FOMO</option>
+<option value="revenge">Revenge Trade</option>
+<option value="newsViolation">News Violation</option>
+</select>
+</div>
+</div>
+<div id="intelExplorer" style="margin-top:14px"></div>
+<hr/>
+<h3>🔬 Pattern Detector</h3>
+<div id="patternDetector"></div>
+<hr/>
+<h3>🎯 Trade Quality Scorecard</h3>
+<div id="qualityScorecard"></div>
+<hr/>
+<h3>🤖 Ochi AI</h3>
+<div id="ochiAI"></div>
 </section>
-
-
 <!-- =======================================================
      REPORTS
 ======================================================= -->
-
 <section id="reports">
-
-  <div class="section-heading">
-
-    <div class="section-title">
-
-      <div class="section-icon">📋</div>
-
-      <div>
-        <h2>Professional Reports</h2>
-        <div class="section-description">
+<div class="section-heading">
+<div class="section-title">
+<div class="section-icon">📋</div>
+<div>
+<h2>Professional Reports</h2>
+<div class="section-description">
           Turn your recorded trading data into structured reports.
         </div>
-      </div>
-
-    </div>
-
-    <span class="phase-badge">PHASE 5</span>
-
-  </div>
-
-  <div class="form-grid">
-
-    <div class="field">
-
-      <label>Report Type</label>
-
-      <select id="reportType">
-
-        <option value="weekly">Weekly Report</option>
-        <option value="monthly">Monthly Report</option>
-
-      </select>
-
-    </div>
-
-    <div class="field">
-
-      <label>Report Period</label>
-
-      <select id="reportPeriod"></select>
-
-    </div>
-
-  </div>
-
-  <div class="button-row" style="margin-top:13px">
-
-    <button onclick="generateReport()">
+</div>
+</div>
+<span class="phase-badge">PHASE 5</span>
+</div>
+<div class="form-grid">
+<div class="field">
+<label>Report Type</label>
+<select id="reportType">
+<option value="weekly">Weekly Report</option>
+<option value="monthly">Monthly Report</option>
+</select>
+</div>
+<div class="field">
+<label>Report Period</label>
+<select id="reportPeriod"></select>
+</div>
+</div>
+<div class="button-row" style="margin-top:13px">
+<button onclick="generateReport()">
       Generate Report
     </button>
-
-  </div>
-
-  <div id="reportOutput" style="margin-top:17px"></div>
-
-  <hr>
-
-  <div class="report-history-header">
-    <h3>Report History</h3>
-  </div>
-
-  <div id="reportHistory"></div>
-
-  <div class="reset-history-box">
-
-    <strong>🧹 Reset Report History</strong>
-
-    <div class="small muted" style="margin-top:5px;margin-bottom:11px">
+</div>
+<div id="reportOutput" style="margin-top:17px"></div>
+<hr/>
+<div class="report-history-header">
+<h3>Report History</h3>
+</div>
+<div id="reportHistory"></div>
+<div class="reset-history-box">
+<strong>🧹 Reset Report History</strong>
+<div class="small muted" style="margin-top:5px;margin-bottom:11px">
 
       This removes only previously generated reports. Your trades,
       Risk Engine settings and backups will remain untouched.
 
     </div>
-
-    <button
-      class="danger"
-      type="button"
-      onclick="resetReportHistory()">
+<button class="danger" onclick="resetReportHistory()" type="button">
 
       Reset Report History
 
     </button>
-
-  </div>
-
+</div>
 </section>
-
-
 <!-- =======================================================
      DATA PROTECTION
 ======================================================= -->
 
-<section id="dataProtection">
-
-  <div class="section-heading">
-
-    <div class="section-title">
-
-      <div class="section-icon">🛡️</div>
-
-      <div>
-
-        <h2>Ochi Data Protection</h2>
-
-        <div class="section-description">
-          Backup, restore and protect your local trading database.
-        </div>
-
-      </div>
-
-    </div>
-
-    <span class="phase-badge">PHASE 6</span>
-
-  </div>
-
-
-  <div class="info-box success-box">
-
-    <strong>Your data stays local.</strong><br>
-
-    OchiTracker currently stores your journal and settings inside this browser.
-    Phase 6 gives you a way to safely back everything up and restore it later.
-
-  </div>
-
-
-  <div class="grid protection-grid">
-
-    <div class="card">
-      <div class="card-label">Journal Trades</div>
-      <div class="card-value" id="backupTradeCount">0</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Trading Days</div>
-      <div class="card-value" id="backupDayCount">0</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Report History</div>
-      <div class="card-value" id="backupReportCount">0</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Risk Settings</div>
-      <div class="card-value" id="backupRiskStatus">SAVED</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Last Backup</div>
-      <div class="card-value" id="lastBackupDate">Never</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Data Health</div>
-      <div class="card-value" id="dataHealth">HEALTHY</div>
-    </div>
-
-  </div>
-
-
-  <hr>
-
-
-  <div class="two-col">
-
-    <div class="card protection-action">
-
-      <div>
-
-        <h3>📤 Export Journal</h3>
-
-        <div class="muted small">
-
-          Exports your trading journal only. Useful if you want
-          a lightweight copy of your trades.
-
-        </div>
-
-      </div>
-
-      <button onclick="exportJournal()">
-        Export Journal JSON
-      </button>
-
-    </div>
-
-
-    <div class="card protection-action">
-
-      <div>
-
-        <h3>💾 Full Ochi Backup</h3>
-
-        <div class="muted small">
-
-          Saves your trades, Risk Engine settings and Professional
-          Report history into one backup file.
-
-        </div>
-
-      </div>
-
-      <button
-        class="success"
-        onclick="exportFullBackup()">
-
-        Create Full Backup
-
-      </button>
-
-    </div>
-
-  </div>
-
-
-  <div style="height:13px"></div>
-
-
-  <div class="card">
-
-    <h3>📥 Restore / Import</h3>
-
-    <div class="info-box warning-box">
-
-      <strong>Important:</strong> Always create a fresh Full OchiTracker
-      Backup before restoring or replacing existing data.
-
-    </div>
-
-    <div class="file-input">
-
-      <input
-        type="file"
-        id="backupFile"
-        accept=".json,application/json">
-
-    </div>
-
-    <div class="button-row" style="margin-top:11px">
-
-      <button
-        class="secondary"
-        onclick="previewBackup()">
-        Preview Backup
-      </button>
-
-      <button onclick="mergeBackup()">
-        Merge Trades
-      </button>
-
-      <button
-        class="warning"
-        onclick="restoreFullBackup()">
-        Restore Full Backup
-      </button>
-
-    </div>
-
-    <div id="backupPreview" class="preview"></div>
-
-  </div>
-
-
-  <div style="height:13px"></div>
-
-
-  <div class="card">
-
-    <h3>🧹 Data Management</h3>
-
-    <div class="danger-box info-box">
-
-      <strong>Danger zone:</strong> Clearing OchiTracker data permanently
-      removes the journal, Risk Engine settings and report history from
-      this browser. Export a backup first.
-
-    </div>
-
-    <button
-      class="danger"
-      onclick="clearAllData()">
-
-      Clear All OchiTracker Data
-
-    </button>
-
-  </div>
-
-</section>
-
-
 <!-- =======================================================
      CALENDAR
 ======================================================= -->
-
 <section id="calendarSection">
-
-  <div class="section-heading">
-
-    <div class="section-title">
-
-      <div class="section-icon">📅</div>
-
-      <div>
-        <h2>Trading Calendar</h2>
-        <div class="section-description">
+<div class="section-heading">
+<div class="section-title">
+<div class="section-icon">📅</div>
+<div>
+<h2>Trading Calendar</h2>
+<div class="section-description">
           See your trading rhythm day by day.
         </div>
-      </div>
-
-    </div>
-
-    <span class="phase-badge">JOURNAL MAP</span>
-
-  </div>
-
-  <div class="calendar-header">
-
-    <button
-      class="secondary"
-      onclick="changeCalendarMonth(-1)">
+</div>
+</div>
+<span class="phase-badge">JOURNAL MAP</span>
+</div>
+<div class="calendar-header">
+<button class="secondary" onclick="changeCalendarMonth(-1)">
       ← Previous
     </button>
-
-    <div
-      class="calendar-title"
-      id="calendarTitle">
-    </div>
-
-    <button
-      class="secondary"
-      onclick="changeCalendarMonth(1)">
+<div class="calendar-title" id="calendarTitle">
+</div>
+<button class="secondary" onclick="changeCalendarMonth(1)">
       Next →
     </button>
-
-  </div>
-
-  <div
-    class="calendar"
-    id="calendar">
-  </div>
-
+</div>
+<div class="calendar" id="calendar">
+</div>
 </section>
-
-
 <!-- =======================================================
      CHARTS
 ======================================================= -->
-
 <section id="charts">
-
-  <div class="section-heading">
-
-    <div class="section-title">
-
-      <div class="section-icon">📉</div>
-
-      <div>
-        <h2>Performance Charts</h2>
-        <div class="section-description">
+<div class="section-heading">
+<div class="section-title">
+<div class="section-icon">📉</div>
+<div>
+<h2>Performance Charts</h2>
+<div class="section-description">
           Visualize equity development and individual trade outcomes.
         </div>
-      </div>
-
-    </div>
-
-    <span class="phase-badge">VISUAL DATA</span>
-
-  </div>
-
-
-  <div class="two-col">
-
-    <div class="card chart-card">
-
-      <div class="chart-header">
-
-        <div>
-
-          <div class="chart-title">
+</div>
+</div>
+<span class="phase-badge">VISUAL DATA</span>
+</div>
+<div class="two-col">
+<div class="card chart-card">
+<div class="chart-header">
+<div>
+<div class="chart-title">
             Equity Curve
           </div>
-
-          <div class="chart-subtitle">
+<div class="chart-subtitle">
             Cumulative historical equity
           </div>
-
-        </div>
-
-      </div>
-
-      <div class="chart-wrap">
-        <canvas id="equityChart"></canvas>
-      </div>
-
-    </div>
-
-
-    <div class="card chart-card">
-
-      <div class="chart-header">
-
-        <div>
-
-          <div class="chart-title">
+</div>
+</div>
+<div class="chart-wrap">
+<canvas id="equityChart"></canvas>
+</div>
+</div>
+<div class="card chart-card">
+<div class="chart-header">
+<div>
+<div class="chart-title">
             Trade P/L
           </div>
-
-          <div class="chart-subtitle">
+<div class="chart-subtitle">
             Individual trade outcomes
           </div>
-
-        </div>
-
-      </div>
-
-      <div class="chart-wrap">
-        <canvas id="profitChart"></canvas>
-      </div>
-
-    </div>
-
-  </div>
-
+</div>
+</div>
+<div class="chart-wrap">
+<canvas id="profitChart"></canvas>
+</div>
+</div>
+</div>
 </section>
-
-
 <!-- =======================================================
      EDGE LAB
 ======================================================= -->
-
 <!-- PHASE 7.8 -->
-<section class="panel setup-intel" id="setupIntelligenceSection"><div class="setup-intel-head"><div><h2>🧠 Phase 7.8 — Advanced Setup Performance Intelligence</h2><div class="setup-intel-sub">Ranks combinations of your recorded 4H POI, liquidity sweep, 15M MSS, entry model and market condition. Minimum sample: 3 trades.</div></div></div><div class="setup-intel-controls"><select class="input setup-intel-select" id="setupIntelSort"><option value="profit">Rank by Net P/L</option><option value="expectancy">Rank by Avg R</option><option value="winrate">Rank by Win Rate</option><option value="quality">Rank by Quality Score</option></select></div><div class="setup-intel-grid"><div class="setup-intel-card"><div class="setup-intel-label">Setups Detected</div><div class="setup-intel-value" id="setupIntelCount">0</div></div><div class="setup-intel-card"><div class="setup-intel-label">Best Setup</div><div class="setup-intel-value" id="setupIntelBest">—</div></div><div class="setup-intel-card"><div class="setup-intel-label">Best Avg R</div><div class="setup-intel-value" id="setupIntelBestR">—</div></div><div class="setup-intel-card"><div class="setup-intel-label">Strongest Win Rate</div><div class="setup-intel-value" id="setupIntelBestWin">—</div></div></div><div class="setup-intel-table-wrap"><table class="setup-intel-table"><thead><tr><th>#</th><th>Setup Combination</th><th>Trades</th><th>Win Rate</th><th>Net P/L</th><th>Total R</th><th>Avg R</th><th>PF</th><th>Avg Quality</th><th>Status</th></tr></thead><tbody id="setupIntelBody"><tr><td colspan="10">No qualifying setup combinations yet.</td></tr></tbody></table></div><div class="setup-intel-detail" id="setupIntelDetail"></div><div class="setup-intel-note" id="setupIntelInsight">Add at least three trades sharing a setup combination to begin historical setup analysis. This is descriptive analysis, not prediction.</div></section>
+<section class="panel setup-intel" id="setupIntelligenceSection"><div class="setup-intel-head"><div><h2>Advanced Setup Performance Intelligence</h2><div class="setup-intel-sub">Ranks combinations of your recorded 4H POI, liquidity sweep, 15M MSS, entry model and market condition. Minimum sample: 3 trades.</div></div></div><div class="setup-intel-controls"><select class="input setup-intel-select" id="setupIntelSort"><option value="profit">Rank by Net P/L</option><option value="expectancy">Rank by Avg R</option><option value="winrate">Rank by Win Rate</option><option value="quality">Rank by Quality Score</option></select></div><div class="setup-intel-grid"><div class="setup-intel-card"><div class="setup-intel-label">Setups Detected</div><div class="setup-intel-value" id="setupIntelCount">0</div></div><div class="setup-intel-card"><div class="setup-intel-label">Best Setup</div><div class="setup-intel-value" id="setupIntelBest">—</div></div><div class="setup-intel-card"><div class="setup-intel-label">Best Avg R</div><div class="setup-intel-value" id="setupIntelBestR">—</div></div><div class="setup-intel-card"><div class="setup-intel-label">Strongest Win Rate</div><div class="setup-intel-value" id="setupIntelBestWin">—</div></div></div><div class="setup-intel-table-wrap"><table class="setup-intel-table"><thead><tr><th>#</th><th>Setup Combination</th><th>Trades</th><th>Win Rate</th><th>Net P/L</th><th>Total R</th><th>Avg R</th><th>PF</th><th>Avg Quality</th><th>Status</th></tr></thead><tbody id="setupIntelBody"><tr><td colspan="10">No qualifying setup combinations yet.</td></tr></tbody></table></div><div class="setup-intel-detail" id="setupIntelDetail"></div><div class="setup-intel-note" id="setupIntelInsight">Add at least three trades sharing a setup combination to begin historical setup analysis. This is descriptive analysis, not prediction.</div></section>
 <section>
-
-  <div class="section-heading">
-
-    <div class="section-title">
-
-      <div class="section-icon">🧪</div>
-
-      <div>
-        <h2>Setup Performance Lab</h2>
-        <div class="section-description">
+<div class="section-heading">
+<div class="section-title">
+<div class="section-icon">🧪</div>
+<div>
+<h2>Setup Performance Lab</h2>
+<div class="section-description">
           Compare the historical behaviour of your entry models.
         </div>
-      </div>
-
-    </div>
-
-    <span class="phase-badge">EDGE LAB</span>
-
-  </div>
-
-  <div id="setupLab"></div>
-
+</div>
+</div>
+<span class="phase-badge">EDGE LAB</span>
+</div>
+<div id="setupLab"></div>
 </section>
-
-
 <!-- =======================================================
      TRADE HISTORY
 ======================================================= -->
-
 <section id="history">
-
-  <div class="section-heading">
-
-    <div class="section-title">
-
-      <div class="section-icon">📚</div>
-
-      <div>
-        <h2>Historical Trade Records</h2>
-        <div class="section-description">
+<div class="section-heading">
+<div class="section-title">
+<div class="section-icon">📚</div>
+<div>
+<h2>Historical Trade Records</h2>
+<div class="section-description">
           Your complete recorded trading journal.
         </div>
-      </div>
-
-    </div>
-
-    <span class="phase-badge">DATABASE</span>
-
-  </div>
-
-
-  <div class="table-container">
-
-    <table>
-
-      <thead>
-
-        <tr>
-
-          <th>Date</th>
-          <th>Pair</th>
-          <th>Direction</th>
-          <th>Session</th>
-          <th>Setup</th>
-          <th>Result</th>
-          <th>P/L</th>
-          <th>R</th>
-          <th>Risk</th>
-          <th>View</th>
-          <th>Manage</th>
-          <th>Delete</th>
-
-        </tr>
-
-      </thead>
-
-      <div
-  id="tradeHistoryStatus"
-  style="
+</div>
+</div>
+<span class="phase-badge">DATABASE</span>
+</div>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Pair</th>
+<th>Direction</th>
+<th>Session</th>
+<th>Setup</th>
+<th>Result</th>
+<th>P/L</th>
+<th>R</th>
+<th>Risk</th>
+<th>View</th>
+<th>Manage</th>
+<th>Delete</th>
+</tr>
+</thead>
+<div id="tradeHistoryStatus" style="
     margin:0 0 10px;
     padding:9px 11px;
     border:1px solid rgba(77,163,255,.14);
@@ -3954,546 +3405,230 @@ footer{
     font-size:11px;
   ">
   Historical Records: loading…
-  <button
-    type="button"
-    onclick="reloadOchiTradeHistory()"
-    style="
+  <button onclick="reloadOchiTradeHistory()" style="
       float:right;
       width:auto;
       padding:5px 9px;
       margin-top:-2px;
       font-size:10px;
-    ">
+    " type="button">
     ↻ Reload Records
   </button>
 </div>
-
 <tbody id="tradeTableBody"></tbody>
-
-    </table>
-
-  </div>
-
+</table>
+</div>
 </section>
-
-
-
 <!-- =======================================================
      PHASE 7.6 — TRADE REVIEW
 ======================================================= -->
-<div class="trade-review-overlay" id="tradeReviewOverlay" role="dialog" aria-modal="true" aria-labelledby="tradeReviewTitle">
-  <div class="trade-review-modal">
-    <div class="trade-review-head">
-      <div>
-        <h3 class="trade-review-title" id="tradeReviewTitle">Trade Review</h3>
-        <div class="trade-review-subtitle" id="tradeReviewSubtitle">Full journal record for this trade.</div>
-      </div>
-      <button class="trade-review-close" type="button" onclick="closeTradeReview()">Close</button>
-    </div>
-    <div class="trade-review-grid" id="tradeReviewGrid"></div>
-    <div class="trade-review-section">
-      <h4>Trade Notes</h4>
-      <div class="trade-review-notes" id="tradeReviewNotes">No notes recorded.</div>
-    </div>
-  </div>
+<div aria-labelledby="tradeReviewTitle" aria-modal="true" class="trade-review-overlay" id="tradeReviewOverlay" role="dialog">
+<div class="trade-review-modal">
+<div class="trade-review-head">
+<div>
+<h3 class="trade-review-title" id="tradeReviewTitle">Trade Review</h3>
+<div class="trade-review-subtitle" id="tradeReviewSubtitle">Full journal record for this trade.</div>
 </div>
-
-
+<button class="trade-review-close" onclick="closeTradeReview()" type="button">Close</button>
+</div>
+<div class="trade-review-grid" id="tradeReviewGrid"></div>
+<div class="trade-review-section">
+<h4>Trade Notes</h4>
+<div class="trade-review-notes" id="tradeReviewNotes">No notes recorded.</div>
+</div>
+</div>
+</div>
 <!-- =======================================================
      PHASE 7.9 — SESSION & TIME INTELLIGENCE
 ======================================================= -->
-<section id="sessionTimeIntelligence" class="panel" style="margin-top:18px;">
-  <div class="section-heading">
-    <div class="section-title">
-      <div class="section-icon">⏱️</div>
-      <div>
-        <h2>Phase 7.9 — Session & Time Intelligence</h2>
-        <div class="section-description">
+<section class="panel" id="sessionTimeIntelligence" style="margin-top:18px;">
+<div class="section-heading">
+<div class="section-title">
+<div class="section-icon">⏱️</div>
+<div>
+<h2>Session &amp; Time Intelligence</h2>
+<div class="section-description">
           Study when your historical edge performs best by session, weekday and recorded entry time.
         </div>
-      </div>
-    </div>
-    <span class="phase-badge">TIME EDGE</span>
-  </div>
-  <div id="sessionTimeIntelligenceContent"></div>
+</div>
+</div>
+<span class="phase-badge">TIME EDGE</span>
+</div>
+<div id="sessionTimeIntelligenceContent"></div>
 </section>
-
 <!-- =======================================================
      PHASE 7.10 — DISCIPLINE & TRADER SCORE
 ======================================================= -->
-<section id="disciplineTraderScore" class="panel discipline-score-section">
-  <div class="section-heading">
-    <div class="section-title">
-      <div class="section-icon">🧠</div>
-      <div>
-        <h2>Phase 7.10 — Discipline & Trader Score</h2>
-        <div class="section-description">
+<section class="panel discipline-score-section" id="disciplineTraderScore">
+<div class="section-heading">
+<div class="section-title">
+<div class="section-icon">🧠</div>
+<div>
+<h2>Discipline &amp; Trader Score</h2>
+<div class="section-description">
           Convert your recorded execution behavior into a historical discipline score without changing trade P/L.
         </div>
-      </div>
-    </div>
-    <span class="phase-badge">DISCIPLINE</span>
-  </div>
-  <div id="disciplineTraderScoreContent"></div>
+</div>
+</div>
+<span class="phase-badge">DISCIPLINE</span>
+</div>
+<div id="disciplineTraderScoreContent"></div>
 </section>
-
 <!-- =======================================================
      PHASE 7.7 — TRADE MANAGEMENT JOURNAL
 ======================================================= -->
-<section id="tradeManagementLab" class="trade-management-section">
-  <div class="section-heading">
-    <div class="section-title">
-      <div class="section-icon">🎯</div>
-      <div>
-        <h2>Phase 7.7 — Trade Management Journal</h2>
-        <div class="section-description">
+<section class="trade-management-section" id="tradeManagementLab">
+<div class="section-heading">
+<div class="section-title">
+<div class="section-icon">🎯</div>
+<div>
+<h2>Trade Management Journal</h2>
+<div class="section-description">
           Study what happened after entry: break-even decisions, manual exits, MFE/MAE and management quality.
         </div>
-      </div>
-    </div>
-    <span class="phase-badge">MANAGEMENT</span>
-  </div>
-
-  <div class="trade-management-grid" id="tradeManagementSummary"></div>
-
-  <div class="info-box" style="margin-top:12px;">
-    <strong>Management Lab:</strong> use <strong>Manage</strong> beside a trade to record what happened after entry. These fields do not change the original P/L or R result.
+</div>
+</div>
+<span class="phase-badge">MANAGEMENT</span>
+</div>
+<div class="trade-management-grid" id="tradeManagementSummary"></div>
+<div class="info-box" style="margin-top:12px;">
+<strong>Management Lab:</strong> use <strong>Manage</strong> beside a trade to record what happened after entry. These fields do not change the original P/L or R result.
   </div>
 </section>
-
-
 <!-- =======================================================
      PHASE 7.7 — TRADE MANAGEMENT MODAL
 ======================================================= -->
-<div class="trade-management-overlay" id="tradeManagementOverlay" role="dialog" aria-modal="true" aria-labelledby="tradeManagementTitle">
-  <div class="trade-management-modal">
-    <div class="trade-management-head">
-      <div>
-        <h3 class="trade-management-title" id="tradeManagementTitle">Trade Management</h3>
-        <div class="trade-management-subtitle" id="tradeManagementSubtitle">Post-entry management record.</div>
-      </div>
-      <button class="trade-review-close" type="button" onclick="closeTradeManagement()">Close</button>
-    </div>
-
-    <div class="trade-management-form-grid">
-      <div class="trade-management-field">
-        <label for="tmExitType">Exit Type</label>
-        <select id="tmExitType">
-          <option>Not recorded</option>
-          <option>Planned TP</option>
-          <option>Planned SL</option>
-          <option>Break-even</option>
-          <option>Manual Profit</option>
-          <option>Manual Loss</option>
-          <option>Partial + Final</option>
-        </select>
-      </div>
-
-      <div class="trade-management-field">
-        <label for="tmMovedBE">Moved SL to BE?</label>
-        <select id="tmMovedBE">
-          <option>No</option>
-          <option>Yes</option>
-          <option>Not recorded</option>
-        </select>
-      </div>
-
-      <div class="trade-management-field">
-        <label for="tmBETriggerR">BE Trigger (R)</label>
-        <input type="number" id="tmBETriggerR" step="0.01" min="0" placeholder="e.g. 1.00">
-      </div>
-
-      <div class="trade-management-field">
-        <label for="tmPartialTaken">Partial Taken?</label>
-        <select id="tmPartialTaken">
-          <option>No</option>
-          <option>Yes</option>
-          <option>Not recorded</option>
-        </select>
-      </div>
-
-      <div class="trade-management-field">
-        <label for="tmManualExit">Manual Exit?</label>
-        <select id="tmManualExit">
-          <option>No</option>
-          <option>Yes</option>
-          <option>Not recorded</option>
-        </select>
-      </div>
-
-      <div class="trade-management-field">
-        <label for="tmExitReason">Exit Reason</label>
-        <select id="tmExitReason">
-          <option>Not recorded</option>
-          <option>Planned TP</option>
-          <option>Planned SL</option>
-          <option>Market Invalidation</option>
-          <option>Manual Profit Protection</option>
-          <option>Manual Loss</option>
-          <option>Early Exit</option>
-          <option>News / Volatility</option>
-          <option>Other</option>
-        </select>
-      </div>
-
-      <div class="trade-management-field">
-        <label for="tmPlannedTPR">Planned TP (R)</label>
-        <input type="number" id="tmPlannedTPR" step="0.01" min="0" placeholder="e.g. 3.00">
-      </div>
-
-      <div class="trade-management-field">
-        <label for="tmMFER">MFE (R)</label>
-        <input type="number" id="tmMFER" step="0.01" placeholder="Maximum favorable excursion">
-      </div>
-
-      <div class="trade-management-field">
-        <label for="tmMAER">MAE (R)</label>
-        <input type="number" id="tmMAER" step="0.01" min="0" placeholder="Maximum adverse excursion">
-      </div>
-
-      <div class="trade-management-field">
-        <label for="tmTPAfterManual">TP Reached After Manual Exit?</label>
-        <select id="tmTPAfterManual">
-          <option>Unknown</option>
-          <option>Yes</option>
-          <option>No</option>
-          <option>Not applicable</option>
-        </select>
-      </div>
-
-      <div class="trade-management-field">
-        <label for="tmGrade">Management Grade</label>
-        <select id="tmGrade">
-          <option>Not rated</option>
-          <option>Disciplined</option>
-          <option>Acceptable</option>
-          <option>Early</option>
-          <option>Late</option>
-          <option>Emotional</option>
-        </select>
-      </div>
-
-      <div class="trade-management-field trade-management-wide">
-        <label for="tmNotes">Management Notes</label>
-        <textarea id="tmNotes" placeholder="Why did you move to BE, take profit, close manually, or hold to the plan? Record the lesson."></textarea>
-      </div>
-    </div>
-
-    <div class="trade-management-note">
-      <strong>MFE</strong> = maximum favorable excursion. <strong>MAE</strong> = maximum adverse excursion. Enter them in R when known. This lets OchiTracker study whether exits and break-even decisions are helping or hurting your edge.
-    </div>
-
-    <div class="trade-management-status" id="tradeManagementStatus">No management record loaded.</div>
-
-    <div class="trade-management-modal-actions">
-      <button type="button" class="secondary" onclick="closeTradeManagement()">Cancel</button>
-      <button type="button" onclick="saveTradeManagement()">Save Management</button>
-    </div>
-  </div>
+<div aria-labelledby="tradeManagementTitle" aria-modal="true" class="trade-management-overlay" id="tradeManagementOverlay" role="dialog">
+<div class="trade-management-modal">
+<div class="trade-management-head">
+<div>
+<h3 class="trade-management-title" id="tradeManagementTitle">Trade Management</h3>
+<div class="trade-management-subtitle" id="tradeManagementSubtitle">Post-entry management record.</div>
 </div>
-
-
+<button class="trade-review-close" onclick="closeTradeManagement()" type="button">Close</button>
+</div>
+<div class="trade-management-form-grid">
+<div class="trade-management-field">
+<label for="tmExitType">Exit Type</label>
+<select id="tmExitType">
+<option>Not recorded</option>
+<option>Planned TP</option>
+<option>Planned SL</option>
+<option>Break-even</option>
+<option>Manual Profit</option>
+<option>Manual Loss</option>
+<option>Partial + Final</option>
+</select>
+</div>
+<div class="trade-management-field">
+<label for="tmMovedBE">Moved SL to BE?</label>
+<select id="tmMovedBE">
+<option>No</option>
+<option>Yes</option>
+<option>Not recorded</option>
+</select>
+</div>
+<div class="trade-management-field">
+<label for="tmBETriggerR">BE Trigger (R)</label>
+<input id="tmBETriggerR" min="0" placeholder="e.g. 1.00" step="0.01" type="number"/>
+</div>
+<div class="trade-management-field">
+<label for="tmPartialTaken">Partial Taken?</label>
+<select id="tmPartialTaken">
+<option>No</option>
+<option>Yes</option>
+<option>Not recorded</option>
+</select>
+</div>
+<div class="trade-management-field">
+<label for="tmManualExit">Manual Exit?</label>
+<select id="tmManualExit">
+<option>No</option>
+<option>Yes</option>
+<option>Not recorded</option>
+</select>
+</div>
+<div class="trade-management-field">
+<label for="tmExitReason">Exit Reason</label>
+<select id="tmExitReason">
+<option>Not recorded</option>
+<option>Planned TP</option>
+<option>Planned SL</option>
+<option>Market Invalidation</option>
+<option>Manual Profit Protection</option>
+<option>Manual Loss</option>
+<option>Early Exit</option>
+<option>News / Volatility</option>
+<option>Other</option>
+</select>
+</div>
+<div class="trade-management-field">
+<label for="tmPlannedTPR">Planned TP (R)</label>
+<input id="tmPlannedTPR" min="0" placeholder="e.g. 3.00" step="0.01" type="number"/>
+</div>
+<div class="trade-management-field">
+<label for="tmMFER">MFE (R)</label>
+<input id="tmMFER" placeholder="Maximum favorable excursion" step="0.01" type="number"/>
+</div>
+<div class="trade-management-field">
+<label for="tmMAER">MAE (R)</label>
+<input id="tmMAER" min="0" placeholder="Maximum adverse excursion" step="0.01" type="number"/>
+</div>
+<div class="trade-management-field">
+<label for="tmTPAfterManual">TP Reached After Manual Exit?</label>
+<select id="tmTPAfterManual">
+<option>Unknown</option>
+<option>Yes</option>
+<option>No</option>
+<option>Not applicable</option>
+</select>
+</div>
+<div class="trade-management-field">
+<label for="tmGrade">Management Grade</label>
+<select id="tmGrade">
+<option>Not rated</option>
+<option>Disciplined</option>
+<option>Acceptable</option>
+<option>Early</option>
+<option>Late</option>
+<option>Emotional</option>
+</select>
+</div>
+<div class="trade-management-field trade-management-wide">
+<label for="tmNotes">Management Notes</label>
+<textarea id="tmNotes" placeholder="Why did you move to BE, take profit, close manually, or hold to the plan? Record the lesson."></textarea>
+</div>
+</div>
+<div class="trade-management-note">
+<strong>MFE</strong> = maximum favorable excursion. <strong>MAE</strong> = maximum adverse excursion. Enter them in R when known. This lets OchiTracker study whether exits and break-even decisions are helping or hurting your edge.
+    </div>
+<div class="trade-management-status" id="tradeManagementStatus">No management record loaded.</div>
+<div class="trade-management-modal-actions">
+<button class="secondary" onclick="closeTradeManagement()" type="button">Cancel</button>
+<button onclick="saveTradeManagement()" type="button">Save Management</button>
+</div>
+</div>
+</div>
 <!-- =======================================================
      PHASE 7.1 — OCHI CLOUD ARCHITECTURE
 ======================================================= -->
-<section id="ochiCloud" class="cloud-command">
-  <div class="cloud-command-head">
-    <div class="cloud-brand">
-      <div class="cloud-icon">☁️</div>
-      <div>
-        <h2 class="cloud-title">Ochi Cloud</h2>
-        <div class="cloud-subtitle">Phase 7.1 · Cloud architecture foundation</div>
-      </div>
-    </div>
-    <span class="phase71-badge">PHASE 7.1</span>
-  </div>
-
-  <div class="cloud-status">
-    <span class="cloud-dot"></span>
-    <span id="ochiCloudStatus">LOCAL-FIRST · CLOUD NOT CONNECTED</span>
-  </div>
-
-  <div class="cloud-grid" style="margin-top:14px">
-    <div class="cloud-card"><div class="cloud-label">Account</div><div class="cloud-value" id="cloudAccountStatus">Not connected</div></div>
-    <div class="cloud-card"><div class="cloud-label">Database</div><div class="cloud-value" id="cloudDatabaseStatus">Not connected</div></div>
-    <div class="cloud-card"><div class="cloud-label">Sync</div><div class="cloud-value" id="cloudSyncStatus">Local only</div></div>
-    <div class="cloud-card"><div class="cloud-label">Local Data</div><div class="cloud-value" id="cloudLocalDataStatus">Protected</div></div>
-  </div>
-
-  <div class="cloud-architecture">
-    <div class="cloud-node">📱 OchiTracker UI</div>
-    <div class="cloud-node">💾 Local Data Layer</div>
-    <div class="cloud-node">🔄 Sync Engine</div>
-    <div class="cloud-node">☁️ Ochi Cloud</div>
-  </div>
-
-  <div class="cloud-note">
-    <strong>Phase 7 cloud foundation:</strong> OchiTracker remains local-first. Phase 7.2 provides the local account layer, while Phase 7.3 adds a structured IndexedDB database foundation. Existing Phase 6 localStorage keys remain untouched. A real remote cloud database will be connected in the synchronization phases.
-  </div>
-
-  <!-- =====================================================
-       PHASE 7.2 — OCHI ACCOUNT / AUTHENTICATION FOUNDATION
-  ====================================================== -->
-  <div class="ochi-account-panel" id="ochiAccountPanel">
-    <div class="account-head">
-      <div>
-        <h3 class="account-title">👤 Ochi Account</h3>
-        <div class="account-subtitle">Phase 7.2 · Account and authentication foundation</div>
-      </div>
-      <span class="phase72-badge">PHASE 7.2</span>
-    </div>
-
-    <div class="account-grid">
-      <div class="account-card">
-        <div class="account-label">Session</div>
-        <div class="account-value" id="ochiAccountSession">Signed out</div>
-      </div>
-      <div class="account-card">
-        <div class="account-label">Account ID</div>
-        <div class="account-value" id="ochiAccountId">—</div>
-      </div>
-      <div class="account-card">
-        <div class="account-label">Profile</div>
-        <div class="account-value" id="ochiAccountProfile">No local profile</div>
-      </div>
-    </div>
-
-    <div id="ochiAccountSignedOut">
-      <div class="account-form">
-        <input id="ochiAccountName" type="text" maxlength="80" placeholder="Display name">
-        <input id="ochiAccountEmail" type="email" maxlength="160" placeholder="Email address">
-        <button class="account-btn primary" type="button" onclick="createOchiLocalAccount()">Create / Sign in</button>
-      </div>
-    </div>
-
-    <div id="ochiAccountSignedIn" class="account-signed">
-      <div class="account-actions">
-        <button class="account-btn secondary" type="button" onclick="signOutOchiAccount()">Sign out</button>
-        <button class="account-btn danger" type="button" onclick="deleteOchiLocalAccount()">Delete local account</button>
-      </div>
-    </div>
-
-    <div class="account-message" id="ochiAccountMessage">
-      No account session is active. Your existing trades and Phase 6 data remain local and are not affected.
-    </div>
-
-    <div class="account-note">
-      <strong>Phase 7.2 scope:</strong> this is the account-layer foundation only. It creates a local development profile and session state without storing passwords or sending data to a server. Real secure authentication, server-side sessions and cloud identity will be connected after the backend/database foundation is ready.
-    </div>
-
-  <!-- =====================================================
-       PHASE 7.3 — OCHI DATABASE FOUNDATION
-  ====================================================== -->
-  <div class="database-panel" id="ochiDatabasePanel">
-    <div class="database-head">
-      <div>
-        <h3 class="database-title">🗄️ Ochi Database</h3>
-        <div class="database-subtitle">Phase 7.3 · Structured database foundation</div>
-      </div>
-      <span class="phase73-badge">PHASE 7.3</span>
-    </div>
-
-    <div class="database-grid">
-      <div class="database-card">
-        <div class="database-label">Engine</div>
-        <div class="database-value" id="ochiDatabaseEngine">Initializing…</div>
-      </div>
-      <div class="database-card">
-        <div class="database-label">Connection</div>
-        <div class="database-value" id="ochiDatabaseConnection">Initializing…</div>
-      </div>
-      <div class="database-card">
-        <div class="database-label">Trades</div>
-        <div class="database-value" id="ochiDatabaseTrades">0</div>
-      </div>
-      <div class="database-card">
-        <div class="database-label">Database Version</div>
-        <div class="database-value" id="ochiDatabaseVersion">1</div>
-      </div>
-    </div>
-
-    <div class="database-actions">
-      <button class="database-btn primary" type="button" onclick="migrateOchiDataToDatabase()">Initialize / Migrate Data</button>
-      <button class="database-btn secondary" type="button" onclick="refreshOchiDatabaseStatus()">Refresh Database Status</button>
-    </div>
-
-    <div class="database-message" id="ochiDatabaseMessage">
-      Preparing the Ochi database layer…
-    </div>
-
-    <div class="database-note">
-      <strong>Phase 7.3 scope:</strong> this introduces a structured browser database using IndexedDB and a provider-neutral database adapter. Existing Phase 6 localStorage keys remain the source of truth during this foundation phase. No external cloud provider, API key, or network connection is required yet. The adapter is designed so a real cloud database can be connected after the local synchronization foundation is proven.
-    </div>
-  </div>
-
-  <!-- =====================================================
-       PHASE 7.4 — OCHI TRADE SYNCHRONIZATION
-  ====================================================== -->
-  <div class="sync-panel" id="ochiTradeSyncPanel">
-    <div class="sync-head">
-      <div>
-        <h3 class="sync-title">🔄 Trade Synchronization</h3>
-        <div class="sync-subtitle">Phase 7.4 · Local app ↔ structured database</div>
-      </div>
-      <span class="phase74-badge">PHASE 7.4</span>
-    </div>
-
-    <div class="sync-grid">
-      <div class="sync-card">
-        <div class="sync-label">App Trades</div>
-        <div class="sync-value" id="ochiSyncLocalCount">0</div>
-      </div>
-      <div class="sync-card">
-        <div class="sync-label">Database Trades</div>
-        <div class="sync-value" id="ochiSyncDatabaseCount">0</div>
-      </div>
-      <div class="sync-card">
-        <div class="sync-label">Sync Status</div>
-        <div class="sync-value" id="ochiSyncStatus">Not synced</div>
-      </div>
-      <div class="sync-card">
-        <div class="sync-label">Last Sync</div>
-        <div class="sync-value" id="ochiSyncLastSync">Never</div>
-      </div>
-    </div>
-
-    <div class="sync-actions">
-      <button class="sync-btn primary" type="button" onclick="syncOchiTradesNow()">🔄 Sync Now</button>
-      <button class="sync-btn secondary" type="button" onclick="pushOchiTradesToDatabase()">↑ Push App → Database</button>
-      <button class="sync-btn warning" type="button" onclick="pullOchiTradesFromDatabase()">↓ Pull Database → App</button>
-      <button class="sync-btn secondary" type="button" onclick="compareOchiTradeStores()">Compare Stores</button>
-    </div>
-
-    <div class="sync-progress" aria-hidden="true">
-      <div class="sync-progress-bar" id="ochiSyncProgress"></div>
-    </div>
-
-    <div class="sync-message" id="ochiSyncMessage">
-      Trade synchronization is ready. Your existing local OchiTracker data remains the working dataset until you choose to synchronize it into the database.
-    </div>
-
-    <div class="sync-note">
-      <strong>Phase 7.4 scope:</strong> this is synchronization between the browser app and the local IndexedDB database created in Phase 7.3. It is <strong>not internet/cloud synchronization yet</strong>. “Sync Now” uses the app's current trade journal as the source and safely writes it to the local database. Pulling from the database requires confirmation because it replaces the current app trade list.
-    </div>
-  </div>
-
-  </div>
-</section>
 
 </main>
-
 <!-- =======================================================
      HISTORICAL DATA & SYNC CENTER
 ======================================================= -->
-<section id="historicalDataCenter" class="panel" style="margin-top:18px;">
-  <div class="section-heading">
-    <div class="section-title">
-      <div class="section-icon">🗂️</div>
-      <div>
-        <h2>Historical Data & Sync Center</h2>
-        <div class="section-description">
-          One clean place to verify your recorded history, local database copy and synchronization status.
-        </div>
-      </div>
-    </div>
-    <span class="phase-badge">DATA</span>
-  </div>
-
-  <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));">
-    <div class="card"><div class="card-label">Historical Trades</div><div class="card-value" id="historicalTradeCount">0</div></div>
-    <div class="card"><div class="card-label">Trading Days</div><div class="card-value" id="historicalDayCount">0</div></div>
-    <div class="card"><div class="card-label">Database Copy</div><div class="card-value" id="historicalDbCount">—</div></div>
-    <div class="card"><div class="card-label">Data Health</div><div class="card-value" id="historicalHealth">HEALTHY</div></div>
-  </div>
-
-  <div class="button-row" style="margin-top:13px;">
-    <button type="button" onclick="syncHistoricalDataCenter()">🔄 Sync Historical Data</button>
-    <button type="button" class="secondary" onclick="refreshHistoricalDataCenter()">↻ Refresh Status</button>
-    <button type="button" class="secondary" onclick="document.getElementById('history').scrollIntoView({behavior:'smooth'})">📚 Open Historical Records</button>
-  </div>
-
-  <div id="historicalDataMessage" class="info-box" style="margin-top:13px;">
-    Historical data is stored locally. Sync copies the current journal into the browser database; it does not send data to the internet.
-  </div>
-</section>
 
 <!-- =======================================================
      PHASE 7.11 — ADVANCED EQUITY & DRAWDOWN ANALYTICS
 ======================================================= -->
-<section id="advancedEquityAnalytics" class="equity-analytics-section">
-  <div class="section-heading">
-    <div class="section-title">
-      <div class="section-icon">📈</div>
-      <div>
-        <h2>Phase 7.11 — Advanced Equity & Drawdown Analytics</h2>
-        <div class="section-description">
-          Measure equity growth, peak-to-trough drawdown, recovery and risk behavior from the recorded trade history.
-        </div>
-      </div>
-    </div>
-    <span class="phase-badge">EQUITY</span>
-  </div>
-
-  <div class="equity-analytics-controls">
-    <select id="equityAnalyticsScope" aria-label="Equity analytics scope">
-      <option value="all">All recorded trades</option>
-      <option value="wins-losses">Wins & losses only</option>
-      <option value="last20">Last 20 trades</option>
-      <option value="last50">Last 50 trades</option>
-    </select>
-    <button type="button" class="secondary" onclick="refreshAdvancedEquityAnalytics()">Refresh Analytics</button>
-  </div>
-
-  <div class="equity-analytics-grid" id="advancedEquityMetrics"></div>
-
-  <div class="equity-analytics-chart">
-    <div class="equity-analytics-chart-head">
-      <div>
-        <div class="equity-analytics-chart-title">Equity & Drawdown Path</div>
-        <div class="equity-analytics-chart-subtitle">Equity starts at $0; drawdown is measured from the running equity peak.</div>
-      </div>
-      <span class="status neutral" id="equityAnalyticsStatus">WAITING</span>
-    </div>
-    <div class="equity-analytics-canvas-wrap">
-      <canvas id="advancedEquityCanvas"></canvas>
-    </div>
-  </div>
-
-  <div class="equity-analytics-insight" id="advancedEquityInsight">
-    Add completed trades to activate advanced equity and drawdown analytics.
-  </div>
-
-  <div class="equity-analytics-dd-table">
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>Drawdown Event</th>
-            <th>Peak</th>
-            <th>Trough</th>
-            <th>Depth</th>
-            <th>Trades</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody id="advancedDrawdownBody">
-          <tr><td colspan="6">No drawdown events yet.</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
 
 <footer>
-
-  <span class="footer-brand">OchiTracker</span>
+<span class="footer-brand">OchiTracker</span>
   • Professional FX Performance System
   • Phase 6 Data Protection
   • Local Data Mode
 
 </footer>
-
-
 <script>
 /* =========================================================
    OCHITRACKER CORE
@@ -11582,13 +10717,11 @@ function initializeAdvancedEquityAnalytics(){
 window.addEventListener("resize",()=>{clearTimeout(window.__ochiEquityResizeTimer);window.__ochiEquityResizeTimer=setTimeout(refreshAdvancedEquityAnalytics,120);});
 
 </script>
-
 <script>document.addEventListener("DOMContentLoaded",()=>setTimeout(initializeAdvancedEquityAnalytics,120));</script>
 <script>document.addEventListener("DOMContentLoaded",()=>setTimeout(initializeSetupIntelligence,100));</script>
 <script>document.addEventListener("DOMContentLoaded",()=>setTimeout(initializeHistoricalDataCenter,140));</script>
 <script>window.addEventListener("error",function(e){var box=document.getElementById("ochiBootError");if(box){box.style.display="block";box.textContent="OchiTracker startup warning: "+(e.error&&e.error.message?e.error.message:e.message)+". Your stored data was not intentionally deleted.";}});</script>
 <div id="ochiBootError" style="display:none;position:fixed;left:12px;right:12px;bottom:12px;z-index:99999;padding:12px 14px;border:1px solid rgba(255,120,120,.35);border-radius:12px;background:#241216;color:#ffd5d5;font:600 12px/1.5 system-ui,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.35);"></div>
-
 <!-- OCHITRACKER — TRADE & SESSION EVIDENCE -->
 <style>
 #evidenceLab{margin:28px 0 18px;padding:24px;border:1px solid rgba(255,255,255,.09);border-radius:22px;background:linear-gradient(145deg,rgba(20,24,31,.98),rgba(10,13,18,.98));box-shadow:0 18px 55px rgba(0,0,0,.28)}
@@ -11621,84 +10754,7 @@ window.addEventListener("resize",()=>{clearTimeout(window.__ochiEquityResizeTime
 @media(max-width:620px){#evidenceLab{padding:17px;border-radius:18px}.ev-head{display:block}.ev-grid{grid-template-columns:1fr}.ev-span2,.ev-span4{grid-column:auto}.ev-summary{grid-template-columns:repeat(2,1fr)}.ev-modal-grid{grid-template-columns:1fr}}
 </style>
 
-<section id="evidenceLab">
-  <div class="ev-head">
-    <div>
-      <div class="ev-kicker">Execution journal</div>
-      <div class="ev-title">Trade &amp; Session Evidence</div>
-      <div class="ev-sub">Capture the plan before the market, preserve the setup visually, then record what actually happened. OchiTracker will keep <b>Target R</b> and <b>Result R</b> side by side.</div>
-    </div>
-  </div>
-
-  <div class="ev-grid">
-    <div class="ev-field"><label>Date</label><input id="evDate" type="date"></div>
-    <div class="ev-field"><label>Session Time</label><input id="evTime" type="time"></div>
-    <div class="ev-field"><label>Pair / Instrument</label><input id="evPair" placeholder="EURUSD"></div>
-    <div class="ev-field"><label>Session</label><select id="evSession"><option>London</option><option>New York</option><option>London + New York</option><option>Asia</option><option>Other</option></select></div>
-
-    <div class="ev-field"><label>Planned Direction</label><select id="evDirection"><option>BUY</option><option>SELL</option><option>WAIT / NO TRADE</option></select></div>
-    <div class="ev-field"><label>Target R</label><input id="evTargetR" type="number" step="0.1" placeholder="3.0"></div>
-    <div class="ev-field"><label>Risk ($)</label><input id="evRisk" type="number" step="0.01" placeholder="20"></div>
-    <div class="ev-field"><label>Setup Type</label><input id="evSetup" placeholder="4H POI + 15M MSS"></div>
-    <div class="ev-field ev-span2"><label>Pre-session plan</label><textarea id="evPlan" placeholder="4H location, liquidity, expected path, invalidation, news conditions..."></textarea></div>
-    <div class="ev-field ev-span2"><label>Key level / POI</label><textarea id="evPOI" placeholder="Record the level, zone or liquidity area that mattered."></textarea></div>
-  </div>
-
-  <div class="ev-stage">
-    <div class="ev-stage-head"><div><div class="ev-stage-title">Before Session</div><div class="ev-stage-note">Market context + original plan</div></div></div>
-    <label class="ev-upload">Tap to attach pre-session screenshot(s)
-      <input id="evBeforeFiles" type="file" accept="image/*" multiple>
-    </label>
-    <div id="evBeforePreview" class="ev-preview"></div>
-  </div>
-
-  <div class="ev-stage">
-    <div class="ev-stage-head"><div><div class="ev-stage-title">Entry / Setup Evidence</div><div class="ev-stage-note">Show the actual MSS, FVG, OB or execution context</div></div></div>
-    <label class="ev-upload">Tap to attach setup screenshot(s)
-      <input id="evSetupFiles" type="file" accept="image/*" multiple>
-    </label>
-    <div id="evSetupPreview" class="ev-preview"></div>
-  </div>
-
-  <div class="ev-grid" style="margin-top:16px">
-    <div class="ev-field"><label>Actual Result R</label><input id="evResultR" type="number" step="0.1" placeholder="2.4"></div>
-    <div class="ev-field"><label>Result ($)</label><input id="evResultPnl" type="number" step="0.01" placeholder="48"></div>
-    <div class="ev-field"><label>Outcome</label><select id="evOutcome"><option>Win</option><option>Loss</option><option>Breakeven</option><option>No Trade</option></select></div>
-    <div class="ev-field"><label>Management</label><select id="evManagement"><option>Plan followed</option><option>Manual exit</option><option>Moved to BE</option><option>Partial taken</option><option>Rule violation</option></select></div>
-    <div class="ev-field ev-span2"><label>Post-session result / what happened</label><textarea id="evResultNote" placeholder="Compare the actual move with the plan."></textarea></div>
-    <div class="ev-field ev-span2"><label>Lesson / execution note</label><textarea id="evLesson" placeholder="What should be repeated, changed or protected next time?"></textarea></div>
-  </div>
-
-  <div class="ev-stage">
-    <div class="ev-stage-head"><div><div class="ev-stage-title">After Session</div><div class="ev-stage-note">Final chart state + outcome evidence</div></div></div>
-    <label class="ev-upload">Tap to attach post-session screenshot(s)
-      <input id="evAfterFiles" type="file" accept="image/*" multiple>
-    </label>
-    <div id="evAfterPreview" class="ev-preview"></div>
-  </div>
-
-  <div class="ev-actions">
-    <button class="ev-btn primary" id="evSave">Save Evidence Record</button>
-    <button class="ev-btn" id="evReset">Clear Form</button>
-  </div>
-
-  <div class="ev-summary">
-    <div class="ev-stat"><small>Records</small><strong id="evCount">0</strong></div>
-    <div class="ev-stat"><small>Average Target R</small><strong id="evAvgTarget">—</strong></div>
-    <div class="ev-stat"><small>Average Result R</small><strong id="evAvgResult">—</strong></div>
-    <div class="ev-stat"><small>Target Achievement</small><strong id="evAchievement">—</strong></div>
-  </div>
-
-  <div class="ev-table-wrap">
-    <table class="ev-table">
-      <thead><tr><th>Date / Time</th><th>Pair</th><th>Direction</th><th>Target R</th><th>Result R</th><th>Outcome</th><th>Evidence</th><th></th></tr></thead>
-      <tbody id="evRows"><tr><td colspan="8" class="ev-empty">No evidence records yet.</td></tr></tbody>
-    </table>
-  </div>
-</section>
-
 <div id="evModal"><div class="ev-modal-card"><div class="ev-stage-head"><div><div class="ev-title" id="evModalTitle">Evidence</div></div><button class="ev-btn" onclick="window.OTEvidence.closeModal()">Close</button></div><div id="evModalBody"></div></div></div>
-
 <script>
 (function(){
   const META_KEY='ochiTradeEvidence_v1';
@@ -11800,6 +10856,310 @@ window.addEventListener("resize",()=>{clearTimeout(window.__ochiEquityResizeTime
   reset();render();
 })();
 </script>
+<section id="dataProtection">
+<div class="section-heading">
+<div class="section-title">
+<div class="section-icon">🛡️</div>
+<div>
+<h2>Ochi Data Protection</h2>
+<div class="section-description">
+          Backup, restore and protect your local trading database.
+        </div>
+</div>
+</div>
 
-</body>
-        </html>
+</div>
+<div class="info-box success-box">
+<strong>Your data stays local.</strong><br/>
+
+    OchiTracker currently stores your journal and settings inside this browser.
+    Phase 6 gives you a way to safely back everything up and restore it later.
+
+  </div>
+<div class="grid protection-grid">
+<div class="card">
+<div class="card-label">Journal Trades</div>
+<div class="card-value" id="backupTradeCount">0</div>
+</div>
+<div class="card">
+<div class="card-label">Trading Days</div>
+<div class="card-value" id="backupDayCount">0</div>
+</div>
+<div class="card">
+<div class="card-label">Report History</div>
+<div class="card-value" id="backupReportCount">0</div>
+</div>
+<div class="card">
+<div class="card-label">Risk Settings</div>
+<div class="card-value" id="backupRiskStatus">SAVED</div>
+</div>
+<div class="card">
+<div class="card-label">Last Backup</div>
+<div class="card-value" id="lastBackupDate">Never</div>
+</div>
+<div class="card">
+<div class="card-label">Data Health</div>
+<div class="card-value" id="dataHealth">HEALTHY</div>
+</div>
+</div>
+<hr/>
+<div class="two-col">
+<div class="card protection-action">
+<div>
+<h3>📤 Export Journal</h3>
+<div class="muted small">
+
+          Exports your trading journal only. Useful if you want
+          a lightweight copy of your trades.
+
+        </div>
+</div>
+<button onclick="exportJournal()">
+        Export Journal JSON
+      </button>
+</div>
+<div class="card protection-action">
+<div>
+<h3>💾 Full Ochi Backup</h3>
+<div class="muted small">
+
+          Saves your trades, Risk Engine settings and Professional
+          Report history into one backup file.
+
+        </div>
+</div>
+<button class="success" onclick="exportFullBackup()">
+
+        Create Full Backup
+
+      </button>
+</div>
+</div>
+<div style="height:13px"></div>
+<div class="card">
+<h3>📥 Restore / Import</h3>
+<div class="info-box warning-box">
+<strong>Important:</strong> Always create a fresh Full OchiTracker
+      Backup before restoring or replacing existing data.
+
+    </div>
+<div class="file-input">
+<input accept=".json,application/json" id="backupFile" type="file"/>
+</div>
+<div class="button-row" style="margin-top:11px">
+<button class="secondary" onclick="previewBackup()">
+        Preview Backup
+      </button>
+<button onclick="mergeBackup()">
+        Merge Trades
+      </button>
+<button class="warning" onclick="restoreFullBackup()">
+        Restore Full Backup
+      </button>
+</div>
+<div class="preview" id="backupPreview"></div>
+</div>
+<div style="height:13px"></div>
+<div class="card">
+<h3>🧹 Data Management</h3>
+<div class="danger-box info-box">
+<strong>Danger zone:</strong> Clearing OchiTracker data permanently
+      removes the journal, Risk Engine settings and report history from
+      this browser. Export a backup first.
+
+    </div>
+<button class="danger" onclick="clearAllData()">
+
+      Clear All OchiTracker Data
+
+    </button>
+</div>
+</section><section class="cloud-command" id="ochiCloud">
+<div class="cloud-command-head">
+<div class="cloud-brand">
+<div class="cloud-icon">☁️</div>
+<div>
+<h2 class="cloud-title">Ochi Cloud</h2>
+<div class="cloud-subtitle">Phase 7.1 · Cloud architecture foundation</div>
+</div>
+</div>
+
+</div>
+<div class="cloud-status">
+<span class="cloud-dot"></span>
+<span id="ochiCloudStatus">LOCAL-FIRST · CLOUD NOT CONNECTED</span>
+</div>
+<div class="cloud-grid" style="margin-top:14px">
+<div class="cloud-card"><div class="cloud-label">Account</div><div class="cloud-value" id="cloudAccountStatus">Not connected</div></div>
+<div class="cloud-card"><div class="cloud-label">Database</div><div class="cloud-value" id="cloudDatabaseStatus">Not connected</div></div>
+<div class="cloud-card"><div class="cloud-label">Sync</div><div class="cloud-value" id="cloudSyncStatus">Local only</div></div>
+<div class="cloud-card"><div class="cloud-label">Local Data</div><div class="cloud-value" id="cloudLocalDataStatus">Protected</div></div>
+</div>
+<div class="cloud-architecture">
+<div class="cloud-node">📱 OchiTracker UI</div>
+<div class="cloud-node">💾 Local Data Layer</div>
+<div class="cloud-node">🔄 Sync Engine</div>
+<div class="cloud-node">☁️ Ochi Cloud</div>
+</div>
+<div class="cloud-note">
+<strong>Phase 7 cloud foundation:</strong> OchiTracker remains local-first. Phase 7.2 provides the local account layer, while Phase 7.3 adds a structured IndexedDB database foundation. Existing Phase 6 localStorage keys remain untouched. A real remote cloud database will be connected in the synchronization phases.
+  </div>
+<!-- =====================================================
+       PHASE 7.2 — OCHI ACCOUNT / AUTHENTICATION FOUNDATION
+  ====================================================== -->
+<div class="ochi-account-panel" id="ochiAccountPanel">
+<div class="account-head">
+<div>
+<h3 class="account-title">👤 Ochi Account</h3>
+<div class="account-subtitle">Phase 7.2 · Account and authentication foundation</div>
+</div>
+
+</div>
+<div class="account-grid">
+<div class="account-card">
+<div class="account-label">Session</div>
+<div class="account-value" id="ochiAccountSession">Signed out</div>
+</div>
+<div class="account-card">
+<div class="account-label">Account ID</div>
+<div class="account-value" id="ochiAccountId">—</div>
+</div>
+<div class="account-card">
+<div class="account-label">Profile</div>
+<div class="account-value" id="ochiAccountProfile">No local profile</div>
+</div>
+</div>
+<div id="ochiAccountSignedOut">
+<div class="account-form">
+<input id="ochiAccountName" maxlength="80" placeholder="Display name" type="text"/>
+<input id="ochiAccountEmail" maxlength="160" placeholder="Email address" type="email"/>
+<button class="account-btn primary" onclick="createOchiLocalAccount()" type="button">Create / Sign in</button>
+</div>
+</div>
+<div class="account-signed" id="ochiAccountSignedIn">
+<div class="account-actions">
+<button class="account-btn secondary" onclick="signOutOchiAccount()" type="button">Sign out</button>
+<button class="account-btn danger" onclick="deleteOchiLocalAccount()" type="button">Delete local account</button>
+</div>
+</div>
+<div class="account-message" id="ochiAccountMessage">
+      No account session is active. Your existing trades and Phase 6 data remain local and are not affected.
+    </div>
+<div class="account-note">
+<strong>Phase 7.2 scope:</strong> this is the account-layer foundation only. It creates a local development profile and session state without storing passwords or sending data to a server. Real secure authentication, server-side sessions and cloud identity will be connected after the backend/database foundation is ready.
+    </div>
+<!-- =====================================================
+       PHASE 7.3 — OCHI DATABASE FOUNDATION
+  ====================================================== -->
+<div class="database-panel" id="ochiDatabasePanel">
+<div class="database-head">
+<div>
+<h3 class="database-title">🗄️ Ochi Database</h3>
+<div class="database-subtitle">Phase 7.3 · Structured database foundation</div>
+</div>
+
+</div>
+<div class="database-grid">
+<div class="database-card">
+<div class="database-label">Engine</div>
+<div class="database-value" id="ochiDatabaseEngine">Initializing…</div>
+</div>
+<div class="database-card">
+<div class="database-label">Connection</div>
+<div class="database-value" id="ochiDatabaseConnection">Initializing…</div>
+</div>
+<div class="database-card">
+<div class="database-label">Trades</div>
+<div class="database-value" id="ochiDatabaseTrades">0</div>
+</div>
+<div class="database-card">
+<div class="database-label">Database Version</div>
+<div class="database-value" id="ochiDatabaseVersion">1</div>
+</div>
+</div>
+<div class="database-actions">
+<button class="database-btn primary" onclick="migrateOchiDataToDatabase()" type="button">Initialize / Migrate Data</button>
+<button class="database-btn secondary" onclick="refreshOchiDatabaseStatus()" type="button">Refresh Database Status</button>
+</div>
+<div class="database-message" id="ochiDatabaseMessage">
+      Preparing the Ochi database layer…
+    </div>
+<div class="database-note">
+<strong>Phase 7.3 scope:</strong> this introduces a structured browser database using IndexedDB and a provider-neutral database adapter. Existing Phase 6 localStorage keys remain the source of truth during this foundation phase. No external cloud provider, API key, or network connection is required yet. The adapter is designed so a real cloud database can be connected after the local synchronization foundation is proven.
+    </div>
+</div>
+<!-- =====================================================
+       PHASE 7.4 — OCHI TRADE SYNCHRONIZATION
+  ====================================================== -->
+<div class="sync-panel" id="ochiTradeSyncPanel">
+<div class="sync-head">
+<div>
+<h3 class="sync-title">🔄 Trade Synchronization</h3>
+<div class="sync-subtitle">Phase 7.4 · Local app ↔ structured database</div>
+</div>
+
+</div>
+<div class="sync-grid">
+<div class="sync-card">
+<div class="sync-label">App Trades</div>
+<div class="sync-value" id="ochiSyncLocalCount">0</div>
+</div>
+<div class="sync-card">
+<div class="sync-label">Database Trades</div>
+<div class="sync-value" id="ochiSyncDatabaseCount">0</div>
+</div>
+<div class="sync-card">
+<div class="sync-label">Sync Status</div>
+<div class="sync-value" id="ochiSyncStatus">Not synced</div>
+</div>
+<div class="sync-card">
+<div class="sync-label">Last Sync</div>
+<div class="sync-value" id="ochiSyncLastSync">Never</div>
+</div>
+</div>
+<div class="sync-actions">
+<button class="sync-btn primary" onclick="syncOchiTradesNow()" type="button">🔄 Sync Now</button>
+<button class="sync-btn secondary" onclick="pushOchiTradesToDatabase()" type="button">↑ Push App → Database</button>
+<button class="sync-btn warning" onclick="pullOchiTradesFromDatabase()" type="button">↓ Pull Database → App</button>
+<button class="sync-btn secondary" onclick="compareOchiTradeStores()" type="button">Compare Stores</button>
+</div>
+<div aria-hidden="true" class="sync-progress">
+<div class="sync-progress-bar" id="ochiSyncProgress"></div>
+</div>
+<div class="sync-message" id="ochiSyncMessage">
+      Trade synchronization is ready. Your existing local OchiTracker data remains the working dataset until you choose to synchronize it into the database.
+    </div>
+<div class="sync-note">
+<strong>Phase 7.4 scope:</strong> this is synchronization between the browser app and the local IndexedDB database created in Phase 7.3. It is <strong>not internet/cloud synchronization yet</strong>. “Sync Now” uses the app's current trade journal as the source and safely writes it to the local database. Pulling from the database requires confirmation because it replaces the current app trade list.
+    </div>
+</div>
+</div>
+</section><section class="panel" id="historicalDataCenter" style="margin-top:18px;">
+<div class="section-heading">
+<div class="section-title">
+<div class="section-icon">🗂️</div>
+<div>
+<h2>Historical Data &amp; Sync Center</h2>
+<div class="section-description">
+          One clean place to verify your recorded history, local database copy and synchronization status.
+        </div>
+</div>
+</div>
+
+</div>
+<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));">
+<div class="card"><div class="card-label">Historical Trades</div><div class="card-value" id="historicalTradeCount">0</div></div>
+<div class="card"><div class="card-label">Trading Days</div><div class="card-value" id="historicalDayCount">0</div></div>
+<div class="card"><div class="card-label">Database Copy</div><div class="card-value" id="historicalDbCount">—</div></div>
+<div class="card"><div class="card-label">Data Health</div><div class="card-value" id="historicalHealth">HEALTHY</div></div>
+</div>
+<div class="button-row" style="margin-top:13px;">
+<button onclick="syncHistoricalDataCenter()" type="button">🔄 Sync Historical Data</button>
+<button class="secondary" onclick="refreshHistoricalDataCenter()" type="button">↻ Refresh Status</button>
+<button class="secondary" onclick="document.getElementById('history').scrollIntoView({behavior:'smooth'})" type="button">📚 Open Historical Records</button>
+</div>
+<div class="info-box" id="historicalDataMessage" style="margin-top:13px;">
+    Historical data is stored locally. Sync copies the current journal into the browser database; it does not send data to the internet.
+  </div>
+</section></body>
+</html>
