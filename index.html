@@ -2442,6 +2442,11 @@ section[id]{scroll-margin-top:18px}
 #dashboard .dashboard-grid>.card:nth-child(2):after{content:"";position:absolute;right:13px;top:50%;transform:translateY(-40%);width:48px;height:48px;border-radius:50%;background:conic-gradient(from -90deg,#398bff calc(var(--win-rate,0)*1%),rgba(84,112,151,.2) 0);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 6px),#000 calc(100% - 5px));mask:radial-gradient(farthest-side,transparent calc(100% - 6px),#000 calc(100% - 5px));filter:drop-shadow(0 0 5px rgba(57,139,255,.22))}
 #dashboard .dashboard-grid>.card:nth-child(2):before{width:100%;height:2px;opacity:.9;background:linear-gradient(90deg,#3b82f6,#35d0ff)}
 #dashboard .dashboard-grid>.card:nth-child(2) .card-value{color:#f2f7ff}
+/* Overview navigation presents the KPI overview and account performance as one paired block. */
+#dashboard{scroll-margin-top:14px}
+#dashboard + section.account-performance-polished{margin-top:2px!important;border-top-color:rgba(61,115,255,.34);box-shadow:0 10px 28px rgba(0,0,0,.16)}
+#dashboard + section.account-performance-polished .section-title h2{color:#edf3ff}
+#dashboard + section.account-performance-polished .section-description{max-width:520px}
 /* Account performance sits directly beneath Performance Overview for quick comparison. */
 main.container>section.account-performance-polished{margin-top:0!important;margin-bottom:14px;padding:16px;border:1px solid rgba(90,130,190,.18);border-radius:16px;background:linear-gradient(145deg,rgba(11,22,39,.96),rgba(7,14,26,.96))}
 .account-performance-polished .section-heading{margin-bottom:12px}
@@ -2510,7 +2515,7 @@ main.container>section.account-performance-polished{margin-top:0!important;margi
   <div class="ochi-side-brand"><div class="ochi-side-mark">OT</div><div><strong>OchiTracker</strong><small>TRADING TERMINAL · 7.12</small></div></div>
   <nav class="ochi-nav-group" aria-label="Workspace">
     <div class="ochi-nav-label">Workspace</div>
-    <a class="ochi-nav-link active" href="#dashboard"><span class="ochi-nav-icon">▦</span>Command Dashboard</a>
+    <a class="ochi-nav-link active" href="#dashboard"><span class="ochi-nav-icon">▦</span>Overview</a>
     <a class="ochi-nav-link" href="#tradeEntry"><span class="ochi-nav-icon">＋</span>Record a Trade</a>
     <a class="ochi-nav-link" href="#history"><span class="ochi-nav-icon">▤</span>Trading Journal</a>
     <a class="ochi-nav-link" href="#calendarSection"><span class="ochi-nav-icon">▦</span>Trading Calendar</a>
@@ -2540,7 +2545,7 @@ main.container>section.account-performance-polished{margin-top:0!important;margi
 </aside>
 
 <div class="ochi-terminal-topbar">
-  <div class="ochi-topbar-heading"><span class="ochi-topbar-eyebrow">OCHI GLOBAL · TRADING WORKSPACE</span><strong>Command Dashboard</strong><small>Your trading performance, risk and execution history.</small></div>
+  <div class="ochi-topbar-heading"><span class="ochi-topbar-eyebrow">OCHI GLOBAL · TRADING WORKSPACE</span><strong>Performance Overview</strong><small>Account performance and trading results at a glance.</small></div>
   <div class="ochi-topbar-actions"><span class="ochi-live-status"><i></i> System online</span><a class="ochi-add-trade" href="#tradeEntry">＋ <span>Add New Trade</span></a></div>
 </div>
 
@@ -2590,7 +2595,7 @@ main.container>section.account-performance-polished{margin-top:0!important;margi
 
 <nav class="quick-nav">
 
-  <a href="#dashboard">Dashboard</a>
+  <a href="#dashboard">Overview</a>
   <a href="#tradeEntry">Record Trade</a><a href="#evidenceLab">Evidence</a>
   <a href="#riskEngine">Risk</a>
   <a href="#intelligence">Intelligence</a>
