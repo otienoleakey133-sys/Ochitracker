@@ -2433,6 +2433,21 @@ section[id]{scroll-margin-top:18px}
 @media(min-width:901px){main.container>#calendarSection{margin-top:16px}}
 @media(max-width:900px){main.container>#calendarSection{order:4!important;margin-top:12px!important}#calendarSection .calendar-header button{flex:1;min-width:100px}}
 
+
+/* Executive KPI refinement: pair overview with account performance */
+#dashboard{margin-bottom:14px}
+#dashboard .dashboard-grid>.card{transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+#dashboard .dashboard-grid>.card:hover{transform:translateY(-2px);border-color:rgba(72,155,255,.45);box-shadow:0 10px 24px rgba(0,0,0,.22)}
+#dashboard .dashboard-grid>.card:nth-child(2){padding-right:72px;isolation:isolate}
+#dashboard .dashboard-grid>.card:nth-child(2):after{content:"";position:absolute;right:13px;top:50%;transform:translateY(-40%);width:48px;height:48px;border-radius:50%;background:conic-gradient(from -90deg,#398bff calc(var(--win-rate,0)*1%),rgba(84,112,151,.2) 0);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 6px),#000 calc(100% - 5px));mask:radial-gradient(farthest-side,transparent calc(100% - 6px),#000 calc(100% - 5px));filter:drop-shadow(0 0 5px rgba(57,139,255,.22))}
+#dashboard .dashboard-grid>.card:nth-child(2):before{width:100%;height:2px;opacity:.9;background:linear-gradient(90deg,#3b82f6,#35d0ff)}
+#dashboard .dashboard-grid>.card:nth-child(2) .card-value{color:#f2f7ff}
+/* Account performance sits directly beneath Performance Overview for quick comparison. */
+main.container>section.account-performance-polished{margin-top:0!important;margin-bottom:14px;padding:16px;border:1px solid rgba(90,130,190,.18);border-radius:16px;background:linear-gradient(145deg,rgba(11,22,39,.96),rgba(7,14,26,.96))}
+.account-performance-polished .section-heading{margin-bottom:12px}
+.account-performance-polished .performance-grid>.card{background:linear-gradient(145deg,rgba(18,37,62,.98),rgba(9,19,34,.98));border-color:rgba(100,150,220,.2)}
+@media(max-width:900px){#dashboard .dashboard-grid>.card:nth-child(2){padding-right:61px}#dashboard .dashboard-grid>.card:nth-child(2):after{right:9px;width:40px;height:40px}main.container>section.account-performance-polished{padding:12px;margin-top:10px!important}}
+
 </style>
 </head>
 
@@ -2724,6 +2739,59 @@ section[id]{scroll-margin-top:18px}
   </div>
 
 </section>
+
+
+<!-- =======================================================
+     ACCOUNT PERFORMANCE
+======================================================= -->
+
+<section class="account-performance-polished">
+
+  <div class="section-heading">
+
+    <div class="section-title">
+
+      <div class="section-icon">💰</div>
+
+      <div>
+        <h2>Account Performance</h2>
+        <div class="section-description">
+          Track equity growth and drawdown from your journal.
+        </div>
+      </div>
+
+    </div>
+
+    <span class="phase-badge">PERFORMANCE</span>
+
+  </div>
+
+  <div class="grid performance-grid">
+
+    <div class="card">
+      <div class="card-label">Starting Balance</div>
+      <div class="card-value">$0.00</div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Current Equity</div>
+      <div class="card-value" id="currentEquity">$0.00</div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Peak Equity</div>
+      <div class="card-value" id="peakEquity">$0.00</div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Max Drawdown</div>
+      <div class="card-value negative" id="maxDrawdown">$0.00</div>
+    </div>
+
+  </div>
+
+</section>
+
 
 
 <!-- =======================================================
@@ -3050,58 +3118,6 @@ section[id]{scroll-margin-top:18px}
     </div>
 
   </form>
-
-</section>
-
-
-<!-- =======================================================
-     ACCOUNT PERFORMANCE
-======================================================= -->
-
-<section>
-
-  <div class="section-heading">
-
-    <div class="section-title">
-
-      <div class="section-icon">💰</div>
-
-      <div>
-        <h2>Account Performance</h2>
-        <div class="section-description">
-          Track equity growth and drawdown from your journal.
-        </div>
-      </div>
-
-    </div>
-
-    <span class="phase-badge">PERFORMANCE</span>
-
-  </div>
-
-  <div class="grid performance-grid">
-
-    <div class="card">
-      <div class="card-label">Starting Balance</div>
-      <div class="card-value">$0.00</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Current Equity</div>
-      <div class="card-value" id="currentEquity">$0.00</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Peak Equity</div>
-      <div class="card-value" id="peakEquity">$0.00</div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Max Drawdown</div>
-      <div class="card-value negative" id="maxDrawdown">$0.00</div>
-    </div>
-
-  </div>
 
 </section>
 
@@ -11683,6 +11699,25 @@ window.addEventListener("resize",()=>{clearTimeout(window.__ochiEquityResizeTime
   links.forEach(link=>link.addEventListener('click',()=>{links.forEach(a=>a.classList.remove('active'));link.classList.add('active');closeMenu()}));
   const sections=links.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
   if('IntersectionObserver' in window){const io=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){const id='#'+entry.target.id;links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')===id))}})},{rootMargin:'-15% 0px -70% 0px'});sections.forEach(section=>io.observe(section))}
+})();
+</script>
+
+
+<script>
+(function(){
+  function syncWinRateRing(){
+    var value=document.getElementById('winRate');
+    var card=value&&value.closest('.card');
+    if(!value||!card)return;
+    var match=(value.textContent||'').replace(/,/g,'').match(/-?\d+(?:\.\d+)?/);
+    var pct=match?Math.max(0,Math.min(100,parseFloat(match[0]))):0;
+    card.style.setProperty('--win-rate',pct.toFixed(2));
+    card.setAttribute('aria-label','Win rate '+pct.toFixed(1)+' percent');
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',syncWinRateRing);else syncWinRateRing();
+  var target=document.getElementById('winRate');
+  if(target&&window.MutationObserver){new MutationObserver(syncWinRateRing).observe(target,{childList:true,subtree:true,characterData:true});}
+  window.addEventListener('load',syncWinRateRing);
 })();
 </script>
 
