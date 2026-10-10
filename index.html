@@ -2292,6 +2292,66 @@ main.container>section{margin-top:16px}
 @media(max-width:900px){body{padding-left:0;padding-top:58px}.ochi-sidebar{transform:translateX(-105%);transition:transform .22s ease;width:min(290px,84vw);top:0}.ochi-sidebar.open{transform:translateX(0)}.ochi-mobile-bar{display:flex;position:fixed;z-index:999;inset:0 0 auto 0;height:58px;align-items:center;gap:12px;padding:0 14px;background:rgba(5,12,22,.96);border-bottom:1px solid var(--border);backdrop-filter:blur(12px)}.ochi-menu-toggle{width:38px;height:38px;border:1px solid var(--border2);border-radius:10px;background:var(--panel);color:var(--text);font-size:20px}.ochi-mobile-title{font-weight:800;font-size:14px}.ochi-mobile-sub{margin-left:auto;color:var(--muted);font-size:11px}.ochi-nav-scrim.show{display:block;position:fixed;z-index:998;inset:0;background:rgba(0,0,0,.58)}.container{width:min(96%,1420px)}}
 @media(min-width:901px){.ochi-sidebar{transform:none!important}}
 
+/* =========================================================
+   OCHITRACKER DASHBOARD REFINEMENT — REFERENCE-INSPIRED
+   Mobile-first compact dashboard; no data tools between workflows.
+========================================================= */
+:root{--ochi-blue:#246bff;--ochi-cyan:#40d8ff}
+body{background:#050b16}
+main.container{display:flex;flex-direction:column;gap:0}
+main.container>.hero{order:0}
+main.container>#dashboard{order:1}
+main.container>#advancedEquityAnalytics{order:2}
+main.container>#charts{order:3}
+main.container>#history{order:4}
+main.container>#tradeEntry{order:5}
+main.container>#riskEngine{order:6}
+main.container>#intelligence{order:7}
+main.container>#setupIntelligenceSection{order:8}
+main.container>#sessionTimeIntelligence{order:9}
+main.container>#disciplineTraderScore{order:10}
+main.container>#tradeManagementLab{order:11}
+main.container>#reports{order:12}
+main.container>#calendarSection{order:13}
+main.container>#dataProtection{order:20}
+#ochiDataStorageDock{display:flex;flex-direction:column;gap:14px}
+#dashboard{padding:18px;border:1px solid rgba(90,130,190,.2);border-radius:18px;background:linear-gradient(145deg,rgba(14,27,48,.96),rgba(7,14,27,.96));box-shadow:0 16px 38px rgba(0,0,0,.18)}
+#dashboard .section-heading{align-items:center;margin-bottom:16px}
+#dashboard .section-title h2{font-size:clamp(20px,2vw,27px);letter-spacing:-.5px}
+#dashboard .section-description{font-size:12px}
+#dashboard .phase-badge{display:none}
+#dashboard .dashboard-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+#dashboard .dashboard-grid>.card{min-width:0;min-height:102px;padding:15px;border-radius:13px;border:1px solid rgba(112,153,212,.14);background:linear-gradient(145deg,rgba(20,35,60,.95),rgba(10,19,34,.95))}
+#dashboard .card-label{font-size:11px;letter-spacing:.3px;color:#93a8c2}
+#dashboard .card-value{font-size:clamp(19px,2.1vw,27px);line-height:1.2;margin-top:10px;overflow-wrap:anywhere}
+#charts{padding:18px;border-radius:18px;border:1px solid rgba(90,130,190,.18);background:rgba(9,18,33,.92)}
+#charts .performance-grid,#charts .grid{gap:14px}
+#tradeEntry{scroll-margin-top:72px}
+#ochiDataStorageDock{border-top:1px solid rgba(100,140,190,.2);padding-top:20px;margin-top:30px}
+#ochiDataStorageDock>section{width:min(100%,1420px)!important;margin:0 auto!important}
+.ochi-mobile-bar{box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.ochi-menu-toggle{display:grid;place-items:center}
+@media(max-width:900px){
+  body{padding-top:58px!important}
+  main.container{width:calc(100% - 18px)!important;padding:8px 0 22px}
+  main.container>.hero{display:none!important}
+  #dashboard{padding:14px 12px;margin-top:5px!important;border-radius:15px}
+  #dashboard .section-heading{margin-bottom:12px}
+  #dashboard .dashboard-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+  #dashboard .dashboard-grid>.card{min-height:88px;padding:12px 11px}
+  #dashboard .card-value{font-size:clamp(20px,5vw,27px);margin-top:8px}
+  #charts{padding:12px;margin-top:12px!important}
+  #advancedEquityAnalytics{margin-top:12px!important}
+  main.container>section{margin-top:12px}
+  #ochiDataStorageDock{width:calc(100% - 18px);margin:26px auto 0;padding-top:16px}
+  #ochiCloud,#historicalDataCenter,#dataProtection{width:100%!important}
+}
+@media(min-width:901px){
+  main.container{padding-top:18px}
+  main.container>.hero{display:none}
+  #dashboard{margin-top:8px}
+}
+
 </style>
 </head>
 
@@ -11668,9 +11728,15 @@ window.addEventListener("resize",()=>{clearTimeout(window.__ochiEquityResizeTime
   const appendSection=(id, parent)=>{const el=document.getElementById(id);if(el&&parent)parent.appendChild(el);};
   const main=document.querySelector('main.container');
   if(main){
+    // Command dashboard is the first working screen, followed by advanced analytics and charts.
+    const hero=main.querySelector('.hero');
     const dashboard=document.getElementById('dashboard');
-    if(dashboard) placeSection('advancedEquityAnalytics','tradeEntry');
-    // The cloud/sync, historical-data and backup/protection panels form one bottom-only data area.
+    if(dashboard && hero) main.insertBefore(dashboard,hero);
+    const advanced=document.getElementById('advancedEquityAnalytics');
+    if(advanced && dashboard) dashboard.insertAdjacentElement('afterend',advanced);
+    const charts=document.getElementById('charts');
+    if(charts && advanced) advanced.insertAdjacentElement('afterend',charts);
+    // Data storage, cloud sync, historical data and protection live only at the page bottom.
     const dataDock=document.createElement('div');dataDock.id='ochiDataStorageDock';dataDock.className='ochi-data-storage-dock';
     const footer=document.querySelector('footer');
     if(footer&&footer.parentNode) footer.parentNode.insertBefore(dataDock,footer); else document.body.appendChild(dataDock);
