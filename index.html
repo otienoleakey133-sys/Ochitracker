@@ -2352,6 +2352,67 @@ main.container>#dataProtection{order:20}
   #dashboard{margin-top:8px}
 }
 
+
+/* OchiTracker executive terminal redesign — dashboard-first, original data and handlers preserved */
+:root{--ochi-accent:#3d73ff;--ochi-panel:#0c1527;--ochi-panel-2:#101d33;--ochi-line:rgba(143,169,211,.14);--ochi-muted:#8799b5}
+html{scroll-behavior:smooth;background:#050a14}
+body{background:radial-gradient(ellipse at 75% -15%,rgba(34,77,150,.14),transparent 42%),#050a14;color:#e8eef9;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+.ochi-legacy-header{display:none!important}
+.ochi-terminal-topbar{margin:0 0 16px;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px;border-bottom:1px solid var(--ochi-line);background:rgba(7,14,27,.88);}
+.ochi-topbar-heading{display:flex;flex-direction:column;gap:4px;min-width:0}.ochi-topbar-eyebrow{font-size:9px;letter-spacing:1.8px;font-weight:800;color:#7186a7}.ochi-topbar-heading strong{font-size:23px;letter-spacing:-.65px;color:#f1f5ff}.ochi-topbar-heading small{font-size:11px;color:#8294b0}
+.ochi-topbar-actions{display:flex;align-items:center;gap:14px;flex-shrink:0}.ochi-live-status{display:flex;align-items:center;gap:7px;color:#8ea6c3;font-size:10px;white-space:nowrap}.ochi-live-status i{width:7px;height:7px;border-radius:50%;background:#3ed7a1;box-shadow:0 0 12px rgba(62,215,161,.4)}.ochi-add-trade{display:inline-flex;align-items:center;gap:7px;padding:10px 14px;border-radius:9px;background:#245ff0;color:white!important;text-decoration:none!important;font-size:11px;font-weight:750;box-shadow:0 5px 16px rgba(36,95,240,.22);white-space:nowrap}.ochi-add-trade:hover{background:#3474ff}
+.ochi-sidebar{background:#080f1d;border-right:1px solid rgba(133,161,208,.13);box-shadow:8px 0 30px rgba(0,0,0,.12);padding:18px 12px;gap:17px}.ochi-side-brand{padding:7px 8px 18px}.ochi-side-mark{width:42px;height:42px;border-radius:13px}.ochi-side-brand strong{font-size:16px;color:#f0f5ff}.ochi-side-brand small{font-size:10px;letter-spacing:.3px;color:#8194b1}.ochi-nav-label{font-size:9px;letter-spacing:1.65px;color:#7185a4;padding:7px 10px}.ochi-nav-group{gap:3px}.ochi-nav-link{min-height:38px;padding:9px 10px;border-radius:8px;font-size:11px;color:#91a2bd}.ochi-nav-icon{font-size:14px;color:#8498b6}.ochi-nav-link.active{background:linear-gradient(100deg,rgba(40,104,255,.23),rgba(40,104,255,.08));border-color:rgba(74,133,255,.28);color:#f0f6ff}.ochi-sidebar-bottom{font-size:9px;color:#687d9b}
+main.container{width:min(100% - 44px,1460px);padding:0 0 30px;display:flex;flex-direction:column;gap:0}
+main.container>.hero{display:none!important}
+main.container>section{margin-top:14px}
+#dashboard{padding:0;border:0;background:transparent;box-shadow:none;margin-top:0}
+#dashboard .section-heading{padding:0 2px 12px;margin-bottom:0;align-items:center}
+#dashboard .section-title h2{font-size:0!important;line-height:1}
+#dashboard .section-title h2:after{content:"Performance Overview";font-size:17px;letter-spacing:-.3px;color:#edf3ff}
+#dashboard .section-icon{display:none}
+#dashboard .section-description{font-size:10px;color:#8496b2;margin-top:5px}
+#dashboard .dashboard-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+#dashboard .dashboard-grid>.card{position:relative;min-height:105px;padding:17px 16px;border-radius:12px;border:1px solid var(--ochi-line);background:linear-gradient(145deg,#101c31,#0a1323);box-shadow:0 8px 22px rgba(0,0,0,.12);overflow:hidden}
+#dashboard .dashboard-grid>.card:after{content:"";position:absolute;right:-24px;top:-32px;width:78px;height:78px;border-radius:50%;background:rgba(54,108,255,.055);pointer-events:none}
+#dashboard .card-label{font-size:10px;letter-spacing:.2px;color:#8fa2c0}
+#dashboard .card-value{font-size:clamp(20px,2vw,27px);font-weight:750;letter-spacing:-.5px;margin-top:13px;color:#f0f5ff}
+#dashboard .card-value.positive{color:#51d6a3}#dashboard .card-value.negative{color:#ff7e92}
+#advancedEquityAnalytics{margin-top:16px!important}
+#charts{padding:17px;border-radius:14px;border:1px solid var(--ochi-line);background:#091323;margin-top:15px!important}
+#charts .section-heading{margin-bottom:12px}
+#charts .section-title h2{font-size:15px;letter-spacing:-.2px}
+#charts .section-description{font-size:10px;color:#8294b0}
+#charts .two-col{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:13px}
+#charts .card.chart-card{min-width:0;padding:14px;border:1px solid rgba(138,164,207,.12);border-radius:11px;background:linear-gradient(150deg,#0e1a2e,#091323);box-shadow:none}
+#charts .chart-title{font-size:11px;font-weight:750;color:#e4ecfb}#charts .chart-subtitle{font-size:9px;color:#7589a8}
+#charts .chart-wrap{height:260px;max-height:260px}
+#history{padding:16px;border:1px solid var(--ochi-line);border-radius:14px;background:#091323}
+#history .section-heading h2,#tradeEntry .section-heading h2,#riskEngine .section-heading h2,#intelligence .section-heading h2,#reports .section-heading h2{font-size:15px}
+#tradeEntry,#riskEngine,#intelligence,#setupIntelligenceSection,#sessionTimeIntelligence,#disciplineTraderScore,#tradeManagementLab,#reports,#calendarSection{padding:16px;border:1px solid var(--ochi-line);border-radius:14px;background:linear-gradient(145deg,rgba(12,22,39,.94),rgba(7,14,26,.96))}
+#ochiCloud,#historicalDataCenter,#dataProtection{width:min(100% - 44px,1460px)!important;padding:16px;border:1px solid var(--ochi-line);border-radius:14px;background:#091323}
+#ochiDataStorageDock{border-top:1px solid rgba(125,153,198,.2);padding-top:20px;margin-top:34px;display:flex;flex-direction:column;gap:14px}
+#ochiDataStorageDock>section{width:min(100% - 44px,1460px)!important;margin:0 auto!important}
+section[id]{scroll-margin-top:18px}
+@media(min-width:1200px){main.container{padding-top:0}#dashboard .dashboard-grid>.card{min-height:112px}#charts .chart-wrap{height:300px;max-height:300px}}
+@media(max-width:900px){
+ body{padding:58px 0 0!important}
+ .ochi-terminal-topbar{padding:14px 12px;margin-bottom:10px;gap:8px;align-items:flex-start}
+ .ochi-topbar-eyebrow{font-size:8px;letter-spacing:1px}.ochi-topbar-heading strong{font-size:19px}.ochi-topbar-heading small{font-size:10px;max-width:240px}
+ .ochi-topbar-actions{gap:8px;flex-direction:column;align-items:flex-end}.ochi-live-status{font-size:9px}.ochi-add-trade{padding:9px 10px;font-size:10px}
+ main.container{width:calc(100% - 22px)!important;padding:0 0 22px!important}
+ #dashboard .dashboard-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ #dashboard .dashboard-grid>.card{min-height:91px;padding:13px 12px}
+ #dashboard .card-value{font-size:22px;margin-top:10px}
+ #advancedEquityAnalytics{padding:12px!important}
+ #charts{padding:12px;margin-top:12px!important}
+ #charts .two-col{grid-template-columns:1fr;gap:10px}
+ #charts .chart-wrap{height:220px;max-height:220px}
+ #history,#tradeEntry,#riskEngine,#intelligence,#setupIntelligenceSection,#sessionTimeIntelligence,#disciplineTraderScore,#tradeManagementLab,#reports,#calendarSection{padding:12px}
+ #ochiCloud,#historicalDataCenter,#dataProtection,#ochiDataStorageDock>section{width:calc(100% - 22px)!important}
+ .ochi-sidebar{width:min(310px,86vw);padding:18px 13px}
+}
+@media(max-width:420px){.ochi-topbar-heading small{max-width:185px}.ochi-topbar-heading strong{font-size:17px}.ochi-topbar-actions{gap:7px}.ochi-live-status{font-size:8px}#dashboard .dashboard-grid>.card{padding:11px 10px;min-height:84px}#dashboard .card-value{font-size:20px}}
+
 </style>
 </head>
 
@@ -2392,8 +2453,12 @@ main.container>#dataProtection{order:20}
   <div class="ochi-sidebar-bottom">Private trading workspace<br>Local data stays in this browser unless you explicitly export or sync it.</div>
 </aside>
 
+<div class="ochi-terminal-topbar">
+  <div class="ochi-topbar-heading"><span class="ochi-topbar-eyebrow">OCHI GLOBAL · TRADING WORKSPACE</span><strong>Command Dashboard</strong><small>Your trading performance, risk and execution history.</small></div>
+  <div class="ochi-topbar-actions"><span class="ochi-live-status"><i></i> System online</span><a class="ochi-add-trade" href="#tradeEntry">＋ <span>Add New Trade</span></a></div>
+</div>
 
-<header>
+<header class="ochi-legacy-header" aria-hidden="true">
   <div class="container">
 
     <div class="header-shell">
