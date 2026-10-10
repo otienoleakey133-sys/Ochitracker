@@ -2449,6 +2449,57 @@ main.container>section.account-performance-polished{margin-top:0!important;margi
 @media(max-width:900px){#dashboard .dashboard-grid>.card:nth-child(2){padding-right:61px}#dashboard .dashboard-grid>.card:nth-child(2):after{right:9px;width:40px;height:40px}main.container>section.account-performance-polished{padding:12px;margin-top:10px!important}}
 
 </style>
+
+<style>
+/* 7.13 layout refinement */
+#evidenceLab{scroll-margin-top:18px}
+#advancedEquityAnalytics,#evidenceLab{order:initial}
+#dataProtection,#ochiCloud,#historicalDataCenter{margin-top:18px}
+#dataProtection .phase-badge,
+#ochiCloud .phase71-badge,
+#ochiCloud .phase72-badge,
+#ochiCloud .phase73-badge,
+#ochiCloud .phase74-badge,
+#ochiTradeSyncPanel .phase74-badge{display:none!important}
+#ochiCloud .cloud-subtitle,
+#ochiCloud .account-subtitle,
+#ochiCloud .database-subtitle,
+#ochiTradeSyncPanel .sync-subtitle{font-size:0}
+#ochiCloud .cloud-subtitle:after{content:'Local data architecture and storage';font-size:13px}
+#ochiCloud .account-subtitle:after{content:'Local account layer';font-size:13px}
+#ochiCloud .database-subtitle:after{content:'Structured local database';font-size:13px}
+#ochiTradeSyncPanel .sync-subtitle:after{content:'Local app ↔ database synchronization';font-size:13px}
+</style>
+<style>
+#evidenceLab{margin:28px 0 18px;padding:24px;border:1px solid rgba(255,255,255,.09);border-radius:22px;background:linear-gradient(145deg,rgba(20,24,31,.98),rgba(10,13,18,.98));box-shadow:0 18px 55px rgba(0,0,0,.28)}
+#evidenceLab *{box-sizing:border-box}
+.ev-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:20px}
+.ev-kicker{font-size:11px;letter-spacing:.16em;text-transform:uppercase;opacity:.58}
+.ev-title{font-size:24px;font-weight:800;margin:5px 0}.ev-sub{opacity:.68;max-width:720px;line-height:1.5}
+.ev-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.ev-field{display:flex;flex-direction:column;gap:7px}.ev-field label{font-size:12px;opacity:.68}
+.ev-field input,.ev-field select,.ev-field textarea{width:100%;border:1px solid rgba(255,255,255,.1);border-radius:12px;background:#0b0f15;color:inherit;padding:12px;font:inherit;outline:none}
+.ev-field textarea{min-height:82px;resize:vertical}.ev-field input:focus,.ev-field select:focus,.ev-field textarea:focus{border-color:rgba(255,255,255,.28)}
+.ev-span2{grid-column:span 2}.ev-span4{grid-column:1/-1}
+.ev-stage{margin-top:16px;padding:16px;border:1px solid rgba(255,255,255,.075);border-radius:17px;background:rgba(255,255,255,.025)}
+.ev-stage-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}.ev-stage-title{font-weight:750}.ev-stage-note{font-size:12px;opacity:.52}
+.ev-upload{display:flex;align-items:center;justify-content:center;min-height:92px;border:1px dashed rgba(255,255,255,.16);border-radius:14px;cursor:pointer;text-align:center;padding:14px;transition:.2s}
+.ev-upload:hover{border-color:rgba(255,255,255,.34);background:rgba(255,255,255,.03)}.ev-upload input{display:none}
+.ev-preview{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:10px;margin-top:12px}
+.ev-thumb{position:relative;border-radius:12px;overflow:hidden;background:#080b10;border:1px solid rgba(255,255,255,.08);aspect-ratio:16/10}
+.ev-thumb img{width:100%;height:100%;object-fit:cover;display:block}.ev-thumb button{position:absolute;right:7px;top:7px;border:0;border-radius:999px;background:rgba(0,0,0,.72);color:#fff;width:28px;height:28px;cursor:pointer}
+.ev-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.ev-btn{border:1px solid rgba(255,255,255,.11);border-radius:12px;background:#111722;color:inherit;padding:11px 15px;cursor:pointer;font-weight:700}.ev-btn.primary{background:#e7e7e7;color:#080a0d;border-color:#e7e7e7}.ev-btn.danger{background:rgba(180,45,45,.13);color:#ff9b9b}
+.ev-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:20px}.ev-stat{padding:14px;border-radius:14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07)}.ev-stat small{display:block;opacity:.52;margin-bottom:4px}.ev-stat strong{font-size:18px}
+.ev-table-wrap{margin-top:20px;overflow:auto;border:1px solid rgba(255,255,255,.07);border-radius:16px}
+.ev-table{width:100%;border-collapse:collapse;min-width:760px}.ev-table th,.ev-table td{padding:12px 13px;border-bottom:1px solid rgba(255,255,255,.06);text-align:left;font-size:12px}.ev-table th{opacity:.52;text-transform:uppercase;letter-spacing:.08em;font-size:10px}.ev-table tr:last-child td{border-bottom:0}
+.ev-pill{display:inline-flex;padding:5px 8px;border-radius:999px;background:rgba(255,255,255,.06);font-size:11px}.ev-plus{color:#7ee2a8}.ev-minus{color:#ff8f8f}
+.ev-empty{text-align:center;padding:28px;opacity:.5}
+#evModal{position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:99999;display:none;padding:20px;overflow:auto}
+.ev-modal-card{max-width:1000px;margin:30px auto;background:#0d1118;border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:20px}
+.ev-modal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.ev-modal-grid img{width:100%;border-radius:12px;display:block}
+@media(max-width:900px){.ev-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ev-summary{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:620px){#evidenceLab{padding:17px;border-radius:18px}.ev-head{display:block}.ev-grid{grid-template-columns:1fr}.ev-span2,.ev-span4{grid-column:auto}.ev-summary{grid-template-columns:repeat(2,1fr)}.ev-modal-grid{grid-template-columns:1fr}}
+</style>
 </head>
 
 <body>
@@ -2540,7 +2591,7 @@ main.container>section.account-performance-polished{margin-top:0!important;margi
 <nav class="quick-nav">
 
   <a href="#dashboard">Dashboard</a>
-  <a href="#tradeEntry">Record Trade</a>
+  <a href="#tradeEntry">Record Trade</a><a href="#evidenceLab">Evidence</a>
   <a href="#riskEngine">Risk</a>
   <a href="#intelligence">Intelligence</a>
   <a href="#reports">Reports</a>
@@ -3120,6 +3171,73 @@ main.container>section.account-performance-polished{margin-top:0!important;margi
   </form>
 
 </section>
+<section id="evidenceLab">
+<div class="ev-head">
+<div>
+<div class="ev-kicker">Execution journal</div>
+<div class="ev-title">Trade &amp; Session Evidence</div>
+<div class="ev-sub">Capture the plan before the market, preserve the setup visually, then record what actually happened. OchiTracker will keep <b>Target R</b> and <b>Result R</b> side by side.</div>
+</div>
+</div>
+<div class="ev-grid">
+<div class="ev-field"><label>Date</label><input id="evDate" type="date"/></div>
+<div class="ev-field"><label>Session Time</label><input id="evTime" type="time"/></div>
+<div class="ev-field"><label>Pair / Instrument</label><input id="evPair" placeholder="EURUSD"/></div>
+<div class="ev-field"><label>Session</label><select id="evSession"><option>London</option><option>New York</option><option>London + New York</option><option>Asia</option><option>Other</option></select></div>
+<div class="ev-field"><label>Planned Direction</label><select id="evDirection"><option>BUY</option><option>SELL</option><option>WAIT / NO TRADE</option></select></div>
+<div class="ev-field"><label>Target R</label><input id="evTargetR" placeholder="3.0" step="0.1" type="number"/></div>
+<div class="ev-field"><label>Risk ($)</label><input id="evRisk" placeholder="20" step="0.01" type="number"/></div>
+<div class="ev-field"><label>Setup Type</label><input id="evSetup" placeholder="4H POI + 15M MSS"/></div>
+<div class="ev-field ev-span2"><label>Pre-session plan</label><textarea id="evPlan" placeholder="4H location, liquidity, expected path, invalidation, news conditions..."></textarea></div>
+<div class="ev-field ev-span2"><label>Key level / POI</label><textarea id="evPOI" placeholder="Record the level, zone or liquidity area that mattered."></textarea></div>
+</div>
+<div class="ev-stage">
+<div class="ev-stage-head"><div><div class="ev-stage-title">Before Session</div><div class="ev-stage-note">Market context + original plan</div></div></div>
+<label class="ev-upload">Tap to attach pre-session screenshot(s)
+      <input accept="image/*" id="evBeforeFiles" multiple="" type="file"/>
+</label>
+<div class="ev-preview" id="evBeforePreview"></div>
+</div>
+<div class="ev-stage">
+<div class="ev-stage-head"><div><div class="ev-stage-title">Entry / Setup Evidence</div><div class="ev-stage-note">Show the actual MSS, FVG, OB or execution context</div></div></div>
+<label class="ev-upload">Tap to attach setup screenshot(s)
+      <input accept="image/*" id="evSetupFiles" multiple="" type="file"/>
+</label>
+<div class="ev-preview" id="evSetupPreview"></div>
+</div>
+<div class="ev-grid" style="margin-top:16px">
+<div class="ev-field"><label>Actual Result R</label><input id="evResultR" placeholder="2.4" step="0.1" type="number"/></div>
+<div class="ev-field"><label>Result ($)</label><input id="evResultPnl" placeholder="48" step="0.01" type="number"/></div>
+<div class="ev-field"><label>Outcome</label><select id="evOutcome"><option>Win</option><option>Loss</option><option>Breakeven</option><option>No Trade</option></select></div>
+<div class="ev-field"><label>Management</label><select id="evManagement"><option>Plan followed</option><option>Manual exit</option><option>Moved to BE</option><option>Partial taken</option><option>Rule violation</option></select></div>
+<div class="ev-field ev-span2"><label>Post-session result / what happened</label><textarea id="evResultNote" placeholder="Compare the actual move with the plan."></textarea></div>
+<div class="ev-field ev-span2"><label>Lesson / execution note</label><textarea id="evLesson" placeholder="What should be repeated, changed or protected next time?"></textarea></div>
+</div>
+<div class="ev-stage">
+<div class="ev-stage-head"><div><div class="ev-stage-title">After Session</div><div class="ev-stage-note">Final chart state + outcome evidence</div></div></div>
+<label class="ev-upload">Tap to attach post-session screenshot(s)
+      <input accept="image/*" id="evAfterFiles" multiple="" type="file"/>
+</label>
+<div class="ev-preview" id="evAfterPreview"></div>
+</div>
+<div class="ev-actions">
+<button class="ev-btn primary" id="evSave">Save Evidence Record</button>
+<button class="ev-btn" id="evReset">Clear Form</button>
+</div>
+<div class="ev-summary">
+<div class="ev-stat"><small>Records</small><strong id="evCount">0</strong></div>
+<div class="ev-stat"><small>Average Target R</small><strong id="evAvgTarget">—</strong></div>
+<div class="ev-stat"><small>Average Result R</small><strong id="evAvgResult">—</strong></div>
+<div class="ev-stat"><small>Target Achievement</small><strong id="evAchievement">—</strong></div>
+</div>
+<div class="ev-table-wrap">
+<table class="ev-table">
+<thead><tr><th>Date / Time</th><th>Pair</th><th>Direction</th><th>Target R</th><th>Result R</th><th>Outcome</th><th>Evidence</th><th></th></tr></thead>
+<tbody id="evRows"><tr><td class="ev-empty" colspan="8">No evidence records yet.</td></tr></tbody>
+</table>
+</div>
+</section>
+
 
 
 <!-- =======================================================
@@ -11721,5 +11839,108 @@ window.addEventListener("resize",()=>{clearTimeout(window.__ochiEquityResizeTime
 })();
 </script>
 
+
+<div id="evModal"><div class="ev-modal-card"><div class="ev-stage-head"><div><div class="ev-title" id="evModalTitle">Evidence</div></div><button class="ev-btn" onclick="window.OTEvidence.closeModal()">Close</button></div><div id="evModalBody"></div></div></div>
+<script>
+(function(){
+  const META_KEY='ochiTradeEvidence_v1';
+  const DB_NAME='OchiTrackerEvidenceDB';
+  const STORE='images';
+  let records=JSON.parse(localStorage.getItem(META_KEY)||'[]');
+  let pending={before:[],setup:[],after:[]};
+
+  const $=id=>document.getElementById(id);
+  const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+  const dbOpen=()=>new Promise((resolve,reject)=>{
+    const r=indexedDB.open(DB_NAME,1);
+    r.onupgradeneeded=()=>{if(!r.result.objectStoreNames.contains(STORE))r.result.createObjectStore(STORE,{keyPath:'id'})};
+    r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);
+  });
+  const dbPut=async item=>{const db=await dbOpen();return new Promise((res,rej)=>{const tx=db.transaction(STORE,'readwrite');tx.objectStore(STORE).put(item);tx.oncomplete=res;tx.onerror=()=>rej(tx.error)})};
+  const dbGet=async id=>{const db=await dbOpen();return new Promise((res,rej)=>{const r=db.transaction(STORE).objectStore(STORE).get(id);r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})};
+  const dbDel=async id=>{const db=await dbOpen();return new Promise((res,rej)=>{const tx=db.transaction(STORE,'readwrite');tx.objectStore(STORE).delete(id);tx.oncomplete=res;tx.onerror=()=>rej(tx.error)})};
+
+  function compress(file){
+    return new Promise((resolve,reject)=>{
+      const reader=new FileReader();
+      reader.onload=()=>{const img=new Image();img.onload=()=>{
+        const max=1600, scale=Math.min(1,max/Math.max(img.width,img.height));
+        const c=document.createElement('canvas');c.width=Math.max(1,Math.round(img.width*scale));c.height=Math.max(1,Math.round(img.height*scale));
+        c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+        c.toBlob(b=>b?resolve(b):reject(new Error('Image compression failed')),'image/jpeg',.78);
+      };img.onerror=reject;img.src=reader.result};reader.onerror=reject;reader.readAsDataURL(file);
+    });
+  }
+  async function addFiles(stage,files){
+    for(const file of [...files]){
+      if(!file.type.startsWith('image/'))continue;
+      const id='img_'+Date.now()+'_'+Math.random().toString(36).slice(2);
+      const blob=await compress(file);
+      await dbPut({id,blob,stage,name:file.name});
+      pending[stage].push(id);
+    }
+    renderPreviews();
+  }
+  async function removePending(stage,id){
+    pending[stage]=pending[stage].filter(x=>x!==id);await dbDel(id);renderPreviews();
+  }
+  function renderPreviews(){
+    for(const stage of ['before','setup','after']){
+      const box=$('ev'+stage[0].toUpperCase()+stage.slice(1)+'Preview');box.innerHTML='';
+      pending[stage].forEach(async id=>{
+        const item=await dbGet(id);if(!item)return;
+        const url=URL.createObjectURL(item.blob);
+        const div=document.createElement('div');div.className='ev-thumb';div.innerHTML='<img src="'+url+'"><button type="button">×</button>';
+        div.querySelector('button').onclick=()=>removePending(stage,id);box.appendChild(div);
+      });
+    }
+  }
+  function val(id){return $(id).value}
+  function reset(){
+    ['evDate','evTime','evPair','evTargetR','evRisk','evSetup','evPlan','evPOI','evResultR','evResultPnl','evResultNote','evLesson'].forEach(id=>$(id).value='');
+    $('evSession').selectedIndex=0;$('evDirection').selectedIndex=0;$('evOutcome').selectedIndex=0;$('evManagement').selectedIndex=0;
+    pending={before:[],setup:[],after:[]};renderPreviews();
+    const d=new Date();$('evDate').value=d.toISOString().slice(0,10);$('evTime').value=d.toTimeString().slice(0,5);
+  }
+  async function save(){
+    if(!val('evPair').trim()){alert('Please enter the pair / instrument.');return}
+    const rec={id:'ev_'+Date.now(),date:val('evDate')||new Date().toISOString().slice(0,10),time:val('evTime'),pair:val('evPair').trim().toUpperCase(),session:val('evSession'),direction:val('evDirection'),targetR:Number(val('evTargetR'))||0,risk:Number(val('evRisk'))||0,setup:val('evSetup'),plan:val('evPlan'),poi:val('evPOI'),resultR:Number(val('evResultR'))||0,resultPnl:Number(val('evResultPnl'))||0,outcome:val('evOutcome'),management:val('evManagement'),resultNote:val('evResultNote'),lesson:val('evLesson'),images:{before:[...pending.before],setup:[...pending.setup],after:[...pending.after]},createdAt:new Date().toISOString()};
+    records.unshift(rec);localStorage.setItem(META_KEY,JSON.stringify(records));render();reset();alert('Evidence record saved.');
+  }
+  async function removeRecord(id){
+    const r=records.find(x=>x.id===id);if(!r)return;
+    if(!confirm('Delete this evidence record and its screenshots?'))return;
+    for(const stage of ['before','setup','after'])for(const img of (r.images?.[stage]||[]))await dbDel(img);
+    records=records.filter(x=>x.id!==id);localStorage.setItem(META_KEY,JSON.stringify(records));render();
+  }
+  async function view(id){
+    const r=records.find(x=>x.id===id);if(!r)return;
+    $('evModalTitle').textContent=r.pair+' — '+r.date;
+    let body='<div class="ev-grid"><div><b>Target R</b><br>'+esc(r.targetR.toFixed(1))+'R</div><div><b>Result R</b><br>'+esc(r.resultR.toFixed(1))+'R</div><div><b>Result</b><br>'+esc(r.resultPnl.toFixed(2))+'</div><div><b>Session</b><br>'+esc(r.session)+'</div><div class="ev-span2"><b>Plan</b><br>'+esc(r.plan||'—')+'</div><div class="ev-span2"><b>Result note</b><br>'+esc(r.resultNote||'—')+'</div><div class="ev-span4"><b>Lesson</b><br>'+esc(r.lesson||'—')+'</div></div>';
+    for(const stage of ['before','setup','after']){
+      body+='<div class="ev-stage"><div class="ev-stage-title">'+(stage==='before'?'Before Session':stage==='setup'?'Entry / Setup Evidence':'After Session')+'</div><div class="ev-modal-grid" style="margin-top:10px">';
+      for(const imgId of (r.images?.[stage]||[])){const item=await dbGet(imgId);if(item){const u=URL.createObjectURL(item.blob);body+='<img src="'+u+'" alt="Evidence screenshot">'}}
+      body+='</div></div>';
+    }
+    $('evModalBody').innerHTML=body;$('evModal').style.display='block';
+  }
+  function render(){
+    $('evRows').innerHTML=records.length?records.map(r=>'<tr><td>'+esc(r.date)+'<br>'+esc(r.time||'')+'</td><td><b>'+esc(r.pair)+'</b><br><span class="ev-pill">'+esc(r.session)+'</span></td><td>'+esc(r.direction)+'</td><td><b>'+esc(r.targetR.toFixed(1))+'R</b></td><td class="'+(r.resultR>=0?'ev-plus':'ev-minus')+'"><b>'+esc(r.resultR.toFixed(1))+'R</b></td><td>'+esc(r.outcome)+'</td><td>'+((r.images?.before?.length||0)+(r.images?.setup?.length||0)+(r.images?.after?.length||0))+' shots <button class="ev-btn" style="padding:6px 9px;margin-left:5px" onclick="OTEvidence.view(\''+r.id+'\')">View</button></td><td><button class="ev-btn danger" style="padding:6px 9px" onclick="OTEvidence.remove(\''+r.id+'\')">Delete</button></td></tr>').join(''):'<tr><td colspan="8" class="ev-empty">No evidence records yet.</td></tr>';
+    $('evCount').textContent=records.length;
+    const validT=records.filter(r=>Number.isFinite(r.targetR)&&r.targetR);const validR=records.filter(r=>Number.isFinite(r.resultR));
+    const avg=a=>a.length?(a.reduce((x,r)=>x+Number(r),0)/a.length):0;
+    $('evAvgTarget').textContent=validT.length?avg(validT.map(r=>r.targetR)).toFixed(2)+'R':'—';
+    $('evAvgResult').textContent=validR.length?avg(validR.map(r=>r.resultR)).toFixed(2)+'R':'—';
+    $('evAchievement').textContent=validT.length?Math.round(validT.filter(r=>r.resultR>=r.targetR).length/validT.length*100)+'%':'—';
+  }
+  $('evBeforeFiles').onchange=e=>addFiles('before',e.target.files);
+  $('evSetupFiles').onchange=e=>addFiles('setup',e.target.files);
+  $('evAfterFiles').onchange=e=>addFiles('after',e.target.files);
+  $('evSave').onclick=save;$('evReset').onclick=reset;
+  window.OTEvidence={view,remove:removeRecord,closeModal:()=>{$('evModal').style.display='none'}};
+  $('evModal').onclick=e=>{if(e.target.id==='evModal')window.OTEvidence.closeModal()};
+  reset();render();
+})();
+</script>
 </body>
         </html>
