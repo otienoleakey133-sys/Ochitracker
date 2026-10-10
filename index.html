@@ -2385,7 +2385,7 @@ main.container>section{margin-top:14px}
 #charts .two-col{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:13px}
 #charts .card.chart-card{min-width:0;padding:14px;border:1px solid rgba(138,164,207,.12);border-radius:11px;background:linear-gradient(150deg,#0e1a2e,#091323);box-shadow:none}
 #charts .chart-title{font-size:11px;font-weight:750;color:#e4ecfb}#charts .chart-subtitle{font-size:9px;color:#7589a8}
-#charts .chart-wrap{height:260px;max-height:260px}
+#charts .chart-wrap{height:300px;max-height:300px}
 #history{padding:16px;border:1px solid var(--ochi-line);border-radius:14px;background:#091323}
 #history .section-heading h2,#tradeEntry .section-heading h2,#riskEngine .section-heading h2,#intelligence .section-heading h2,#reports .section-heading h2{font-size:15px}
 #tradeEntry,#riskEngine,#intelligence,#setupIntelligenceSection,#sessionTimeIntelligence,#disciplineTraderScore,#tradeManagementLab,#reports,#calendarSection{padding:16px;border:1px solid var(--ochi-line);border-radius:14px;background:linear-gradient(145deg,rgba(12,22,39,.94),rgba(7,14,26,.96))}
@@ -2406,7 +2406,7 @@ section[id]{scroll-margin-top:18px}
  #advancedEquityAnalytics{padding:12px!important}
  #charts{padding:12px;margin-top:12px!important}
  #charts .two-col{grid-template-columns:1fr;gap:10px}
- #charts .chart-wrap{height:220px;max-height:220px}
+ #charts .chart-wrap{height:260px;max-height:260px}
  #history,#tradeEntry,#riskEngine,#intelligence,#setupIntelligenceSection,#sessionTimeIntelligence,#disciplineTraderScore,#tradeManagementLab,#reports,#calendarSection{padding:12px}
  #ochiCloud,#historicalDataCenter,#dataProtection,#ochiDataStorageDock>section{width:calc(100% - 22px)!important}
  .ochi-sidebar{width:min(310px,86vw);padding:18px 13px}
@@ -8006,258 +8006,104 @@ function setupCanvas(canvas){
 ========================================================= */
 
 function drawEquityChart(){
-
-  const canvas=
-    document.getElementById(
-      "equityChart"
-    );
-
-  const {
-    ctx,
-    w,
-    h
-  }=
-    setupCanvas(canvas);
-
-  ctx.clearRect(
-    0,
-    0,
-    w,
-    h
-  );
-
-  const e=
-    getEquityData();
-
-  if(!e.points.length){
-
+  const canvas=document.getElementById("equityChart");
+  if(!canvas) return;
+  const {ctx,w,h}=setupCanvas(canvas);
+  ctx.clearRect(0,0,w,h);
+  const e=getEquityData();
+  if(!e.points || !e.points.length){
     ctx.fillStyle="#8095aa";
-
-    ctx.font="14px Arial";
-
-    ctx.fillText(
-      "Add trades to display the equity curve.",
-      20,
-      h/2
-    );
-
+    ctx.font="13px Arial";
+    ctx.textAlign="center";
+    ctx.fillText("Add trades to build your equity curve",w/2,h/2);
+    ctx.textAlign="left";
     return;
-
   }
 
-  const values=
-    e.points.map(
-      p=>p.equity
-    );
+  const points=e.points;
+  const values=points.map(p=>Number(p.equity)||0);
+  let minVal=Math.min(0,...values), maxVal=Math.max(0,...values);
+  if(maxVal===minVal){ maxVal+=1; minVal-=1; }
+  const pad=(maxVal-minVal)*0.12;
+  const min=minVal-pad, max=maxVal+pad, range=max-min;
+  const compact=w<430;
+  const left=compact?66:76, right=compact?16:24, top=42, bottom=compact?42:46;
+  const plotW=Math.max(10,w-left-right), plotH=Math.max(10,h-top-bottom);
+  const x=i=>left+(values.length===1?plotW/2:(i/(values.length-1))*plotW);
+  const y=v=>top+((max-v)/range)*plotH;
 
-  const min=
-    Math.min(
-      0,
-      ...values
-    );
-
-  const max=
-    Math.max(
-      0,
-      ...values
-    );
-
-  const range=
-    Math.max(
-      1,
-      max-min
-    );
-
-  const left=58;
-  const right=18;
-  const top=25;
-  const bottom=38;
-
-  const plotW=
-    w-left-right;
-
-  const plotH=
-    h-top-bottom;
-
-  function x(i){
-
-    return values.length===1
-      ?left+plotW/2
-      :left+
-       (i/(values.length-1))*
-       plotW;
-
-  }
-
-  function y(v){
-
-    return top+
-      ((max-v)/range)*
-      plotH;
-
-  }
-
-  /* GRID */
-
-  ctx.strokeStyle="#173047";
-  ctx.lineWidth=1;
-
+  // Subtle chart grid and properly spaced currency axis labels.
+  ctx.font=compact?"10px Arial":"11px Arial";
+  ctx.textBaseline="middle";
   for(let i=0;i<=4;i++){
-
-    const gy=
-      top+
-      (i/4)*plotH;
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-      left,
-      gy
-    );
-
-    ctx.lineTo(
-      w-right,
-      gy
-    );
-
-    ctx.stroke();
-
+    const val=max-(range*i/4), gy=top+(plotH*i/4);
+    ctx.beginPath(); ctx.moveTo(left,gy); ctx.lineTo(w-right,gy);
+    ctx.strokeStyle="rgba(99,145,190,.18)"; ctx.lineWidth=1; ctx.stroke();
+    ctx.fillStyle="#8ea3bd";
+    const label=money(val);
+    ctx.textAlign="right";
+    ctx.fillText(label,left-10,gy);
   }
 
-  /* ZERO */
+  // Zero line is distinct, but its label is not duplicated.
+  if(min<=0 && max>=0){
+    const zeroY=y(0);
+    ctx.beginPath(); ctx.moveTo(left,zeroY); ctx.lineTo(w-right,zeroY);
+    ctx.strokeStyle="rgba(126,159,193,.55)"; ctx.lineWidth=1.2; ctx.stroke();
+  }
 
-  ctx.strokeStyle="#36516a";
-
+  // Filled area beneath the equity curve.
   ctx.beginPath();
+  values.forEach((v,i)=>{ if(i===0) ctx.moveTo(x(i),y(v)); else ctx.lineTo(x(i),y(v)); });
+  ctx.lineTo(x(values.length-1),top+plotH);
+  ctx.lineTo(x(0),top+plotH);
+  ctx.closePath();
+  const area=ctx.createLinearGradient(0,top,0,top+plotH);
+  area.addColorStop(0,"rgba(77,163,255,.30)");
+  area.addColorStop(1,"rgba(77,163,255,.015)");
+  ctx.fillStyle=area; ctx.fill();
 
-  ctx.moveTo(
-    left,
-    y(0)
-  );
-
-  ctx.lineTo(
-    w-right,
-    y(0)
-  );
-
-  ctx.stroke();
-
-  /* LINE */
-
+  // Smooth-looking connected line, with a restrained blue glow.
   ctx.beginPath();
+  values.forEach((v,i)=>{ if(i===0) ctx.moveTo(x(i),y(v)); else ctx.lineTo(x(i),y(v)); });
+  ctx.strokeStyle="rgba(77,163,255,.18)"; ctx.lineWidth=7; ctx.lineJoin="round"; ctx.lineCap="round"; ctx.stroke();
+  ctx.beginPath();
+  values.forEach((v,i)=>{ if(i===0) ctx.moveTo(x(i),y(v)); else ctx.lineTo(x(i),y(v)); });
+  ctx.strokeStyle="#4da3ff"; ctx.lineWidth=2.6; ctx.lineJoin="round"; ctx.lineCap="round"; ctx.stroke();
 
-  values.forEach(
-    (v,i)=>{
+  // Small points keep individual trade updates visible without clutter.
+  values.forEach((v,i)=>{
+    ctx.beginPath(); ctx.arc(x(i),y(v),values.length>24?2:3,0,Math.PI*2);
+    ctx.fillStyle="#66b5ff"; ctx.fill();
+    if(i===values.length-1){ ctx.beginPath(); ctx.arc(x(i),y(v),6,0,Math.PI*2); ctx.strokeStyle="rgba(102,181,255,.28)"; ctx.lineWidth=3; ctx.stroke(); }
+  });
 
-      if(i===0){
+  // Date labels: abbreviated and spaced so they never collide on phones.
+  function shortDate(raw){
+    if(!raw) return "";
+    const d=new Date(raw.length===10?raw+"T12:00:00":raw);
+    if(Number.isNaN(d.getTime())) return String(raw).slice(0,10);
+    return d.toLocaleDateString(undefined,{month:"short",day:"numeric"});
+  }
+  ctx.textBaseline="alphabetic"; ctx.font=compact?"10px Arial":"11px Arial"; ctx.fillStyle="#8ea3bd";
+  ctx.textAlign="left"; ctx.fillText(shortDate(points[0].date),left,h-12);
+  if(points.length>1){ ctx.textAlign="right"; ctx.fillText(shortDate(points[points.length-1].date),w-right,h-12); }
 
-        ctx.moveTo(
-          x(i),
-          y(v)
-        );
-
-      }else{
-
-        ctx.lineTo(
-          x(i),
-          y(v)
-        );
-
-      }
-
-    }
-  );
-
-  ctx.strokeStyle="#4da3ff";
-  ctx.lineWidth=2;
-
-  ctx.stroke();
-
-  /* POINTS */
-
-  values.forEach(
-    (v,i)=>{
-
-      ctx.beginPath();
-
-      ctx.arc(
-        x(i),
-        y(v),
-        3,
-        0,
-        Math.PI*2
-      );
-
-      ctx.fillStyle="#4da3ff";
-
-      ctx.fill();
-
-    }
-  );
-
-  /* LABELS */
-
-  ctx.fillStyle="#8ea3bd";
-
-  ctx.font="11px Arial";
-
-  ctx.fillText(
-    money(max),
-    5,
-    top+5
-  );
-
-  ctx.fillText(
-    money(min),
-    5,
-    h-bottom
-  );
-
-  ctx.fillText(
-    money(0),
-    5,
-    y(0)+4
-  );
-
-  const first=
-    e.points[0];
-
-  const last=
-    e.points[
-      e.points.length-1
-    ];
-
-  ctx.fillText(
-    first.date,
-    left,
-    h-10
-  );
-
-  ctx.fillText(
-    last.date,
-    Math.max(
-      left,
-      w-right-75
-    ),
-    h-10
-  );
-
-  ctx.fillStyle="#e8eef7";
-
-  ctx.font=
-    "bold 12px Arial";
-
-  ctx.fillText(
-    `Final Equity: ${money(last.equity)}`,
-    Math.max(
-      left,
-      w-180
-    ),
-    top+8
-  );
-
+  // Final equity appears in a compact pill above the plot, away from the data line.
+  const last=points[points.length-1];
+  const chipText="Equity  "+money(last.equity);
+  ctx.font=compact?"bold 11px Arial":"bold 12px Arial";
+  const chipW=ctx.measureText(chipText).width+20, chipH=25;
+  const chipX=Math.max(left,Math.min(w-right-chipW,w-right-chipW));
+  const chipY=8;
+  ctx.beginPath();
+  if(ctx.roundRect) ctx.roundRect(chipX,chipY,chipW,chipH,8); else ctx.rect(chipX,chipY,chipW,chipH);
+  ctx.fillStyle="rgba(20,47,75,.96)"; ctx.fill();
+  ctx.strokeStyle="rgba(77,163,255,.38)"; ctx.lineWidth=1; ctx.stroke();
+  ctx.fillStyle="#e8f3ff"; ctx.textAlign="left"; ctx.textBaseline="middle";
+  ctx.fillText(chipText,chipX+10,chipY+chipH/2);
+  ctx.textBaseline="alphabetic";
 }
-
 
 /* =========================================================
    PROFIT CHART
