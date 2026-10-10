@@ -5,7 +5,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta content="#07111f" name="theme-color"/>
-<title>OchiTracker — Unified Trading Terminal</title>
+<title>OchiTracker — Executive Trading Intelligence</title>
 <style>
 /* =========================================================
    OCHITRACKER PHASE 6.5 — PREMIUM UI
@@ -2578,6 +2578,35 @@ input, select, textarea { max-width: 100%; }
 @media(max-width:600px){.historical-data-panel{padding:12px}.historical-data-heading{align-items:flex-start}.historical-data-heading .section-description{max-width:190px;line-height:1.45}.history-view-button{min-width:112px;padding:9px 10px;font-size:11px}.historical-trades-scroll{max-height:62vh}}
 
 </style>
+
+<style id="ochi-executive-upgrade-714">
+/* Executive upgrade 7.14: refined hierarchy, clear interactions, and mobile-first usability. */
+:root{--ot-accent:#57a5ff;--ot-accent2:#53e0d0;--ot-focus:rgba(87,165,255,.42)}
+body{font-feature-settings:"ss01" on; text-rendering:optimizeLegibility}
+main.container{padding-bottom:44px}
+main.container>section{scroll-margin-top:76px}
+.section-heading{align-items:center}
+.section-description{font-size:12px;line-height:1.55;max-width:760px}
+.card,.panel,.analytics-card,.equity-analytics-card{transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--ot-accent)!important;outline-offset:3px}
+button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
+#evidenceLab{position:relative;isolation:isolate;overflow:hidden}
+#evidenceLab:before{content:"";position:absolute;inset:0 0 auto;height:2px;background:linear-gradient(90deg,#398bff,#53e0d0,transparent);opacity:.9;pointer-events:none}
+#evidenceLab .ev-sub{max-width:850px;line-height:1.7}
+.ochi-evidence-health{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:14px;padding:10px 12px;border:1px solid rgba(83,224,208,.18);border-radius:12px;background:rgba(14,34,48,.56);color:#b9cce0;font-size:12px}
+.ochi-evidence-health .dot{width:8px;height:8px;flex:0 0 8px;border-radius:50%;background:#53e0a0;box-shadow:0 0 0 4px rgba(83,224,160,.1)}
+.ochi-evidence-health[data-state="warning"] .dot{background:#ffbf69;box-shadow:0 0 0 4px rgba(255,191,105,.12)}
+.ochi-evidence-health[data-state="error"] .dot{background:#ff7777;box-shadow:0 0 0 4px rgba(255,119,119,.12)}
+.ochi-evidence-health strong{color:#edf5ff;font-weight:800}
+.ev-upload{cursor:pointer;transition:border-color .18s ease,background .18s ease}
+.ev-upload:hover{border-color:rgba(83,224,208,.5);background:rgba(26,56,72,.35)}
+.ev-thumb img{object-fit:cover}
+#evModal{backdrop-filter:blur(10px)}
+#evModal .ev-modal-card{max-height:90vh;overflow:auto}
+@media(max-width:760px){main.container{padding-left:12px;padding-right:12px}.section-heading{gap:10px}.ochi-evidence-health{align-items:flex-start}.ev-actions button{min-height:44px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+</style>
+
 </head>
 <body>
 <div class="ochi-mobile-bar"><button aria-expanded="false" aria-label="Open navigation" class="ochi-menu-toggle" id="ochiMenuToggle" type="button">☰</button><div class="ochi-mobile-title">OchiTracker</div><div class="ochi-mobile-sub">TRADING WORKSPACE</div></div>
@@ -3197,6 +3226,7 @@ input, select, textarea { max-width: 100%; }
 <div class="ev-kicker">Execution journal</div>
 <div class="ev-title">Trade &amp; Session Evidence</div>
 <div class="ev-sub">Capture the plan before the market, preserve the setup visually, then record what actually happened. OchiTracker will keep <b>Target R</b> and <b>Result R</b> side by side.</div>
+<div class="ochi-evidence-health" id="ochiEvidenceHealth" data-state="ready"><span class="dot" aria-hidden="true"></span><strong>Local evidence storage</strong><span class="detail">Screenshots use this browser’s IndexedDB; record details are saved in local browser storage.</span></div>
 </div>
 </div>
 <div class="ev-grid">
@@ -11263,7 +11293,8 @@ window.addEventListener("resize",()=>{clearTimeout(window.__ochiEquityResizeTime
   const META_KEY='ochiTradeEvidence_v1';
   const DB_NAME='OchiTrackerEvidenceDB';
   const STORE='images';
-  let records=JSON.parse(localStorage.getItem(META_KEY)||'[]');
+  let records=[];
+  try { const stored=JSON.parse(localStorage.getItem(META_KEY)||'[]'); records=Array.isArray(stored)?stored:[]; } catch(error) { console.warn('OchiTracker evidence metadata could not be parsed.',error); }
   let pending={before:[],setup:[],after:[]};
 
   const $=id=>document.getElementById(id);
@@ -11289,14 +11320,21 @@ window.addEventListener("resize",()=>{clearTimeout(window.__ochiEquityResizeTime
     });
   }
   async function addFiles(stage,files){
-    for(const file of [...files]){
-      if(!file.type.startsWith('image/'))continue;
-      const id='img_'+Date.now()+'_'+Math.random().toString(36).slice(2);
-      const blob=await compress(file);
-      await dbPut({id,blob,stage,name:file.name});
-      pending[stage].push(id);
-    }
-    renderPreviews();
+    const input=$('ev'+stage[0].toUpperCase()+stage.slice(1)+'Files');
+    try{
+      for(const file of [...files]){
+        if(!file.type.startsWith('image/'))continue;
+        if(file.size>20*1024*1024){alert('One image is over 20 MB. Please choose a smaller screenshot.');continue;}
+        const id='img_'+Date.now()+'_'+Math.random().toString(36).slice(2);
+        const blob=await compress(file);
+        await dbPut({id,blob,stage,name:file.name});
+        pending[stage].push(id);
+      }
+      renderPreviews();
+    }catch(error){
+      console.error('Screenshot storage failed:',error);
+      alert('The screenshot could not be stored in this browser. Your existing journal was not changed. Check available device storage and try a smaller image.');
+    }finally{if(input)input.value='';}
   }
   async function removePending(stage,id){
     pending[stage]=pending[stage].filter(x=>x!==id);await dbDel(id);renderPreviews();
@@ -11320,9 +11358,23 @@ window.addEventListener("resize",()=>{clearTimeout(window.__ochiEquityResizeTime
     const d=new Date();$('evDate').value=d.toISOString().slice(0,10);$('evTime').value=d.toTimeString().slice(0,5);
   }
   async function save(){
+    const saveButton=$('evSave');
+    if(saveButton.disabled)return;
     if(!val('evPair').trim()){alert('Please enter the pair / instrument.');return}
+    saveButton.disabled=true;
+    const oldLabel=saveButton.textContent;saveButton.textContent='Saving record…';
     const rec={id:'ev_'+Date.now(),date:val('evDate')||new Date().toISOString().slice(0,10),time:val('evTime'),pair:val('evPair').trim().toUpperCase(),session:val('evSession'),direction:val('evDirection'),targetR:Number(val('evTargetR'))||0,risk:Number(val('evRisk'))||0,setup:val('evSetup'),plan:val('evPlan'),poi:val('evPOI'),resultR:Number(val('evResultR'))||0,resultPnl:Number(val('evResultPnl'))||0,outcome:val('evOutcome'),management:val('evManagement'),resultNote:val('evResultNote'),lesson:val('evLesson'),images:{before:[...pending.before],setup:[...pending.setup],after:[...pending.after]},createdAt:new Date().toISOString()};
-    records.unshift(rec);localStorage.setItem(META_KEY,JSON.stringify(records));render();reset();alert('Evidence record saved.');
+    try{
+      const next=[rec,...records];
+      localStorage.setItem(META_KEY,JSON.stringify(next));
+      records=next;render();reset();
+      const health=document.getElementById('ochiEvidenceHealth');if(health){health.dataset.state='ready';health.querySelector('strong').textContent='Evidence saved locally';health.querySelector('.detail').textContent='Record and screenshot references are stored in this browser.';}
+      alert('Evidence record saved successfully.');
+    }catch(error){
+      console.error('Evidence record save failed:',error);
+      const health=document.getElementById('ochiEvidenceHealth');if(health){health.dataset.state='error';health.querySelector('strong').textContent='Save needs attention';health.querySelector('.detail').textContent='Browser storage may be full. The record was not confirmed as saved.';}
+      alert('OchiTracker could not save this evidence record. Do not close or refresh yet; copy your notes first, then check available browser storage.');
+    }finally{saveButton.disabled=false;saveButton.textContent=oldLabel;}
   }
   async function removeRecord(id){
     const r=records.find(x=>x.id===id);if(!r)return;
@@ -11357,6 +11409,9 @@ window.addEventListener("resize",()=>{clearTimeout(window.__ochiEquityResizeTime
   window.OTEvidence={view,remove:removeRecord,closeModal:()=>{$('evModal').style.display='none'}};
   $('evModal').onclick=e=>{if(e.target.id==='evModal')window.OTEvidence.closeModal()};
   reset();render();
+  try{
+    if(!window.indexedDB){const h=document.getElementById('ochiEvidenceHealth');if(h){h.dataset.state='warning';h.querySelector('strong').textContent='Screenshot storage unavailable';h.querySelector('.detail').textContent='This browser does not expose IndexedDB. Trade records can still be entered, but screenshot evidence may not persist.';}}
+  }catch(e){console.warn('Evidence storage status check failed.',e)}
 })();
 </script>
 <script>
@@ -11403,5 +11458,22 @@ window.addEventListener("resize",()=>{clearTimeout(window.__ochiEquityResizeTime
   else repairOchiLayout();
 })();
 </script>
+
+<script id="ochi-executive-runtime-guard">
+(function(){
+  window.addEventListener('error',function(event){
+    console.error('OchiTracker runtime error:',event.message,event.filename,event.lineno);
+    var h=document.getElementById('ochiEvidenceHealth');
+    if(h && event.message && /quota|storage|indexeddb/i.test(event.message)){
+      h.dataset.state='warning';
+      var strong=h.querySelector('strong'),detail=h.querySelector('.detail');
+      if(strong)strong.textContent='Storage warning';
+      if(detail)detail.textContent='A browser storage issue was detected. Export a backup before clearing browser data.';
+    }
+  });
+  window.addEventListener('unhandledrejection',function(event){console.error('OchiTracker async operation failed:',event.reason);});
+})();
+</script>
+
 </body>
 </html>
