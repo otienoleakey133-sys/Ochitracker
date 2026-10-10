@@ -5,7 +5,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta content="#07111f" name="theme-color"/>
-<title>OchiTracker — Executive Trading Intelligence</title>
+<title>OchiTracker Executive — Trading Intelligence</title>
 <style>
 /* =========================================================
    OCHITRACKER PHASE 6.5 — PREMIUM UI
@@ -2612,7 +2612,7 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
 <div class="ochi-mobile-bar"><button aria-expanded="false" aria-label="Open navigation" class="ochi-menu-toggle" id="ochiMenuToggle" type="button">☰</button><div class="ochi-mobile-title">OchiTracker</div><div class="ochi-mobile-sub">TRADING WORKSPACE</div></div>
 <div class="ochi-nav-scrim" id="ochiNavScrim"></div>
 <aside aria-label="Main navigation" class="ochi-sidebar" id="ochiSidebar">
-<div class="ochi-side-brand"><div class="ochi-side-mark">OT</div><div><strong>OchiTracker</strong><small>TRADING TERMINAL · 7.12</small></div></div>
+<div class="ochi-side-brand"><div class="ochi-side-mark">OT</div><div><strong>OchiTracker</strong><small>INSTITUTIONAL TRADING TERMINAL</small></div></div>
 <nav aria-label="Workspace" class="ochi-nav-group">
 <div class="ochi-nav-label">Workspace</div>
 <a class="ochi-nav-link active" href="#dashboard"><span class="ochi-nav-icon">▦</span>Overview</a>
@@ -4068,7 +4068,7 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
 <div class="section-title">
 <div class="section-icon">🛡️</div>
 <div>
-<h2>Ochi Data Protection</h2>
+<h2>Data Protection &amp; Recovery</h2>
 <div class="section-description">
           Backup, restore and protect your local trading database.
         </div>
@@ -4190,7 +4190,7 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
 <div class="section-title">
 <div class="section-icon">🗂️</div>
 <div>
-<h2>Historical Data &amp; Sync Center</h2>
+<h2>Historical Data</h2>
 <div class="section-description">
           One clean place to verify your recorded history, local database copy and synchronization status.
         </div>
@@ -8886,44 +8886,38 @@ function exportJournal(){
 }
 
 
-function exportFullBackup(){
+async function exportFullBackup(){
 
-  const data={
+  try{
+    const evidence = window.OTEvidence && typeof window.OTEvidence.exportBackup === "function"
+      ? await window.OTEvidence.exportBackup()
+      : { records: [], images: [] };
 
-    app:"OchiTracker",
+    const data={
+      app:"OchiTracker",
+      version:"Phase 7.15",
+      backupVersion:2,
+      exportedAt:new Date().toISOString(),
+      trades,
+      riskSettings,
+      reportHistory:loadReportHistory(),
+      evidence
+    };
 
-    version:"Phase 6",
-
-    backupVersion:1,
-
-    exportedAt:
-      new Date().toISOString(),
-
-    trades,
-
-    riskSettings,
-
-    reportHistory:
-      loadReportHistory()
-
-  };
-
-  const success=
-    downloadJSON(
+    const success=downloadJSON(
       data,
       `ochitracker-full-backup-${backupDateString()}.json`
     );
 
-  if(success){
-
-    updateLastBackup();
-
-    alert(
-      "Full OchiTracker backup created successfully."
-    );
-
+    if(success){
+      updateLastBackup();
+      const imageCount=Array.isArray(evidence.images)?evidence.images.length:0;
+      alert(`Full OchiTracker backup created successfully.\n\nTrades: ${trades.length}\nReports: ${data.reportHistory.length}\nEvidence records: ${evidence.records.length}\nScreenshots: ${imageCount}`);
+    }
+  }catch(error){
+    console.error("Full backup creation failed:",error);
+    alert(`Full backup could not be created: ${error.message || error}\n\nYour current data has not been intentionally changed. Check available device storage and try again.`);
   }
-
 }
 
 
@@ -9070,15 +9064,19 @@ function validateBackup(data){
 
   if(
     data.reportHistory!==undefined &&
-    !Array.isArray(
-      data.reportHistory
-    )
+    !Array.isArray(data.reportHistory)
   ){
+    throw new Error("Report history in the backup is invalid.");
+  }
 
-    throw new Error(
-      "Report history in the backup is invalid."
-    );
-
+  if(data.evidence!==undefined){
+    if(!data.evidence || typeof data.evidence!=="object" ||
+       !Array.isArray(data.evidence.records) || !Array.isArray(data.evidence.images)){
+      throw new Error("Evidence data in the backup is invalid.");
+    }
+    if(data.evidence.images.some(image=>!image || typeof image.id!=="string" || typeof image.dataUrl!=="string")){
+      throw new Error("One or more screenshot entries in the backup are invalid.");
+    }
   }
 
 }
@@ -9124,6 +9122,9 @@ async function previewBackup(){
       data.riskSettings
         ? "Included"
         : "Not included";
+    const evidenceRecordCount=Array.isArray(data.evidence?.records)?data.evidence.records.length:0;
+    const screenshotCount=Array.isArray(data.evidence?.images)?data.evidence.images.length:0;
+    const evidenceIncluded=data.evidence?"Included":"Not included (legacy backup)";
 
     preview.className=
       "preview visible";
@@ -9156,6 +9157,9 @@ async function previewBackup(){
 
         <strong>Risk Settings:</strong>
         ${riskIncluded}
+        <br>
+        <strong>Evidence:</strong>
+        ${evidenceIncluded} (${evidenceRecordCount} records, ${screenshotCount} screenshots)
 
       </div>
 
@@ -9436,10 +9440,18 @@ async function restoreFullBackup(){
       reports
     );
 
+    let evidenceMessage="";
+    if(data.evidence && window.OTEvidence && typeof window.OTEvidence.restoreBackup === "function"){
+      await window.OTEvidence.restoreBackup(data.evidence);
+      evidenceMessage=`\nEvidence records: ${data.evidence.records.length}\nScreenshots: ${data.evidence.images.length}`;
+    }else if(!data.evidence){
+      evidenceMessage="\nEvidence: this is a legacy backup, so existing evidence was left unchanged.";
+    }
+
     renderEverything();
 
     alert(
-      "Full OchiTracker backup restored successfully."
+      "Full OchiTracker backup restored successfully." + evidenceMessage
     );
 
   }catch(error){
@@ -11406,7 +11418,57 @@ window.addEventListener("resize",()=>{clearTimeout(window.__ochiEquityResizeTime
   $('evSetupFiles').onchange=e=>addFiles('setup',e.target.files);
   $('evAfterFiles').onchange=e=>addFiles('after',e.target.files);
   $('evSave').onclick=save;$('evReset').onclick=reset;
-  window.OTEvidence={view,remove:removeRecord,closeModal:()=>{$('evModal').style.display='none'}};
+  function blobToDataURL(blob){
+    return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result));reader.onerror=()=>reject(reader.error||new Error('Could not read screenshot for backup'));reader.readAsDataURL(blob);});
+  }
+  function dataURLToBlob(dataUrl){
+    const parts=String(dataUrl).split(',');
+    if(parts.length<2)throw new Error('Invalid screenshot data in backup');
+    const match=parts[0].match(/data:([^;]+);base64/);
+    if(!match)throw new Error('Unsupported screenshot format in backup');
+    const binary=atob(parts[1]);const bytes=new Uint8Array(binary.length);
+    for(let i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);
+    return new Blob([bytes],{type:match[1]});
+  }
+  async function exportBackup(){
+    const cleanRecords=records.map(r=>JSON.parse(JSON.stringify(r)));
+    const ids=[...new Set(cleanRecords.flatMap(r=>['before','setup','after'].flatMap(stage=>r.images?.[stage]||[])))];
+    const images=[];
+    for(const id of ids){
+      const item=await dbGet(id);
+      if(!item || !item.blob)throw new Error('A screenshot referenced by an evidence record is missing. Please review the Evidence Lab before backing up.');
+      images.push({id:String(item.id),stage:String(item.stage||''),name:String(item.name||'screenshot.jpg'),type:item.blob.type||'image/jpeg',dataUrl:await blobToDataURL(item.blob)});
+    }
+    return {version:1,records:cleanRecords,images};
+  }
+  async function restoreBackup(data){
+    if(!data || !Array.isArray(data.records) || !Array.isArray(data.images))throw new Error('Evidence backup is incomplete.');
+    // Validate and build all screenshot blobs before changing current evidence.
+    const prepared=data.images.map(item=>({id:String(item.id),stage:String(item.stage||''),name:String(item.name||'screenshot.jpg'),blob:dataURLToBlob(item.dataUrl)}));
+    const nextRecords=data.records.map(r=>JSON.parse(JSON.stringify(r)));
+    const serializedRecords=JSON.stringify(nextRecords);
+    const previousMetadata=localStorage.getItem(META_KEY);
+    // Preflight browser storage quota before replacing screenshot data.
+    localStorage.setItem(META_KEY,serializedRecords);
+    if(previousMetadata===null)localStorage.removeItem(META_KEY);else localStorage.setItem(META_KEY,previousMetadata);
+    const oldIds=[...new Set(records.flatMap(r=>['before','setup','after'].flatMap(stage=>r.images?.[stage]||[])))];
+    const db=await dbOpen();
+    await new Promise((resolve,reject)=>{
+      const tx=db.transaction(STORE,'readwrite');const store=tx.objectStore(STORE);
+      oldIds.forEach(id=>store.delete(id));
+      prepared.forEach(item=>store.put(item));
+      tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error||new Error('Screenshot restore transaction was cancelled'));
+    });
+    records=nextRecords;
+    localStorage.setItem(META_KEY,serializedRecords);
+    pending={before:[],setup:[],after:[]};
+    renderPreviews();render();
+    const health=document.getElementById('ochiEvidenceHealth');
+    if(health){health.dataset.state='ready';health.querySelector('strong').textContent='Evidence restored';health.querySelector('.detail').textContent=`${records.length} evidence records and ${prepared.length} screenshots are stored in this browser.`;}
+    db.close();
+    return {records:records.length,images:prepared.length};
+  }
+  window.OTEvidence={view,remove:removeRecord,closeModal:()=>{$('evModal').style.display='none'},exportBackup,restoreBackup};
   $('evModal').onclick=e=>{if(e.target.id==='evModal')window.OTEvidence.closeModal()};
   reset();render();
   try{
@@ -11472,6 +11534,90 @@ window.addEventListener("resize",()=>{clearTimeout(window.__ochiEquityResizeTime
     }
   });
   window.addEventListener('unhandledrejection',function(event){console.error('OchiTracker async operation failed:',event.reason);});
+})();
+</script>
+
+
+<style id="ochi-executive-716-institutional">
+/* OchiTracker Executive 7.16 — institutional luxury visual system.
+   Presentation-only layer: the 7.15 trade schema and storage keys are intentionally retained. */
+:root{
+  --ot-gold:#d7b56d;
+  --ot-gold-soft:rgba(215,181,109,.18);
+  --ot-gold-line:rgba(215,181,109,.26);
+  --ot-electric:#438cff;
+  --ot-midnight:#050b17;
+  --ot-surface:#0a1526;
+  --ot-surface-raised:#0e1c30;
+}
+html{background:var(--ot-midnight)}
+body{background:radial-gradient(ellipse at 80% -10%,rgba(48,103,197,.16),transparent 38%),radial-gradient(ellipse at 0% 40%,rgba(215,181,109,.035),transparent 42%),var(--ot-midnight)}
+.ochi-side-mark{background:linear-gradient(145deg,#1b3d70,#0b1930)!important;border:1px solid var(--ot-gold-line)!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.025),0 8px 24px rgba(0,0,0,.22)}
+.ochi-side-mark:after{color:var(--ot-gold)!important}
+.ochi-side-brand small{color:#b8a16f!important;letter-spacing:1px!important}
+.ochi-topbar-eyebrow{color:#b7a06d!important;letter-spacing:1.9px!important}
+.ochi-topbar-heading strong{color:#f4f0e7!important}
+.ochi-terminal-topbar{background:linear-gradient(100deg,rgba(7,14,27,.97),rgba(10,22,40,.93))!important;border-bottom-color:var(--ot-gold-line)!important}
+.ochi-add-trade{background:linear-gradient(135deg,#286df4,#1e54c4)!important;border:1px solid rgba(115,163,255,.32)!important;box-shadow:0 7px 20px rgba(36,95,240,.19)!important}
+.ochi-nav-link.active{background:linear-gradient(100deg,rgba(53,116,245,.22),rgba(215,181,109,.065))!important;border-color:rgba(215,181,109,.24)!important}
+.ochi-nav-link.active .ochi-nav-icon{color:var(--ot-gold)!important}
+#dashboard .dashboard-grid>.card{background:linear-gradient(145deg,rgba(15,29,50,.98),rgba(8,17,31,.98))!important;border-color:rgba(128,157,202,.16)!important}
+#dashboard .dashboard-grid>.card:first-child:before,
+#dashboard .dashboard-grid>.card:nth-child(3):before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--ot-gold),transparent);opacity:.82}
+#dashboard .dashboard-grid>.card:nth-child(2):before{background:linear-gradient(90deg,#438cff,var(--ot-gold))!important}
+#dashboard .dashboard-grid>.card:hover{border-color:var(--ot-gold-line)!important;box-shadow:0 12px 28px rgba(0,0,0,.25)!important}
+.section-title h2,#advancedEquityAnalytics .section-heading h2{color:#f1f4fb}
+.section-icon{border-color:var(--ot-gold-line)!important;background:rgba(215,181,109,.07)!important}
+.section-heading{border-color:rgba(215,181,109,.09)}
+#tradeEntry,#riskEngine,#intelligence,#setupIntelligenceSection,#sessionTimeIntelligence,#disciplineTraderScore,#tradeManagementLab,#reports,#history,#charts,#advancedEquityAnalytics,.account-performance-polished,.asset-leaderboard-panel{background:linear-gradient(145deg,rgba(12,24,42,.97),rgba(6,13,25,.98))!important;border-color:rgba(127,157,204,.17)!important}
+#advancedEquityAnalytics .equity-analytics-chart,
+#advancedEquityAnalytics .equity-analytics-card{border-color:rgba(215,181,109,.15)!important}
+button,.button,.btn{border-color:rgba(94,145,229,.28)}
+button:not(.secondary):not(.warning):not(.danger){background-image:linear-gradient(135deg,rgba(68,140,255,.10),rgba(215,181,109,.035))}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline-color:var(--ot-gold)!important}
+input:focus,select:focus,textarea:focus{border-color:rgba(215,181,109,.55)!important;box-shadow:0 0 0 3px rgba(215,181,109,.08)!important}
+.status,.ochi-live-status{letter-spacing:.25px}
+.phase-badge,.phase71-badge,.phase72-badge,.phase73-badge,.phase74-badge,.phase75-badge,[class*="phase-badge"]{display:none!important}
+#ochiDataStorageDock{border-top:1px solid var(--ot-gold-line)!important;background:linear-gradient(180deg,rgba(11,20,34,.22),rgba(5,10,19,.82))!important}
+#ochiDataStorageDock:before{content:"DATA & SECURITY CENTRE";display:block;width:min(100% - 44px,1460px);margin:0 auto 2px;color:#b8a16f;font-size:10px;font-weight:800;letter-spacing:2px}
+#ochiDataStorageDock>section{box-shadow:0 14px 34px rgba(0,0,0,.2)!important}
+#ochiCloud .section-icon,#historicalDataCenter .section-icon,#dataProtection .section-icon{color:var(--ot-gold)}
+#ochiCloud .cloud-command-head,#ochiCloud .section-heading{border-bottom-color:rgba(215,181,109,.11)}
+footer{border-top-color:var(--ot-gold-line)!important;color:#788aa5!important}
+@media(max-width:900px){
+ .ochi-terminal-topbar{border-bottom-color:rgba(215,181,109,.2)!important}
+ #ochiDataStorageDock:before{width:calc(100% - 22px);letter-spacing:1.5px}
+ #dashboard .dashboard-grid>.card{min-width:0}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
+</style>
+
+
+<script id="ochi-executive-716-runtime">
+(function(){
+  'use strict';
+  const BUILD='7.16 Executive Institutional';
+  // Preserve the original 7.15 storage contract so existing verified records/settings are reused.
+  // Only record a build marker; never reset trades, risk settings, reports or evidence.
+  try{localStorage.setItem('ochiExecutiveBuild',BUILD);}catch(e){console.warn('Build marker could not be stored; user data remains untouched.',e)}
+  function tidyVisibleLabels(){
+    const title=document.querySelector('.ochi-side-brand small');
+    if(title)title.textContent='INSTITUTIONAL TRADING TERMINAL';
+    const history=document.querySelector('#historicalDataCenter .section-description');
+    if(history)history.textContent='Review recorded trades, verify the local database copy and check synchronization status.';
+    const protection=document.querySelector('#dataProtection .section-description');
+    if(protection)protection.textContent='Export, restore and safeguard your local trading records and settings.';
+    const cloudNote=document.querySelector('#ochiCloud .sync-note');
+    // Keep the source's honest local-only cloud disclosure intact; no fake internet sync claims.
+    if(cloudNote && !/does not yet synchronize across the internet/i.test(cloudNote.textContent||'')){
+      const note=document.createElement('p');
+      note.className='small muted';
+      note.textContent='This build uses local browser storage; cross-device internet synchronization requires a separately configured remote service.';
+      cloudNote.appendChild(note);
+    }
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',tidyVisibleLabels,{once:true});else tidyVisibleLabels();
+  window.OCHI_EXECUTIVE_BUILD=BUILD;
 })();
 </script>
 
