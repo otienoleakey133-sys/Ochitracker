@@ -2301,6 +2301,7 @@ body{background:#050b16}
 main.container{display:flex;flex-direction:column;gap:0}
 main.container>.hero{order:0}
 main.container>#dashboard{order:1}
+main.container>section.account-performance-polished{order:1.5!important}
 main.container>#advancedEquityAnalytics{order:2}
 main.container>#charts{order:3}
 main.container>#calendarSection{order:4}
@@ -2748,7 +2749,7 @@ main.container>section.account-performance-polished{margin-top:0!important;margi
 
         <div>
 
-          <h2>Dashboard</h2>
+          <h2>Performance Overview</h2>
 
           <div class="section-description">
             Your trading performance at a glance.
@@ -11924,6 +11925,50 @@ window.addEventListener("resize",()=>{clearTimeout(window.__ochiEquityResizeTime
   window.OTEvidence={view,remove:removeRecord,closeModal:()=>{$('evModal').style.display='none'}};
   $('evModal').onclick=e=>{if(e.target.id==='evModal')window.OTEvidence.closeModal()};
   reset();render();
+})();
+</script>
+<script>
+/* OchiTracker reliability patch: enforce the visible order and bind history toggle after all legacy scripts. */
+(function(){
+  function repairOchiLayout(){
+    var main=document.querySelector('main.container');
+    var dashboard=document.getElementById('dashboard');
+    var account=main&&main.querySelector('section.account-performance-polished');
+    var advanced=document.getElementById('advancedEquityAnalytics');
+    var charts=document.getElementById('charts');
+    if(main&&dashboard&&account){
+      dashboard.style.order='1';
+      account.style.order='1.5';
+      account.style.marginTop='2px';
+    }
+    if(advanced)advanced.style.order='2';
+    if(charts)charts.style.order='3';
+    var heading=dashboard&&dashboard.querySelector('.section-title h2');
+    if(heading)heading.textContent='Performance Overview';
+
+    var content=document.getElementById('historicalTradesContent');
+    var button=document.getElementById('toggleHistoricalTrades');
+    if(content&&button){
+      // Start compact every time; users open the records only when they ask to view them.
+      content.hidden=true;
+      button.setAttribute('aria-expanded','false');
+      button.innerHTML='View all trades <span aria-hidden="true">⌄</span>';
+      button.removeAttribute('onclick');
+      button.onclick=function(){
+        var opening=content.hidden;
+        content.hidden=!opening;
+        button.setAttribute('aria-expanded',String(opening));
+        button.innerHTML=opening?'Hide trades <span aria-hidden="true">⌃</span>':'View all trades <span aria-hidden="true">⌄</span>';
+        if(opening){
+          try{if(typeof renderTradeHistory==='function')renderTradeHistory();}catch(e){console.error('Could not render historical trades',e)}
+          window.setTimeout(function(){content.scrollIntoView({behavior:'smooth',block:'nearest'});},50);
+        }
+      };
+      try{if(typeof renderTradeHistory==='function')renderTradeHistory();}catch(e){console.error('Could not initialize historical trades',e)}
+    }
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',repairOchiLayout,{once:true});
+  else repairOchiLayout();
 })();
 </script>
 </body>
