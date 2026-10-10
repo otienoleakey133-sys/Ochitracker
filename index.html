@@ -2504,6 +2504,23 @@ main.container>section.account-performance-polished{margin-top:0!important;margi
 .ev-modal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.ev-modal-grid img{width:100%;border-radius:12px;display:block}
 @media(max-width:900px){.ev-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ev-summary{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:620px){#evidenceLab{padding:17px;border-radius:18px}.ev-head{display:block}.ev-grid{grid-template-columns:1fr}.ev-span2,.ev-span4{grid-column:auto}.ev-summary{grid-template-columns:repeat(2,1fr)}.ev-modal-grid{grid-template-columns:1fr}}
+
+/* Compact Historical Data: reveal the full journal on demand, with its own scroll area. */
+.historical-data-panel{padding:16px;border:1px solid rgba(83,132,190,.2);border-radius:16px;background:linear-gradient(145deg,rgba(11,22,39,.97),rgba(7,14,26,.97));}
+.historical-data-heading{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:10px;}
+.historical-data-heading h2{margin:0;color:#edf4ff;font-size:17px;}
+.historical-data-heading .section-icon{display:none;}
+.history-view-button{flex:0 0 auto;width:auto;min-width:138px;padding:10px 13px;border:1px solid rgba(65,145,255,.45);border-radius:10px;background:linear-gradient(120deg,rgba(31,112,220,.24),rgba(20,65,116,.22));color:#eaf4ff;font-weight:750;font-size:12px;cursor:pointer;}
+.history-view-button:hover{border-color:rgba(89,176,255,.85);background:rgba(39,116,204,.28);}
+.trade-history-status{margin:0 0 10px;padding:9px 11px;border:1px solid rgba(77,163,255,.14);border-radius:10px;background:rgba(255,255,255,.025);color:#9fb3ca;font-size:11px;}
+.historical-trades-content[hidden]{display:none!important;}
+.historical-trades-scroll{max-height:min(66vh,620px);overflow:auto;border:1px solid rgba(91,131,177,.2);border-radius:10px;overscroll-behavior:contain;}
+.historical-trades-table{width:100%;min-width:950px;border-collapse:separate;border-spacing:0;}
+.historical-trades-table thead th{position:sticky;top:0;z-index:2;background:#101f32;box-shadow:0 1px 0 rgba(95,145,200,.2);}
+.historical-trades-table th,.historical-trades-table td{white-space:nowrap;}
+.historical-data-footnote{padding:9px 2px 0;color:#7187a1;font-size:10px;}
+@media(max-width:600px){.historical-data-panel{padding:12px}.historical-data-heading{align-items:flex-start}.historical-data-heading .section-description{max-width:190px;line-height:1.45}.history-view-button{min-width:112px;padding:9px 10px;font-size:11px}.historical-trades-scroll{max-height:62vh}}
+
 </style>
 </head>
 
@@ -2517,7 +2534,7 @@ main.container>section.account-performance-polished{margin-top:0!important;margi
     <div class="ochi-nav-label">Workspace</div>
     <a class="ochi-nav-link active" href="#dashboard"><span class="ochi-nav-icon">▦</span>Overview</a>
     <a class="ochi-nav-link" href="#tradeEntry"><span class="ochi-nav-icon">＋</span>Record a Trade</a>
-    <a class="ochi-nav-link" href="#history"><span class="ochi-nav-icon">▤</span>Trading Journal</a>
+    <a class="ochi-nav-link" href="#history"><span class="ochi-nav-icon">▤</span>Historical Data</a>
     <a class="ochi-nav-link" href="#calendarSection"><span class="ochi-nav-icon">▦</span>Trading Calendar</a>
   </nav>
   <nav class="ochi-nav-group" aria-label="Performance">
@@ -4251,87 +4268,32 @@ main.container>section.account-performance-polished{margin-top:0!important;margi
      TRADE HISTORY
 ======================================================= -->
 
-<section id="history">
-
-  <div class="section-heading">
-
+<section id="history" class="historical-data-panel">
+  <div class="section-heading historical-data-heading">
     <div class="section-title">
-
       <div class="section-icon">📚</div>
-
       <div>
-        <h2>Historical Trade Records</h2>
-        <div class="section-description">
-          Your complete recorded trading journal.
-        </div>
+        <h2>Historical Data</h2>
+        <div class="section-description">Your complete trading history, kept in one compact view.</div>
       </div>
-
     </div>
-
-    <span class="phase-badge">DATABASE</span>
-
+    <button type="button" id="toggleHistoricalTrades" class="history-view-button" aria-expanded="false" aria-controls="historicalTradesContent" onclick="toggleHistoricalTrades()">View all trades <span aria-hidden="true">⌄</span></button>
   </div>
-
-
-  <div class="table-container">
-
-    <table>
-
-      <thead>
-
-        <tr>
-
-          <th>Date</th>
-          <th>Pair</th>
-          <th>Direction</th>
-          <th>Session</th>
-          <th>Setup</th>
-          <th>Result</th>
-          <th>P/L</th>
-          <th>R</th>
-          <th>Risk</th>
-          <th>View</th>
-          <th>Manage</th>
-          <th>Delete</th>
-
-        </tr>
-
-      </thead>
-
-      <div
-  id="tradeHistoryStatus"
-  style="
-    margin:0 0 10px;
-    padding:9px 11px;
-    border:1px solid rgba(77,163,255,.14);
-    border-radius:10px;
-    background:rgba(255,255,255,.025);
-    color:#8fa4ba;
-    font-size:11px;
-  ">
-  Historical Records: loading…
-  <button
-    type="button"
-    onclick="reloadOchiTradeHistory()"
-    style="
-      float:right;
-      width:auto;
-      padding:5px 9px;
-      margin-top:-2px;
-      font-size:10px;
-    ">
-    ↻ Reload Records
-  </button>
-</div>
-
-<tbody id="tradeTableBody"></tbody>
-
-    </table>
-
+  <div id="tradeHistoryStatus" class="trade-history-status" aria-live="polite">Historical records: loading…</div>
+  <div id="historicalTradesContent" class="historical-trades-content" hidden>
+    <div class="historical-trades-scroll">
+      <table class="historical-trades-table">
+        <thead>
+          <tr>
+            <th>Date</th><th>Pair</th><th>Direction</th><th>Session</th><th>Setup</th><th>Result</th><th>P/L</th><th>R</th><th>Risk</th><th>View</th><th>Manage</th><th>Delete</th>
+          </tr>
+        </thead>
+        <tbody id="tradeTableBody"></tbody>
+      </table>
+    </div>
+    <div class="historical-data-footnote">Scroll inside this records panel to browse every trade. The rest of the dashboard stays short.</div>
   </div>
-
 </section>
-
 
 
 <!-- =======================================================
@@ -8746,6 +8708,20 @@ function renderSessionTimeIntelligence(){
    TRADE HISTORY
 ========================================================= */
 
+function toggleHistoricalTrades(){
+  const content=document.getElementById("historicalTradesContent");
+  const button=document.getElementById("toggleHistoricalTrades");
+  if(!content||!button)return;
+  const opening=content.hidden;
+  content.hidden=!opening;
+  button.setAttribute("aria-expanded",String(opening));
+  button.innerHTML=opening?'Hide trades <span aria-hidden="true">⌃</span>':'View all trades <span aria-hidden="true">⌄</span>';
+  if(opening){
+    if(typeof renderTradeHistory==="function")renderTradeHistory();
+    requestAnimationFrame(()=>content.scrollIntoView({behavior:"smooth",block:"nearest"}));
+  }
+}
+
 function renderTradeHistory(){
 
   const body=document.getElementById("tradeTableBody");
@@ -11806,6 +11782,9 @@ window.addEventListener("resize",()=>{clearTimeout(window.__ochiEquityResizeTime
     if(advanced && dashboard) dashboard.insertAdjacentElement('afterend',advanced);
     const charts=document.getElementById('charts');
     if(charts && advanced) advanced.insertAdjacentElement('afterend',charts);
+    // Keep the account metrics directly beside the Performance Overview. Run this after moving analytics.
+    const accountPerformance=main.querySelector('section.account-performance-polished');
+    if(dashboard && accountPerformance) dashboard.insertAdjacentElement('afterend',accountPerformance);
     // Data storage, cloud sync, historical data and protection live only at the page bottom.
     const dataDock=document.createElement('div');dataDock.id='ochiDataStorageDock';dataDock.className='ochi-data-storage-dock';
     const footer=document.querySelector('footer');
