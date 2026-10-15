@@ -2279,7 +2279,8 @@ section[id]{scroll-margin-top:20px}
 /* Unified terminal polish: keep the working dashboard first and data utilities last. */
 header{margin-bottom:14px}
 .header-shell{border:1px solid var(--border);border-radius:18px;background:linear-gradient(120deg,rgba(16,31,50,.96),rgba(7,17,31,.96));padding:20px 22px;box-shadow:var(--shadow2)}
-.quick-nav{display:none!important}
+.quick-nav{display:flex!important;flex-wrap:nowrap;position:relative;z-index:5;padding:4px 0 8px;margin:8px 0 14px;gap:7px;overflow-x:auto}
+.quick-nav a[href="#ochiMarketTerminal"]{background:linear-gradient(135deg,#176b48,#124a38);border-color:#2b9468;color:#e7fff3;box-shadow:0 0 0 1px rgba(67,209,125,.12)}
 main.container{padding-bottom:24px}
 main.container>section{margin-top:16px}
 #dashboard{margin-top:12px}
@@ -2361,7 +2362,7 @@ body{background:radial-gradient(ellipse at 75% -15%,rgba(34,77,150,.14),transpar
 .ochi-legacy-header{display:none!important}
 .ochi-terminal-topbar{margin:0 0 16px;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px;border-bottom:1px solid var(--ochi-line);background:rgba(7,14,27,.88);}
 .ochi-topbar-heading{display:flex;flex-direction:column;gap:4px;min-width:0}.ochi-topbar-eyebrow{font-size:9px;letter-spacing:1.8px;font-weight:800;color:#7186a7}.ochi-topbar-heading strong{font-size:23px;letter-spacing:-.65px;color:#f1f5ff}.ochi-topbar-heading small{font-size:11px;color:#8294b0}
-.ochi-topbar-actions{display:flex;align-items:center;gap:14px;flex-shrink:0}.ochi-live-status{display:flex;align-items:center;gap:7px;color:#8ea6c3;font-size:10px;white-space:nowrap}.ochi-live-status i{width:7px;height:7px;border-radius:50%;background:#3ed7a1;box-shadow:0 0 12px rgba(62,215,161,.4)}.ochi-add-trade{display:inline-flex;align-items:center;gap:7px;padding:10px 14px;border-radius:9px;background:#245ff0;color:white!important;text-decoration:none!important;font-size:11px;font-weight:750;box-shadow:0 5px 16px rgba(36,95,240,.22);white-space:nowrap}.ochi-add-trade:hover{background:#3474ff}
+.ochi-topbar-actions{display:flex;align-items:center;gap:14px;flex-shrink:0}.ochi-live-status{display:flex;align-items:center;gap:7px;color:#8ea6c3;font-size:10px;white-space:nowrap}.ochi-live-status i{width:7px;height:7px;border-radius:50%;background:#3ed7a1;box-shadow:0 0 12px rgba(62,215,161,.4)}.ochi-add-trade{display:inline-flex;align-items:center;gap:7px;padding:10px 14px;border-radius:9px;background:#245ff0;color:white!important;text-decoration:none!important;font-size:11px;font-weight:750;box-shadow:0 5px 16px rgba(36,95,240,.22);white-space:nowrap}.ochi-add-trade:hover{background:#3474ff}.ochi-market-shortcut{background:linear-gradient(135deg,#176b48,#124a38)!important;border-color:#2b9468!important;box-shadow:0 5px 16px rgba(43,148,104,.18)!important}
 .ochi-sidebar{background:#080f1d;border-right:1px solid rgba(133,161,208,.13);box-shadow:8px 0 30px rgba(0,0,0,.12);padding:18px 12px;gap:17px}.ochi-side-brand{padding:7px 8px 18px}.ochi-side-mark{width:42px;height:42px;border-radius:13px}.ochi-side-brand strong{font-size:16px;color:#f0f5ff}.ochi-side-brand small{font-size:10px;letter-spacing:.3px;color:#8194b1}.ochi-nav-label{font-size:9px;letter-spacing:1.65px;color:#7185a4;padding:7px 10px}.ochi-nav-group{gap:3px}.ochi-nav-link{min-height:38px;padding:9px 10px;border-radius:8px;font-size:11px;color:#91a2bd}.ochi-nav-icon{font-size:14px;color:#8498b6}.ochi-nav-link.active{background:linear-gradient(100deg,rgba(40,104,255,.23),rgba(40,104,255,.08));border-color:rgba(74,133,255,.28);color:#f0f6ff}.ochi-sidebar-bottom{font-size:9px;color:#687d9b}
 main.container{width:min(100% - 44px,1460px);padding:0 0 30px;display:flex;flex-direction:column;gap:0}
 main.container>.hero{display:none!important}
@@ -2510,6 +2511,31 @@ input, select, textarea { max-width: 100%; }
   *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
 }
 
+
+/* Ochi Market Terminal — additive module */
+.ochi-market-terminal{margin:26px 0 30px;padding:clamp(16px,2.2vw,26px);border:1px solid #24445f;border-radius:18px;background:linear-gradient(145deg,rgba(12,28,47,.98),rgba(5,13,24,.98));box-shadow:0 16px 42px rgba(0,0,0,.22);}
+.ochi-market-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.ochi-market-kicker{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#f2c861;font-weight:800;margin-bottom:7px}
+.ochi-market-title{font-size:clamp(21px,3vw,29px);font-weight:800;letter-spacing:-.03em;margin:0;color:#edf4fc}
+.ochi-market-subtitle{color:#8ca2ba;font-size:13px;line-height:1.6;margin-top:7px;max-width:650px}
+.ochi-market-status{display:inline-flex;align-items:center;gap:8px;padding:8px 11px;border:1px solid #24533f;border-radius:999px;color:#8ce5ad;background:rgba(30,110,65,.13);font-size:11px;font-weight:800;white-space:nowrap}
+.ochi-market-dot{width:7px;height:7px;border-radius:50%;background:#43d17d;box-shadow:0 0 10px rgba(67,209,125,.6)}
+.ochi-market-controls{display:grid;grid-template-columns:minmax(160px,1.2fr) minmax(130px,.8fr) auto;gap:12px;align-items:end;margin:18px 0}
+.ochi-market-field label{display:block;font-size:11px;font-weight:800;color:#8ca2ba;text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px}
+.ochi-market-field select{width:100%;min-height:43px;border:1px solid #24445f;border-radius:10px;background:#081321;color:#edf4fc;padding:10px 12px;font:inherit}
+.ochi-market-tf{display:flex;flex-wrap:wrap;gap:6px}
+.ochi-market-tf button{background:#0b1726;border:1px solid #24445f;border-radius:8px;color:#a9bdd2;padding:10px 12px;font-size:12px;font-weight:800;cursor:pointer}
+.ochi-market-tf button[aria-pressed="true"]{color:#fff;background:#145ca8;border-color:#4da3ff}
+.ochi-market-chart{height:clamp(410px,58vw,610px);overflow:hidden;border:1px solid #1b344e;border-radius:13px;background:#050c16}
+.ochi-market-chart iframe{display:block;width:100%;height:100%;border:0}
+.ochi-tv-widget{width:100%;height:100%;min-height:410px}
+.ochi-tv-widget .tradingview-widget-container,.ochi-tv-widget .tradingview-widget-container__widget{width:100%;height:100%}
+.ochi-tv-loading{display:flex;align-items:center;justify-content:center;min-height:410px;padding:24px;text-align:center;color:#a9bdd2;font-size:13px;line-height:1.6}
+.ochi-market-foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:12px;color:#8298af;font-size:11px;line-height:1.6}
+.ochi-market-foot a{color:#70b7ff;text-decoration:none}
+.ochi-market-disclaimer{margin-top:12px;padding:11px 13px;border-left:3px solid #f2c861;background:rgba(242,200,97,.06);color:#aabbd0;font-size:12px;line-height:1.6;border-radius:0 8px 8px 0}
+@media(max-width:650px){.ochi-market-controls{grid-template-columns:1fr}.ochi-market-chart{height:470px}.ochi-market-tf button{flex:1}}
+
 </style>
 <style>
 /* 7.13 layout refinement */
@@ -2605,6 +2631,47 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
 #evModal .ev-modal-card{max-height:90vh;overflow:auto}
 @media(max-width:760px){main.container{padding-left:12px;padding-right:12px}.section-heading{gap:10px}.ochi-evidence-health{align-items:flex-start}.ev-actions button{min-height:44px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+/* OchiTracker Live Market visibility patch */
+#ochiMarketTerminal{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  position:relative!important;
+  scroll-margin-top:92px!important;
+  min-height:520px;
+  z-index:1;
+}
+.quick-nav a[href="#ochiMarketTerminal"]{
+  display:inline-flex!important;
+  align-items:center;
+  gap:6px;
+  background:linear-gradient(135deg,#176b48,#124a38)!important;
+  border:1px solid #43d17d!important;
+  color:#e7fff3!important;
+  font-weight:900!important;
+  box-shadow:0 0 0 2px rgba(67,209,125,.12);
+}
+.ochi-market-chart,.ochi-tv-widget{
+  display:block!important;
+  width:100%!important;
+  min-height:430px!important;
+  height:clamp(430px,62vh,720px)!important;
+  overflow:hidden;
+  border-radius:12px;
+}
+.ochi-tv-widget iframe{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  min-height:430px!important;
+  border:0!important;
+}
+@media(max-width:650px){
+  #ochiMarketTerminal{min-height:480px;padding:14px!important}
+  .ochi-market-chart,.ochi-tv-widget{height:480px!important;min-height:480px!important}
+}
+
 </style>
 
 </head>
@@ -2619,6 +2686,7 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
 <a class="ochi-nav-link" href="#tradeEntry"><span class="ochi-nav-icon">＋</span>Record a Trade</a>
 <a class="ochi-nav-link" href="#history"><span class="ochi-nav-icon">▤</span>Historical Data</a>
 <a class="ochi-nav-link" href="#calendarSection"><span class="ochi-nav-icon">▦</span>Trading Calendar</a>
+<a class="ochi-nav-link" href="#ochiMarketTerminal"><span class="ochi-nav-icon">⌁</span>Live Market</a>
 </nav>
 <nav aria-label="Performance" class="ochi-nav-group">
 <div class="ochi-nav-label">Performance</div>
@@ -2645,7 +2713,7 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
 </aside>
 <div class="ochi-terminal-topbar">
 <div class="ochi-topbar-heading"><span class="ochi-topbar-eyebrow">OCHI GLOBAL · TRADING WORKSPACE</span><strong>Performance Overview</strong><small>Account performance and trading results at a glance.</small></div>
-<div class="ochi-topbar-actions"><span class="ochi-live-status"><i></i> System online</span><a class="ochi-add-trade" href="#tradeEntry">＋ <span>Add New Trade</span></a></div>
+<div class="ochi-topbar-actions"><span class="ochi-live-status"><i></i> System online</span><a class="ochi-add-trade ochi-market-shortcut" href="#ochiMarketTerminal">⌁ <span>Live Market</span></a><a class="ochi-add-trade" href="#tradeEntry">＋ <span>Add New Trade</span></a></div>
 </div>
 <header aria-hidden="true" class="ochi-legacy-header">
 <div class="container">
@@ -2675,7 +2743,7 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
      QUICK NAV
 ======================================================= -->
 <nav class="quick-nav">
-<a href="#dashboard">Overview</a>
+<a href="#dashboard">Overview</a><a href="#ochiMarketTerminal" aria-label="Open Live Market TradingView chart">⌁ LIVE MARKET</a>
 <a href="#tradeEntry">Record Trade</a><a href="#evidenceLab">Evidence</a>
 <a href="#riskEngine">Risk</a>
 <a href="#intelligence">Intelligence</a>
@@ -2749,6 +2817,35 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
 <!-- =======================================================
      DASHBOARD
 ======================================================= -->
+
+<!-- =======================================================
+     OCHI MARKET TERMINAL — LIVE EMBEDDED MARKET CHARTS
+     Independent of journal storage; external chart provider.
+======================================================= -->
+<section class="ochi-market-terminal" id="ochiMarketTerminal" aria-labelledby="ochiMarketTitle">
+  <div class="ochi-market-head">
+    <div>
+      <div class="ochi-market-kicker">OGH · Market Intelligence</div>
+      <h2 class="ochi-market-title" id="ochiMarketTitle">Ochi Market Terminal</h2>
+      <div class="ochi-market-subtitle">Interactive TradingView charts in the same workspace as your trading journal. Choose an instrument and timeframe below.</div>
+    </div>
+    <div class="ochi-market-status"><span class="ochi-market-dot"></span> Chart connection via TradingView</div>
+  </div>
+  <div class="ochi-market-controls">
+    <div class="ochi-market-field"><label for="ochiMarketSymbol">Instrument</label><select id="ochiMarketSymbol">
+      <optgroup label="Forex"><option value="FX:EURUSD">EUR / USD</option><option value="FX:GBPUSD">GBP / USD</option><option value="FX:USDJPY">USD / JPY</option><option value="FX:AUDUSD">AUD / USD</option><option value="FX:USDCAD">USD / CAD</option><option value="FX:USDCHF">USD / CHF</option><option value="FX:NZDUSD">NZD / USD</option><option value="FX:EURJPY">EUR / JPY</option><option value="FX:GBPJPY">GBP / JPY</option><option value="FX:EURGBP">EUR / GBP</option></optgroup>
+      <optgroup label="Metals"><option value="OANDA:XAUUSD">Gold / USD</option><option value="OANDA:XAGUSD">Silver / USD</option></optgroup>
+      <optgroup label="Indices"><option value="FOREXCOM:US30">US Wall Street 30</option><option value="NASDAQ:NDX">Nasdaq 100</option><option value="SP:SPX">S&amp;P 500</option><option value="TVC:UKX">UK 100</option><option value="TVC:NI225">Nikkei 225</option></optgroup>
+      <optgroup label="Crypto"><option value="BINANCE:BTCUSDT">Bitcoin / USDT</option><option value="BINANCE:ETHUSDT">Ethereum / USDT</option></optgroup>
+    </select></div>
+    <div class="ochi-market-field"><label>Chart timeframe</label><div class="ochi-market-tf" role="group" aria-label="Chart timeframe"><button type="button" data-ochi-tf="5" aria-pressed="false">5m</button><button type="button" data-ochi-tf="15" aria-pressed="true">15m</button><button type="button" data-ochi-tf="60" aria-pressed="false">1H</button><button type="button" data-ochi-tf="240" aria-pressed="false">4H</button><button type="button" data-ochi-tf="D" aria-pressed="false">1D</button></div></div>
+    <div class="ochi-market-field"><label>Chart source</label><div style="min-height:43px;display:flex;align-items:center;color:#a9bdd2;font-size:12px">TradingView · Advanced Chart</div></div>
+  </div>
+  <div class="ochi-market-chart" aria-label="TradingView live market chart"><div id="ochiMarketWidget" class="ochi-tv-widget"><div class="ochi-tv-loading" id="ochiMarketLoading">Loading TradingView chart…<br> If the chart does not appear, use “Open full chart on TradingView” below.</div></div></div>
+  <div class="ochi-market-foot"><span>Use the chart controls to inspect price action, zoom, and change chart settings.</span><span><a id="ochiMarketOpenExternal" href="https://www.tradingview.com/chart/?symbol=FX%3AEURUSD" target="_blank" rel="noopener noreferrer">Open full chart on TradingView ↗</a></span></div>
+  <div class="ochi-market-disclaimer"><strong>Market-data note:</strong> this embeds TradingView’s chart service; real-time availability, exchange coverage, and any delays depend on the symbol and data provider. This is a charting view only—not broker execution, a guaranteed tick feed, or an automated trade signal. Your existing OchiTracker journal and records remain separate.</div>
+</section>
+
 <section id="dashboard">
 <div class="section-heading">
 <div>
@@ -11618,6 +11715,50 @@ footer{border-top-color:var(--ot-gold-line)!important;color:#788aa5!important}
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',tidyVisibleLabels,{once:true});else tidyVisibleLabels();
   window.OCHI_EXECUTIVE_BUILD=BUILD;
+})();
+</script>
+
+
+<script>
+/* Ochi Market Terminal: TradingView hosted chart iframe for robust GitHub Pages/mobile rendering. */
+(function(){
+  'use strict';
+  const symbolSelect=document.getElementById('ochiMarketSymbol');
+  const widget=document.getElementById('ochiMarketWidget');
+  const openLink=document.getElementById('ochiMarketOpenExternal');
+  const buttons=Array.from(document.querySelectorAll('[data-ochi-tf]'));
+  if(!symbolSelect||!widget||!openLink)return;
+  let interval='15';
+  function renderChart(){
+    const selected=symbolSelect.value||'FX:EURUSD';
+    const params=new URLSearchParams({
+      symbol:selected, interval:interval, theme:'dark', style:'1',
+      timezone:'Africa/Nairobi', locale:'en', hide_side_toolbar:'0',
+      symboledit:'1', saveimage:'0', toolbarbg:'0b1420',
+      withdateranges:'1', hideideas:'1', studies:'[]',
+      showpopupbutton:'1', allow_symbol_change:'1'
+    });
+    const chartUrl='https://www.tradingview.com/widgetembed/?'+params.toString();
+    openLink.href='https://www.tradingview.com/chart/?symbol='+encodeURIComponent(selected);
+    widget.innerHTML='';
+    const frame=document.createElement('iframe');
+    frame.title='TradingView live chart for '+selected;
+    frame.src=chartUrl;
+    frame.loading='eager';
+    frame.referrerPolicy='origin';
+    frame.allow='clipboard-write; fullscreen';
+    frame.setAttribute('allowfullscreen','');
+    frame.style.cssText='display:block;width:100%;height:100%;min-height:410px;border:0;background:#050c16';
+    frame.onerror=function(){widget.innerHTML='<div class="ochi-tv-loading">TradingView could not load inside this page. Check your connection or browser content blockers, then use “Open full chart on TradingView” below.</div>';};
+    widget.appendChild(frame);
+  }
+  symbolSelect.addEventListener('change',renderChart);
+  buttons.forEach(function(button){button.addEventListener('click',function(){
+    interval=button.dataset.ochiTf||'15';
+    buttons.forEach(function(other){other.setAttribute('aria-pressed',String(other===button));});
+    renderChart();
+  });});
+  renderChart();
 })();
 </script>
 
