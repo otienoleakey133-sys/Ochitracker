@@ -2638,6 +2638,8 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
 <style>
 #ochiAuthGate{position:fixed;inset:0;z-index:2147483000;display:flex;align-items:center;justify-content:center;padding:22px;background:radial-gradient(ellipse at 50% 0%,rgba(35,103,170,.24),transparent 55%),rgba(3,8,15,.98);backdrop-filter:blur(14px);overflow-y:auto}
 #ochiAuthGate[hidden]{display:none!important}
+.ochi-recovery-overlay{position:fixed;inset:0;z-index:2147483001;display:flex;align-items:center;justify-content:center;padding:22px;background:rgba(3,8,15,.985);backdrop-filter:blur(14px);overflow-y:auto}
+.ochi-recovery-overlay[hidden]{display:none!important}
 .ochi-gate-card{width:min(100%,440px);padding:30px;border:1px solid #24445f;border-radius:22px;background:linear-gradient(155deg,#102238,#091321 72%);box-shadow:0 28px 90px rgba(0,0,0,.58);color:#edf4fc;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
 .ochi-gate-mark{width:48px;height:48px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(135deg,#2188ff,#55d8ff);color:#061321;font-weight:900;font-size:18px;margin-bottom:20px}
 .ochi-gate-kicker{font-size:10px;letter-spacing:2px;color:#69b7ff;font-weight:800}
@@ -2677,6 +2679,24 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
     </div>
     <div id="ochiGateMessage" role="status" aria-live="polite">Connecting securely to Supabase…</div>
     <div class="ochi-gate-foot">OchiTracker · Private account access</div>
+  </div>
+</div>
+
+<div id="ochiPasswordRecovery" class="ochi-recovery-overlay" role="dialog" aria-modal="true" aria-labelledby="ochiRecoveryTitle" hidden>
+  <div class="ochi-gate-card">
+    <div class="ochi-gate-mark">OT</div>
+    <div class="ochi-gate-kicker">ACCOUNT SECURITY</div>
+    <h2 id="ochiRecoveryTitle">Set a new password</h2>
+    <p class="ochi-gate-copy">Choose a new password for your private OchiTracker account.</p>
+    <label for="ochiRecoveryPassword">New password</label>
+    <input id="ochiRecoveryPassword" type="password" maxlength="128" autocomplete="new-password" placeholder="At least 8 characters">
+    <label for="ochiRecoveryPasswordConfirm">Confirm new password</label>
+    <input id="ochiRecoveryPasswordConfirm" type="password" maxlength="128" autocomplete="new-password" placeholder="Enter the password again">
+    <div class="ochi-gate-actions">
+      <button type="button" class="ochi-gate-primary" onclick="completeOchiPasswordRecovery()">Update password</button>
+    </div>
+    <div id="ochiRecoveryMessage" role="status" aria-live="polite">Validating password-reset link…</div>
+    <div class="ochi-gate-foot">OchiTracker · Secure password recovery</div>
   </div>
 </div>
 
@@ -10232,7 +10252,8 @@ function renderOchiAuthGate(){
   // Do not trust the local profile cache as proof of login; only Supabase's live session counts.
   const signedIn=!!(OCHI_AUTH_READY && OCHI_SUPABASE && getOchiAuthUser());
   gate.hidden=signedIn;
-  document.body.style.overflow=signedIn ? "" : "hidden";
+  const recovery=document.getElementById("ochiPasswordRecovery");
+  document.body.style.overflow=(signedIn && (!recovery || recovery.hidden)) ? "" : "hidden";
   if(signedIn){const p=document.getElementById("ochiGatePassword");if(p)p.value="";}
 }
 function getOchiAuthUser(){ const a=getOchiAccount(); return a?.authenticated && a?.userId ? a : null; }
@@ -10270,6 +10291,52 @@ function requireOchiSupabase(){
   if(!OCHI_SUPABASE){setOchiAccountMessage("Supabase is not ready. Check your internet connection and reload this page.",true);return false;}
   return true;
 }
+function setOchiRecoveryMessage(message,isError=false){
+  const el=document.getElementById("ochiRecoveryMessage");
+  if(!el)return;
+  el.textContent=message;
+  el.style.color=isError ? "#ffb4b4" : "#b9d8ff";
+  el.style.borderColor=isError ? "rgba(255,100,100,.35)" : "rgba(88,166,255,.22)";
+  el.style.background=isError ? "rgba(255,70,70,.10)" : "rgba(88,166,255,.08)";
+}
+function showOchiPasswordRecovery(message,isError=false){
+  const panel=document.getElementById("ochiPasswordRecovery");
+  if(!panel){setOchiAccountMessage(message,isError);return;}
+  panel.hidden=false;
+  document.body.style.overflow="hidden";
+  setOchiRecoveryMessage(message,isError);
+  const input=document.getElementById("ochiRecoveryPassword");
+  if(input){try{input.focus({preventScroll:true});}catch(_e){input.focus();}}
+}
+function hideOchiPasswordRecovery(){
+  const panel=document.getElementById("ochiPasswordRecovery");
+  if(panel)panel.hidden=true;
+  const gate=document.getElementById("ochiAuthGate");
+  document.body.style.overflow=(gate && !gate.hidden) ? "hidden" : "";
+}
+async function completeOchiPasswordRecovery(){
+  if(!requireOchiSupabase())return;
+  const password=document.getElementById("ochiRecoveryPassword")?.value || "";
+  const confirmation=document.getElementById("ochiRecoveryPasswordConfirm")?.value || "";
+  if(password.length<8){setOchiRecoveryMessage("Use a password with at least 8 characters.",true);return;}
+  if(password!==confirmation){setOchiRecoveryMessage("The passwords do not match.",true);return;}
+  try{
+    setOchiRecoveryMessage("Updating your password securely…");
+    const {data,error}=await OCHI_SUPABASE.auth.updateUser({password});
+    if(error)throw error;
+    const first=document.getElementById("ochiRecoveryPassword");
+    const second=document.getElementById("ochiRecoveryPasswordConfirm");
+    if(first)first.value="";
+    if(second)second.value="";
+    if(data?.user)persistOchiAuthUser(data.user);
+    renderOchiAccount();
+    hideOchiPasswordRecovery();
+    setOchiAccountMessage("Password updated successfully. Your OchiTracker account is signed in.");
+  }catch(error){
+    setOchiRecoveryMessage("Password update failed: "+(error.message || "The recovery link may have expired."),true);
+  }
+}
+
 async function signUpOchiAccount(){
   if(!requireOchiSupabase())return;
   const name=sanitizeAccountText(getOchiAuthInput("ochiAccountName")?.value,80);
@@ -10308,16 +10375,19 @@ async function resetOchiPassword(){
 }
 async function signOutOchiAccount(){
   if(!requireOchiSupabase())return;
-  try{const {error}=await OCHI_SUPABASE.auth.signOut();if(error)throw error;clearOchiAccount();renderOchiAccount();renderOchiCloud();
+  try{const {error}=await OCHI_SUPABASE.auth.signOut({scope:"local"});if(error)throw error;clearOchiAccount();renderOchiAccount();renderOchiCloud();
     setOchiAccountMessage("Signed out. Your local trades and settings remain on this device.");}
   catch(error){setOchiAccountMessage("Sign-out failed: "+(error.message || "Unknown error"),true);}
 }
 async function initializeOchiAccount(){
   if(OCHI_AUTH_INITIALIZING)return;
   OCHI_AUTH_INITIALIZING=true;
+  const hashParams=new URLSearchParams((window.location.hash || "").replace(/^#/,""));
+  const queryParams=new URLSearchParams(window.location.search || "");
+  const passwordRecoveryCallback=hashParams.get("type")==="recovery" || queryParams.get("type")==="recovery";
   try{
     setOchiAccountMessage("Loading secure sign-in service…");
-    // CDN fallback may still be loading; wait instead of silently leaving dead buttons.
+    // CDN fallback may still be loading; wait instead of leaving inactive controls.
     let attempts=0;
     while(!window.supabase?.createClient && attempts<24){
       await new Promise(resolve=>setTimeout(resolve,500));
@@ -10327,24 +10397,38 @@ async function initializeOchiAccount(){
       throw new Error("The Supabase library could not load from either CDN. Check internet access, then reload.");
     }
     OCHI_SUPABASE=window.supabase.createClient(OCHI_SUPABASE_URL,OCHI_SUPABASE_PUBLISHABLE_KEY,{
-      // Keep the session in this tab only. The session-boundary handler clears it
-      // when the user navigates away and later returns; refreshes remain signed in.
-      auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,storage:window.sessionStorage,storageKey:"ochitracker-supabase-auth"}
+      auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,storage:window.sessionStorage,storageKey:OCHI_AUTH_STORAGE_KEY}
+    });
+    // Subscribe before reading the session so recovery and refresh events
+    // cannot be missed during callback URL processing.
+    OCHI_SUPABASE.auth.onAuthStateChange((event,session)=>{
+      persistOchiAuthUser(session?.user || null);
+      renderOchiAccount();
+      renderOchiCloud();
+      if(event==="PASSWORD_RECOVERY"){
+        showOchiPasswordRecovery("Choose and confirm your new password.");
+      }
     });
     const {data,error}=await OCHI_SUPABASE.auth.getSession();
     if(error)throw error;
     persistOchiAuthUser(data.session?.user || null);
     OCHI_AUTH_READY=true;
-    OCHI_SUPABASE.auth.onAuthStateChange((_event,session)=>{
-      persistOchiAuthUser(session?.user || null);
-      renderOchiAccount();
-      renderOchiCloud();
-    });
     renderOchiAccount();
     renderOchiCloud();
-    setOchiAccountMessage(data.session?.user
-      ? "Signed in session restored. Your local trading records are preserved. Cloud trade sync is not yet enabled."
-      : "Secure sign-in is ready. Enter your Supabase email and password.");
+
+    if(passwordRecoveryCallback){
+      if(data.session){
+        showOchiPasswordRecovery("Recovery link validated. Choose your new password.");
+      }else{
+        showOchiPasswordRecovery("This password-reset link is invalid or has expired. Request a new reset link.",true);
+      }
+      // Supabase has processed the callback; remove access/refresh tokens from the address bar.
+      try{history.replaceState(null,document.title,window.location.pathname+window.location.search);}catch(_e){}
+    }else{
+      setOchiAccountMessage(data.session?.user
+        ? "Signed in session restored. Your local trading records are preserved. Cloud trade sync is not enabled."
+        : "Secure sign-in is ready. Enter your Supabase email and password.");
+    }
   }catch(error){
     OCHI_AUTH_READY=false;
     renderOchiAccount();
