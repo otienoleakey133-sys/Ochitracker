@@ -10327,7 +10327,9 @@ async function initializeOchiAccount(){
       throw new Error("The Supabase library could not load from either CDN. Check internet access, then reload.");
     }
     OCHI_SUPABASE=window.supabase.createClient(OCHI_SUPABASE_URL,OCHI_SUPABASE_PUBLISHABLE_KEY,{
-      auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,storageKey:"ochitracker-supabase-auth"}
+      // Keep authentication for this browser tab session: refreshes remain signed in,
+      // but closing the tab/browser clears the session and requires credentials again.
+      auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,storage:window.sessionStorage,storageKey:"ochitracker-supabase-auth"}
     });
     const {data,error}=await OCHI_SUPABASE.auth.getSession();
     if(error)throw error;
