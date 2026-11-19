@@ -10327,8 +10327,8 @@ async function initializeOchiAccount(){
       throw new Error("The Supabase library could not load from either CDN. Check internet access, then reload.");
     }
     OCHI_SUPABASE=window.supabase.createClient(OCHI_SUPABASE_URL,OCHI_SUPABASE_PUBLISHABLE_KEY,{
-      // Keep authentication for this browser tab session: refreshes remain signed in,
-      // but closing the tab/browser clears the session and requires credentials again.
+      // Keep the session in this tab only. The session-boundary handler clears it
+      // when the user navigates away and later returns; refreshes remain signed in.
       auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,storage:window.sessionStorage,storageKey:"ochitracker-supabase-auth"}
     });
     const {data,error}=await OCHI_SUPABASE.auth.getSession();
@@ -10354,6 +10354,46 @@ async function initializeOchiAccount(){
     OCHI_AUTH_INITIALIZING=false;
   }
 }
+/* =========================================================
+   OCHI SESSION BOUNDARY
+   Keep authentication through a refresh, but require a fresh
+   login after navigating away from this site and returning.
+   ========================================================= */
+const OCHI_AUTH_STORAGE_KEY="ochitracker-supabase-auth";
+const OCHI_AWAY_MARKER_KEY="ochitracker-left-site";
+function prepareOchiSessionForPageEntry(){
+  try{
+    const nav=performance.getEntriesByType("navigation")[0];
+    const navType=nav?.type || "navigate";
+    const leftSite=sessionStorage.getItem(OCHI_AWAY_MARKER_KEY)==="1";
+    sessionStorage.removeItem(OCHI_AWAY_MARKER_KEY);
+    // A reload is the same active visit. A fresh navigation/back-forward return
+    // after leaving OchiTracker must not inherit the previous authenticated session.
+    if(leftSite && navType!=="reload"){
+      sessionStorage.removeItem(OCHI_AUTH_STORAGE_KEY);
+      clearOchiAccount();
+    }
+  }catch(error){
+    // Fail closed if session storage cannot be inspected.
+    try{sessionStorage.removeItem(OCHI_AUTH_STORAGE_KEY);}catch(_e){}
+    clearOchiAccount();
+  }
+}
+window.addEventListener("pagehide",()=>{
+  try{sessionStorage.setItem(OCHI_AWAY_MARKER_KEY,"1");}catch(_e){}
+});
+window.addEventListener("pageshow",(event)=>{
+  if(!event.persisted)return;
+  // Some browsers restore the old page from the back-forward cache.
+  try{sessionStorage.removeItem(OCHI_AUTH_STORAGE_KEY);sessionStorage.removeItem(OCHI_AWAY_MARKER_KEY);}catch(_e){}
+  clearOchiAccount();
+  if(OCHI_SUPABASE){OCHI_SUPABASE.auth.signOut({scope:"local"}).catch(()=>{});}
+  OCHI_AUTH_READY=true;
+  renderOchiAccount();
+  renderOchiAuthGate();
+  setOchiAccountMessage("You left OchiTracker. Please sign in again to continue.");
+});
+prepareOchiSessionForPageEntry();
 renderOchiAuthGate();
 initializeOchiAccount();
 
