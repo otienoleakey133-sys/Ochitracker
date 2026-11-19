@@ -5,8 +5,8 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta content="#07111f" name="theme-color"/>
-<title>OchiTracker Phase 7.19.1 — Trading Intelligence</title>
-<meta name="ochitracker-version" content="Phase 7.19.1"/>
+<title>OchiTracker Phase 7.20.3 — Auth Runtime Repair</title>
+<meta name="ochitracker-version" content="Phase 7.20.3"/>
 <meta name="description" content="OchiTracker trading journal, risk engine, performance intelligence and TradingView market terminal."/>
 <style>
 /* =========================================================
@@ -2634,8 +2634,52 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 </style>
 
+
+<style>
+#ochiAuthGate{position:fixed;inset:0;z-index:2147483000;display:flex;align-items:center;justify-content:center;padding:22px;background:radial-gradient(ellipse at 50% 0%,rgba(35,103,170,.24),transparent 55%),rgba(3,8,15,.98);backdrop-filter:blur(14px);overflow-y:auto}
+#ochiAuthGate[hidden]{display:none!important}
+.ochi-gate-card{width:min(100%,440px);padding:30px;border:1px solid #24445f;border-radius:22px;background:linear-gradient(155deg,#102238,#091321 72%);box-shadow:0 28px 90px rgba(0,0,0,.58);color:#edf4fc;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
+.ochi-gate-mark{width:48px;height:48px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(135deg,#2188ff,#55d8ff);color:#061321;font-weight:900;font-size:18px;margin-bottom:20px}
+.ochi-gate-kicker{font-size:10px;letter-spacing:2px;color:#69b7ff;font-weight:800}
+#ochiGateTitle{font-size:27px;line-height:1.2;margin:9px 0;color:#f5f9ff}
+.ochi-gate-copy{font-size:13px;line-height:1.6;color:#9bb0c6;margin:0 0 22px}
+.ochi-gate-card label{display:block;margin:13px 0 6px;font-size:12px;font-weight:700;color:#c7d8e9}
+.ochi-gate-card label span{font-weight:400;color:#7890a8}
+.ochi-gate-card input{display:block;width:100%;min-height:48px;padding:12px 13px;border:1px solid #29435d;border-radius:10px;background:#071321;color:#f2f7fc;font-size:15px;outline:none;box-sizing:border-box}
+.ochi-gate-card input:focus{border-color:#4da3ff;box-shadow:0 0 0 3px rgba(77,163,255,.13)}
+.ochi-gate-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}
+.ochi-gate-actions button{min-height:46px;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer}
+.ochi-gate-primary{border:0;background:linear-gradient(135deg,#258cff,#4db5ff);color:#041321}
+.ochi-gate-secondary{border:1px solid #315575;background:#14283d;color:#d9ebfc}
+.ochi-gate-link{grid-column:1/-1;border:0;background:transparent;color:#78baff;min-height:36px!important}
+#ochiGateMessage{margin-top:13px;padding:11px 12px;border:1px solid rgba(88,166,255,.16);border-radius:9px;background:rgba(88,166,255,.08);color:#b9d8ff;font-size:12px;line-height:1.5;overflow-wrap:anywhere}
+.ochi-gate-foot{text-align:center;margin-top:19px;color:#637b94;font-size:10px;letter-spacing:.7px}
+@media(max-width:480px){#ochiAuthGate{padding:14px}.ochi-gate-card{padding:23px 19px;border-radius:18px}#ochiGateTitle{font-size:24px}}
+</style>
 </head>
 <body>
+<div id="ochiAuthGate" role="dialog" aria-modal="true" aria-labelledby="ochiGateTitle">
+  <div class="ochi-gate-card">
+    <div class="ochi-gate-mark">OT</div>
+    <div class="ochi-gate-kicker">PRIVATE TRADING WORKSPACE</div>
+    <h1 id="ochiGateTitle">Welcome to OchiTracker</h1>
+    <p class="ochi-gate-copy">Sign in to access your trading dashboard. Your account is secured by Supabase.</p>
+    <label for="ochiGateName">Display name <span>(for new accounts)</span></label>
+    <input id="ochiGateName" type="text" maxlength="80" autocomplete="name" placeholder="Your name">
+    <label for="ochiGateEmail">Email address</label>
+    <input id="ochiGateEmail" type="email" maxlength="160" autocomplete="username" placeholder="you@example.com">
+    <label for="ochiGatePassword">Password</label>
+    <input id="ochiGatePassword" type="password" maxlength="128" autocomplete="current-password" placeholder="Enter your password">
+    <div class="ochi-gate-actions">
+      <button type="button" class="ochi-gate-primary" onclick="signInOchiAccount()">Sign in</button>
+      <button type="button" class="ochi-gate-secondary" onclick="signUpOchiAccount()">Create account</button>
+      <button type="button" class="ochi-gate-link" onclick="resetOchiPassword()">Forgot password?</button>
+    </div>
+    <div id="ochiGateMessage" role="status" aria-live="polite">Connecting securely to Supabase…</div>
+    <div class="ochi-gate-foot">OchiTracker · Private account access</div>
+  </div>
+</div>
+
 <div class="ochi-mobile-bar"><button aria-expanded="false" aria-label="Open navigation" class="ochi-menu-toggle" id="ochiMenuToggle" type="button">☰</button><div class="ochi-mobile-title">OchiTracker</div><div class="ochi-mobile-sub">TRADING WORKSPACE</div></div>
 <div class="ochi-nav-scrim" id="ochiNavScrim"></div>
 <aside aria-label="Main navigation" class="ochi-sidebar" id="ochiSidebar">
@@ -4331,7 +4375,7 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
   • Local Data Mode
 
 </footer>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" onerror="this.onerror=null;this.src='https://unpkg.com/@supabase/supabase-js@2'"></script>
 <script>
 /* =========================================================
    OCHITRACKER CORE
@@ -10054,8 +10098,13 @@ window.addEventListener(
    START
 ========================================================= */
 
-initialize();
-
+try{
+  initialize();
+}catch(error){
+  console.error("OchiTracker dashboard initialization warning:",error);
+  const boot=document.getElementById("ochiBootError");
+  if(boot){boot.style.display="block";boot.textContent="Dashboard startup warning: "+(error?.message || error)+". Authentication remains available; saved records were not intentionally changed.";}
+}
 
 
 /* =========================================================
@@ -10164,12 +10213,27 @@ function getOchiAccount(){
 function saveOchiAccount(account){ localStorage.setItem(OCHI_ACCOUNT_KEY,JSON.stringify(account)); }
 function clearOchiAccount(){ localStorage.removeItem(OCHI_ACCOUNT_KEY); }
 function sanitizeAccountText(value,maxLength){ return String(value ?? "").trim().slice(0,maxLength); }
+function getOchiAuthInput(id){
+  const gateIds={ochiAccountName:"ochiGateName",ochiAccountEmail:"ochiGateEmail",ochiAccountPassword:"ochiGatePassword"};
+  const gate=document.getElementById(gateIds[id]);
+  return gate || document.getElementById(id);
+}
 function setOchiAccountMessage(message,isError=false){
-  const el=document.getElementById("ochiAccountMessage"); if(!el)return;
-  el.textContent=message;
-  el.style.color=isError ? "#ffb4b4" : "#b9d8ff";
-  el.style.borderColor=isError ? "rgba(255,100,100,.22)" : "rgba(88,166,255,.16)";
-  el.style.background=isError ? "rgba(255,70,70,.08)" : "rgba(88,166,255,.08)";
+  [document.getElementById("ochiAccountMessage"),document.getElementById("ochiGateMessage")].filter(Boolean).forEach(el=>{
+    el.textContent=message;
+    el.style.color=isError ? "#ffb4b4" : "#b9d8ff";
+    el.style.borderColor=isError ? "rgba(255,100,100,.35)" : "rgba(88,166,255,.22)";
+    el.style.background=isError ? "rgba(255,70,70,.10)" : "rgba(88,166,255,.08)";
+  });
+}
+function renderOchiAuthGate(){
+  const gate=document.getElementById("ochiAuthGate");
+  if(!gate)return;
+  // Do not trust the local profile cache as proof of login; only Supabase's live session counts.
+  const signedIn=!!(OCHI_AUTH_READY && OCHI_SUPABASE && getOchiAuthUser());
+  gate.hidden=signedIn;
+  document.body.style.overflow=signedIn ? "" : "hidden";
+  if(signedIn){const p=document.getElementById("ochiGatePassword");if(p)p.value="";}
 }
 function getOchiAuthUser(){ const a=getOchiAccount(); return a?.authenticated && a?.userId ? a : null; }
 function persistOchiAuthUser(user){
@@ -10184,8 +10248,9 @@ function renderOchiAccount(){
   const session=document.getElementById("ochiAccountSession"), accountId=document.getElementById("ochiAccountId"),
     profile=document.getElementById("ochiAccountProfile"), signedOut=document.getElementById("ochiAccountSignedOut"),
     signedIn=document.getElementById("ochiAccountSignedIn");
-  if(!session || !accountId || !profile)return;
+  if(!session || !accountId || !profile){renderOchiAuthGate();return;}
   const account=getOchiAuthUser(), authenticated=!!account;
+  renderOchiAuthGate();
   session.textContent=authenticated ? "Signed in · Supabase" : (OCHI_AUTH_READY ? "Signed out" : "Connecting…");
   accountId.textContent=account?.userId || "—";
   profile.textContent=authenticated ? `${account.displayName} · ${account.email}` : "No active account";
@@ -10207,9 +10272,9 @@ function requireOchiSupabase(){
 }
 async function signUpOchiAccount(){
   if(!requireOchiSupabase())return;
-  const name=sanitizeAccountText(document.getElementById("ochiAccountName")?.value,80);
-  const email=sanitizeAccountText(document.getElementById("ochiAccountEmail")?.value,160).toLowerCase();
-  const password=String(document.getElementById("ochiAccountPassword")?.value || "");
+  const name=sanitizeAccountText(getOchiAuthInput("ochiAccountName")?.value,80);
+  const email=sanitizeAccountText(getOchiAuthInput("ochiAccountEmail")?.value,160).toLowerCase();
+  const password=String(getOchiAuthInput("ochiAccountPassword")?.value || "");
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return setOchiAccountMessage("Enter a valid email address.",true);
   if(password.length<8)return setOchiAccountMessage("Use a password with at least 8 characters.",true);
   try{
@@ -10222,20 +10287,20 @@ async function signUpOchiAccount(){
 }
 async function signInOchiAccount(){
   if(!requireOchiSupabase())return;
-  const email=sanitizeAccountText(document.getElementById("ochiAccountEmail")?.value,160).toLowerCase();
-  const password=String(document.getElementById("ochiAccountPassword")?.value || "");
+  const email=sanitizeAccountText(getOchiAuthInput("ochiAccountEmail")?.value,160).toLowerCase();
+  const password=String(getOchiAuthInput("ochiAccountPassword")?.value || "");
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return setOchiAccountMessage("Enter a valid email address.",true);
   if(!password)return setOchiAccountMessage("Enter your account password.",true);
   try{
     setOchiAccountMessage("Signing in securely…");
     const {data,error}=await OCHI_SUPABASE.auth.signInWithPassword({email,password}); if(error)throw error;
-    persistOchiAuthUser(data.user); const p=document.getElementById("ochiAccountPassword");if(p)p.value="";
+    persistOchiAuthUser(data.user); const p=getOchiAuthInput("ochiAccountPassword");if(p)p.value="";
     renderOchiAccount();renderOchiCloud();setOchiAccountMessage("Signed in to Supabase. Your local trades remain unchanged; cloud sync is still paused pending database checks.");
   }catch(error){setOchiAccountMessage("Sign-in failed: "+(error.message || "Check your email and password"),true);}
 }
 async function resetOchiPassword(){
   if(!requireOchiSupabase())return;
-  const email=sanitizeAccountText(document.getElementById("ochiAccountEmail")?.value,160).toLowerCase();
+  const email=sanitizeAccountText(getOchiAuthInput("ochiAccountEmail")?.value,160).toLowerCase();
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return setOchiAccountMessage("Enter your account email first.",true);
   try{const {error}=await OCHI_SUPABASE.auth.resetPasswordForEmail(email,{redirectTo:window.location.href.split("#")[0]});if(error)throw error;
     setOchiAccountMessage("If this email belongs to an account, Supabase will send a password-reset link.");}
@@ -10248,21 +10313,46 @@ async function signOutOchiAccount(){
   catch(error){setOchiAccountMessage("Sign-out failed: "+(error.message || "Unknown error"),true);}
 }
 async function initializeOchiAccount(){
-  if(OCHI_AUTH_INITIALIZING)return;OCHI_AUTH_INITIALIZING=true;
+  if(OCHI_AUTH_INITIALIZING)return;
+  OCHI_AUTH_INITIALIZING=true;
   try{
-    if(!window.supabase?.createClient)throw new Error("Supabase JavaScript library did not load.");
-    OCHI_SUPABASE=window.supabase.createClient(OCHI_SUPABASE_URL,OCHI_SUPABASE_PUBLISHABLE_KEY,
-      {auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,storageKey:"ochitracker-supabase-auth"}});
-    const {data,error}=await OCHI_SUPABASE.auth.getSession();if(error)throw error;
-    persistOchiAuthUser(data.session?.user || null);OCHI_AUTH_READY=true;
-    OCHI_SUPABASE.auth.onAuthStateChange((_event,session)=>{
-      persistOchiAuthUser(session?.user || null);renderOchiAccount();renderOchiCloud();
+    setOchiAccountMessage("Loading secure sign-in service…");
+    // CDN fallback may still be loading; wait instead of silently leaving dead buttons.
+    let attempts=0;
+    while(!window.supabase?.createClient && attempts<24){
+      await new Promise(resolve=>setTimeout(resolve,500));
+      attempts++;
+    }
+    if(!window.supabase?.createClient){
+      throw new Error("The Supabase library could not load from either CDN. Check internet access, then reload.");
+    }
+    OCHI_SUPABASE=window.supabase.createClient(OCHI_SUPABASE_URL,OCHI_SUPABASE_PUBLISHABLE_KEY,{
+      auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,storageKey:"ochitracker-supabase-auth"}
     });
-    renderOchiAccount();renderOchiCloud();
-    setOchiAccountMessage(data.session?.user ? "Supabase session restored on this device. Trade sync remains paused pending database ownership checks." : "Supabase is ready. Sign in with your existing email account. Your local trades have not been changed.");
-  }catch(error){OCHI_AUTH_READY=false;renderOchiAccount();setOchiAccountMessage("Supabase authentication could not initialize: "+(error.message || "Check connection and reload"),true);}
-  finally{OCHI_AUTH_INITIALIZING=false;}
+    const {data,error}=await OCHI_SUPABASE.auth.getSession();
+    if(error)throw error;
+    persistOchiAuthUser(data.session?.user || null);
+    OCHI_AUTH_READY=true;
+    OCHI_SUPABASE.auth.onAuthStateChange((_event,session)=>{
+      persistOchiAuthUser(session?.user || null);
+      renderOchiAccount();
+      renderOchiCloud();
+    });
+    renderOchiAccount();
+    renderOchiCloud();
+    setOchiAccountMessage(data.session?.user
+      ? "Signed in session restored. Your local trading records are preserved. Cloud trade sync is not yet enabled."
+      : "Secure sign-in is ready. Enter your Supabase email and password.");
+  }catch(error){
+    OCHI_AUTH_READY=false;
+    renderOchiAccount();
+    setOchiAccountMessage("Sign-in service unavailable: "+(error.message || "Check your connection and reload"),true);
+    console.error("OchiTracker Supabase initialization failed:",error);
+  }finally{
+    OCHI_AUTH_INITIALIZING=false;
+  }
 }
+renderOchiAuthGate();
 initializeOchiAccount();
 
 
