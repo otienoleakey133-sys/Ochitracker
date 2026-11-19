@@ -10205,6 +10205,8 @@ const OCHI_SUPABASE_PUBLISHABLE_KEY = "sb_publishable_2NcEdq9KoN7UDGorVa09pQ_uBb
 let OCHI_SUPABASE = null;
 let OCHI_AUTH_READY = false;
 let OCHI_AUTH_INITIALIZING = false;
+let OCHI_LOCKED_BY_LEAVING = false;
+let OCHI_AUTO_LOCK_IN_PROGRESS = false;
 
 function getOchiAccount(){
   try{ const raw=localStorage.getItem(OCHI_ACCOUNT_KEY); return raw ? JSON.parse(raw) : null; }
@@ -10230,7 +10232,7 @@ function renderOchiAuthGate(){
   const gate=document.getElementById("ochiAuthGate");
   if(!gate)return;
   // Do not trust the local profile cache as proof of login; only Supabase's live session counts.
-  const signedIn=!!(OCHI_AUTH_READY && OCHI_SUPABASE && getOchiAuthUser());
+  const signedIn=!!(!OCHI_LOCKED_BY_LEAVING && OCHI_AUTH_READY && OCHI_SUPABASE && getOchiAuthUser());
   gate.hidden=signedIn;
   document.body.style.overflow=signedIn ? "" : "hidden";
   if(signedIn){const p=document.getElementById("ochiGatePassword");if(p)p.value="";}
@@ -10281,7 +10283,7 @@ async function signUpOchiAccount(){
     setOchiAccountMessage("Creating your Supabase account…");
     const {data,error}=await OCHI_SUPABASE.auth.signUp({email,password,options:{data:{display_name:name || email.split("@")[0]},emailRedirectTo:window.location.href.split("#")[0]}});
     if(error)throw error;
-    if(data.session && data.user){persistOchiAuthUser(data.user);renderOchiAccount();renderOchiCloud();setOchiAccountMessage("Account created and signed in. Your local trades have not been uploaded or changed.");}
+    if(data.session && data.user){OCHI_LOCKED_BY_LEAVING=false;persistOchiAuthUser(data.user);renderOchiAccount();renderOchiCloud();setOchiAccountMessage("Account created and signed in. Your local trades have not been uploaded or changed.");}
     else setOchiAccountMessage("Account request accepted. Check your email for the confirmation link, then return and sign in.");
   }catch(error){setOchiAccountMessage("Sign-up failed: "+(error.message || "Unknown Supabase error"),true);}
 }
@@ -10294,7 +10296,7 @@ async function signInOchiAccount(){
   try{
     setOchiAccountMessage("Signing in securely…");
     const {data,error}=await OCHI_SUPABASE.auth.signInWithPassword({email,password}); if(error)throw error;
-    persistOchiAuthUser(data.user); const p=getOchiAuthInput("ochiAccountPassword");if(p)p.value="";
+    OCHI_LOCKED_BY_LEAVING=false;persistOchiAuthUser(data.user); const p=getOchiAuthInput("ochiAccountPassword");if(p)p.value="";
     renderOchiAccount();renderOchiCloud();setOchiAccountMessage("Signed in to Supabase. Your local trades remain unchanged; cloud sync is still paused pending database checks.");
   }catch(error){setOchiAccountMessage("Sign-in failed: "+(error.message || "Check your email and password"),true);}
 }
@@ -10308,10 +10310,29 @@ async function resetOchiPassword(){
 }
 async function signOutOchiAccount(){
   if(!requireOchiSupabase())return;
-  try{const {error}=await OCHI_SUPABASE.auth.signOut();if(error)throw error;clearOchiAccount();renderOchiAccount();renderOchiCloud();
+  try{const {error}=await OCHI_SUPABASE.auth.signOut({scope:"local"});if(error)throw error;OCHI_LOCKED_BY_LEAVING=true;clearOchiAccount();renderOchiAccount();renderOchiCloud();
     setOchiAccountMessage("Signed out. Your local trades and settings remain on this device.");}
   catch(error){setOchiAccountMessage("Sign-out failed: "+(error.message || "Unknown error"),true);}
 }
+function lockOchiTrackerAfterLeaving(){
+  if(OCHI_AUTO_LOCK_IN_PROGRESS || !getOchiAuthUser())return;
+  OCHI_AUTO_LOCK_IN_PROGRESS=true;
+  OCHI_LOCKED_BY_LEAVING=true;
+  clearOchiAccount();
+  try{sessionStorage.removeItem("ochitracker-supabase-auth");}catch(error){}
+  const password=document.getElementById("ochiGatePassword");if(password)password.value="";
+  renderOchiAuthGate();
+  renderOchiAccount();
+  setOchiAccountMessage("OchiTracker is locked because you left the app. Sign in again to continue.");
+  if(OCHI_SUPABASE){
+    Promise.resolve(OCHI_SUPABASE.auth.signOut({scope:"local"})).catch(error=>console.warn("OchiTracker auto-lock sign-out:",error)).finally(()=>{OCHI_AUTO_LOCK_IN_PROGRESS=false;});
+  }else{OCHI_AUTO_LOCK_IN_PROGRESS=false;}
+}
+// Lock immediately when the page is backgrounded, switched away from, or navigated away.
+// A fresh page load also requires credentials because Supabase sessions are not persisted.
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")lockOchiTrackerAfterLeaving();});
+window.addEventListener("pagehide",lockOchiTrackerAfterLeaving);
+
 async function initializeOchiAccount(){
   if(OCHI_AUTH_INITIALIZING)return;
   OCHI_AUTH_INITIALIZING=true;
@@ -10327,9 +10348,9 @@ async function initializeOchiAccount(){
       throw new Error("The Supabase library could not load from either CDN. Check internet access, then reload.");
     }
     OCHI_SUPABASE=window.supabase.createClient(OCHI_SUPABASE_URL,OCHI_SUPABASE_PUBLISHABLE_KEY,{
-      // Keep authentication for this browser tab session: refreshes remain signed in,
-      // but closing the tab/browser clears the session and requires credentials again.
-      auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,storage:window.sessionStorage,storageKey:"ochitracker-supabase-auth"}
+      // Do not persist authentication between page loads or browser sessions.
+      // The visibility/pagehide lock below also signs out when the user leaves the app.
+      auth:{persistSession:false,autoRefreshToken:true,detectSessionInUrl:true}
     });
     const {data,error}=await OCHI_SUPABASE.auth.getSession();
     if(error)throw error;
