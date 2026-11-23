@@ -5,7 +5,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta content="#07111f" name="theme-color"/>
-<title>OchiTracker Phase 7.20.3 — Auth Runtime Repair</title>
+<title>OchiTracker Phase 7.21.0 — Cloud Readiness Preview</title>
 <meta name="ochitracker-version" content="Phase 7.20.3"/>
 <meta name="description" content="OchiTracker trading journal, risk engine, performance intelligence and TradingView market terminal."/>
 <style>
@@ -4032,7 +4032,7 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
 <div class="cloud-node">☁️ Ochi Cloud</div>
 </div>
 <div class="cloud-note">
-<strong>cloud foundation:</strong> OchiTracker remains local-first. Supabase now provides real email authentication. Local trade storage remains the source of truth while remote trade synchronization is kept paused until ownership and Row Level Security are verified.
+<strong>cloud foundation:</strong> OchiTracker remains local-first. Supabase now provides real email authentication. Local trade storage remains the source of truth. Supabase authentication and read-only ownership checks are available; remote trade writes and automatic cloud synchronization remain disabled. Use the cloud preview for a read-only count/ID comparison only.
   </div>
 <!-- =====================================================
        OCHI ACCOUNT / AUTHENTICATION FOUNDATION
@@ -4118,7 +4118,7 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
 <div class="sync-head">
 <div>
 <h3 class="sync-title">🔄 Trade Synchronization</h3>
-<div class="sync-subtitle">Trade data sync</div>
+<div class="sync-subtitle">Local database tools · Supabase cloud preview</div>
 </div>
 <span class="phase74-badge">SYNC</span>
 </div>
@@ -4144,16 +4144,17 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
 <button class="sync-btn primary" onclick="syncOchiTradesNow()" type="button">🔄 Sync Now</button>
 <button class="sync-btn secondary" onclick="pushOchiTradesToDatabase()" type="button">↑ Push App → Database</button>
 <button class="sync-btn warning" onclick="pullOchiTradesFromDatabase()" type="button">↓ Pull Database → App</button>
-<button class="sync-btn secondary" onclick="compareOchiTradeStores()" type="button">Compare Stores</button>
+<button class="sync-btn secondary" onclick="compareOchiTradeStores()" type="button">Compare Local Stores</button>
+<button class="sync-btn secondary" onclick="previewOchiCloudMerge()" type="button">☁ Preview Supabase Cloud</button>
 </div>
 <div aria-hidden="true" class="sync-progress">
 <div class="sync-progress-bar" id="ochiSyncProgress"></div>
 </div>
 <div class="sync-message" id="ochiSyncMessage">
-      Trade synchronization is ready. Your existing local OchiTracker data remains the working dataset until you choose to synchronize it into the database.
+      Local IndexedDB tools are separate from Supabase. Cloud preview is read-only; no cloud records are written, updated, or deleted.
     </div>
 <div class="sync-note">
-<strong>Synchronization:</strong> this synchronizes your current trade journal with the local browser database. It does <strong>not yet synchronize across the internet or between devices</strong>. “Sync Now” safely writes the current journal to the local database. Pulling from the database requires confirmation because it replaces the current app trade list.
+<strong>Important:</strong> “Sync Now” and Push/Pull operate only on this browser’s IndexedDB, not Supabase. “Preview Supabase Cloud” performs a read-only comparison against the authenticated cloud rows. Cloud writes and automatic cloud sync remain disabled.
     </div>
 </div>
 </div>
@@ -10795,6 +10796,52 @@ function getOchiLocalTradeRows(){
   return Array.isArray(trades) ? trades.map((trade,index)=>normalizeDatabaseTrade(trade,index)) : [];
 }
 
+
+// Phase 7.21.0: authenticated, read-only Supabase comparison.
+// This deliberately performs SELECT only. It never inserts, updates, or deletes.
+async function previewOchiCloudMerge(){
+  const button=Array.from(document.querySelectorAll('#ochiTradeSyncPanel button')).find(b=>b.textContent.includes('Preview Supabase Cloud'));
+  if(button){button.disabled=true;button.textContent='Checking cloud…';}
+  try{
+    if(!OCHI_SUPABASE) throw new Error('Supabase client is not ready.');
+    const {data:sessionData,error:sessionError}=await OCHI_SUPABASE.auth.getSession();
+    if(sessionError) throw sessionError;
+    const user=sessionData?.session?.user;
+    const account=getOchiAuthUser();
+    if(!user?.id || !account?.userId || account.userId!==user.id){
+      throw new Error('No matching active Supabase account. Sign in before checking cloud data.');
+    }
+    setOchiSyncMessage('READ-ONLY CLOUD PREVIEW · Fetching rows owned by the signed-in account…',false);
+    const {data:rows,error}=await OCHI_SUPABASE
+      .from('trades')
+      .select('id,user_id,trade_data,created_at,updated_at')
+      .eq('user_id',user.id);
+    if(error) throw error;
+    if(!Array.isArray(rows)) throw new Error('Supabase returned an unexpected response.');
+    const local=getOchiLocalTradeRows();
+    const localIds=new Set(local.map(t=>String(t.id)));
+    const remoteIds=new Set(rows.map(r=>String(r.id)));
+    const localOnly=local.filter(t=>!remoteIds.has(String(t.id))).length;
+    const cloudOnly=rows.filter(r=>!localIds.has(String(r.id))).length;
+    const shared=local.length-localOnly;
+    const duplicateLocal=local.length-new Set(local.map(t=>String(t.id))).size;
+    const duplicateRemote=rows.length-remoteIds.size;
+    if(duplicateLocal || duplicateRemote){
+      setOchiSyncMessage(`PREVIEW STOPPED · Duplicate IDs detected (local: ${duplicateLocal}, cloud: ${duplicateRemote}). No data was changed.`,true);
+      return;
+    }
+    const localEl=document.getElementById('ochiSyncLocalCount');
+    const cloudEl=document.getElementById('ochiSyncDatabaseCount');
+    if(localEl)localEl.textContent=String(local.length);
+    if(cloudEl)cloudEl.textContent=String(rows.length);
+    setOchiSyncMessage(`READ-ONLY CLOUD PREVIEW COMPLETE · Local: ${local.length} · Supabase: ${rows.length} · Local-only: ${localOnly} · Cloud-only: ${cloudOnly} · Shared IDs: ${shared}. No cloud or local trade records were changed. Conflicts/content differences require a separate review before any merge.`,false);
+  }catch(error){
+    setOchiSyncMessage('CLOUD PREVIEW NOT COMPLETED · '+(error?.message || 'Unknown error')+'. No records were changed.',true);
+  }finally{
+    if(button){button.disabled=false;button.textContent='☁ Preview Supabase Cloud';}
+  }
+}
+
 function buildOchiTradeMap(list){
   const map=new Map();
   (Array.isArray(list)?list:[]).forEach((trade,index)=>{
@@ -11052,7 +11099,7 @@ function updateOchiSyncUI(comparison=null){
   const cloudRuntime=window.OCHI_CLOUD_RUNTIME;
   if(cloudRuntime){
     cloudRuntime.sync=cloudRuntime.sync || {};
-    cloudRuntime.sync.enabled=true;
+    cloudRuntime.sync.enabled=false;
     cloudRuntime.sync.status=OCHI_SYNC_RUNTIME.status;
     cloudRuntime.sync.lastSync=lastSync;
     cloudRuntime.sync.direction=OCHI_SYNC_RUNTIME.direction;
