@@ -4063,7 +4063,10 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
 </div>
 </div>
 <div class="account-signed" id="ochiAccountSignedIn" style="display:none">
-<div class="account-actions"><button class="account-btn secondary" onclick="signOutOchiAccount()" type="button">Sign out</button></div>
+<div class="account-actions">
+<button class="account-btn primary" onclick="testOchiDatabaseReadAccess()" type="button">Test database access (read-only)</button>
+<button class="account-btn secondary" onclick="signOutOchiAccount()" type="button">Sign out</button>
+</div>
 </div>
 <div class="account-message" id="ochiAccountMessage">Connecting securely to Supabase…</div>
 <div class="account-note"><strong>Security:</strong> Supabase handles authentication and password processing. Your existing local trades remain unchanged. Signing in does not upload, overwrite, or delete trades; cloud synchronization remains paused until ownership and database security are verified.</div>
@@ -10287,6 +10290,35 @@ async function signUpOchiAccount(){
     else setOchiAccountMessage("Account request accepted. Check your email for the confirmation link, then return and sign in.");
   }catch(error){setOchiAccountMessage("Sign-up failed: "+(error.message || "Unknown Supabase error"),true);}
 }
+async function testOchiDatabaseReadAccess(){
+  if(!requireOchiSupabase())return;
+  try{
+    setOchiAccountMessage("Running a read-only ownership check. No trades will be changed…");
+    const {data:sessionData,error:sessionError}=await OCHI_SUPABASE.auth.getSession();
+    if(sessionError)throw sessionError;
+    const sessionUser=sessionData?.session?.user;
+    if(!sessionUser?.id)throw new Error("No active Supabase session. Please sign in again.");
+    const account=getOchiAuthUser();
+    if(!account?.userId || account.userId!==sessionUser.id){
+      throw new Error("The displayed account does not match the active Supabase session. Please sign in again.");
+    }
+    // SELECT only: RLS must return a row owned by this authenticated user.
+    // Limit to one returned user_id while count=exact reports all visible rows.
+    const {data,error,count}=await OCHI_SUPABASE
+      .from("trades")
+      .select("user_id",{count:"exact"})
+      .limit(1);
+    if(error)throw error;
+    if(!Array.isArray(data) || data.length===0 || data[0]?.user_id!==sessionUser.id){
+      throw new Error("No matching owned trade row was returned. Database read access is not verified; sync remains disabled.");
+    }
+    if(typeof count!=="number")throw new Error("Supabase did not return an exact row count. Access remains unverified.");
+    setOchiAccountMessage(`READ-ONLY CHECK PASSED · ${count} trade rows visible to this account · owner ID matches the signed-in user. No records were changed. Cloud sync remains disabled.`);
+  }catch(error){
+    setOchiAccountMessage("READ-ONLY CHECK NOT PASSED · "+(error?.message || "Unknown database error")+". No trades were changed; cloud sync remains disabled.",true);
+  }
+}
+
 async function signInOchiAccount(){
   if(!requireOchiSupabase())return;
   const email=sanitizeAccountText(getOchiAuthInput("ochiAccountEmail")?.value,160).toLowerCase();
