@@ -4156,6 +4156,7 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
 <div class="sync-message" id="ochiCloudDetailReport" style="display:none; margin-top:12px; white-space:normal;">
   <strong>Read-only record differences</strong>
   <div id="ochiCloudDetailBody"></div>
+<div id="ochiCloudIntegrityReport" style="margin-top:14px;"></div>
 </div>
 <div class="sync-note">
 <strong>Important:</strong> “Sync Now” and Push/Pull operate only on this browser’s IndexedDB, not Supabase. “Preview Supabase Cloud” performs a read-only comparison against the authenticated cloud rows. Cloud writes and automatic cloud sync remain disabled.
@@ -10833,9 +10834,47 @@ function ochiCloudSummary(row, isCloud){
     cloudUpdated:isCloud ? String(row?.updated_at ?? row?.created_at ?? "—") : ""
   };
 }
-function renderOchiCloudDifferenceReport(localOnly,cloudOnly){
+function ochiCloudCanonicalValue(value){
+  if(value===undefined) return '[MISSING]';
+  if(value===null || typeof value!=='object') return JSON.stringify(value);
+  if(Array.isArray(value)) return '['+value.map(ochiCloudCanonicalValue).join(',')+']';
+  return '{'+Object.keys(value).sort().map(k=>JSON.stringify(k)+':'+ochiCloudCanonicalValue(value[k])).join(',')+'}';
+}
+function ochiCloudFlatten(value,prefix='',out={}){
+  if(value && typeof value==='object' && !Array.isArray(value)){
+    const keys=Object.keys(value);
+    if(!keys.length) out[prefix||'(root)']='{}';
+    keys.forEach(k=>ochiCloudFlatten(value[k],prefix?prefix+'.'+k:k,out));
+  }else if(Array.isArray(value)){
+    if(!value.length) out[prefix]='[]';
+    else value.forEach((v,i)=>ochiCloudFlatten(v,`${prefix}[${i}]`,out));
+  }else out[prefix]=value;
+  return out;
+}
+function compareOchiCloudTradeContent(localRows,cloudRows){
+  const localMap=new Map(localRows.map(t=>[String(t.id),t]));
+  const results=[];
+  cloudRows.forEach(row=>{
+    const id=ochiCloudTradeId(row,true);
+    if(!localMap.has(id)) return;
+    const local=localMap.get(id);
+    const cloud=row?.trade_data && typeof row.trade_data==='object' ? row.trade_data : {};
+    const lf=ochiCloudFlatten(local), cf=ochiCloudFlatten(cloud);
+    const paths=[...new Set([...Object.keys(lf),...Object.keys(cf)])].sort();
+    const differences=[];
+    paths.forEach(path=>{
+      const lv=Object.prototype.hasOwnProperty.call(lf,path)?lf[path]:undefined;
+      const cv=Object.prototype.hasOwnProperty.call(cf,path)?cf[path]:undefined;
+      if(ochiCloudCanonicalValue(lv)!==ochiCloudCanonicalValue(cv)) differences.push({path,local:lv,cloud:cv});
+    });
+    results.push({id,differences});
+  });
+  return results;
+}
+function renderOchiCloudDifferenceReport(localOnly,cloudOnly,integrity){
   const panel=document.getElementById("ochiCloudDetailReport");
   const body=document.getElementById("ochiCloudDetailBody");
+  const integrityBody=document.getElementById("ochiCloudIntegrityReport");
   if(!panel || !body) return;
   body.replaceChildren();
   const makeSection=(title,rows,isCloud)=>{
@@ -10865,6 +10904,22 @@ function renderOchiCloudDifferenceReport(localOnly,cloudOnly){
   makeSection("Local-only trades · present on this device, missing from Supabase",localOnly,false);
   makeSection("Cloud-only trades · present in Supabase, missing locally",cloudOnly,true);
   const note=document.createElement("p");note.textContent="This report is for identification only. It does not merge, modify, or delete any trade. Review the underlying trade details before authorizing any transfer.";body.appendChild(note);
+  if(integrityBody){
+    integrityBody.replaceChildren();
+    const heading=document.createElement('h4');heading.textContent='Read-only trade content integrity';integrityBody.appendChild(heading);
+    const differing=integrity.filter(x=>x.differences.length>0);
+    const identical=integrity.length-differing.length;
+    const summary=document.createElement('p');
+    summary.textContent=`Compared ${integrity.length} shared trade records · Identical fields: ${identical} · Records with differences: ${differing.length} · Total differing fields: ${differing.reduce((n,x)=>n+x.differences.length,0)}. Comparison uses local trade objects against Supabase trade_data only; Supabase wrapper IDs/timestamps are excluded. No records were changed.`;
+    integrityBody.appendChild(summary);
+    if(!differing.length){const ok=document.createElement('p');ok.textContent='All shared trade records have identical stored trade fields.';ok.style.color='#8de0ad';integrityBody.appendChild(ok);}
+    differing.forEach(item=>{
+      const details=document.createElement('details');details.style.margin='8px 0';
+      const summaryEl=document.createElement('summary');summaryEl.textContent=`Trade ${item.id} · ${item.differences.length} field difference(s)`;summaryEl.style.cursor='pointer';summaryEl.style.color='#ffd98a';details.appendChild(summaryEl);
+      const pre=document.createElement('pre');pre.textContent=item.differences.map(d=>`${d.path}\n  Local: ${d.local===undefined?'[MISSING]':JSON.stringify(d.local)}\n  Supabase: ${d.cloud===undefined?'[MISSING]':JSON.stringify(d.cloud)}`).join('\n\n');
+      pre.style.whiteSpace='pre-wrap';pre.style.overflowWrap='anywhere';pre.style.padding='9px';pre.style.background='#071321';pre.style.border='1px solid #31516d';pre.style.borderRadius='7px';pre.style.fontSize='10px';pre.style.color='#d9e8f8';details.appendChild(pre);integrityBody.appendChild(details);
+    });
+  }
   panel.style.display="block";
 }
 async function previewOchiCloudMerge(){
@@ -10897,12 +10952,14 @@ async function previewOchiCloudMerge(){
     const localOnly=local.filter(t=>!remoteIds.has(String(t.id)));
     const cloudOnly=rows.filter(r=>!localIds.has(ochiCloudTradeId(r,true)));
     const shared=local.length-localOnly.length;
+    const integrity=compareOchiCloudTradeContent(local.filter(t=>remoteIds.has(String(t.id))),rows);
     const localEl=document.getElementById('ochiSyncLocalCount');
     const cloudEl=document.getElementById('ochiSyncDatabaseCount');
     if(localEl)localEl.textContent=String(local.length);
     if(cloudEl)cloudEl.textContent=String(rows.length);
-    renderOchiCloudDifferenceReport(localOnly,cloudOnly);
-    setOchiSyncMessage(`READ-ONLY CLOUD PREVIEW COMPLETE · Local: ${local.length} · Supabase rows: ${rows.length} · Local-only: ${localOnly.length} · Cloud-only: ${cloudOnly.length} · Shared trade IDs: ${shared}. Cloud matching uses trade_data.id (original trade ID), not the Supabase row UUID. No records were changed.`,false);
+    renderOchiCloudDifferenceReport(localOnly,cloudOnly,integrity);
+    const differing=integrity.filter(x=>x.differences.length>0).length;
+    setOchiSyncMessage(`READ-ONLY CLOUD PREVIEW COMPLETE · Local: ${local.length} · Supabase rows: ${rows.length} · Local-only: ${localOnly.length} · Cloud-only: ${cloudOnly.length} · Shared trade IDs: ${shared} · Identical content: ${integrity.length-differing} · Content differences: ${differing}. Matching uses trade_data.id. No records were changed.`,false);
   }catch(error){
     setOchiSyncMessage('CLOUD PREVIEW NOT COMPLETED · '+(error?.message || 'Unknown error')+'. No records were changed.',true);
   }finally{
