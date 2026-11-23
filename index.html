@@ -4157,9 +4157,18 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
   <strong>Read-only record differences</strong>
   <div id="ochiCloudDetailBody"></div>
 <div id="ochiCloudIntegrityReport" style="margin-top:14px;"></div>
+<div id="ochiCloudSafeSyncActions" style="display:none;margin-top:14px;padding:12px;border:1px solid rgba(90,160,220,.28);border-radius:10px;background:rgba(10,30,48,.55);">
+  <h4 style="margin:0 0 8px;color:#d9e8f8;">Controlled cloud transfer · additive only</h4>
+  <p id="ochiCloudSafeSyncStatus" style="font-size:12px;line-height:1.5;">Run a fresh cloud preview before transferring records.</p>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;">
+    <button class="sync-btn secondary" id="ochiCloudUploadMissingBtn" type="button" onclick="uploadOchiCloudMissingTrades()" disabled>Upload missing local trades</button>
+    <button class="sync-btn secondary" id="ochiCloudImportMissingBtn" type="button" onclick="importOchiCloudMissingTrades()" disabled>Import missing cloud trades</button>
+  </div>
+  <p style="font-size:11px;color:#aebfd0;margin:10px 0 0;">Safety rules: insert-only cloud upload; additive local import; no upsert, overwrite, update, or delete. Any same-ID content conflict blocks both actions. Automatic cloud sync remains off.</p>
+</div>
 </div>
 <div class="sync-note">
-<strong>Important:</strong> “Sync Now” and Push/Pull operate only on this browser’s IndexedDB, not Supabase. “Preview Supabase Cloud” performs a read-only comparison against the authenticated cloud rows. Cloud writes and automatic cloud sync remain disabled.
+<strong>Important:</strong> “Sync Now” and Push/Pull operate only on this browser’s IndexedDB, not Supabase. “Preview Supabase Cloud” performs a read-only comparison against the authenticated cloud rows. Cloud transfers are manual, additive-only and conflict-blocked; automatic cloud sync remains disabled.
     </div>
 </div>
 </div>
@@ -10959,11 +10968,112 @@ async function previewOchiCloudMerge(){
     if(cloudEl)cloudEl.textContent=String(rows.length);
     renderOchiCloudDifferenceReport(localOnly,cloudOnly,integrity);
     const differing=integrity.filter(x=>x.differences.length>0).length;
+    window.OCHI_CLOUD_SYNC_PREVIEW={userId:user.id,localOnly,cloudOnly,hasConflicts:differing>0,createdAt:Date.now()};
+    renderOchiCloudSafeSyncActions();
     setOchiSyncMessage(`READ-ONLY CLOUD PREVIEW COMPLETE · Local: ${local.length} · Supabase rows: ${rows.length} · Local-only: ${localOnly.length} · Cloud-only: ${cloudOnly.length} · Shared trade IDs: ${shared} · Identical content: ${integrity.length-differing} · Content differences: ${differing}. Matching uses trade_data.id. No records were changed.`,false);
   }catch(error){
     setOchiSyncMessage('CLOUD PREVIEW NOT COMPLETED · '+(error?.message || 'Unknown error')+'. No records were changed.',true);
   }finally{
     if(button){button.disabled=false;button.textContent='☁ Preview Supabase Cloud';}
+  }
+}
+
+// Phase 7.22: manually authorized, additive-only Supabase transfers.
+// No upsert/update/delete is used. Every action re-fetches cloud rows and re-checks conflicts.
+function renderOchiCloudSafeSyncActions(){
+  const panel=document.getElementById('ochiCloudSafeSyncActions');
+  const status=document.getElementById('ochiCloudSafeSyncStatus');
+  const upload=document.getElementById('ochiCloudUploadMissingBtn');
+  const download=document.getElementById('ochiCloudImportMissingBtn');
+  const snap=window.OCHI_CLOUD_SYNC_PREVIEW;
+  if(!panel||!status||!upload||!download)return;
+  panel.style.display='block';
+  const valid=!!snap && !snap.hasConflicts && (Date.now()-snap.createdAt)<5*60*1000;
+  const localCount=snap?.localOnly?.length||0;
+  const cloudCount=snap?.cloudOnly?.length||0;
+  status.textContent=snap?.hasConflicts
+    ? 'Transfer blocked: one or more shared trade IDs have differing stored fields. Review the integrity report first.'
+    : `Latest preview: ${localCount} local-only trade(s) available to upload; ${cloudCount} cloud-only trade(s) available to import. Transfers are manual and additive.`;
+  upload.disabled=!valid||localCount===0;
+  download.disabled=!valid||cloudCount===0;
+}
+async function getOchiCloudTransferSnapshot(){
+  if(!OCHI_SUPABASE)throw new Error('Supabase client is not ready.');
+  const {data:sessionData,error:sessionError}=await OCHI_SUPABASE.auth.getSession();
+  if(sessionError)throw sessionError;
+  const user=sessionData?.session?.user;
+  const account=getOchiAuthUser();
+  if(!user?.id||!account?.userId||account.userId!==user.id)throw new Error('Sign in to the matching Supabase account first.');
+  const {data:rows,error}=await OCHI_SUPABASE.from('trades').select('id,user_id,trade_data,created_at,updated_at').eq('user_id',user.id);
+  if(error)throw error;
+  if(!Array.isArray(rows))throw new Error('Supabase returned an unexpected response.');
+  const local=getOchiLocalTradeRows();
+  const localIds=local.map(t=>String(t?.id??''));
+  const cloudIds=rows.map(r=>ochiCloudTradeId(r,true));
+  if(localIds.some(x=>!x)||cloudIds.some(x=>!x))throw new Error('A record has a missing stable trade ID. Transfer stopped.');
+  const localSet=new Set(localIds),cloudSet=new Set(cloudIds);
+  if(localSet.size!==localIds.length||cloudSet.size!==cloudIds.length)throw new Error('Duplicate trade IDs detected. Transfer stopped.');
+  const localOnly=local.filter(t=>!cloudSet.has(String(t.id)));
+  const cloudOnly=rows.filter(r=>!localSet.has(ochiCloudTradeId(r,true)));
+  const sharedLocal=local.filter(t=>cloudSet.has(String(t.id)));
+  const integrity=compareOchiCloudTradeContent(sharedLocal,rows);
+  const conflicts=integrity.filter(x=>x.differences.length>0);
+  return {user,local,rows,localOnly,cloudOnly,integrity,conflicts};
+}
+async function uploadOchiCloudMissingTrades(){
+  const button=document.getElementById('ochiCloudUploadMissingBtn');
+  if(button)button.disabled=true;
+  try{
+    const snap=await getOchiCloudTransferSnapshot();
+    if(snap.conflicts.length)throw new Error('Upload blocked: shared-ID content differences must be resolved first.');
+    if(!snap.localOnly.length){setOchiSyncMessage('No local-only trades to upload. No records were changed.',false);return;}
+    const count=snap.localOnly.length;
+    if(!window.confirm(`Upload ${count} missing local trade(s) to Supabase?\n\nThis uses INSERT only. Existing cloud rows will not be updated or overwritten. If an ID conflict occurs, the insert will fail safely.`))return;
+    const payload=snap.localOnly.map(trade=>({user_id:snap.user.id,trade_data:trade}));
+    const {error}=await OCHI_SUPABASE.from('trades').insert(payload);
+    if(error)throw error;
+    setOchiSyncMessage(`${count} previously missing trade(s) were inserted into Supabase. Existing rows were not updated or deleted. Rechecking…`,false);
+    await previewOchiCloudMerge();
+  }catch(error){
+    setOchiSyncMessage('CLOUD UPLOAD NOT COMPLETED · '+(error?.message||'Unknown error')+'. Existing records were not intentionally overwritten or deleted.',true);
+  }finally{
+    renderOchiCloudSafeSyncActions();
+  }
+}
+async function importOchiCloudMissingTrades(){
+  const button=document.getElementById('ochiCloudImportMissingBtn');
+  if(button)button.disabled=true;
+  try{
+    const snap=await getOchiCloudTransferSnapshot();
+    if(snap.conflicts.length)throw new Error('Import blocked: shared-ID content differences must be resolved first.');
+    if(!snap.cloudOnly.length){setOchiSyncMessage('No cloud-only trades to import. No records were changed.',false);return;}
+    const additions=snap.cloudOnly.map(row=>{
+      const data=row?.trade_data;
+      if(!data||typeof data!=='object'||Array.isArray(data))throw new Error(`Cloud record ${ochiCloudTradeId(row,true)} has invalid trade_data.`);
+      const copy=JSON.parse(JSON.stringify(data));
+      copy.id=copy.id??ochiCloudTradeId(row,true);
+      return copy;
+    });
+    const existing=new Set(snap.local.map(t=>String(t.id)));
+    if(additions.some(t=>!t.id||existing.has(String(t.id))))throw new Error('An imported trade ID is missing or already exists locally. Import stopped.');
+    const count=additions.length;
+    if(!window.confirm(`Import ${count} missing cloud trade(s) into this browser?\n\nThis adds records only. Existing local trades and settings will not be replaced or deleted.`))return;
+    const previous=trades;
+    try{
+      trades=[...previous,...additions];
+      saveTrades();
+      if(typeof renderEverything==='function')renderEverything();
+    }catch(writeError){
+      trades=previous;
+      try{saveTrades();}catch(restoreError){}
+      throw new Error('Local additive import could not be saved: '+(writeError?.message||'storage error'));
+    }
+    setOchiSyncMessage(`${count} cloud-only trade(s) were added to this browser. Existing local trades were retained. Rechecking…`,false);
+    await previewOchiCloudMerge();
+  }catch(error){
+    setOchiSyncMessage('CLOUD IMPORT NOT COMPLETED · '+(error?.message||'Unknown error')+'. Existing local records were not intentionally replaced or deleted.',true);
+  }finally{
+    renderOchiCloudSafeSyncActions();
   }
 }
 
