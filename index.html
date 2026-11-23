@@ -10803,7 +10803,8 @@ function getOchiLocalTradeRows(){
 
 // Phase 7.21.0: authenticated, read-only Supabase comparison.
 // This deliberately performs SELECT only. It never inserts, updates, or deletes.
-// Phase 7.21.1: authenticated, read-only detailed cloud comparison.
+// Phase 7.21.2: authenticated, read-only full-record inspection.
+// Expands complete local records and cloud trade_data for manual comparison.
 // This performs SELECT only. It never inserts, updates, or deletes records.
 function ochiCloudValue(obj, keys){
   for(const key of keys){
@@ -10834,14 +10835,22 @@ function renderOchiCloudDifferenceReport(localOnly,cloudOnly){
     if(!rows.length){const p=document.createElement("p");p.textContent="None";body.appendChild(p);return;}
     const wrap=document.createElement("div"); wrap.style.overflowX="auto";
     const table=document.createElement("table"); table.style.width="100%"; table.style.borderCollapse="collapse";
-    const headers=["ID","Date","Pair","Direction","Result","P/L",...(isCloud?["Cloud updated"]:[])];
+    const headers=["ID","Date","Pair","Direction","Result","P/L",...(isCloud?["Cloud updated"]:[]),"Full stored fields"];
     const thead=document.createElement("thead"),trh=document.createElement("tr");
     headers.forEach(label=>{const th=document.createElement("th");th.textContent=label;th.style.textAlign="left";th.style.padding="7px";th.style.borderBottom="1px solid #31516d";trh.appendChild(th);});
     thead.appendChild(trh);table.appendChild(thead);
     const tbody=document.createElement("tbody");
     rows.forEach(row=>{const x=ochiCloudSummary(row,isCloud);const tr=document.createElement("tr");
       const vals=[x.id,x.date,x.pair,x.direction,x.result,x.profit,...(isCloud?[x.cloudUpdated]:[])];
-      vals.forEach(v=>{const td=document.createElement("td");td.textContent=String(v);td.style.padding="7px";td.style.borderBottom="1px solid rgba(49,81,109,.45)";td.style.fontSize="11px";td.style.wordBreak="break-word";tr.appendChild(td);});tbody.appendChild(tr);
+      vals.forEach(v=>{const td=document.createElement("td");td.textContent=String(v);td.style.padding="7px";td.style.borderBottom="1px solid rgba(49,81,109,.45)";td.style.fontSize="11px";td.style.wordBreak="break-word";tr.appendChild(td);});
+      const detailCell=document.createElement("td");detailCell.style.padding="7px";detailCell.style.borderBottom="1px solid rgba(49,81,109,.45)";detailCell.style.verticalAlign="top";
+      const details=document.createElement("details");
+      const summary=document.createElement("summary");summary.textContent="Inspect all fields";summary.style.cursor="pointer";summary.style.color="#8fc7ff";summary.style.fontSize="11px";
+      const pre=document.createElement("pre");
+      const fullRecord=isCloud ? {id:row?.id,created_at:row?.created_at,updated_at:row?.updated_at,trade_data:row?.trade_data} : row;
+      pre.textContent=JSON.stringify(fullRecord,null,2);
+      pre.style.whiteSpace="pre-wrap";pre.style.overflowWrap="anywhere";pre.style.maxWidth="min(78vw,620px)";pre.style.maxHeight="320px";pre.style.overflow="auto";pre.style.padding="9px";pre.style.marginTop="8px";pre.style.background="#071321";pre.style.border="1px solid #31516d";pre.style.borderRadius="7px";pre.style.color="#d9e8f8";pre.style.fontSize="10px";
+      details.append(summary,pre);detailCell.appendChild(details);tr.appendChild(detailCell);tbody.appendChild(tr);
     });
     table.appendChild(tbody);wrap.appendChild(table);body.appendChild(wrap);
   };
