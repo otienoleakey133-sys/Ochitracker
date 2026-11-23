@@ -5,8 +5,8 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta content="#07111f" name="theme-color"/>
-<title>OchiTracker Phase 7.21.0 — Cloud Readiness Preview</title>
-<meta name="ochitracker-version" content="Phase 7.20.3"/>
+<title>OchiTracker Phase 7.21.1 — Read-only Record Review</title>
+<meta name="ochitracker-version" content="Phase 7.21.1"/>
 <meta name="description" content="OchiTracker trading journal, risk engine, performance intelligence and TradingView market terminal."/>
 <style>
 /* =========================================================
@@ -4153,6 +4153,10 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
 <div class="sync-message" id="ochiSyncMessage">
       Local IndexedDB tools are separate from Supabase. Cloud preview is read-only; no cloud records are written, updated, or deleted.
     </div>
+<div class="sync-message" id="ochiCloudDetailReport" style="display:none; margin-top:12px; white-space:normal;">
+  <strong>Read-only record differences</strong>
+  <div id="ochiCloudDetailBody"></div>
+</div>
 <div class="sync-note">
 <strong>Important:</strong> “Sync Now” and Push/Pull operate only on this browser’s IndexedDB, not Supabase. “Preview Supabase Cloud” performs a read-only comparison against the authenticated cloud rows. Cloud writes and automatic cloud sync remain disabled.
     </div>
@@ -10799,6 +10803,53 @@ function getOchiLocalTradeRows(){
 
 // Phase 7.21.0: authenticated, read-only Supabase comparison.
 // This deliberately performs SELECT only. It never inserts, updates, or deletes.
+// Phase 7.21.1: authenticated, read-only detailed cloud comparison.
+// This performs SELECT only. It never inserts, updates, or deletes records.
+function ochiCloudValue(obj, keys){
+  for(const key of keys){
+    const value=obj && obj[key];
+    if(value!==undefined && value!==null && value!=="") return value;
+  }
+  return "—";
+}
+function ochiCloudSummary(row, isCloud){
+  const t=isCloud ? (row?.trade_data && typeof row.trade_data==="object" ? row.trade_data : {}) : row;
+  return {
+    id:String(row?.id ?? t?.id ?? "—"),
+    date:String(ochiCloudValue(t,["date","tradeDate","createdAt"]) ),
+    pair:String(ochiCloudValue(t,["pair","symbol","currencyPair"])),
+    direction:String(ochiCloudValue(t,["direction","side","type"])),
+    result:String(ochiCloudValue(t,["result","outcome","status"])),
+    profit:String(ochiCloudValue(t,["profit","pnl","p_l","netProfit"])),
+    cloudUpdated:isCloud ? String(row?.updated_at ?? row?.created_at ?? "—") : ""
+  };
+}
+function renderOchiCloudDifferenceReport(localOnly,cloudOnly){
+  const panel=document.getElementById("ochiCloudDetailReport");
+  const body=document.getElementById("ochiCloudDetailBody");
+  if(!panel || !body) return;
+  body.replaceChildren();
+  const makeSection=(title,rows,isCloud)=>{
+    const heading=document.createElement("h4"); heading.textContent=title; body.appendChild(heading);
+    if(!rows.length){const p=document.createElement("p");p.textContent="None";body.appendChild(p);return;}
+    const wrap=document.createElement("div"); wrap.style.overflowX="auto";
+    const table=document.createElement("table"); table.style.width="100%"; table.style.borderCollapse="collapse";
+    const headers=["ID","Date","Pair","Direction","Result","P/L",...(isCloud?["Cloud updated"]:[])];
+    const thead=document.createElement("thead"),trh=document.createElement("tr");
+    headers.forEach(label=>{const th=document.createElement("th");th.textContent=label;th.style.textAlign="left";th.style.padding="7px";th.style.borderBottom="1px solid #31516d";trh.appendChild(th);});
+    thead.appendChild(trh);table.appendChild(thead);
+    const tbody=document.createElement("tbody");
+    rows.forEach(row=>{const x=ochiCloudSummary(row,isCloud);const tr=document.createElement("tr");
+      const vals=[x.id,x.date,x.pair,x.direction,x.result,x.profit,...(isCloud?[x.cloudUpdated]:[])];
+      vals.forEach(v=>{const td=document.createElement("td");td.textContent=String(v);td.style.padding="7px";td.style.borderBottom="1px solid rgba(49,81,109,.45)";td.style.fontSize="11px";td.style.wordBreak="break-word";tr.appendChild(td);});tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);wrap.appendChild(table);body.appendChild(wrap);
+  };
+  makeSection("Local-only trades · present on this device, missing from Supabase",localOnly,false);
+  makeSection("Cloud-only trades · present in Supabase, missing locally",cloudOnly,true);
+  const note=document.createElement("p");note.textContent="This report is for identification only. It does not merge, modify, or delete any trade. Review the underlying trade details before authorizing any transfer.";body.appendChild(note);
+  panel.style.display="block";
+}
 async function previewOchiCloudMerge(){
   const button=Array.from(document.querySelectorAll('#ochiTradeSyncPanel button')).find(b=>b.textContent.includes('Preview Supabase Cloud'));
   if(button){button.disabled=true;button.textContent='Checking cloud…';}
@@ -10812,29 +10863,27 @@ async function previewOchiCloudMerge(){
       throw new Error('No matching active Supabase account. Sign in before checking cloud data.');
     }
     setOchiSyncMessage('READ-ONLY CLOUD PREVIEW · Fetching rows owned by the signed-in account…',false);
-    const {data:rows,error}=await OCHI_SUPABASE
-      .from('trades')
-      .select('id,user_id,trade_data,created_at,updated_at')
-      .eq('user_id',user.id);
+    const {data:rows,error}=await OCHI_SUPABASE.from('trades')
+      .select('id,user_id,trade_data,created_at,updated_at').eq('user_id',user.id);
     if(error) throw error;
     if(!Array.isArray(rows)) throw new Error('Supabase returned an unexpected response.');
     const local=getOchiLocalTradeRows();
     const localIds=new Set(local.map(t=>String(t.id)));
     const remoteIds=new Set(rows.map(r=>String(r.id)));
-    const localOnly=local.filter(t=>!remoteIds.has(String(t.id))).length;
-    const cloudOnly=rows.filter(r=>!localIds.has(String(r.id))).length;
-    const shared=local.length-localOnly;
-    const duplicateLocal=local.length-new Set(local.map(t=>String(t.id))).size;
+    const duplicateLocal=local.length-localIds.size;
     const duplicateRemote=rows.length-remoteIds.size;
     if(duplicateLocal || duplicateRemote){
-      setOchiSyncMessage(`PREVIEW STOPPED · Duplicate IDs detected (local: ${duplicateLocal}, cloud: ${duplicateRemote}). No data was changed.`,true);
-      return;
+      throw new Error(`Duplicate IDs detected (local: ${duplicateLocal}, cloud: ${duplicateRemote}). No data was changed.`);
     }
+    const localOnly=local.filter(t=>!remoteIds.has(String(t.id)));
+    const cloudOnly=rows.filter(r=>!localIds.has(String(r.id)));
+    const shared=local.length-localOnly.length;
     const localEl=document.getElementById('ochiSyncLocalCount');
     const cloudEl=document.getElementById('ochiSyncDatabaseCount');
     if(localEl)localEl.textContent=String(local.length);
     if(cloudEl)cloudEl.textContent=String(rows.length);
-    setOchiSyncMessage(`READ-ONLY CLOUD PREVIEW COMPLETE · Local: ${local.length} · Supabase: ${rows.length} · Local-only: ${localOnly} · Cloud-only: ${cloudOnly} · Shared IDs: ${shared}. No cloud or local trade records were changed. Conflicts/content differences require a separate review before any merge.`,false);
+    renderOchiCloudDifferenceReport(localOnly,cloudOnly);
+    setOchiSyncMessage(`READ-ONLY CLOUD PREVIEW COMPLETE · Local: ${local.length} · Supabase: ${rows.length} · Local-only: ${localOnly.length} · Cloud-only: ${cloudOnly.length} · Shared IDs: ${shared}. No cloud or local trade records were changed.`,false);
   }catch(error){
     setOchiSyncMessage('CLOUD PREVIEW NOT COMPLETED · '+(error?.message || 'Unknown error')+'. No records were changed.',true);
   }finally{
