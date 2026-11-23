@@ -10803,9 +10803,9 @@ function getOchiLocalTradeRows(){
 
 // Phase 7.21.0: authenticated, read-only Supabase comparison.
 // This deliberately performs SELECT only. It never inserts, updates, or deletes.
-// Phase 7.21.2: authenticated, read-only full-record inspection.
-// Expands complete local records and cloud trade_data for manual comparison.
-// This performs SELECT only. It never inserts, updates, or deletes records.
+// Phase 7.21.3: compare stable trade IDs, not Supabase wrapper-row UUIDs.
+// For cloud rows, trade_data.id is the original OchiTracker trade ID; row.id is a separate database key.
+// This remains authenticated and read-only: SELECT only, no inserts, updates, or deletes.
 function ochiCloudValue(obj, keys){
   for(const key of keys){
     const value=obj && obj[key];
@@ -10813,10 +10813,18 @@ function ochiCloudValue(obj, keys){
   }
   return "—";
 }
+function ochiCloudTradeId(row, isCloud){
+  if(isCloud){
+    const embedded=row?.trade_data?.id;
+    if(embedded!==undefined && embedded!==null && String(embedded).trim()!=="") return String(embedded);
+    return String(row?.id ?? "");
+  }
+  return String(row?.id ?? "");
+}
 function ochiCloudSummary(row, isCloud){
   const t=isCloud ? (row?.trade_data && typeof row.trade_data==="object" ? row.trade_data : {}) : row;
   return {
-    id:String(row?.id ?? t?.id ?? "—"),
+    id:ochiCloudTradeId(row,isCloud) || "—",
     date:String(ochiCloudValue(t,["date","tradeDate","createdAt"]) ),
     pair:String(ochiCloudValue(t,["pair","symbol","currencyPair"])),
     direction:String(ochiCloudValue(t,["direction","side","type"])),
@@ -10877,22 +10885,24 @@ async function previewOchiCloudMerge(){
     if(error) throw error;
     if(!Array.isArray(rows)) throw new Error('Supabase returned an unexpected response.');
     const local=getOchiLocalTradeRows();
-    const localIds=new Set(local.map(t=>String(t.id)));
-    const remoteIds=new Set(rows.map(r=>String(r.id)));
+    const localKeys=local.map(t=>String(t.id ?? ""));
+    const remoteKeys=rows.map(r=>ochiCloudTradeId(r,true));
+    const localIds=new Set(localKeys);
+    const remoteIds=new Set(remoteKeys);
     const duplicateLocal=local.length-localIds.size;
     const duplicateRemote=rows.length-remoteIds.size;
     if(duplicateLocal || duplicateRemote){
       throw new Error(`Duplicate IDs detected (local: ${duplicateLocal}, cloud: ${duplicateRemote}). No data was changed.`);
     }
     const localOnly=local.filter(t=>!remoteIds.has(String(t.id)));
-    const cloudOnly=rows.filter(r=>!localIds.has(String(r.id)));
+    const cloudOnly=rows.filter(r=>!localIds.has(ochiCloudTradeId(r,true)));
     const shared=local.length-localOnly.length;
     const localEl=document.getElementById('ochiSyncLocalCount');
     const cloudEl=document.getElementById('ochiSyncDatabaseCount');
     if(localEl)localEl.textContent=String(local.length);
     if(cloudEl)cloudEl.textContent=String(rows.length);
     renderOchiCloudDifferenceReport(localOnly,cloudOnly);
-    setOchiSyncMessage(`READ-ONLY CLOUD PREVIEW COMPLETE · Local: ${local.length} · Supabase: ${rows.length} · Local-only: ${localOnly.length} · Cloud-only: ${cloudOnly.length} · Shared IDs: ${shared}. No cloud or local trade records were changed.`,false);
+    setOchiSyncMessage(`READ-ONLY CLOUD PREVIEW COMPLETE · Local: ${local.length} · Supabase rows: ${rows.length} · Local-only: ${localOnly.length} · Cloud-only: ${cloudOnly.length} · Shared trade IDs: ${shared}. Cloud matching uses trade_data.id (original trade ID), not the Supabase row UUID. No records were changed.`,false);
   }catch(error){
     setOchiSyncMessage('CLOUD PREVIEW NOT COMPLETED · '+(error?.message || 'Unknown error')+'. No records were changed.',true);
   }finally{
