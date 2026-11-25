@@ -5,8 +5,8 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta content="#07111f" name="theme-color"/>
-<title>OchiTracker Phase 7.21.1 — Read-only Record Review</title>
-<meta name="ochitracker-version" content="Phase 7.21.1"/>
+<title>OchiTracker Phase 7.22.1 — Fundamental Intelligence</title>
+<meta name="ochitracker-version" content="Phase 7.22.1"/>
 <meta name="description" content="OchiTracker trading journal, risk engine, performance intelligence and TradingView market terminal."/>
 <style>
 /* =========================================================
@@ -2690,6 +2690,7 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
 <a class="ochi-nav-link" href="#tradeEntry"><span class="ochi-nav-icon">＋</span>Record a Trade</a>
 <a class="ochi-nav-link" href="#history"><span class="ochi-nav-icon">▤</span>Historical Data</a>
 <a class="ochi-nav-link" href="#calendarSection"><span class="ochi-nav-icon">▦</span>Trading Calendar</a>
+<a class="ochi-nav-link" href="#ofiFundamentalCalendar"><span class="ochi-nav-icon">◷</span>Fundamental Calendar</a>
 <a class="ochi-nav-link" href="#ochiMarketTerminal"><span class="ochi-nav-icon">⌁</span>Live Market</a>
 </nav>
 <nav aria-label="Performance" class="ochi-nav-group">
@@ -3023,7 +3024,44 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
 <div class="card-value negative" id="maxDrawdown">$0.00</div>
 </div>
 </div>
-</section><section id="calendarSection">
+<div class="ofi-dashboard-alert" aria-live="polite">
+  <div class="ofi-panel-head"><div><div class="ofi-kicker">OCHI FUNDAMENTAL INTELLIGENCE</div><h3>Upcoming market events</h3><p>Major economic releases relevant to your watchlist, displayed in East Africa Time.</p></div><a href="#ofiFundamentalCalendar">Open calendar ↗</a></div>
+  <div id="ofiDashboardAlerts" class="ofi-alert-list"><div class="ofi-empty">No events have been added yet. Add your upcoming high-impact releases in Fundamental Calendar.</div></div>
+</div>
+</section>
+<section id="ofiFundamentalCalendar" class="ofi-section">
+  <div class="section-heading"><div class="section-title"><div class="section-icon">🌐</div><div><h2>Fundamental Calendar</h2><div class="section-description">Major real-economy releases and central-bank events across your FX and gold watchlist.</div></div></div><span class="ofi-status">MANUAL DATA MODE</span></div>
+  <div class="ofi-feed-notice"><strong>Economic data feed not connected.</strong> This calendar does not invent or display unverified live events. Add verified event details manually for now; a secure provider can be integrated after provider selection.</div>
+  <div class="ofi-toolbar">
+    <label>Currency / asset<select id="ofiCurrencyFilter"><option value="ALL">All covered markets</option><option>USD</option><option>EUR</option><option>GBP</option><option>JPY</option><option>AUD</option><option>NZD</option><option>CAD</option><option>CHF</option><option>XAU</option></select></label>
+    <label>Impact<select id="ofiImpactFilter"><option value="ALL">All impact levels</option><option value="High">High</option><option value="Medium">Medium</option><option value="Low">Low</option></select></label>
+    <label>View<select id="ofiTimeFilter"><option value="upcoming">Upcoming</option><option value="all">All events</option><option value="past">Past events</option></select></label>
+    <button type="button" class="primary" id="ofiAddEventButton">＋ Add event</button>
+  </div>
+  <div class="ofi-calendar-layout">
+    <div class="ofi-events-panel"><div class="ofi-list-heading"><strong>Economic releases</strong><span id="ofiEventCount">0 events</span></div><div id="ofiEventsList" class="ofi-events-list"><div class="ofi-empty">No events recorded. Use “Add event” to enter a verified release.</div></div></div>
+    <aside class="ofi-detail-panel" id="ofiEventDetail"><div class="ofi-detail-placeholder"><div class="ofi-detail-icon">◷</div><strong>Event intelligence</strong><p>Select an event to review its details, expected market relevance and recorded results.</p></div></aside>
+  </div>
+  <div class="ofi-method-note"><strong>Coverage:</strong> USD, EUR, GBP, JPY, AUD, NZD, CAD, CHF and XAU/XAUUSD. <strong>Priority release groups:</strong> CPI/inflation, employment and labour-market data, GDP, retail sales, PMIs/business activity, wages, consumer spending, central-bank decisions and policy statements. Event interpretation is informational, not a trade signal.</div>
+  <form id="ofiEventForm" class="ofi-form" hidden>
+    <div class="ofi-form-head"><div><div class="ofi-kicker">EVENT RECORD</div><h3>Add a verified economic event</h3></div><button type="button" class="ofi-close" id="ofiCloseForm" aria-label="Close">×</button></div>
+    <div class="ofi-form-grid">
+      <label class="ofi-wide">Event name<input id="ofiEventName" required maxlength="120" placeholder="e.g. US Consumer Price Index (CPI)"></label>
+      <label>Currency / asset<select id="ofiEventCurrency" required><option>USD</option><option>EUR</option><option>GBP</option><option>JPY</option><option>AUD</option><option>NZD</option><option>CAD</option><option>CHF</option><option>XAU</option></select></label>
+      <label>Impact<select id="ofiEventImpact"><option>High</option><option>Medium</option><option>Low</option></select></label>
+      <label>Release date<input id="ofiEventDate" type="date" required></label>
+      <label>Release time (EAT)<input id="ofiEventTime" type="time" required></label>
+      <label>Category<select id="ofiEventCategory"><option>Inflation</option><option>Employment</option><option>GDP / Growth</option><option>Business activity / PMI</option><option>Retail sales / Consumption</option><option>Central bank / Interest rates</option><option>Wages</option><option>Trade / External balance</option><option>Other</option></select></label>
+      <label>Previous<input id="ofiEventPrevious" maxlength="80" placeholder="Optional"></label>
+      <label>Forecast<input id="ofiEventForecast" maxlength="80" placeholder="Optional"></label>
+      <label>Actual<input id="ofiEventActual" maxlength="80" placeholder="Leave blank until release"></label>
+      <label class="ofi-wide">Source / verification note<input id="ofiEventSource" maxlength="240" placeholder="Official statistics agency, central bank, or verified source"></label>
+      <label class="ofi-wide">Market context<textarea id="ofiEventNotes" rows="3" maxlength="1000" placeholder="What the release measures and why it may matter. Avoid assuming direction before comparing actual vs forecast."></textarea></label>
+    </div>
+    <div class="ofi-form-actions"><span>Times are stored and displayed in EAT (Africa/Nairobi).</span><button type="submit" class="primary">Save event</button></div>
+  </form>
+</section>
+<section id="calendarSection">
 <div class="section-heading">
 <div class="section-title">
 <div class="section-icon">📅</div>
@@ -12086,6 +12124,36 @@ footer{border-top-color:var(--ot-gold-line)!important;color:#788aa5!important}
   symbolSelect.addEventListener('change',renderChart);
   buttons.forEach(function(button){button.addEventListener('click',function(){interval=button.dataset.ochiTf||'15';buttons.forEach(function(other){other.setAttribute('aria-pressed',String(other===button));});renderChart();});});
   renderChart();
+})();
+</script>
+
+
+<style id="ofi-fundamental-styles">
+#ofiFundamentalCalendar{padding:18px;border:1px solid rgba(91,145,220,.23);border-radius:14px;background:linear-gradient(145deg,rgba(13,27,46,.98),rgba(7,14,26,.98));margin:16px auto;max-width:1500px}
+.ofi-dashboard-alert{margin-top:16px;padding:16px;border:1px solid rgba(83,145,224,.24);border-radius:13px;background:linear-gradient(120deg,rgba(18,37,61,.88),rgba(8,18,32,.96))}.ofi-panel-head,.ofi-form-head,.ofi-list-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}.ofi-panel-head h3,.ofi-form-head h3{margin:3px 0 5px;color:#edf4ff;font-size:16px}.ofi-panel-head p{margin:0;color:#91a4bf;font-size:12px}.ofi-panel-head a{color:#8fc4ff;text-decoration:none;font-size:12px;font-weight:700;white-space:nowrap}.ofi-kicker{font-size:9px;letter-spacing:1.5px;color:#d6b36d;font-weight:900}.ofi-alert-list{display:grid;gap:7px;margin-top:13px}.ofi-alert-row,.ofi-event-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 12px;border:1px solid rgba(127,157,196,.14);border-radius:9px;background:rgba(6,14,25,.58);color:#e8f0fc;text-align:left;width:100%;cursor:pointer}.ofi-alert-row:hover,.ofi-event-row:hover{border-color:rgba(95,161,255,.48);background:rgba(35,75,122,.18)}.ofi-event-main{min-width:0;display:grid;gap:4px}.ofi-event-title{font-size:12px;font-weight:800}.ofi-event-meta{font-size:10px;color:#91a5c1}.ofi-event-right{text-align:right;display:grid;gap:4px;flex-shrink:0}.ofi-impact{font-size:9px;font-weight:900;letter-spacing:.5px;text-transform:uppercase}.ofi-impact.high{color:#ff9b9b}.ofi-impact.medium{color:#e8c77e}.ofi-impact.low{color:#87c9a4}.ofi-currency-chip{display:inline-flex;padding:3px 6px;border-radius:5px;background:rgba(77,139,224,.14);color:#a9d0ff;font-size:9px;font-weight:900;width:max-content}.ofi-status{padding:6px 9px;border:1px solid rgba(215,181,109,.25);border-radius:20px;color:#d6b56f;font-size:9px;font-weight:900;letter-spacing:.7px}.ofi-feed-notice{margin:12px 0;padding:12px 14px;border:1px solid rgba(224,177,91,.27);border-radius:9px;background:rgba(123,83,25,.12);color:#d6c39c;font-size:11px;line-height:1.6}.ofi-feed-notice strong{color:#f0d79e}.ofi-toolbar{display:flex;align-items:end;gap:10px;flex-wrap:wrap;margin:14px 0}.ofi-toolbar label,.ofi-form-grid label{display:grid;gap:5px;color:#9eb0c9;font-size:10px;font-weight:700;flex:1;min-width:135px}.ofi-toolbar select,.ofi-form input,.ofi-form select,.ofi-form textarea{width:100%;padding:10px;border:1px solid rgba(124,154,195,.25);border-radius:8px;background:#091525;color:#eaf2ff;font:inherit;font-size:12px;min-width:0}.ofi-toolbar button,.ofi-form button.primary{padding:10px 14px;border:1px solid rgba(75,147,255,.4);border-radius:8px;background:linear-gradient(110deg,#245fc2,#247caa);color:white;font-size:11px;font-weight:800;cursor:pointer}.ofi-calendar-layout{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(260px,.8fr);gap:12px}.ofi-events-panel,.ofi-detail-panel{min-width:0;padding:13px;border:1px solid rgba(126,156,196,.17);border-radius:10px;background:rgba(5,13,24,.58)}.ofi-list-heading{margin-bottom:10px;color:#e8f0fc;font-size:12px}.ofi-list-heading span{color:#8da2bf;font-size:10px}.ofi-events-list{display:grid;gap:7px}.ofi-empty{padding:15px;border:1px dashed rgba(129,157,194,.23);border-radius:8px;color:#91a5c0;font-size:11px;line-height:1.5}.ofi-detail-placeholder{min-height:180px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;color:#9aacc5}.ofi-detail-placeholder strong{color:#e7effc;font-size:13px;margin-top:9px}.ofi-detail-placeholder p{max-width:260px;font-size:11px;line-height:1.6}.ofi-detail-icon{font-size:30px;color:#d6b56f}.ofi-detail-panel h3{margin:5px 0 10px;color:#edf4ff;font-size:15px}.ofi-detail-panel p{font-size:11px;color:#a7b8cf;line-height:1.65}.ofi-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:12px 0}.ofi-detail-stat{padding:9px;border-radius:7px;background:rgba(70,106,153,.13)}.ofi-detail-stat small{display:block;color:#8ea2bf;font-size:9px}.ofi-detail-stat strong{display:block;margin-top:4px;color:#e9f2ff;font-size:12px;overflow-wrap:anywhere}.ofi-method-note{margin-top:12px;padding:11px 12px;border-radius:8px;background:rgba(54,87,130,.12);color:#94a8c4;font-size:10px;line-height:1.7}.ofi-method-note strong{color:#c4d4e9}.ofi-form{margin-top:14px;padding:15px;border:1px solid rgba(94,151,224,.35);border-radius:11px;background:#091525}.ofi-form[hidden]{display:none}.ofi-form-head{margin-bottom:13px}.ofi-close{border:0;background:transparent;color:#a9bad0;font-size:24px;cursor:pointer}.ofi-form-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.ofi-form-grid .ofi-wide{grid-column:1/-1}.ofi-form textarea{resize:vertical}.ofi-form-actions{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:13px}.ofi-form-actions span{color:#8297b4;font-size:9px}.ofi-method-note,.ofi-feed-notice{overflow-wrap:anywhere}
+@media(max-width:720px){.ofi-calendar-layout{grid-template-columns:1fr}.ofi-form-grid{grid-template-columns:1fr 1fr}.ofi-form-grid .ofi-wide{grid-column:1/-1}.ofi-panel-head{align-items:flex-start}.ofi-toolbar label{min-width:calc(50% - 10px)}.ofi-toolbar button{flex:1}.ofi-form-actions{align-items:flex-start;flex-direction:column}.ofi-event-row{padding:10px}.ofi-dashboard-alert{padding:12px}}
+</style>
+<script id="ochi-fundamental-intelligence-7221">
+(function(){
+ 'use strict';
+ const KEY='ochitracker.ofi.events.v1';
+ const currencies=['USD','EUR','GBP','JPY','AUD','NZD','CAD','CHF','XAU'];
+ const $=id=>document.getElementById(id);
+ const safe=(v)=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const read=()=>{try{const v=JSON.parse(localStorage.getItem(KEY)||'[]');return Array.isArray(v)?v.filter(x=>x&&x.id&&x.name&&x.date&&x.time&&currencies.includes(x.currency)):[]}catch(e){return[]}};
+ const write=items=>{try{localStorage.setItem(KEY,JSON.stringify(items));return true}catch(e){return false}};
+ const eventDate=e=>new Date(e.date+'T'+e.time+':00+03:00');
+ const fmt=e=>new Intl.DateTimeFormat('en-KE',{weekday:'short',day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'Africa/Nairobi'}).format(eventDate(e))+' EAT';
+ const now=()=>Date.now();
+ let selectedId=null;
+ function visibleEvents(){const currency=$('ofiCurrencyFilter')?.value||'ALL',impact=$('ofiImpactFilter')?.value||'ALL',time=$('ofiTimeFilter')?.value||'upcoming';return read().filter(e=>(currency==='ALL'||e.currency===currency)&&(impact==='ALL'||e.impact===impact)&&(time==='all'||(time==='past'?eventDate(e).getTime()<now():eventDate(e).getTime()>=now()))).sort((a,b)=>eventDate(a)-eventDate(b));}
+ function row(e,cls='ofi-event-row'){return `<button type="button" class="${cls}" data-ofi-id="${safe(e.id)}"><span class="ofi-event-main"><span class="ofi-event-title">${safe(e.name)}</span><span class="ofi-event-meta">${safe(fmt(e))} · ${safe(e.category)}</span></span><span class="ofi-event-right"><span class="ofi-currency-chip">${safe(e.currency)}</span><span class="ofi-impact ${safe(e.impact.toLowerCase())}">${safe(e.impact)} impact</span></span></button>`;}
+ function detail(e){if(!e){$('ofiEventDetail').innerHTML='<div class="ofi-detail-placeholder"><div class="ofi-detail-icon">◷</div><strong>Event intelligence</strong><p>Select an event to review its details, expected market relevance and recorded results.</p></div>';return;}selectedId=e.id;$('ofiEventDetail').innerHTML=`<div class="ofi-kicker">${safe(e.currency)} · ${safe(e.impact)} IMPACT</div><h3>${safe(e.name)}</h3><p>${safe(fmt(e))}</p><div class="ofi-detail-grid"><div class="ofi-detail-stat"><small>Category</small><strong>${safe(e.category)}</strong></div><div class="ofi-detail-stat"><small>Impact</small><strong>${safe(e.impact)}</strong></div><div class="ofi-detail-stat"><small>Previous</small><strong>${safe(e.previous||'Not recorded')}</strong></div><div class="ofi-detail-stat"><small>Forecast</small><strong>${safe(e.forecast||'Not recorded')}</strong></div><div class="ofi-detail-stat"><small>Actual</small><strong>${safe(e.actual||'Pending')}</strong></div><div class="ofi-detail-stat"><small>Record status</small><strong>${eventDate(e).getTime()<now()?'Past event':'Upcoming'}</strong></div></div><p><strong>Market context</strong><br>${safe(e.notes||'No additional context recorded.')}</p><p><strong>Source / verification</strong><br>${safe(e.source||'Not recorded')}</p><button type="button" class="secondary" id="ofiDeleteEvent" style="margin-top:8px">Delete this event</button>`;const b=$('ofiDeleteEvent');if(b)b.addEventListener('click',()=>{if(!confirm('Delete this event from this browser?'))return;write(read().filter(x=>x.id!==e.id));selectedId=null;render();});}
+ function render(){const items=visibleEvents();$('ofiEventCount').textContent=items.length+' event'+(items.length===1?'':'s');$('ofiEventsList').innerHTML=items.length?items.map(e=>row(e)).join(''):'<div class="ofi-empty">No events match these filters. Add a verified release or change the filters.</div>';document.querySelectorAll('[data-ofi-id]').forEach(b=>b.addEventListener('click',()=>detail(read().find(e=>e.id===b.dataset.ofiId))));const upcoming=read().filter(e=>eventDate(e).getTime()>=now()).sort((a,b)=>eventDate(a)-eventDate(b)).slice(0,4);$('ofiDashboardAlerts').innerHTML=upcoming.length?upcoming.map(e=>row(e,'ofi-alert-row')).join(''):'<div class="ofi-empty">No upcoming events recorded. Add verified high-impact releases in Fundamental Calendar.</div>';document.querySelectorAll('#ofiDashboardAlerts [data-ofi-id]').forEach(b=>b.addEventListener('click',()=>{location.hash='#ofiFundamentalCalendar';setTimeout(()=>detail(read().find(e=>e.id===b.dataset.ofiId)),80)}));if(selectedId){const found=read().find(e=>e.id===selectedId);if(found)detail(found);else detail(null);}}
+ function openForm(){const f=$('ofiEventForm');f.hidden=false;$('ofiEventDate').value=new Date().toLocaleDateString('en-CA',{timeZone:'Africa/Nairobi'});$('ofiEventTime').value='';f.scrollIntoView({behavior:'smooth',block:'start'});$('ofiEventName').focus();}
+ function submit(ev){ev.preventDefault();const name=$('ofiEventName').value.trim(),date=$('ofiEventDate').value,time=$('ofiEventTime').value;if(!name||!date||!time)return;const item={id:'ofi_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,7),name,currency:$('ofiEventCurrency').value,impact:$('ofiEventImpact').value,date,time,category:$('ofiEventCategory').value,previous:$('ofiEventPrevious').value.trim(),forecast:$('ofiEventForecast').value.trim(),actual:$('ofiEventActual').value.trim(),source:$('ofiEventSource').value.trim(),notes:$('ofiEventNotes').value.trim(),createdAt:new Date().toISOString(),timezone:'Africa/Nairobi'};const items=read();items.push(item);if(!write(items)){alert('Could not save this event in browser storage. Check available device storage.');return;}ev.target.reset();ev.target.hidden=true;selectedId=item.id;render();detail(item);}
+ function init(){if(!$('ofiFundamentalCalendar'))return;['ofiCurrencyFilter','ofiImpactFilter','ofiTimeFilter'].forEach(id=>$(id).addEventListener('change',render));$('ofiAddEventButton').addEventListener('click',openForm);$('ofiCloseForm').addEventListener('click',()=>{$('ofiEventForm').hidden=true});$('ofiEventForm').addEventListener('submit',submit);render();}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
 </script>
 
