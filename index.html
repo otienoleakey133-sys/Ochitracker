@@ -2655,6 +2655,64 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
 #ochiGateMessage{margin-top:13px;padding:11px 12px;border:1px solid rgba(88,166,255,.16);border-radius:9px;background:rgba(88,166,255,.08);color:#b9d8ff;font-size:12px;line-height:1.5;overflow-wrap:anywhere}
 .ochi-gate-foot{text-align:center;margin-top:19px;color:#637b94;font-size:10px;letter-spacing:.7px}
 @media(max-width:480px){#ochiAuthGate{padding:14px}.ochi-gate-card{padding:23px 19px;border-radius:18px}#ochiGateTitle{font-size:24px}}
+
+/* OchiTracker 7.22.6 — high-contrast mobile authentication */
+#ochiAuthGate{
+  background:
+    radial-gradient(ellipse at 50% 0%,rgba(36,139,255,.30),transparent 58%),
+    rgba(2,7,14,.97)!important;
+}
+.ochi-gate-card{
+  border:1px solid #426b91!important;
+  background:linear-gradient(155deg,#142d48 0%,#10243a 58%,#0b1a2b 100%)!important;
+  box-shadow:0 24px 70px rgba(0,0,0,.62),0 0 0 1px rgba(110,180,255,.08)!important;
+  color:#f7fbff!important;
+}
+.ochi-gate-kicker{color:#8ac8ff!important}
+#ochiGateTitle{color:#ffffff!important}
+.ochi-gate-copy{color:#d0deed!important}
+.ochi-gate-card label{color:#f0f6ff!important}
+.ochi-gate-card label span{color:#b6c9dc!important}
+.ochi-gate-card input{
+  background:#071626!important;
+  border:1px solid #52718f!important;
+  color:#ffffff!important;
+  caret-color:#70c5ff!important;
+}
+.ochi-gate-card input::placeholder{color:#9aafc5!important;opacity:1!important}
+.ochi-gate-card input:focus{
+  border-color:#66bdff!important;
+  box-shadow:0 0 0 3px rgba(75,166,255,.22)!important;
+}
+.ochi-gate-actions button{font-weight:850!important}
+.ochi-gate-primary{
+  background:linear-gradient(135deg,#0878ed 0%,#159fff 55%,#42bdff 100%)!important;
+  color:#ffffff!important;
+  border:1px solid #70c7ff!important;
+  box-shadow:0 7px 20px rgba(0,126,255,.25)!important;
+  text-shadow:0 1px 1px rgba(0,0,0,.24)!important;
+}
+.ochi-gate-primary:disabled{
+  opacity:.88!important;
+  filter:none!important;
+  color:#ffffff!important;
+  background:linear-gradient(135deg,#176bc0 0%,#258bd8 100%)!important;
+  cursor:not-allowed!important;
+}
+.ochi-gate-primary:not(:disabled):active{transform:translateY(1px)}
+.ochi-gate-secondary{
+  background:linear-gradient(135deg,#294866,#1b354f)!important;
+  border:1px solid #6b91b5!important;
+  color:#f4f9ff!important;
+}
+.ochi-gate-link{color:#8bcaff!important}
+#ochiGateMessage{
+  background:rgba(26,76,119,.38)!important;
+  border:1px solid rgba(119,190,255,.42)!important;
+  color:#e1f1ff!important;
+}
+.ochi-gate-foot{color:#a9bfd5!important}
+
 </style>
 </head>
 <body>
