@@ -10382,15 +10382,38 @@ async function resetOchiPassword(){
 }
 async function signOutOchiAccount(){
   if(!requireOchiSupabase())return;
-  try{const {error}=await OCHI_SUPABASE.auth.signOut({scope:"local"});if(error)throw error;OCHI_LOCKED_BY_LEAVING=true;clearOchiAccount();renderOchiAccount();renderOchiCloud();
-    setOchiAccountMessage("Signed out. Your local trades and settings remain on this device.");}
-  catch(error){setOchiAccountMessage("Sign-out failed: "+(error.message || "Unknown error"),true);}
+  try{
+    const {error}=await OCHI_SUPABASE.auth.signOut({scope:"local"});
+    if(error)throw error;
+    OCHI_LOCKED_BY_LEAVING=true;
+    clearOchiAccount();
+    try{localStorage.removeItem("sb-qdyicrrrelqmgaxktygz-auth-token");}catch(_){}
+    renderOchiAccount();
+    renderOchiCloud();
+    setOchiAccountMessage("Signed out. Sign in again to reopen OchiTracker. Your local trades and settings remain on this device.");
+  }catch(error){
+    setOchiAccountMessage("Sign-out failed: "+(error.message || "Unknown error"),true);
+  }
 }
 function lockOchiTrackerAfterLeaving(){
-  // Retained as a compatibility no-op. Backgrounding the app must not sign out the user.
-  return;
-}// Mobile browsers may background or freeze a page during ordinary app switching.
-// Keep the Supabase session alive; only the explicit Sign out action ends the session.
+  // Called only when this document is being left (pagehide), not when the
+  // browser/app is merely backgrounded. Clear only authentication state.
+  OCHI_LOCKED_BY_LEAVING=true;
+  clearOchiAccount();
+  try{
+    // Supabase JS v2 default localStorage key for this project.
+    localStorage.removeItem("sb-qdyicrrrelqmgaxktygz-auth-token");
+  }catch(_){}
+  try{sessionStorage.removeItem("ochiTrackerAuthReturn");}catch(_){}
+  // Do not touch trades, risk settings, reports, IndexedDB, or backups.
+}
+// A pagehide means the user is navigating away from OchiTracker. Internal
+// dashboard sections and app panels do not trigger this. On BFCache restore,
+// reload into a clean signed-out state rather than reviving a stale UI.
+window.addEventListener("pagehide",lockOchiTrackerAfterLeaving);
+window.addEventListener("pageshow",function(event){
+  if(event.persisted){window.location.reload();}
+});
 
 async function initializeOchiAccount(){
   if(OCHI_AUTH_INITIALIZING)return;
@@ -12110,6 +12133,30 @@ footer{border-top-color:var(--ot-gold-line)!important;color:#788aa5!important}
 .ofi-pair-outlook{margin:12px 0;padding:12px;border:1px solid rgba(215,181,109,.24);border-radius:10px;background:linear-gradient(145deg,rgba(17,32,52,.88),rgba(5,13,24,.88))}.ofi-pair-outlook-head{display:flex;align-items:center;justify-content:space-between;gap:8px}.ofi-pair-outlook-head strong{font-size:10px;letter-spacing:1px;color:#e8d5a8}.ofi-pair-outlook-head span{font-size:8px;font-weight:900;letter-spacing:.7px;color:#91a5c0;border:1px solid rgba(145,165,192,.25);border-radius:4px;padding:4px 6px}.ofi-pair-intro{font-size:10px!important;margin:6px 0 10px!important;color:#9fb1c9!important}.ofi-pair-current{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 9px;margin-bottom:8px;border-radius:7px;background:rgba(215,181,109,.08);border:1px solid rgba(215,181,109,.17)}.ofi-pair-current span{font-size:8px;color:#c9ae75;font-weight:900;letter-spacing:.7px}.ofi-pair-current strong{font-size:10px;color:#f0e2c1;text-align:right}.ofi-pair-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.ofi-pair-card{min-width:0;padding:9px;border:1px solid rgba(126,156,196,.17);border-radius:7px;background:rgba(5,13,24,.7)}.ofi-pair-name{font-size:11px;font-weight:900;color:#eaf1fc}.ofi-pair-state{font-size:10px;font-weight:950;letter-spacing:.5px;margin:5px 0}.ofi-pair-card.buy .ofi-pair-state{color:#70d8a1}.ofi-pair-card.sell .ofi-pair-state{color:#ff858e}.ofi-pair-card.neutral .ofi-pair-state,.ofi-pair-card.pending .ofi-pair-state{color:#e4c47f}.ofi-pair-card.muted .ofi-pair-state{color:#8da1ba}.ofi-pair-card small{display:block;font-size:8px;line-height:1.45;color:#8ea2bc}.ofi-scenario-strip{margin-top:8px;padding:9px;border:1px solid rgba(90,147,217,.2);border-radius:7px;background:rgba(40,78,121,.12);font-size:9px;line-height:1.7;color:#c5d4e8}.ofi-scenario-strip strong{color:#e6d4a8}.ofi-pair-footnote{margin-top:8px;font-size:8px;line-height:1.55;color:#8196b2}@media(max-width:420px){.ofi-pair-grid{grid-template-columns:1fr}.ofi-pair-current{align-items:flex-start;flex-direction:column}.ofi-pair-current strong{text-align:left}}
 
 /* OchiTracker 7.22.4 — sticky alerts and pair-direction intelligence */
+
+/* OchiTracker 7.22.5 — persistent top-right notification control */
+#ofiBellButton{
+  position:fixed!important;
+  top:calc(env(safe-area-inset-top, 0px) + 12px)!important;
+  right:14px!important;
+  z-index:2147482000!important;
+  transform:none!important;
+}
+#ofiNotificationPanel{
+  position:fixed!important;
+  top:calc(env(safe-area-inset-top, 0px) + 62px)!important;
+  right:14px!important;
+  z-index:2147482001!important;
+  max-height:calc(100dvh - 82px)!important;
+}
+@media(max-width:900px){
+  #ofiBellButton{top:calc(env(safe-area-inset-top, 0px) + 10px)!important;right:10px!important}
+  #ofiNotificationPanel{top:calc(env(safe-area-inset-top, 0px) + 56px)!important;right:10px!important}
+}
+@media(max-width:420px){
+  #ofiNotificationPanel{width:calc(100vw - 20px)!important;max-height:calc(100dvh - 76px)!important}
+}
+
 .ochi-terminal-topbar{position:sticky;top:0;z-index:900;background:rgba(7,14,27,.97)!important;backdrop-filter:blur(16px)}
 .ochi-topbar-actions{position:relative}
 .ochi-notification-trigger{position:relative;display:inline-flex;align-items:center;gap:8px;min-height:43px;padding:9px 14px;border:1px solid rgba(215,181,109,.62)!important;border-radius:10px;background:linear-gradient(145deg,rgba(25,43,68,.98),rgba(8,18,32,.98))!important;color:#f3e6c6!important;cursor:pointer;box-shadow:0 0 0 1px rgba(215,181,109,.10),0 0 18px rgba(215,181,109,.10),0 7px 20px rgba(0,0,0,.22)}
