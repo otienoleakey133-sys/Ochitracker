@@ -5,9 +5,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta content="#07111f" name="theme-color"/>
-<title>OchiTracker Phase 7.22.3 — Institutional News Alerts</title>
-<meta name="ochitracker-version" content="Phase 7.22.2"/>
-<meta name="description" content="OchiTracker trading journal, risk engine, performance intelligence and TradingView market terminal."/>
+<title>OchiTracker Executive — Trading Intelligence</title>
 <style>
 /* =========================================================
    OCHITRACKER PHASE 6.5 — PREMIUM UI
@@ -2634,52 +2632,8 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 </style>
 
-
-<style>
-#ochiAuthGate{position:fixed;inset:0;z-index:2147483000;display:flex;align-items:center;justify-content:center;padding:22px;background:radial-gradient(ellipse at 50% 0%,rgba(35,103,170,.24),transparent 55%),rgba(3,8,15,.98);backdrop-filter:blur(14px);overflow-y:auto}
-#ochiAuthGate[hidden]{display:none!important}
-.ochi-gate-card{width:min(100%,440px);padding:30px;border:1px solid #24445f;border-radius:22px;background:linear-gradient(155deg,#102238,#091321 72%);box-shadow:0 28px 90px rgba(0,0,0,.58);color:#edf4fc;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
-.ochi-gate-mark{width:48px;height:48px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(135deg,#2188ff,#55d8ff);color:#061321;font-weight:900;font-size:18px;margin-bottom:20px}
-.ochi-gate-kicker{font-size:10px;letter-spacing:2px;color:#69b7ff;font-weight:800}
-#ochiGateTitle{font-size:27px;line-height:1.2;margin:9px 0;color:#f5f9ff}
-.ochi-gate-copy{font-size:13px;line-height:1.6;color:#9bb0c6;margin:0 0 22px}
-.ochi-gate-card label{display:block;margin:13px 0 6px;font-size:12px;font-weight:700;color:#c7d8e9}
-.ochi-gate-card label span{font-weight:400;color:#7890a8}
-.ochi-gate-card input{display:block;width:100%;min-height:48px;padding:12px 13px;border:1px solid #29435d;border-radius:10px;background:#071321;color:#f2f7fc;font-size:15px;outline:none;box-sizing:border-box}
-.ochi-gate-card input:focus{border-color:#4da3ff;box-shadow:0 0 0 3px rgba(77,163,255,.13)}
-.ochi-gate-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}
-.ochi-gate-actions button{min-height:46px;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer}
-.ochi-gate-primary{border:0;background:linear-gradient(135deg,#258cff,#4db5ff);color:#041321}
-.ochi-gate-secondary{border:1px solid #315575;background:#14283d;color:#d9ebfc}
-.ochi-gate-link{grid-column:1/-1;border:0;background:transparent;color:#78baff;min-height:36px!important}
-#ochiGateMessage{margin-top:13px;padding:11px 12px;border:1px solid rgba(88,166,255,.16);border-radius:9px;background:rgba(88,166,255,.08);color:#b9d8ff;font-size:12px;line-height:1.5;overflow-wrap:anywhere}
-.ochi-gate-foot{text-align:center;margin-top:19px;color:#637b94;font-size:10px;letter-spacing:.7px}
-@media(max-width:480px){#ochiAuthGate{padding:14px}.ochi-gate-card{padding:23px 19px;border-radius:18px}#ochiGateTitle{font-size:24px}}
-</style>
 </head>
 <body>
-<div id="ochiAuthGate" role="dialog" aria-modal="true" aria-labelledby="ochiGateTitle">
-  <div class="ochi-gate-card">
-    <div class="ochi-gate-mark">OT</div>
-    <div class="ochi-gate-kicker">PRIVATE TRADING WORKSPACE</div>
-    <h1 id="ochiGateTitle">Welcome to OchiTracker</h1>
-    <p class="ochi-gate-copy">Sign in to access your trading dashboard. Your account is secured by Supabase.</p>
-    <label for="ochiGateName">Display name <span>(for new accounts)</span></label>
-    <input id="ochiGateName" type="text" maxlength="80" autocomplete="name" placeholder="Your name">
-    <label for="ochiGateEmail">Email address</label>
-    <input id="ochiGateEmail" type="email" maxlength="160" autocomplete="username" placeholder="you@example.com">
-    <label for="ochiGatePassword">Password</label>
-    <input id="ochiGatePassword" type="password" maxlength="128" autocomplete="current-password" placeholder="Enter your password">
-    <div class="ochi-gate-actions">
-      <button type="button" class="ochi-gate-primary" onclick="signInOchiAccount()">Sign in</button>
-      <button type="button" class="ochi-gate-secondary" onclick="signUpOchiAccount()">Create account</button>
-      <button type="button" class="ochi-gate-link" onclick="resetOchiPassword()">Forgot password?</button>
-    </div>
-    <div id="ochiGateMessage" role="status" aria-live="polite">Connecting securely to Supabase…</div>
-    <div class="ochi-gate-foot">OchiTracker · Private account access</div>
-  </div>
-</div>
-
 <div class="ochi-mobile-bar"><button aria-expanded="false" aria-label="Open navigation" class="ochi-menu-toggle" id="ochiMenuToggle" type="button">☰</button><div class="ochi-mobile-title">OchiTracker</div><div class="ochi-mobile-sub">TRADING WORKSPACE</div></div>
 <div class="ochi-nav-scrim" id="ochiNavScrim"></div>
 <aside aria-label="Main navigation" class="ochi-sidebar" id="ochiSidebar">
@@ -2690,7 +2644,6 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
 <a class="ochi-nav-link" href="#tradeEntry"><span class="ochi-nav-icon">＋</span>Record a Trade</a>
 <a class="ochi-nav-link" href="#history"><span class="ochi-nav-icon">▤</span>Historical Data</a>
 <a class="ochi-nav-link" href="#calendarSection"><span class="ochi-nav-icon">▦</span>Trading Calendar</a>
-<a class="ochi-nav-link" href="#ofiFundamentalCalendar"><span class="ochi-nav-icon">◷</span>Fundamental Calendar</a>
 <a class="ochi-nav-link" href="#ochiMarketTerminal"><span class="ochi-nav-icon">⌁</span>Live Market</a>
 </nav>
 <nav aria-label="Performance" class="ochi-nav-group">
@@ -2718,11 +2671,7 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
 </aside>
 <div class="ochi-terminal-topbar">
 <div class="ochi-topbar-heading"><span class="ochi-topbar-eyebrow">OCHI GLOBAL · TRADING WORKSPACE</span><strong>Performance Overview</strong><small>Account performance and trading results at a glance.</small></div>
-<div class="ochi-topbar-actions">
-<button type="button" class="ochi-notification-trigger" id="ofiBellButton" aria-label="Open economic news notifications" aria-expanded="false" aria-controls="ofiNotificationPanel"><span class="ochi-bell-glyph" aria-hidden="true">♢</span><span class="ochi-bell-label">News</span><span class="ochi-bell-count" id="ofiBellCount" hidden>0</span></button>
-<span class="ochi-live-status"><i></i> System online</span><a class="ochi-add-trade" href="#tradeEntry">＋ <span>Add New Trade</span></a>
-<div class="ochi-notification-panel" id="ofiNotificationPanel" hidden><div class="ochi-notification-head"><div><span class="ofi-kicker">OCHI MARKET ALERTS</span><strong>Economic news</strong><small id="ofiBellSummary">Checking today's releases…</small></div><button type="button" id="ofiBellClose" aria-label="Close notifications">×</button></div><div class="ochi-notification-list" id="ofiBellItems"><div class="ofi-empty">Connecting to the economic calendar…</div></div><a class="ochi-notification-footer" href="#ofiFundamentalCalendar" id="ofiBellOpenCalendar">Open full fundamental calendar ↗</a></div>
-</div>
+<div class="ochi-topbar-actions"><span class="ochi-live-status"><i></i> System online</span><a class="ochi-add-trade" href="#tradeEntry">＋ <span>Add New Trade</span></a></div>
 </div>
 <header aria-hidden="true" class="ochi-legacy-header">
 <div class="container">
@@ -3028,27 +2977,7 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
 <div class="card-value negative" id="maxDrawdown">$0.00</div>
 </div>
 </div>
-<div class="ofi-dashboard-alert" aria-live="polite">
-  <div class="ofi-panel-head"><div><div class="ofi-kicker">OCHI FUNDAMENTAL INTELLIGENCE · LIVE CALENDAR</div><h3>Market news notifications</h3><p id="ofiDashboardSummary">Connecting to the live economic calendar…</p></div><a href="#ofiFundamentalCalendar">Open intelligence ↗</a></div>
-  <div id="ofiDashboardAlerts" class="ofi-alert-list"><div class="ofi-empty">Loading today's and upcoming high- and medium-impact releases…</div></div>
-</div>
-</section>
-<section id="ofiFundamentalCalendar" class="ofi-section">
-  <div class="section-heading"><div class="section-title"><div class="section-icon">🌐</div><div><h2>Fundamental Calendar</h2><div class="section-description">Automatically updated economic releases, central-bank decisions and market-moving data for your FX watchlist.</div></div></div><span class="ofi-status" id="ofiFeedStatus">CONNECTING…</span></div>
-  <div class="ofi-feed-notice" id="ofiFeedNotice"><strong>Automatic calendar:</strong> fetching verified scheduled releases. Times are converted to East Africa Time (EAT). The calendar refreshes automatically while OchiTracker is open.</div>
-  <div class="ofi-toolbar">
-    <label>Currency / asset<select id="ofiCurrencyFilter"><option value="ALL">All covered markets</option><option>USD</option><option>EUR</option><option>GBP</option><option>JPY</option><option>AUD</option><option>NZD</option><option>CAD</option><option>CHF</option><option>XAU</option></select></label>
-    <label>Impact<select id="ofiImpactFilter"><option value="ALL">High + medium</option><option value="High">High</option><option value="Medium">Medium</option></select></label>
-    <label>Time window<select id="ofiTimeFilter"><option value="today">Today (EAT)</option><option value="tomorrow">Tomorrow (EAT)</option><option value="upcoming">Next 7 days</option><option value="all">All returned</option></select></label>
-    <button type="button" class="primary" id="ofiRefreshButton">↻ Refresh calendar</button>
-  </div>
-  <div class="ofi-calendar-layout">
-    <div class="ofi-events-panel"><div class="ofi-list-heading"><strong>Scheduled economic releases</strong><span id="ofiEventCount">Loading…</span></div><div id="ofiEventsList" class="ofi-events-list"><div class="ofi-empty">Connecting to the live calendar…</div></div></div>
-    <aside class="ofi-detail-panel" id="ofiEventDetail"><div class="ofi-detail-placeholder"><div class="ofi-detail-icon">◷</div><strong>Event intelligence</strong><p>Select any release to see its previous, forecast and actual figures, plus an explanation of the possible currency impact.</p></div></aside>
-  </div>
-  <div class="ofi-method-note"><strong>Coverage:</strong> USD, EUR, GBP, JPY, AUD, NZD, CAD, CHF and XAU/XAUUSD. Gold is mapped to the key macro drivers that commonly influence it, especially US inflation, employment, Federal Reserve policy and the US dollar; XAU is not a national economic-calendar currency. <strong>Data source:</strong> ShowMyTrades public economic calendar. Actuals and consensus values are shown as supplied; missing values remain clearly marked. Analysis is scenario-based, not a guaranteed price prediction or trade signal.</div>
-</section>
-<section id="calendarSection">
+</section><section id="calendarSection">
 <div class="section-heading">
 <div class="section-title">
 <div class="section-icon">📅</div>
@@ -4057,7 +3986,7 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
 <div class="cloud-node">☁️ Ochi Cloud</div>
 </div>
 <div class="cloud-note">
-<strong>cloud foundation:</strong> OchiTracker remains local-first. Supabase now provides real email authentication. Local trade storage remains the source of truth. Supabase authentication and read-only ownership checks are available; remote trade writes and automatic cloud synchronization remain disabled. Use the cloud preview for a read-only count/ID comparison only.
+<strong>cloud foundation:</strong> OchiTracker remains local-first. The account layer and structured browser database are available locally. Existing trade data keys are preserved. A real remote cloud database will be connected in the synchronization phases.
   </div>
 <!-- =====================================================
        OCHI ACCOUNT / AUTHENTICATION FOUNDATION
@@ -4066,36 +3995,43 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
 <div class="account-head">
 <div>
 <h3 class="account-title">👤 Ochi Account</h3>
-<div class="account-subtitle">Secure account · Supabase authentication</div>
+<div class="account-subtitle">Account and authentication foundation</div>
 </div>
-<span class="phase72-badge">SECURE AUTH</span>
+<span class="phase72-badge">ACCOUNT</span>
 </div>
 <div class="account-grid">
-<div class="account-card"><div class="account-label">Session</div><div class="account-value" id="ochiAccountSession">Checking session…</div></div>
-<div class="account-card"><div class="account-label">Account ID</div><div class="account-value" id="ochiAccountId">—</div></div>
-<div class="account-card"><div class="account-label">Profile</div><div class="account-value" id="ochiAccountProfile">No active account</div></div>
+<div class="account-card">
+<div class="account-label">Session</div>
+<div class="account-value" id="ochiAccountSession">Signed out</div>
+</div>
+<div class="account-card">
+<div class="account-label">Account ID</div>
+<div class="account-value" id="ochiAccountId">—</div>
+</div>
+<div class="account-card">
+<div class="account-label">Profile</div>
+<div class="account-value" id="ochiAccountProfile">No local profile</div>
+</div>
 </div>
 <div id="ochiAccountSignedOut">
 <div class="account-form">
-<input id="ochiAccountName" maxlength="80" placeholder="Display name (for new accounts)" type="text" autocomplete="name"/>
-<input id="ochiAccountEmail" maxlength="160" placeholder="Email address" type="email" autocomplete="username"/>
-<input id="ochiAccountPassword" maxlength="128" placeholder="Password (minimum 8 characters)" type="password" autocomplete="current-password"/>
+<input id="ochiAccountName" maxlength="80" placeholder="Display name" type="text"/>
+<input id="ochiAccountEmail" maxlength="160" placeholder="Email address" type="email"/>
+<button class="account-btn primary" onclick="createOchiLocalAccount()" type="button">Create / Sign in</button>
+</div>
+</div>
+<div class="account-signed" id="ochiAccountSignedIn">
 <div class="account-actions">
-<button class="account-btn primary" onclick="signInOchiAccount()" type="button">Sign in</button>
-<button class="account-btn secondary" onclick="signUpOchiAccount()" type="button">Create account</button>
-<button class="account-btn secondary" onclick="resetOchiPassword()" type="button">Forgot password?</button>
-</div>
-</div>
-</div>
-<div class="account-signed" id="ochiAccountSignedIn" style="display:none">
-<div class="account-actions">
-<button class="account-btn primary" onclick="testOchiDatabaseReadAccess()" type="button">Test database access (read-only)</button>
 <button class="account-btn secondary" onclick="signOutOchiAccount()" type="button">Sign out</button>
+<button class="account-btn danger" onclick="deleteOchiLocalAccount()" type="button">Delete local account</button>
 </div>
 </div>
-<div class="account-message" id="ochiAccountMessage">Connecting securely to Supabase…</div>
-<div class="account-note"><strong>Security:</strong> Supabase handles authentication and password processing. Your existing local trades remain unchanged. Signing in does not upload, overwrite, or delete trades; cloud synchronization remains paused until ownership and database security are verified.</div>
-</div>
+<div class="account-message" id="ochiAccountMessage">
+      No account session is active. Your existing trades and data remain local and are not affected.
+    </div>
+<div class="account-note">
+<strong>Account layer:</strong> this is the account-layer foundation only. It creates a local development profile and session state without storing passwords or sending data to a server. Real secure authentication, server-side sessions and cloud identity will be connected after the backend/database foundation is ready.
+    </div>
 <!-- =====================================================
        OCHI DATABASE FOUNDATION
   ====================================================== -->
@@ -4143,7 +4079,7 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
 <div class="sync-head">
 <div>
 <h3 class="sync-title">🔄 Trade Synchronization</h3>
-<div class="sync-subtitle">Local database tools · Supabase cloud preview</div>
+<div class="sync-subtitle">Trade data sync</div>
 </div>
 <span class="phase74-badge">SYNC</span>
 </div>
@@ -4169,31 +4105,16 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
 <button class="sync-btn primary" onclick="syncOchiTradesNow()" type="button">🔄 Sync Now</button>
 <button class="sync-btn secondary" onclick="pushOchiTradesToDatabase()" type="button">↑ Push App → Database</button>
 <button class="sync-btn warning" onclick="pullOchiTradesFromDatabase()" type="button">↓ Pull Database → App</button>
-<button class="sync-btn secondary" onclick="compareOchiTradeStores()" type="button">Compare Local Stores</button>
-<button class="sync-btn secondary" onclick="previewOchiCloudMerge()" type="button">☁ Preview Supabase Cloud</button>
+<button class="sync-btn secondary" onclick="compareOchiTradeStores()" type="button">Compare Stores</button>
 </div>
 <div aria-hidden="true" class="sync-progress">
 <div class="sync-progress-bar" id="ochiSyncProgress"></div>
 </div>
 <div class="sync-message" id="ochiSyncMessage">
-      Local IndexedDB tools are separate from Supabase. Cloud preview is read-only; no cloud records are written, updated, or deleted.
+      Trade synchronization is ready. Your existing local OchiTracker data remains the working dataset until you choose to synchronize it into the database.
     </div>
-<div class="sync-message" id="ochiCloudDetailReport" style="display:none; margin-top:12px; white-space:normal;">
-  <strong>Read-only record differences</strong>
-  <div id="ochiCloudDetailBody"></div>
-<div id="ochiCloudIntegrityReport" style="margin-top:14px;"></div>
-<div id="ochiCloudSafeSyncActions" style="display:none;margin-top:14px;padding:12px;border:1px solid rgba(90,160,220,.28);border-radius:10px;background:rgba(10,30,48,.55);">
-  <h4 style="margin:0 0 8px;color:#d9e8f8;">Controlled cloud transfer · additive only</h4>
-  <p id="ochiCloudSafeSyncStatus" style="font-size:12px;line-height:1.5;">Run a fresh cloud preview before transferring records.</p>
-  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;">
-    <button class="sync-btn secondary" id="ochiCloudUploadMissingBtn" type="button" onclick="uploadOchiCloudMissingTrades()" disabled>Upload missing local trades</button>
-    <button class="sync-btn secondary" id="ochiCloudImportMissingBtn" type="button" onclick="importOchiCloudMissingTrades()" disabled>Import missing cloud trades</button>
-  </div>
-  <p style="font-size:11px;color:#aebfd0;margin:10px 0 0;">Safety rules: insert-only cloud upload; additive local import; no upsert, overwrite, update, or delete. Any same-ID content conflict blocks both actions. Automatic cloud sync remains off.</p>
-</div>
-</div>
 <div class="sync-note">
-<strong>Important:</strong> “Sync Now” and Push/Pull operate only on this browser’s IndexedDB, not Supabase. “Preview Supabase Cloud” performs a read-only comparison against the authenticated cloud rows. Cloud transfers are manual, additive-only and conflict-blocked; automatic cloud sync remains disabled.
+<strong>Synchronization:</strong> this synchronizes your current trade journal with the local browser database. It does <strong>not yet synchronize across the internet or between devices</strong>. “Sync Now” safely writes the current journal to the local database. Pulling from the database requires confirmation because it replaces the current app trade list.
     </div>
 </div>
 </div>
@@ -4296,9 +4217,6 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
 <button class="warning" onclick="restoreFullBackup()">
         Restore Full Backup
       </button>
-</div>
-<div class="info-box" style="margin-top:10px">
-<strong>Safe merge:</strong> Merge Trades adds missing trades from a selected phone backup and keeps existing trades and Risk Engine settings. It does not perform a full restore or overwrite settings.
 </div>
 <div class="preview" id="backupPreview"></div>
 </div>
@@ -4418,7 +4336,6 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
   • Local Data Mode
 
 </footer>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" onerror="this.onerror=null;this.src='https://unpkg.com/@supabase/supabase-js@2'"></script>
 <script>
 /* =========================================================
    OCHITRACKER CORE
@@ -10141,13 +10058,8 @@ window.addEventListener(
    START
 ========================================================= */
 
-try{
-  initialize();
-}catch(error){
-  console.error("OchiTracker dashboard initialization warning:",error);
-  const boot=document.getElementById("ochiBootError");
-  if(boot){boot.style.display="block";boot.textContent="Dashboard startup warning: "+(error?.message || error)+". Authentication remains available; saved records were not intentionally changed.";}
-}
+initialize();
+
 
 
 /* =========================================================
@@ -10239,215 +10151,176 @@ function initializeOchiCloudArchitecture(){
 
 
 /* =========================================================
-   OCHI ACCOUNT / SUPABASE AUTHENTICATION
-   Browser-safe publishable key only. Trade sync remains paused.
+   OCHI ACCOUNT / AUTHENTICATION FOUNDATION
+   Local development account only. No passwords/network calls.
 ========================================================= */
+
 const OCHI_ACCOUNT_KEY = "ochiAccount";
-const OCHI_SUPABASE_URL = "https://qdyicrrrelqmgaxktygz.supabase.co";
-const OCHI_SUPABASE_PUBLISHABLE_KEY = "sb_publishable_2NcEdq9KoN7UDGorVa09pQ_uBbVuzDk";
-let OCHI_SUPABASE = null;
-let OCHI_AUTH_READY = false;
-let OCHI_AUTH_INITIALIZING = false;
-let OCHI_LOCKED_BY_LEAVING = false;
-let OCHI_AUTO_LOCK_IN_PROGRESS = false;
 
 function getOchiAccount(){
-  try{ const raw=localStorage.getItem(OCHI_ACCOUNT_KEY); return raw ? JSON.parse(raw) : null; }
-  catch(error){ return null; }
-}
-function saveOchiAccount(account){ localStorage.setItem(OCHI_ACCOUNT_KEY,JSON.stringify(account)); }
-function clearOchiAccount(){ localStorage.removeItem(OCHI_ACCOUNT_KEY); }
-function sanitizeAccountText(value,maxLength){ return String(value ?? "").trim().slice(0,maxLength); }
-function getOchiAuthInput(id){
-  const gateIds={ochiAccountName:"ochiGateName",ochiAccountEmail:"ochiGateEmail",ochiAccountPassword:"ochiGatePassword"};
-  const gate=document.getElementById(gateIds[id]);
-  return gate || document.getElementById(id);
-}
-function setOchiAccountMessage(message,isError=false){
-  [document.getElementById("ochiAccountMessage"),document.getElementById("ochiGateMessage")].filter(Boolean).forEach(el=>{
-    el.textContent=message;
-    el.style.color=isError ? "#ffb4b4" : "#b9d8ff";
-    el.style.borderColor=isError ? "rgba(255,100,100,.35)" : "rgba(88,166,255,.22)";
-    el.style.background=isError ? "rgba(255,70,70,.10)" : "rgba(88,166,255,.08)";
-  });
-}
-function renderOchiAuthGate(){
-  const gate=document.getElementById("ochiAuthGate");
-  if(!gate)return;
-  // Do not trust the local profile cache as proof of login; only Supabase's live session counts.
-  const signedIn=!!(!OCHI_LOCKED_BY_LEAVING && OCHI_AUTH_READY && OCHI_SUPABASE && getOchiAuthUser());
-  gate.hidden=signedIn;
-  document.body.style.overflow=signedIn ? "" : "hidden";
-  if(signedIn){const p=document.getElementById("ochiGatePassword");if(p)p.value="";}
-}
-function getOchiAuthUser(){ const a=getOchiAccount(); return a?.authenticated && a?.userId ? a : null; }
-function persistOchiAuthUser(user){
-  if(!user){clearOchiAccount();return;}
-  const metadata=user.user_metadata || {};
-  saveOchiAccount({accountId:user.id,userId:user.id,
-    displayName:sanitizeAccountText(metadata.display_name || metadata.full_name || user.email?.split("@")[0] || "OchiTracker user",80),
-    email:user.email || "",authenticated:true,environment:"supabase-production",authProvider:"supabase",
-    emailConfirmed:!!user.email_confirmed_at});
-}
-function renderOchiAccount(){
-  const session=document.getElementById("ochiAccountSession"), accountId=document.getElementById("ochiAccountId"),
-    profile=document.getElementById("ochiAccountProfile"), signedOut=document.getElementById("ochiAccountSignedOut"),
-    signedIn=document.getElementById("ochiAccountSignedIn");
-  if(!session || !accountId || !profile){renderOchiAuthGate();return;}
-  const account=getOchiAuthUser(), authenticated=!!account;
-  renderOchiAuthGate();
-  session.textContent=authenticated ? "Signed in · Supabase" : (OCHI_AUTH_READY ? "Signed out" : "Connecting…");
-  accountId.textContent=account?.userId || "—";
-  profile.textContent=authenticated ? `${account.displayName} · ${account.email}` : "No active account";
-  if(signedOut)signedOut.style.display=authenticated ? "none" : "block";
-  if(signedIn)signedIn.style.display=authenticated ? "block" : "none";
-  const nameInput=document.getElementById("ochiAccountName"), emailInput=document.getElementById("ochiAccountEmail");
-  if(nameInput && authenticated)nameInput.value=account.displayName || "";
-  if(emailInput && authenticated)emailInput.value=account.email || "";
-}
-function getOchiAccountState(){
-  const account=getOchiAuthUser();
-  return {enabled:true,authenticated:!!account,accountId:account?.userId || null,
-    displayName:account?.displayName || null,email:account?.email || null,
-    provider:account?.authProvider || null,environment:account?.environment || "supabase"};
-}
-function requireOchiSupabase(){
-  if(!OCHI_SUPABASE){setOchiAccountMessage("Supabase is not ready. Check your internet connection and reload this page.",true);return false;}
-  return true;
-}
-async function signUpOchiAccount(){
-  if(!requireOchiSupabase())return;
-  const name=sanitizeAccountText(getOchiAuthInput("ochiAccountName")?.value,80);
-  const email=sanitizeAccountText(getOchiAuthInput("ochiAccountEmail")?.value,160).toLowerCase();
-  const password=String(getOchiAuthInput("ochiAccountPassword")?.value || "");
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return setOchiAccountMessage("Enter a valid email address.",true);
-  if(password.length<8)return setOchiAccountMessage("Use a password with at least 8 characters.",true);
   try{
-    setOchiAccountMessage("Creating your Supabase account…");
-    const {data,error}=await OCHI_SUPABASE.auth.signUp({email,password,options:{data:{display_name:name || email.split("@")[0]},emailRedirectTo:window.location.href.split("#")[0]}});
-    if(error)throw error;
-    if(data.session && data.user){OCHI_LOCKED_BY_LEAVING=false;persistOchiAuthUser(data.user);renderOchiAccount();renderOchiCloud();setOchiAccountMessage("Account created and signed in. Your local trades have not been uploaded or changed.");}
-    else setOchiAccountMessage("Account request accepted. Check your email for the confirmation link, then return and sign in.");
-  }catch(error){setOchiAccountMessage("Sign-up failed: "+(error.message || "Unknown Supabase error"),true);}
-}
-async function testOchiDatabaseReadAccess(){
-  if(!requireOchiSupabase())return;
-  try{
-    setOchiAccountMessage("Running a read-only ownership check. No trades will be changed…");
-    const {data:sessionData,error:sessionError}=await OCHI_SUPABASE.auth.getSession();
-    if(sessionError)throw sessionError;
-    const sessionUser=sessionData?.session?.user;
-    if(!sessionUser?.id)throw new Error("No active Supabase session. Please sign in again.");
-    const account=getOchiAuthUser();
-    if(!account?.userId || account.userId!==sessionUser.id){
-      throw new Error("The displayed account does not match the active Supabase session. Please sign in again.");
-    }
-    // SELECT only: RLS must return a row owned by this authenticated user.
-    // Limit to one returned user_id while count=exact reports all visible rows.
-    const {data,error,count}=await OCHI_SUPABASE
-      .from("trades")
-      .select("user_id",{count:"exact"})
-      .limit(1);
-    if(error)throw error;
-    if(!Array.isArray(data) || data.length===0 || data[0]?.user_id!==sessionUser.id){
-      throw new Error("No matching owned trade row was returned. Database read access is not verified; sync remains disabled.");
-    }
-    if(typeof count!=="number")throw new Error("Supabase did not return an exact row count. Access remains unverified.");
-    setOchiAccountMessage(`READ-ONLY CHECK PASSED · ${count} trade rows visible to this account · owner ID matches the signed-in user. No records were changed. Cloud sync remains disabled.`);
+    const raw=localStorage.getItem(OCHI_ACCOUNT_KEY);
+    if(!raw) return null;
+    const account=JSON.parse(raw);
+    if(!account || typeof account!=="object") return null;
+    return account;
   }catch(error){
-    setOchiAccountMessage("READ-ONLY CHECK NOT PASSED · "+(error?.message || "Unknown database error")+". No trades were changed; cloud sync remains disabled.",true);
+    return null;
   }
 }
 
-async function signInOchiAccount(){
-  if(!requireOchiSupabase())return;
-  const email=sanitizeAccountText(getOchiAuthInput("ochiAccountEmail")?.value,160).toLowerCase();
-  const password=String(getOchiAuthInput("ochiAccountPassword")?.value || "");
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return setOchiAccountMessage("Enter a valid email address.",true);
-  if(!password)return setOchiAccountMessage("Enter your account password.",true);
-  try{
-    setOchiAccountMessage("Signing in securely…");
-    const {data,error}=await OCHI_SUPABASE.auth.signInWithPassword({email,password}); if(error)throw error;
-    OCHI_LOCKED_BY_LEAVING=false;persistOchiAuthUser(data.user); const p=getOchiAuthInput("ochiAccountPassword");if(p)p.value="";
-    renderOchiAccount();renderOchiCloud();setOchiAccountMessage("Signed in to Supabase. Your local trades remain unchanged; cloud sync is still paused pending database checks.");
-  }catch(error){setOchiAccountMessage("Sign-in failed: "+(error.message || "Check your email and password"),true);}
+function saveOchiAccount(account){
+  localStorage.setItem(OCHI_ACCOUNT_KEY, JSON.stringify(account));
 }
-async function resetOchiPassword(){
-  if(!requireOchiSupabase())return;
-  const email=sanitizeAccountText(getOchiAuthInput("ochiAccountEmail")?.value,160).toLowerCase();
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return setOchiAccountMessage("Enter your account email first.",true);
-  try{const {error}=await OCHI_SUPABASE.auth.resetPasswordForEmail(email,{redirectTo:window.location.href.split("#")[0]});if(error)throw error;
-    setOchiAccountMessage("If this email belongs to an account, Supabase will send a password-reset link.");}
-  catch(error){setOchiAccountMessage("Could not request password reset: "+(error.message || "Unknown error"),true);}
-}
-async function signOutOchiAccount(){
-  if(!requireOchiSupabase())return;
-  try{const {error}=await OCHI_SUPABASE.auth.signOut({scope:"local"});if(error)throw error;OCHI_LOCKED_BY_LEAVING=true;clearOchiAccount();renderOchiAccount();renderOchiCloud();
-    setOchiAccountMessage("Signed out. Your local trades and settings remain on this device.");}
-  catch(error){setOchiAccountMessage("Sign-out failed: "+(error.message || "Unknown error"),true);}
-}
-function lockOchiTrackerAfterLeaving(){
-  if(OCHI_AUTO_LOCK_IN_PROGRESS || !getOchiAuthUser())return;
-  OCHI_AUTO_LOCK_IN_PROGRESS=true;
-  OCHI_LOCKED_BY_LEAVING=true;
-  clearOchiAccount();
-  try{sessionStorage.removeItem("ochitracker-supabase-auth");}catch(error){}
-  const password=document.getElementById("ochiGatePassword");if(password)password.value="";
-  renderOchiAuthGate();
-  renderOchiAccount();
-  setOchiAccountMessage("OchiTracker is locked because you left the app. Sign in again to continue.");
-  if(OCHI_SUPABASE){
-    Promise.resolve(OCHI_SUPABASE.auth.signOut({scope:"local"})).catch(error=>console.warn("OchiTracker auto-lock sign-out:",error)).finally(()=>{OCHI_AUTO_LOCK_IN_PROGRESS=false;});
-  }else{OCHI_AUTO_LOCK_IN_PROGRESS=false;}
-}
-// Lock immediately when the page is backgrounded, switched away from, or navigated away.
-// A fresh page load also requires credentials because Supabase sessions are not persisted.
-document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")lockOchiTrackerAfterLeaving();});
-window.addEventListener("pagehide",lockOchiTrackerAfterLeaving);
 
-async function initializeOchiAccount(){
-  if(OCHI_AUTH_INITIALIZING)return;
-  OCHI_AUTH_INITIALIZING=true;
+function clearOchiAccount(){
+  localStorage.removeItem(OCHI_ACCOUNT_KEY);
+}
+
+function generateOchiAccountId(){
+  const bytes=new Uint8Array(8);
+  if(window.crypto && crypto.getRandomValues){
+    crypto.getRandomValues(bytes);
+    return "OCHI-" + Array.from(bytes).map(b=>b.toString(16).padStart(2,"0")).join("").toUpperCase();
+  }
+  return "OCHI-" + Date.now().toString(36).toUpperCase();
+}
+
+function sanitizeAccountText(value,maxLength){
+  return String(value ?? "").trim().slice(0,maxLength);
+}
+
+function createOchiLocalAccount(){
+  const name=sanitizeAccountText(document.getElementById("ochiAccountName")?.value,80);
+  const email=sanitizeAccountText(document.getElementById("ochiAccountEmail")?.value,160).toLowerCase();
+
+  if(!name){
+    setOchiAccountMessage("Enter a display name to create the local account profile.",true);
+    return;
+  }
+
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    setOchiAccountMessage("Enter a valid email address.",true);
+    return;
+  }
+
+  const existing=getOchiAccount();
+  const account={
+    accountId:existing?.accountId || generateOchiAccountId(),
+    displayName:name,
+    email,
+    createdAt:existing?.createdAt || new Date().toISOString(),
+    lastSignInAt:new Date().toISOString(),
+    authenticated:true,
+    environment:"local-development",
+    authProvider:"local-placeholder"
+  };
+
   try{
-    setOchiAccountMessage("Loading secure sign-in service…");
-    // CDN fallback may still be loading; wait instead of silently leaving dead buttons.
-    let attempts=0;
-    while(!window.supabase?.createClient && attempts<24){
-      await new Promise(resolve=>setTimeout(resolve,500));
-      attempts++;
-    }
-    if(!window.supabase?.createClient){
-      throw new Error("The Supabase library could not load from either CDN. Check internet access, then reload.");
-    }
-    OCHI_SUPABASE=window.supabase.createClient(OCHI_SUPABASE_URL,OCHI_SUPABASE_PUBLISHABLE_KEY,{
-      // Do not persist authentication between page loads or browser sessions.
-      // The visibility/pagehide lock below also signs out when the user leaves the app.
-      auth:{persistSession:false,autoRefreshToken:true,detectSessionInUrl:true}
-    });
-    const {data,error}=await OCHI_SUPABASE.auth.getSession();
-    if(error)throw error;
-    persistOchiAuthUser(data.session?.user || null);
-    OCHI_AUTH_READY=true;
-    OCHI_SUPABASE.auth.onAuthStateChange((_event,session)=>{
-      persistOchiAuthUser(session?.user || null);
-      renderOchiAccount();
-      renderOchiCloud();
-    });
+    saveOchiAccount(account);
     renderOchiAccount();
     renderOchiCloud();
-    setOchiAccountMessage(data.session?.user
-      ? "Signed in session restored. Your local trading records are preserved. Cloud trade sync is not yet enabled."
-      : "Secure sign-in is ready. Enter your Supabase email and password.");
+    setOchiAccountMessage(
+      "Local account session created. No password was stored and no data was sent to a server. Your trading data remains in this browser.",
+      false
+    );
   }catch(error){
-    OCHI_AUTH_READY=false;
-    renderOchiAccount();
-    setOchiAccountMessage("Sign-in service unavailable: "+(error.message || "Check your connection and reload"),true);
-    console.error("OchiTracker Supabase initialization failed:",error);
-  }finally{
-    OCHI_AUTH_INITIALIZING=false;
+    setOchiAccountMessage("The local account could not be saved in this browser.",true);
   }
 }
-renderOchiAuthGate();
+
+function signOutOchiAccount(){
+  const account=getOchiAccount();
+  if(!account) return;
+
+  const signedOut={
+    ...account,
+    authenticated:false,
+    lastSignOutAt:new Date().toISOString()
+  };
+
+  try{
+    saveOchiAccount(signedOut);
+    renderOchiAccount();
+    renderOchiCloud();
+    setOchiAccountMessage("Signed out of the local development session. Your trading data remains stored locally.",false);
+  }catch(error){
+    setOchiAccountMessage("Could not update the local session.",true);
+  }
+}
+
+function deleteOchiLocalAccount(){
+  const account=getOchiAccount();
+  if(!account) return;
+
+  const confirmed=window.confirm(
+    "Delete the local Ochi Account profile?\\n\\nThis does NOT delete your trades, risk settings or reports."
+  );
+  if(!confirmed) return;
+
+  try{
+    clearOchiAccount();
+    renderOchiAccount();
+    renderOchiCloud();
+    setOchiAccountMessage("Local account profile deleted. Your OchiTracker trading data was not deleted.",false);
+  }catch(error){
+    setOchiAccountMessage("Could not delete the local account profile.",true);
+  }
+}
+
+function setOchiAccountMessage(message,isError){
+  const el=document.getElementById("ochiAccountMessage");
+  if(!el) return;
+  el.textContent=message;
+  el.style.color=isError ? "#ffb4b4" : "#b9d8ff";
+  el.style.borderColor=isError ? "rgba(255,100,100,.22)" : "rgba(88,166,255,.16)";
+  el.style.background=isError ? "rgba(255,70,70,.08)" : "rgba(88,166,255,.08)";
+}
+
+function renderOchiAccount(){
+  const session=document.getElementById("ochiAccountSession");
+  const accountId=document.getElementById("ochiAccountId");
+  const profile=document.getElementById("ochiAccountProfile");
+  const signedOut=document.getElementById("ochiAccountSignedOut");
+  const signedIn=document.getElementById("ochiAccountSignedIn");
+  if(!session || !accountId || !profile) return;
+
+  const account=getOchiAccount();
+  const authenticated=!!(account && account.authenticated);
+
+  session.textContent=authenticated ? "Authenticated · Local" : "Signed out";
+  accountId.textContent=account?.accountId || "—";
+  profile.textContent=authenticated
+    ? `${account.displayName} · ${account.email}`
+    : "No active local profile";
+
+  if(signedOut) signedOut.style.display=authenticated ? "none" : "block";
+  if(signedIn) signedIn.style.display=authenticated ? "block" : "none";
+
+  const nameInput=document.getElementById("ochiAccountName");
+  const emailInput=document.getElementById("ochiAccountEmail");
+  if(nameInput && authenticated) nameInput.value=account.displayName || "";
+  if(emailInput && authenticated) emailInput.value=account.email || "";
+}
+
+function getOchiAccountState(){
+  const account=getOchiAccount();
+  return {
+    enabled:true,
+    authenticated:!!(account && account.authenticated),
+    accountId:account?.accountId || null,
+    displayName:account?.displayName || null,
+    email:account?.email || null,
+    provider:account?.authProvider || null,
+    environment:account?.environment || "local-development"
+  };
+}
+
+function initializeOchiAccount(){
+  renderOchiAccount();
+  renderOchiCloud();
+}
+
 initializeOchiAccount();
 
 
@@ -10835,273 +10708,6 @@ function getOchiLocalTradeRows(){
   return Array.isArray(trades) ? trades.map((trade,index)=>normalizeDatabaseTrade(trade,index)) : [];
 }
 
-
-// Phase 7.21.0: authenticated, read-only Supabase comparison.
-// This deliberately performs SELECT only. It never inserts, updates, or deletes.
-// Phase 7.21.3: compare stable trade IDs, not Supabase wrapper-row UUIDs.
-// For cloud rows, trade_data.id is the original OchiTracker trade ID; row.id is a separate database key.
-// This remains authenticated and read-only: SELECT only, no inserts, updates, or deletes.
-function ochiCloudValue(obj, keys){
-  for(const key of keys){
-    const value=obj && obj[key];
-    if(value!==undefined && value!==null && value!=="") return value;
-  }
-  return "—";
-}
-function ochiCloudTradeId(row, isCloud){
-  if(isCloud){
-    const embedded=row?.trade_data?.id;
-    if(embedded!==undefined && embedded!==null && String(embedded).trim()!=="") return String(embedded);
-    return String(row?.id ?? "");
-  }
-  return String(row?.id ?? "");
-}
-function ochiCloudSummary(row, isCloud){
-  const t=isCloud ? (row?.trade_data && typeof row.trade_data==="object" ? row.trade_data : {}) : row;
-  return {
-    id:ochiCloudTradeId(row,isCloud) || "—",
-    date:String(ochiCloudValue(t,["date","tradeDate","createdAt"]) ),
-    pair:String(ochiCloudValue(t,["pair","symbol","currencyPair"])),
-    direction:String(ochiCloudValue(t,["direction","side","type"])),
-    result:String(ochiCloudValue(t,["result","outcome","status"])),
-    profit:String(ochiCloudValue(t,["profit","pnl","p_l","netProfit"])),
-    cloudUpdated:isCloud ? String(row?.updated_at ?? row?.created_at ?? "—") : ""
-  };
-}
-function ochiCloudCanonicalValue(value){
-  if(value===undefined) return '[MISSING]';
-  if(value===null || typeof value!=='object') return JSON.stringify(value);
-  if(Array.isArray(value)) return '['+value.map(ochiCloudCanonicalValue).join(',')+']';
-  return '{'+Object.keys(value).sort().map(k=>JSON.stringify(k)+':'+ochiCloudCanonicalValue(value[k])).join(',')+'}';
-}
-function ochiCloudFlatten(value,prefix='',out={}){
-  if(value && typeof value==='object' && !Array.isArray(value)){
-    const keys=Object.keys(value);
-    if(!keys.length) out[prefix||'(root)']='{}';
-    keys.forEach(k=>ochiCloudFlatten(value[k],prefix?prefix+'.'+k:k,out));
-  }else if(Array.isArray(value)){
-    if(!value.length) out[prefix]='[]';
-    else value.forEach((v,i)=>ochiCloudFlatten(v,`${prefix}[${i}]`,out));
-  }else out[prefix]=value;
-  return out;
-}
-function compareOchiCloudTradeContent(localRows,cloudRows){
-  const localMap=new Map(localRows.map(t=>[String(t.id),t]));
-  const results=[];
-  cloudRows.forEach(row=>{
-    const id=ochiCloudTradeId(row,true);
-    if(!localMap.has(id)) return;
-    const local=localMap.get(id);
-    const cloud=row?.trade_data && typeof row.trade_data==='object' ? row.trade_data : {};
-    const lf=ochiCloudFlatten(local), cf=ochiCloudFlatten(cloud);
-    const paths=[...new Set([...Object.keys(lf),...Object.keys(cf)])].sort();
-    const differences=[];
-    paths.forEach(path=>{
-      const lv=Object.prototype.hasOwnProperty.call(lf,path)?lf[path]:undefined;
-      const cv=Object.prototype.hasOwnProperty.call(cf,path)?cf[path]:undefined;
-      if(ochiCloudCanonicalValue(lv)!==ochiCloudCanonicalValue(cv)) differences.push({path,local:lv,cloud:cv});
-    });
-    results.push({id,differences});
-  });
-  return results;
-}
-function renderOchiCloudDifferenceReport(localOnly,cloudOnly,integrity){
-  const panel=document.getElementById("ochiCloudDetailReport");
-  const body=document.getElementById("ochiCloudDetailBody");
-  const integrityBody=document.getElementById("ochiCloudIntegrityReport");
-  if(!panel || !body) return;
-  body.replaceChildren();
-  const makeSection=(title,rows,isCloud)=>{
-    const heading=document.createElement("h4"); heading.textContent=title; body.appendChild(heading);
-    if(!rows.length){const p=document.createElement("p");p.textContent="None";body.appendChild(p);return;}
-    const wrap=document.createElement("div"); wrap.style.overflowX="auto";
-    const table=document.createElement("table"); table.style.width="100%"; table.style.borderCollapse="collapse";
-    const headers=["ID","Date","Pair","Direction","Result","P/L",...(isCloud?["Cloud updated"]:[]),"Full stored fields"];
-    const thead=document.createElement("thead"),trh=document.createElement("tr");
-    headers.forEach(label=>{const th=document.createElement("th");th.textContent=label;th.style.textAlign="left";th.style.padding="7px";th.style.borderBottom="1px solid #31516d";trh.appendChild(th);});
-    thead.appendChild(trh);table.appendChild(thead);
-    const tbody=document.createElement("tbody");
-    rows.forEach(row=>{const x=ochiCloudSummary(row,isCloud);const tr=document.createElement("tr");
-      const vals=[x.id,x.date,x.pair,x.direction,x.result,x.profit,...(isCloud?[x.cloudUpdated]:[])];
-      vals.forEach(v=>{const td=document.createElement("td");td.textContent=String(v);td.style.padding="7px";td.style.borderBottom="1px solid rgba(49,81,109,.45)";td.style.fontSize="11px";td.style.wordBreak="break-word";tr.appendChild(td);});
-      const detailCell=document.createElement("td");detailCell.style.padding="7px";detailCell.style.borderBottom="1px solid rgba(49,81,109,.45)";detailCell.style.verticalAlign="top";
-      const details=document.createElement("details");
-      const summary=document.createElement("summary");summary.textContent="Inspect all fields";summary.style.cursor="pointer";summary.style.color="#8fc7ff";summary.style.fontSize="11px";
-      const pre=document.createElement("pre");
-      const fullRecord=isCloud ? {id:row?.id,created_at:row?.created_at,updated_at:row?.updated_at,trade_data:row?.trade_data} : row;
-      pre.textContent=JSON.stringify(fullRecord,null,2);
-      pre.style.whiteSpace="pre-wrap";pre.style.overflowWrap="anywhere";pre.style.maxWidth="min(78vw,620px)";pre.style.maxHeight="320px";pre.style.overflow="auto";pre.style.padding="9px";pre.style.marginTop="8px";pre.style.background="#071321";pre.style.border="1px solid #31516d";pre.style.borderRadius="7px";pre.style.color="#d9e8f8";pre.style.fontSize="10px";
-      details.append(summary,pre);detailCell.appendChild(details);tr.appendChild(detailCell);tbody.appendChild(tr);
-    });
-    table.appendChild(tbody);wrap.appendChild(table);body.appendChild(wrap);
-  };
-  makeSection("Local-only trades · present on this device, missing from Supabase",localOnly,false);
-  makeSection("Cloud-only trades · present in Supabase, missing locally",cloudOnly,true);
-  const note=document.createElement("p");note.textContent="This report is for identification only. It does not merge, modify, or delete any trade. Review the underlying trade details before authorizing any transfer.";body.appendChild(note);
-  if(integrityBody){
-    integrityBody.replaceChildren();
-    const heading=document.createElement('h4');heading.textContent='Read-only trade content integrity';integrityBody.appendChild(heading);
-    const differing=integrity.filter(x=>x.differences.length>0);
-    const identical=integrity.length-differing.length;
-    const summary=document.createElement('p');
-    summary.textContent=`Compared ${integrity.length} shared trade records · Identical fields: ${identical} · Records with differences: ${differing.length} · Total differing fields: ${differing.reduce((n,x)=>n+x.differences.length,0)}. Comparison uses local trade objects against Supabase trade_data only; Supabase wrapper IDs/timestamps are excluded. No records were changed.`;
-    integrityBody.appendChild(summary);
-    if(!differing.length){const ok=document.createElement('p');ok.textContent='All shared trade records have identical stored trade fields.';ok.style.color='#8de0ad';integrityBody.appendChild(ok);}
-    differing.forEach(item=>{
-      const details=document.createElement('details');details.style.margin='8px 0';
-      const summaryEl=document.createElement('summary');summaryEl.textContent=`Trade ${item.id} · ${item.differences.length} field difference(s)`;summaryEl.style.cursor='pointer';summaryEl.style.color='#ffd98a';details.appendChild(summaryEl);
-      const pre=document.createElement('pre');pre.textContent=item.differences.map(d=>`${d.path}\n  Local: ${d.local===undefined?'[MISSING]':JSON.stringify(d.local)}\n  Supabase: ${d.cloud===undefined?'[MISSING]':JSON.stringify(d.cloud)}`).join('\n\n');
-      pre.style.whiteSpace='pre-wrap';pre.style.overflowWrap='anywhere';pre.style.padding='9px';pre.style.background='#071321';pre.style.border='1px solid #31516d';pre.style.borderRadius='7px';pre.style.fontSize='10px';pre.style.color='#d9e8f8';details.appendChild(pre);integrityBody.appendChild(details);
-    });
-  }
-  panel.style.display="block";
-}
-async function previewOchiCloudMerge(){
-  const button=Array.from(document.querySelectorAll('#ochiTradeSyncPanel button')).find(b=>b.textContent.includes('Preview Supabase Cloud'));
-  if(button){button.disabled=true;button.textContent='Checking cloud…';}
-  try{
-    if(!OCHI_SUPABASE) throw new Error('Supabase client is not ready.');
-    const {data:sessionData,error:sessionError}=await OCHI_SUPABASE.auth.getSession();
-    if(sessionError) throw sessionError;
-    const user=sessionData?.session?.user;
-    const account=getOchiAuthUser();
-    if(!user?.id || !account?.userId || account.userId!==user.id){
-      throw new Error('No matching active Supabase account. Sign in before checking cloud data.');
-    }
-    setOchiSyncMessage('READ-ONLY CLOUD PREVIEW · Fetching rows owned by the signed-in account…',false);
-    const {data:rows,error}=await OCHI_SUPABASE.from('trades')
-      .select('id,user_id,trade_data,created_at,updated_at').eq('user_id',user.id);
-    if(error) throw error;
-    if(!Array.isArray(rows)) throw new Error('Supabase returned an unexpected response.');
-    const local=getOchiLocalTradeRows();
-    const localKeys=local.map(t=>String(t.id ?? ""));
-    const remoteKeys=rows.map(r=>ochiCloudTradeId(r,true));
-    const localIds=new Set(localKeys);
-    const remoteIds=new Set(remoteKeys);
-    const duplicateLocal=local.length-localIds.size;
-    const duplicateRemote=rows.length-remoteIds.size;
-    if(duplicateLocal || duplicateRemote){
-      throw new Error(`Duplicate IDs detected (local: ${duplicateLocal}, cloud: ${duplicateRemote}). No data was changed.`);
-    }
-    const localOnly=local.filter(t=>!remoteIds.has(String(t.id)));
-    const cloudOnly=rows.filter(r=>!localIds.has(ochiCloudTradeId(r,true)));
-    const shared=local.length-localOnly.length;
-    const integrity=compareOchiCloudTradeContent(local.filter(t=>remoteIds.has(String(t.id))),rows);
-    const localEl=document.getElementById('ochiSyncLocalCount');
-    const cloudEl=document.getElementById('ochiSyncDatabaseCount');
-    if(localEl)localEl.textContent=String(local.length);
-    if(cloudEl)cloudEl.textContent=String(rows.length);
-    renderOchiCloudDifferenceReport(localOnly,cloudOnly,integrity);
-    const differing=integrity.filter(x=>x.differences.length>0).length;
-    window.OCHI_CLOUD_SYNC_PREVIEW={userId:user.id,localOnly,cloudOnly,hasConflicts:differing>0,createdAt:Date.now()};
-    renderOchiCloudSafeSyncActions();
-    setOchiSyncMessage(`READ-ONLY CLOUD PREVIEW COMPLETE · Local: ${local.length} · Supabase rows: ${rows.length} · Local-only: ${localOnly.length} · Cloud-only: ${cloudOnly.length} · Shared trade IDs: ${shared} · Identical content: ${integrity.length-differing} · Content differences: ${differing}. Matching uses trade_data.id. No records were changed.`,false);
-  }catch(error){
-    setOchiSyncMessage('CLOUD PREVIEW NOT COMPLETED · '+(error?.message || 'Unknown error')+'. No records were changed.',true);
-  }finally{
-    if(button){button.disabled=false;button.textContent='☁ Preview Supabase Cloud';}
-  }
-}
-
-// Phase 7.22: manually authorized, additive-only Supabase transfers.
-// No upsert/update/delete is used. Every action re-fetches cloud rows and re-checks conflicts.
-function renderOchiCloudSafeSyncActions(){
-  const panel=document.getElementById('ochiCloudSafeSyncActions');
-  const status=document.getElementById('ochiCloudSafeSyncStatus');
-  const upload=document.getElementById('ochiCloudUploadMissingBtn');
-  const download=document.getElementById('ochiCloudImportMissingBtn');
-  const snap=window.OCHI_CLOUD_SYNC_PREVIEW;
-  if(!panel||!status||!upload||!download)return;
-  panel.style.display='block';
-  const valid=!!snap && !snap.hasConflicts && (Date.now()-snap.createdAt)<5*60*1000;
-  const localCount=snap?.localOnly?.length||0;
-  const cloudCount=snap?.cloudOnly?.length||0;
-  status.textContent=snap?.hasConflicts
-    ? 'Transfer blocked: one or more shared trade IDs have differing stored fields. Review the integrity report first.'
-    : `Latest preview: ${localCount} local-only trade(s) available to upload; ${cloudCount} cloud-only trade(s) available to import. Transfers are manual and additive.`;
-  upload.disabled=!valid||localCount===0;
-  download.disabled=!valid||cloudCount===0;
-}
-async function getOchiCloudTransferSnapshot(){
-  if(!OCHI_SUPABASE)throw new Error('Supabase client is not ready.');
-  const {data:sessionData,error:sessionError}=await OCHI_SUPABASE.auth.getSession();
-  if(sessionError)throw sessionError;
-  const user=sessionData?.session?.user;
-  const account=getOchiAuthUser();
-  if(!user?.id||!account?.userId||account.userId!==user.id)throw new Error('Sign in to the matching Supabase account first.');
-  const {data:rows,error}=await OCHI_SUPABASE.from('trades').select('id,user_id,trade_data,created_at,updated_at').eq('user_id',user.id);
-  if(error)throw error;
-  if(!Array.isArray(rows))throw new Error('Supabase returned an unexpected response.');
-  const local=getOchiLocalTradeRows();
-  const localIds=local.map(t=>String(t?.id??''));
-  const cloudIds=rows.map(r=>ochiCloudTradeId(r,true));
-  if(localIds.some(x=>!x)||cloudIds.some(x=>!x))throw new Error('A record has a missing stable trade ID. Transfer stopped.');
-  const localSet=new Set(localIds),cloudSet=new Set(cloudIds);
-  if(localSet.size!==localIds.length||cloudSet.size!==cloudIds.length)throw new Error('Duplicate trade IDs detected. Transfer stopped.');
-  const localOnly=local.filter(t=>!cloudSet.has(String(t.id)));
-  const cloudOnly=rows.filter(r=>!localSet.has(ochiCloudTradeId(r,true)));
-  const sharedLocal=local.filter(t=>cloudSet.has(String(t.id)));
-  const integrity=compareOchiCloudTradeContent(sharedLocal,rows);
-  const conflicts=integrity.filter(x=>x.differences.length>0);
-  return {user,local,rows,localOnly,cloudOnly,integrity,conflicts};
-}
-async function uploadOchiCloudMissingTrades(){
-  const button=document.getElementById('ochiCloudUploadMissingBtn');
-  if(button)button.disabled=true;
-  try{
-    const snap=await getOchiCloudTransferSnapshot();
-    if(snap.conflicts.length)throw new Error('Upload blocked: shared-ID content differences must be resolved first.');
-    if(!snap.localOnly.length){setOchiSyncMessage('No local-only trades to upload. No records were changed.',false);return;}
-    const count=snap.localOnly.length;
-    if(!window.confirm(`Upload ${count} missing local trade(s) to Supabase?\n\nThis uses INSERT only. Existing cloud rows will not be updated or overwritten. If an ID conflict occurs, the insert will fail safely.`))return;
-    const payload=snap.localOnly.map(trade=>({user_id:snap.user.id,trade_data:trade}));
-    const {error}=await OCHI_SUPABASE.from('trades').insert(payload);
-    if(error)throw error;
-    setOchiSyncMessage(`${count} previously missing trade(s) were inserted into Supabase. Existing rows were not updated or deleted. Rechecking…`,false);
-    await previewOchiCloudMerge();
-  }catch(error){
-    setOchiSyncMessage('CLOUD UPLOAD NOT COMPLETED · '+(error?.message||'Unknown error')+'. Existing records were not intentionally overwritten or deleted.',true);
-  }finally{
-    renderOchiCloudSafeSyncActions();
-  }
-}
-async function importOchiCloudMissingTrades(){
-  const button=document.getElementById('ochiCloudImportMissingBtn');
-  if(button)button.disabled=true;
-  try{
-    const snap=await getOchiCloudTransferSnapshot();
-    if(snap.conflicts.length)throw new Error('Import blocked: shared-ID content differences must be resolved first.');
-    if(!snap.cloudOnly.length){setOchiSyncMessage('No cloud-only trades to import. No records were changed.',false);return;}
-    const additions=snap.cloudOnly.map(row=>{
-      const data=row?.trade_data;
-      if(!data||typeof data!=='object'||Array.isArray(data))throw new Error(`Cloud record ${ochiCloudTradeId(row,true)} has invalid trade_data.`);
-      const copy=JSON.parse(JSON.stringify(data));
-      copy.id=copy.id??ochiCloudTradeId(row,true);
-      return copy;
-    });
-    const existing=new Set(snap.local.map(t=>String(t.id)));
-    if(additions.some(t=>!t.id||existing.has(String(t.id))))throw new Error('An imported trade ID is missing or already exists locally. Import stopped.');
-    const count=additions.length;
-    if(!window.confirm(`Import ${count} missing cloud trade(s) into this browser?\n\nThis adds records only. Existing local trades and settings will not be replaced or deleted.`))return;
-    const previous=trades;
-    try{
-      trades=[...previous,...additions];
-      saveTrades();
-      if(typeof renderEverything==='function')renderEverything();
-    }catch(writeError){
-      trades=previous;
-      try{saveTrades();}catch(restoreError){}
-      throw new Error('Local additive import could not be saved: '+(writeError?.message||'storage error'));
-    }
-    setOchiSyncMessage(`${count} cloud-only trade(s) were added to this browser. Existing local trades were retained. Rechecking…`,false);
-    await previewOchiCloudMerge();
-  }catch(error){
-    setOchiSyncMessage('CLOUD IMPORT NOT COMPLETED · '+(error?.message||'Unknown error')+'. Existing local records were not intentionally replaced or deleted.',true);
-  }finally{
-    renderOchiCloudSafeSyncActions();
-  }
-}
-
 function buildOchiTradeMap(list){
   const map=new Map();
   (Array.isArray(list)?list:[]).forEach((trade,index)=>{
@@ -11359,7 +10965,7 @@ function updateOchiSyncUI(comparison=null){
   const cloudRuntime=window.OCHI_CLOUD_RUNTIME;
   if(cloudRuntime){
     cloudRuntime.sync=cloudRuntime.sync || {};
-    cloudRuntime.sync.enabled=false;
+    cloudRuntime.sync.enabled=true;
     cloudRuntime.sync.status=OCHI_SYNC_RUNTIME.status;
     cloudRuntime.sync.lastSync=lastSync;
     cloudRuntime.sync.direction=OCHI_SYNC_RUNTIME.direction;
@@ -12045,7 +11651,7 @@ footer{border-top-color:var(--ot-gold-line)!important;color:#788aa5!important}
 <script id="ochi-executive-716-runtime">
 (function(){
   'use strict';
-  const BUILD='7.22.3 Institutional News Alerts';
+  const BUILD='7.16 Executive Institutional';
   // Preserve the original 7.15 storage contract so existing verified records/settings are reused.
   // Only record a build marker; never reset trades, risk settings, reports or evidence.
   try{localStorage.setItem('ochiExecutiveBuild',BUILD);}catch(e){console.warn('Build marker could not be stored; user data remains untouched.',e)}
@@ -12111,90 +11717,6 @@ footer{border-top-color:var(--ot-gold-line)!important;color:#788aa5!important}
   symbolSelect.addEventListener('change',renderChart);
   buttons.forEach(function(button){button.addEventListener('click',function(){interval=button.dataset.ochiTf||'15';buttons.forEach(function(other){other.setAttribute('aria-pressed',String(other===button));});renderChart();});});
   renderChart();
-})();
-</script>
-
-
-<style id="ofi-fundamental-styles">
-#ofiFundamentalCalendar{padding:18px;border:1px solid rgba(91,145,220,.23);border-radius:14px;background:linear-gradient(145deg,rgba(13,27,46,.98),rgba(7,14,26,.98));margin:16px auto;max-width:1500px}
-.ofi-dashboard-alert{margin-top:16px;padding:16px;border:1px solid rgba(83,145,224,.24);border-radius:13px;background:linear-gradient(120deg,rgba(18,37,61,.88),rgba(8,18,32,.96))}.ofi-panel-head,.ofi-list-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}.ofi-panel-head h3{margin:3px 0 5px;color:#edf4ff;font-size:16px}.ofi-panel-head p{margin:0;color:#91a4bf;font-size:12px}.ofi-panel-head a{color:#8fc4ff;text-decoration:none;font-size:12px;font-weight:700;white-space:nowrap}.ofi-kicker{font-size:9px;letter-spacing:1.5px;color:#d6b36d;font-weight:900}.ofi-alert-list{display:grid;gap:7px;margin-top:13px}.ofi-alert-row,.ofi-event-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 12px;border:1px solid rgba(127,157,196,.14);border-radius:9px;background:rgba(6,14,25,.58);color:#e8f0fc;text-align:left;width:100%;cursor:pointer}.ofi-alert-row:hover,.ofi-event-row:hover{border-color:rgba(95,161,255,.48);background:rgba(35,75,122,.18)}.ofi-event-main{min-width:0;display:grid;gap:4px}.ofi-event-title{font-size:12px;font-weight:800}.ofi-event-meta{font-size:10px;color:#91a5c1}.ofi-event-right{text-align:right;display:grid;gap:4px;flex-shrink:0}.ofi-impact{font-size:9px;font-weight:900;letter-spacing:.5px;text-transform:uppercase}.ofi-impact.high{color:#ff9b9b}.ofi-impact.medium{color:#e8c77e}.ofi-impact.low{color:#87c9a4}.ofi-currency-chip{display:inline-flex;padding:3px 6px;border-radius:5px;background:rgba(77,139,224,.14);color:#a9d0ff;font-size:9px;font-weight:900;width:max-content}.ofi-status{padding:6px 9px;border:1px solid rgba(215,181,109,.25);border-radius:20px;color:#d6b56f;font-size:9px;font-weight:900;letter-spacing:.7px}.ofi-status.live{color:#8be0ad;border-color:rgba(93,207,142,.35)}.ofi-status.error{color:#ffaaaa;border-color:rgba(255,120,120,.35)}.ofi-feed-notice{margin:12px 0;padding:12px 14px;border:1px solid rgba(83,145,224,.27);border-radius:9px;background:rgba(34,79,124,.12);color:#c0d4ed;font-size:11px;line-height:1.6}.ofi-feed-notice strong{color:#f0d79e}.ofi-feed-notice.error{border-color:rgba(255,120,120,.3);background:rgba(123,36,36,.12)}.ofi-toolbar{display:flex;align-items:end;gap:10px;flex-wrap:wrap;margin:14px 0}.ofi-toolbar label{display:grid;gap:5px;color:#9eb0c9;font-size:10px;font-weight:700;flex:1;min-width:135px}.ofi-toolbar select{width:100%;padding:10px;border:1px solid rgba(124,154,195,.25);border-radius:8px;background:#091525;color:#eaf2ff;font:inherit;font-size:12px;min-width:0}.ofi-toolbar button{padding:10px 14px;border:1px solid rgba(75,147,255,.4);border-radius:8px;background:linear-gradient(110deg,#245fc2,#247caa);color:white;font-size:11px;font-weight:800;cursor:pointer}.ofi-calendar-layout{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(260px,.8fr);gap:12px}.ofi-events-panel,.ofi-detail-panel{min-width:0;padding:13px;border:1px solid rgba(126,156,196,.17);border-radius:10px;background:rgba(5,13,24,.58)}.ofi-list-heading{margin-bottom:10px;color:#e8f0fc;font-size:12px}.ofi-list-heading span{color:#8da2bf;font-size:10px}.ofi-events-list{display:grid;gap:7px}.ofi-empty{padding:15px;border:1px dashed rgba(129,157,194,.23);border-radius:8px;color:#91a5c0;font-size:11px;line-height:1.5}.ofi-detail-placeholder{min-height:180px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;color:#9aacc5}.ofi-detail-placeholder strong{color:#e7effc;font-size:13px;margin-top:9px}.ofi-detail-placeholder p{max-width:260px;font-size:11px;line-height:1.6}.ofi-detail-icon{font-size:30px;color:#d6b56f}.ofi-detail-panel h3{margin:5px 0 10px;color:#edf4ff;font-size:15px}.ofi-detail-panel p{font-size:11px;color:#a7b8cf;line-height:1.65}.ofi-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:12px 0}.ofi-detail-stat{padding:9px;border-radius:7px;background:rgba(70,106,153,.13)}.ofi-detail-stat small{display:block;color:#8ea2bf;font-size:9px}.ofi-detail-stat strong{display:block;margin-top:4px;color:#e9f2ff;font-size:12px;overflow-wrap:anywhere}.ofi-analysis{padding:11px 12px;margin:10px 0;border:1px solid rgba(93,150,226,.22);border-radius:8px;background:rgba(31,69,111,.15)}.ofi-analysis strong{color:#d7e7fb}.ofi-analysis p{margin:5px 0 0}.ofi-method-note{margin-top:12px;padding:11px 12px;border-radius:8px;background:rgba(54,87,130,.12);color:#94a8c4;font-size:10px;line-height:1.7}.ofi-method-note strong{color:#c4d4e9}.ofi-method-note,.ofi-feed-notice{overflow-wrap:anywhere}
-@media(max-width:720px){.ofi-calendar-layout{grid-template-columns:1fr}.ofi-panel-head{align-items:flex-start}.ofi-toolbar label{min-width:calc(50% - 10px)}.ofi-toolbar button{flex:1}.ofi-event-row,.ofi-alert-row{padding:10px}.ofi-dashboard-alert{padding:12px}}
-/* OchiTracker 7.22.3 — institutional news desk and high-sensitivity release hierarchy */
-.ochi-topbar-actions{position:relative}
-.ochi-notification-trigger{position:relative;display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:8px 12px;border:1px solid rgba(215,181,109,.38)!important;border-radius:10px;background:linear-gradient(145deg,rgba(25,43,68,.98),rgba(8,18,32,.98))!important;color:#f3e6c6!important;cursor:pointer;box-shadow:0 0 0 1px rgba(215,181,109,.05),0 7px 20px rgba(0,0,0,.22)}
-.ochi-notification-trigger:hover,.ochi-notification-trigger[aria-expanded="true"]{border-color:rgba(215,181,109,.8)!important;box-shadow:0 0 20px rgba(215,181,109,.12)}
-.ochi-bell-glyph{font-size:20px;line-height:1;color:#e3c47e}.ochi-bell-label{font-size:11px;font-weight:800;letter-spacing:.35px}
-.ochi-bell-count{position:absolute;right:-7px;top:-8px;min-width:19px;height:19px;padding:0 5px;border-radius:20px;display:grid;place-items:center;background:#e34b56;color:white;border:2px solid #081321;font-size:9px;font-weight:900;box-shadow:0 0 12px rgba(227,75,86,.38)}.ochi-bell-count[hidden]{display:none}
-.ochi-notification-panel{position:absolute;z-index:10050;right:0;top:calc(100% + 12px);width:min(390px,calc(100vw - 28px));max-height:min(70vh,570px);overflow:auto;padding:13px;border:1px solid rgba(215,181,109,.3);border-radius:14px;background:linear-gradient(145deg,#101e32,#07111f);box-shadow:0 22px 65px rgba(0,0,0,.55),0 0 30px rgba(62,111,182,.12)}.ochi-notification-panel[hidden]{display:none}
-.ochi-notification-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:2px 2px 12px;border-bottom:1px solid rgba(215,181,109,.13)}.ochi-notification-head>div{display:grid;gap:4px}.ochi-notification-head strong{font-size:15px;color:#f3f0e8}.ochi-notification-head small{font-size:10px;color:#93a7c2}.ochi-notification-head button{width:29px;height:29px;border:1px solid rgba(140,165,204,.2)!important;border-radius:8px;background:rgba(255,255,255,.04)!important;color:#cbd7e8;font-size:20px;cursor:pointer}
-.ochi-notification-list{display:grid;gap:7px;padding:11px 0}.ochi-notification-item{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;padding:11px;border:1px solid rgba(126,156,196,.16);border-radius:9px;background:rgba(5,13,24,.7);color:#eaf1fc;text-align:left;cursor:pointer}.ochi-notification-item:hover{border-color:rgba(215,181,109,.5);background:rgba(39,66,100,.32)}.ochi-notification-item .ofi-event-title{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.ochi-notification-item .ofi-event-meta{line-height:1.5}.ochi-notification-item.priority{border-left:3px solid #e64c58;background:linear-gradient(100deg,rgba(113,30,41,.25),rgba(6,14,25,.82))}.ochi-notification-item.priority .ofi-event-title{color:#fff0f0}
-.ochi-priority-tag{display:inline-flex;align-items:center;padding:3px 6px;border-radius:4px;background:rgba(218,54,69,.18);border:1px solid rgba(255,91,105,.36);color:#ff8c96;font-size:8px;font-weight:950;letter-spacing:.6px;text-transform:uppercase}
-.ochi-notification-footer{display:block;padding:11px 3px 2px;border-top:1px solid rgba(215,181,109,.13);color:#d7b56d!important;text-decoration:none!important;font-size:10px;font-weight:850}
-.ofi-event-row.priority,.ofi-alert-row.priority{border-left:3px solid #e34b56;background:linear-gradient(100deg,rgba(113,30,41,.22),rgba(6,14,25,.72))}.ofi-event-row.priority .ofi-event-title,.ofi-alert-row.priority .ofi-event-title{color:#fff0f0;font-weight:950}.ofi-event-row.priority .ofi-impact,.ofi-alert-row.priority .ofi-impact{color:#ff858e}
-@media(max-width:900px){.ochi-topbar-actions{flex-direction:row!important;align-items:center!important;flex-wrap:wrap;justify-content:flex-end}.ochi-notification-panel{right:-4px;top:calc(100% + 9px)}.ochi-notification-trigger{min-height:37px;padding:7px 9px}.ochi-bell-label{display:none}}
-@media(max-width:420px){.ochi-notification-panel{position:fixed;top:66px;right:10px;width:calc(100vw - 20px);max-height:calc(100vh - 84px)}}
-</style>
-<script id="ochi-fundamental-intelligence-7222">
-(function(){
- 'use strict';
- const API='https://showmytrades.com/api/public/calendar/v1';
- const CACHE='ochitracker.ofi.livecache.v1';
- const CURRENCIES='USD,EUR,GBP,JPY,AUD,NZD,CAD,CHF';
- const $=id=>document.getElementById(id);
- const safe=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
- const now=()=>Date.now(); let events=[],selectedId=null,lastUpdated=null,refreshTimer=null,loading=false;
- const dateOf=e=>new Date(e.time);
- const eatParts=d=>new Intl.DateTimeFormat('en-CA',{timeZone:'Africa/Nairobi',year:'numeric',month:'2-digit',day:'2-digit'}).format(d);
- const eatFmt=d=>new Intl.DateTimeFormat('en-KE',{timeZone:'Africa/Nairobi',weekday:'short',day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}).format(d)+' EAT';
- const impactLabel=x=>String(x||'').toLowerCase()==='high'?'High':String(x||'').toLowerCase()==='medium'?'Medium':'Low';
- const categoryOf=t=>{t=t.toLowerCase();if(/cpi|inflation|ppi|pce|price index/.test(t))return'Inflation';if(/employment|payroll|unemployment|jobless|claims|wage|earnings|labour|labor/.test(t))return'Employment & wages';if(/gdp|growth/.test(t))return'GDP / Growth';if(/pmi|business activity|manufacturing|services/.test(t))return'Business activity';if(/retail sales|consumer spending|consumer confidence/.test(t))return'Consumption';if(/rate decision|interest rate|central bank|fomc|ecb|boe|boj|rba|rbnz|boc|snb|monetary policy|minutes|press conference|speech/.test(t))return'Central bank / Policy';if(/trade balance|exports|imports/.test(t))return'Trade / External balance';return'Economic release';};
- const isGoldRelevant=e=>e.currency==='USD'&&/(cpi|inflation|pce|payroll|employment|unemployment|fed|fomc|interest rate|treasury|ppi|gdp|retail sales|powell|jobless)/i.test(e.title);
- function normalize(x){const d=dateOf(x);return{id:String(x.id||x.ts),name:x.title||'Economic release',currency:x.currency,impact:impactLabel(x.impact),date:eatParts(d),time:d.toISOString(),category:categoryOf(x.title||''),previous:x.previous||'',forecast:x.forecast||'',actual:x.actual||'',source:'ShowMyTrades economic calendar',status:x.status||'scheduled',confidence:x.confidence||'unknown',period:x.period||'',movedFrom:x.moved_from||'',ts:Number(x.ts)||Math.floor(d.getTime()/1000),goldRelevant:isGoldRelevant(x),rawCurrency:x.currency};}
- function parseNum(v){if(v===null||v===undefined||v==='')return null;const m=String(v).replace(/,/g,'').match(/[-+]?(?:\d+\.?\d*|\.\d+)/);return m?Number(m[0]):null;}
- function directionRule(e){const t=e.name.toLowerCase();if(/unemployment|jobless|claims|initial claims/.test(t))return'lower';if(/cpi|inflation|ppi|pce|wage|earnings|payroll|employment|gdp|retail sales|pmi|rate decision|interest rate/.test(t))return'higher';return'context';}
- function analysis(e){const n=parseNum(e.actual),f=parseNum(e.forecast),rule=directionRule(e);if(e.actual&&e.forecast&&n!==null&&f!==null){if(n===f)return'Actual matched the consensus forecast. The release itself delivered little numerical surprise; market reaction may still depend on revisions, details and central-bank implications.';const better=(n>f)===(rule==='higher');if(rule==='context')return`Actual ${n>f?'came in above':'came in below'} forecast. The indicator needs context before assigning a bullish or bearish currency bias; compare its components and central-bank implications.`;return`Actual ${n>f?'came in above':'came in below'} forecast. On this indicator, that is generally ${better?'more supportive':'less supportive'} for ${e.currency} than consensus expected. This is a first-pass macro interpretation, not a guaranteed price direction; revisions, components and positioning can change the reaction.`;}
- if(e.actual&&!e.forecast)return'Actual data has been published, but no consensus forecast is available in this feed. Avoid assigning a surprise direction without a reliable comparison.';
- if(rule==='lower')return`Before the release: a lower-than-forecast reading would generally be more supportive for ${e.currency}; a higher-than-forecast reading may weigh on it, all else equal.`;
- if(rule==='higher')return`Before the release: a stronger-than-forecast reading would generally be more supportive for ${e.currency} if it reinforces growth, inflation or a more hawkish policy path. A weaker reading may have the opposite effect.`;
- return`Before the release: compare the actual result with consensus and examine the report details. The indicator's market direction is context-dependent, so no directional bias is assigned in advance.`;}
- function eventCurrency(e){return e.currency+(e.goldRelevant?' · XAU':'');}
- function goldNote(e){if(!e.goldRelevant)return'';const t=e.name.toLowerCase();let msg='This US release can influence gold mainly through the US dollar, Treasury yields and real-rate expectations. A stronger dollar or higher real yields often pressures non-yielding gold; a weaker dollar or lower real yields often supports it. Safe-haven demand and inflation expectations can offset that relationship.';if(/fed|fomc|rate decision|interest rate|powell|minutes|press conference/.test(t))msg='Gold sensitivity: a more hawkish Federal Reserve signal can lift the dollar and real yields, which often pressures gold. A more dovish signal or falling real yields can support gold. Watch the statement and press-conference guidance, not only the rate headline.';else if(/cpi|inflation|pce|ppi/.test(t))msg='Gold sensitivity: hotter inflation can increase inflation-hedge demand, but it can also raise expectations for tighter Fed policy and higher real yields, which may pressure gold. The dollar and real-yield reaction will help determine which force dominates.';else if(/payroll|employment|unemployment|jobless|claims|wage/.test(t))msg='Gold sensitivity: stronger US labour data can reinforce expectations for tighter Fed policy and higher yields, often weighing on gold. Weaker labour data can support gold if it lowers yields and the dollar; risk sentiment may alter the reaction.';return msg;}
- function fmt(e){return eatFmt(dateOf(e));}
- function matches(e){const c=$('ofiCurrencyFilter')?.value||'ALL',i=$('ofiImpactFilter')?.value||'ALL',w=$('ofiTimeFilter')?.value||'today',d=dateOf(e),today=eatParts(new Date()),tomorrow=eatParts(new Date(now()+86400000));if(c==='XAU'&&!e.goldRelevant)return false;if(c!=='ALL'&&c!=='XAU'&&e.currency!==c)return false;if(i!=='ALL'&&e.impact!==i)return false;if(w==='today'&&eatParts(d)!==today)return false;if(w==='tomorrow'&&eatParts(d)!==tomorrow)return false;if(w==='upcoming'&&(d.getTime()<now()-6*3600000||d.getTime()>now()+7*86400000))return false;return true;}
- function isPriorityEvent(e){return /\b(cpi|consumer price|ppi|producer price|nfp|non.?farm|payrolls?|fomc|federal open market|fed rate decision|interest rate decision)\b/i.test(e.name||'');}
- function priorityLabel(e){const t=(e.name||'').toLowerCase();if(/cpi|consumer price/.test(t))return'CPI';if(/ppi|producer price/.test(t))return'PPI';if(/nfp|non.?farm|payroll/.test(t))return'NFP / PAYROLLS';if(/fomc|federal open market|fed rate decision/.test(t))return'FOMC';if(/interest rate decision/.test(t))return'RATE DECISION';return'MAJOR RELEASE';}
- function row(e,cls='ofi-event-row'){const priority=isPriorityEvent(e);return `<button type="button" class="${cls}${priority?' priority':''}" data-ofi-id="${safe(e.id)}"><span class="ofi-event-main"><span class="ofi-event-title">${priority?'<span class="ochi-priority-tag">'+safe(priorityLabel(e))+'</span>':''}${safe(e.name)}</span><span class="ofi-event-meta">${safe(fmt(e))} · ${safe(e.category)}${e.status==='tentative'?' · TENTATIVE':''}</span></span><span class="ofi-event-right"><span class="ofi-currency-chip">${safe(eventCurrency(e))}</span><span class="ofi-impact ${safe(e.impact.toLowerCase())}">${safe(e.impact)} impact</span></span></button>`;}
- function detail(e){const box=$('ofiEventDetail');if(!e){box.innerHTML='<div class="ofi-detail-placeholder"><div class="ofi-detail-icon">◷</div><strong>Event intelligence</strong><p>Select any release to see its previous, forecast and actual figures, plus an explanation of the possible currency impact.</p></div>';return;}selectedId=e.id;const status=e.actual?'Released':e.status==='tentative'?'Time/date tentative':dateOf(e).getTime()<now()?'Release time passed':'Scheduled';box.innerHTML=`<div class="ofi-kicker">${safe(eventCurrency(e))} · ${safe(e.impact.toUpperCase())} IMPACT</div><h3>${safe(e.name)}</h3><p>${safe(fmt(e))} · ${safe(status)}</p><div class="ofi-detail-grid"><div class="ofi-detail-stat"><small>Previous</small><strong>${safe(e.previous||'Not supplied')}</strong></div><div class="ofi-detail-stat"><small>Forecast / consensus</small><strong>${safe(e.forecast||'Not supplied')}</strong></div><div class="ofi-detail-stat"><small>Actual</small><strong>${safe(e.actual||'Awaiting release')}</strong></div><div class="ofi-detail-stat"><small>Reference period</small><strong>${safe(e.period||'Not specified')}</strong></div><div class="ofi-detail-stat"><small>Schedule confidence</small><strong>${safe(e.confidence.replace(/_/g,' '))}</strong></div><div class="ofi-detail-stat"><small>Event status</small><strong>${safe(e.status)}</strong></div></div><div class="ofi-analysis"><strong>OchiTracker market interpretation</strong><p>${safe(analysis(e))}</p></div>${e.goldRelevant?`<div class="ofi-analysis"><strong>Gold (XAUUSD) relevance</strong><p>${safe(goldNote(e))}</p></div>`:''}${e.movedFrom?`<p><strong>Previously scheduled:</strong> ${safe(e.movedFrom)}</p>`:''}<p><strong>How to read it</strong><br>Compare actual with forecast first, then check revisions and the report's components. The initial reaction can reverse as markets digest the details.</p><p><strong>Data source</strong><br><a href="https://showmytrades.com/tools/economic-calendar" target="_blank" rel="noopener">ShowMyTrades economic calendar</a> · ${safe(e.confidence.replace(/_/g,' '))} date confidence.</p>`;}
- function bindRows(){document.querySelectorAll('[data-ofi-id]').forEach(b=>{if(b.dataset.ofiBound==='1')return;b.dataset.ofiBound='1';b.addEventListener('click',()=>{const e=events.find(x=>x.id===b.dataset.ofiId);if(e){const panel=$('ofiNotificationPanel'),bell=$('ofiBellButton');if(panel)panel.hidden=true;if(bell)bell.setAttribute('aria-expanded','false');location.hash='#ofiFundamentalCalendar';detail(e);setTimeout(()=>{const target=$('ofiEventDetail');if(target)target.scrollIntoView({behavior:'smooth',block:'nearest'});},80);}});});}
- function render(){
-  const items=events.filter(matches).sort((a,b)=>dateOf(a)-dateOf(b));
-  $('ofiEventCount').textContent=items.length+' event'+(items.length===1?'':'s');
-  $('ofiEventsList').innerHTML=items.length?items.map(e=>row(e)).join(''):'<div class="ofi-empty">No high- or medium-impact releases in this selected window. The calendar is connected; check another date or impact filter.</div>';
-  const today=eatParts(new Date());
-  const todayItems=events.filter(e=>eatParts(dateOf(e))===today).sort((a,b)=>dateOf(a)-dateOf(b));
-  const nextItems=events.filter(e=>dateOf(e).getTime()>=now()-6*3600000&&dateOf(e).getTime()<=now()+48*3600000).sort((a,b)=>dateOf(a)-dateOf(b));
-  const alertItems=(todayItems.length?todayItems:nextItems).filter(e=>e.impact!=='Low'||isPriorityEvent(e)).slice(0,8);
-  $('ofiDashboardSummary').textContent=todayItems.length?`${todayItems.length} high/medium-impact release${todayItems.length===1?'':'s'} scheduled today · ${todayItems.filter(e=>e.impact==='High').length} high impact · EAT`:`No high/medium-impact release scheduled today. ${nextItems.length} event${nextItems.length===1?'':'s'} in the next 48 hours.`;
-  $('ofiDashboardAlerts').innerHTML=alertItems.length?alertItems.map(e=>row(e,'ofi-alert-row')).join(''):'<div class="ofi-empty">No high- or medium-impact events are scheduled for today or the next 48 hours. The calendar will keep updating automatically.</div>';
-  const bellCount=todayItems.filter(e=>e.impact!=='Low'||isPriorityEvent(e)).length;
-  const countEl=$('ofiBellCount');if(countEl){countEl.textContent=bellCount>99?'99+':String(bellCount);countEl.hidden=bellCount===0;}
-  const summary=$('ofiBellSummary'),list=$('ofiBellItems');
-  if(summary&&list){const panelItems=(todayItems.length?todayItems:nextItems).filter(e=>e.impact!=='Low'||isPriorityEvent(e)).slice(0,10);
-   summary.textContent=todayItems.length?`${bellCount} important release${bellCount===1?'':'s'} scheduled today · East Africa Time`:`No priority releases today · ${panelItems.length} in the next 48 hours`;
-   list.innerHTML=panelItems.length?panelItems.map(e=>{const p=isPriorityEvent(e);return `<button type="button" class="ochi-notification-item${p?' priority':''}" data-ofi-id="${safe(e.id)}"><span class="ofi-event-main"><span class="ofi-event-title">${p?'<span class="ochi-priority-tag">'+safe(priorityLabel(e))+'</span>':''}${safe(e.name)}</span><span class="ofi-event-meta">${safe(fmt(e))} · ${safe(eventCurrency(e))} · ${safe(e.impact)} impact</span></span><span class="ofi-event-right"><span class="ofi-impact ${safe(e.impact.toLowerCase())}">${safe(e.impact)}</span></span></button>`;}).join(''):'<div class="ofi-empty">No high-impact or major releases are scheduled today or in the next 48 hours. The calendar will continue checking automatically.</div>';
-  }
-  bindRows();if(selectedId){const e=events.find(x=>x.id===selectedId);if(e)detail(e);}
- }
- function setStatus(text,kind){const b=$('ofiFeedStatus');b.textContent=text;b.className='ofi-status'+(kind?' '+kind:'');}
- async function refresh(){if(loading)return;loading=true;const btn=$('ofiRefreshButton');if(btn){btn.disabled=true;btn.textContent='↻ Updating…';}try{const url=API+'?currency='+encodeURIComponent(CURRENCIES)+'&impact=high,medium&days=7&format=json';const res=await fetch(url,{method:'GET',cache:'no-store',headers:{'Accept':'application/json'}});if(!res.ok)throw new Error('Calendar provider returned HTTP '+res.status);const body=await res.json();if(!body||!Array.isArray(body.events))throw new Error('Calendar response was not in the expected format');events=body.events.map(normalize).filter(e=>e.currency&&dateOf(e).toString()!=='Invalid Date');lastUpdated=new Date();try{localStorage.setItem(CACHE,JSON.stringify({savedAt:lastUpdated.toISOString(),events}));}catch(_){}setStatus('LIVE · AUTO-REFRESH','live');$('ofiFeedNotice').className='ofi-feed-notice';$('ofiFeedNotice').innerHTML=`<strong>Live calendar connected.</strong> ${events.length} high- and medium-impact releases loaded. Last refreshed ${safe(new Intl.DateTimeFormat('en-KE',{timeZone:'Africa/Nairobi',hour:'2-digit',minute:'2-digit',hour12:false}).format(lastUpdated))} EAT. Automatic refresh runs every 15 minutes while this page is open.`;render();}catch(err){console.error('OchiTracker fundamental calendar:',err);if(!events.length){try{const cached=JSON.parse(localStorage.getItem(CACHE)||'null');if(cached&&Array.isArray(cached.events)){events=cached.events;lastUpdated=cached.savedAt?new Date(cached.savedAt):null;}}catch(_){}}if(events.length){setStatus('CACHED · OFFLINE','error');$('ofiFeedNotice').className='ofi-feed-notice error';$('ofiFeedNotice').innerHTML='<strong>Live refresh unavailable.</strong> Showing the last successfully downloaded calendar. Reconnect to the internet and refresh to receive schedule changes and actual releases.';render();}else{setStatus('FEED UNAVAILABLE','error');$('ofiFeedNotice').className='ofi-feed-notice error';$('ofiFeedNotice').innerHTML='<strong>Could not connect to the economic calendar.</strong> Check your internet connection and tap Refresh calendar. No events have been invented or filled in.';$('ofiEventsList').innerHTML='<div class="ofi-empty">Live calendar is temporarily unavailable. Please retry when online.</div>';}}finally{loading=false;if(btn){btn.disabled=false;btn.textContent='↻ Refresh calendar';}}}
- function init(){if(!$('ofiFundamentalCalendar'))return;['ofiCurrencyFilter','ofiImpactFilter','ofiTimeFilter'].forEach(id=>$(id).addEventListener('change',render));$('ofiRefreshButton').addEventListener('click',refresh);
-  const bell=$('ofiBellButton'),panel=$('ofiNotificationPanel'),close=$('ofiBellClose');
-  if(bell&&panel)bell.addEventListener('click',()=>{panel.hidden=!panel.hidden;bell.setAttribute('aria-expanded',String(!panel.hidden));});
-  if(close&&panel&&bell)close.addEventListener('click',()=>{panel.hidden=true;bell.setAttribute('aria-expanded','false');bell.focus();});
-  document.addEventListener('click',ev=>{if(panel&&bell&&!panel.hidden&&!panel.contains(ev.target)&&!bell.contains(ev.target)){panel.hidden=true;bell.setAttribute('aria-expanded','false');}});
-  document.addEventListener('keydown',ev=>{if(ev.key==='Escape'&&panel&&bell&&!panel.hidden){panel.hidden=true;bell.setAttribute('aria-expanded','false');bell.focus();}});
-  try{const cached=JSON.parse(localStorage.getItem(CACHE)||'null');if(cached&&Array.isArray(cached.events)){events=cached.events;lastUpdated=cached.savedAt?new Date(cached.savedAt):null;setStatus('CACHED DATA','');$('ofiFeedNotice').innerHTML='<strong>Showing last downloaded calendar while live refresh starts.</strong> Event data is cached on this device and will be replaced when the live provider responds.';render();}}catch(_){}refresh();refreshTimer=setInterval(refresh,15*60*1000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh();});}
- if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
 </script>
 
