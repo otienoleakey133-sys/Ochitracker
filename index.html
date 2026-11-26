@@ -2764,7 +2764,7 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
 <a class="ochi-nav-link" href="#tradeEntry"><span class="ochi-nav-icon">＋</span>Record a Trade</a>
 <a class="ochi-nav-link" href="#history"><span class="ochi-nav-icon">▤</span>Historical Data</a>
 <a class="ochi-nav-link" href="#calendarSection"><span class="ochi-nav-icon">▦</span>Trading Calendar</a>
-<a class="ochi-nav-link" href="#ofiFundamentalCalendar"><span class="ochi-nav-icon">◷</span>Fundamental Calendar</a>
+<a class="ochi-nav-link" href="#ofiFundamentalCalendar"><span class="ochi-nav-icon">◷</span>Fundamental Analysis</a>
 <a class="ochi-nav-link" href="#ochiMarketTerminal"><span class="ochi-nav-icon">⌁</span>Live Market</a>
 </nav>
 <nav aria-label="Performance" class="ochi-nav-group">
@@ -3111,13 +3111,14 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
 <div class="card-value negative" id="maxDrawdown">$0.00</div>
 </div>
 </div>
-<div class="ofi-dashboard-alert" aria-live="polite">
-  <div class="ofi-panel-head"><div><div class="ofi-kicker">OCHI FUNDAMENTAL INTELLIGENCE · LIVE CALENDAR</div><h3>Market news notifications</h3><p id="ofiDashboardSummary">Connecting to the live economic calendar…</p></div><a href="#ofiFundamentalCalendar">Open intelligence ↗</a></div>
-  <div id="ofiDashboardAlerts" class="ofi-alert-list"><div class="ofi-empty">Loading today's and upcoming high- and medium-impact releases…</div></div>
-</div>
 </section>
 <section id="ofiFundamentalCalendar" class="ofi-section">
-  <div class="section-heading"><div class="section-title"><div class="section-icon">🌐</div><div><h2>Fundamental Calendar</h2><div class="section-description">Automatically updated economic releases, central-bank decisions and market-moving data for your FX watchlist.</div></div></div><span class="ofi-status" id="ofiFeedStatus">CONNECTING…</span></div>
+  <div class="section-heading"><div class="section-title"><div class="section-icon">🌐</div><div><h2>Fundamental Analysis</h2><div class="section-description">Market-moving news notifications and the economic calendar, together in one place.</div></div></div><span class="ofi-status" id="ofiFeedStatus">CONNECTING…</span></div>
+  <div class="ofi-dashboard-alert" aria-live="polite">
+    <div class="ofi-panel-head"><div><div class="ofi-kicker">OCHI FUNDAMENTAL INTELLIGENCE</div><h3>Market News Notifications</h3><p id="ofiDashboardSummary">Connecting to the live economic calendar…</p></div><a href="#ofiFundamentalCalendar">Fundamental analysis</a></div>
+    <div id="ofiDashboardAlerts" class="ofi-alert-list"><div class="ofi-empty">Loading today's and upcoming high- and medium-impact releases…</div></div>
+  </div>
+  <div class="section-heading"><div class="section-title"><div class="section-icon">📅</div><div><h3>Fundamental Calendar</h3><div class="section-description">Automatically updated economic releases, central-bank decisions and market-moving data for your FX watchlist.</div></div></div></div>
   <div class="ofi-feed-notice" id="ofiFeedNotice"><strong>Automatic calendar:</strong> fetching verified scheduled releases. Times are converted to East Africa Time (EAT). The calendar refreshes automatically while OchiTracker is open.</div>
   <div class="ofi-archive-note" id="ofiArchiveNotice"><strong>Rolling history:</strong> Historical events are retained on this device from the date this archive is enabled. Earlier events cannot be backfilled. Actual results are captured when the app refreshes around the release.</div>
   <div class="ofi-toolbar">
