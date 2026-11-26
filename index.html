@@ -2714,6 +2714,22 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
 .ochi-gate-foot{color:#a9bfd5!important}
 
 </style>
+
+<style id="ochi-monthly-performance-styles">
+#monthlyPerformance{margin-top:16px;padding:15px;border:1px solid rgba(90,130,190,.2);border-radius:14px;background:linear-gradient(145deg,rgba(13,26,45,.96),rgba(7,14,26,.96))}
+#monthlyPerformance .monthly-performance-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+#monthlyPerformance h3{margin:0;color:#edf3ff;font-size:14px;font-weight:800}
+#monthlyPerformance .monthly-performance-note{color:#879bb7;font-size:10px}
+#monthlyPerformance .monthly-performance-list{display:grid;gap:7px}
+#monthlyPerformance .monthly-performance-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px;padding:11px 12px;border:1px solid rgba(112,153,212,.13);border-radius:9px;background:rgba(7,16,29,.62)}
+#monthlyPerformance .monthly-performance-month{color:#dce8f8;font-size:12px;font-weight:700}
+#monthlyPerformance .monthly-performance-value{font-size:13px;font-weight:800;font-variant-numeric:tabular-nums;text-align:right}
+#monthlyPerformance .monthly-performance-value.positive{color:#51d6a3}
+#monthlyPerformance .monthly-performance-value.negative{color:#ff7e92}
+#monthlyPerformance .monthly-performance-empty{padding:12px;color:#91a5c0;font-size:11px}
+@media(max-width:520px){#monthlyPerformance{padding:12px}#monthlyPerformance .monthly-performance-row{padding:10px}}
+</style>
+
 </head>
 <body>
 <div id="ochiAuthGate" role="dialog" aria-modal="true" aria-labelledby="ochiGateTitle">
@@ -2964,6 +2980,15 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
 <div class="card-value" id="breakeven">0</div>
 </div>
 </div>
+<section id="monthlyPerformance" aria-labelledby="monthlyPerformanceTitle">
+  <div class="monthly-performance-heading">
+    <h3 id="monthlyPerformanceTitle">Monthly Performance</h3>
+    <span class="monthly-performance-note">Total P&amp;L by month</span>
+  </div>
+  <div id="monthlyPerformanceList" class="monthly-performance-list" aria-live="polite">
+    <div class="monthly-performance-empty">Monthly results will appear here when trades are recorded.</div>
+  </div>
+</section>
 </section><section>
 <div class="section-heading">
 <div class="section-title">
@@ -5343,8 +5368,56 @@ function getEquityData(){
    DASHBOARD
 ========================================================= */
 
+function renderMonthlyPerformance(){
+  const container=document.getElementById("monthlyPerformanceList");
+  if(!container)return;
+
+  const totals=new Map();
+  let earliestMonth=null;
+  const currentMonth=localTodayKey().slice(0,7);
+
+  for(const trade of trades){
+    const rawDate=String(trade.date||"");
+    const match=rawDate.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if(!match)continue;
+    const year=Number(match[1]);
+    const month=Number(match[2]);
+    const day=Number(match[3]);
+    const check=new Date(year,month-1,day);
+    if(month<1||month>12||check.getFullYear()!==year||check.getMonth()!==month-1||check.getDate()!==day)continue;
+    const key=`${match[1]}-${match[2]}`;
+    totals.set(key,(totals.get(key)||0)+safeNumber(trade.profit));
+    if(!earliestMonth||key<earliestMonth)earliestMonth=key;
+  }
+
+  if(!earliestMonth){
+    container.innerHTML='<div class="monthly-performance-empty">No dated trades available yet.</div>';
+    return;
+  }
+
+  const endMonth=currentMonth>earliestMonth?currentMonth:earliestMonth;
+  const months=[];
+  let cursor=earliestMonth;
+  while(cursor<=endMonth&&months.length<240){
+    months.push(cursor);
+    const parts=cursor.split("-").map(Number);
+    const next=new Date(parts[0],parts[1],1);
+    cursor=`${next.getFullYear()}-${String(next.getMonth()+1).padStart(2,"0")}`;
+  }
+
+  container.innerHTML=months.reverse().map(key=>{
+    const [year,month]=key.split("-").map(Number);
+    const label=new Intl.DateTimeFormat("en",{month:"long",year:"numeric"}).format(new Date(year,month-1,1));
+    const pnl=totals.get(key)||0;
+    const cls=pnl>0?"positive":pnl<0?"negative":"neutral";
+    return `<div class="monthly-performance-row"><span class="monthly-performance-month">${escapeHTML(label)}</span><span class="monthly-performance-value ${cls}">${escapeHTML(money(pnl))}</span></div>`;
+  }).join("");
+}
+
+
 function renderDashboard(){
 
+  renderMonthlyPerformance();
   const s=getStats();
 
   document.getElementById("totalTrades").textContent=
