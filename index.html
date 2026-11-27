@@ -5,8 +5,8 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta content="#07111f" name="theme-color"/>
-<title>OchiTracker Phase 7.22.4 — Pair Direction Intelligence</title>
-<meta name="ochitracker-version" content="Phase 7.22.2"/>
+<title>OchiTracker Phase 7.23.0 — Cross-Device Cloud Recovery</title>
+<meta name="ochitracker-version" content="Phase 7.23.0"/>
 <meta name="description" content="OchiTracker trading journal, risk engine, performance intelligence and TradingView market terminal."/>
 <style>
 /* =========================================================
@@ -4228,7 +4228,7 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
 <div class="sync-head">
 <div>
 <h3 class="sync-title">🔄 Trade Synchronization</h3>
-<div class="sync-subtitle">Local database tools · Supabase cloud preview</div>
+<div class="sync-subtitle">Local database tools · secure cross-device cloud retrieval</div>
 </div>
 <span class="phase74-badge">SYNC</span>
 </div>
@@ -4261,7 +4261,7 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
 <div class="sync-progress-bar" id="ochiSyncProgress"></div>
 </div>
 <div class="sync-message" id="ochiSyncMessage">
-      Local IndexedDB tools are separate from Supabase. Cloud preview is read-only; no cloud records are written, updated, or deleted.
+      Local IndexedDB remains device-local. After a successful sign-in, OchiTracker checks the signed-in account's Supabase trades and automatically adds cloud-only trades to this device. Existing local trades are never replaced or deleted.
     </div>
 <div class="sync-message" id="ochiCloudDetailReport" style="display:none; margin-top:12px; white-space:normal;">
   <strong>Read-only record differences</strong>
@@ -4274,11 +4274,11 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
     <button class="sync-btn secondary" id="ochiCloudUploadMissingBtn" type="button" onclick="uploadOchiCloudMissingTrades()" disabled>Upload missing local trades</button>
     <button class="sync-btn secondary" id="ochiCloudImportMissingBtn" type="button" onclick="importOchiCloudMissingTrades()" disabled>Import missing cloud trades</button>
   </div>
-  <p style="font-size:11px;color:#aebfd0;margin:10px 0 0;">Safety rules: insert-only cloud upload; additive local import; no upsert, overwrite, update, or delete. Any same-ID content conflict blocks both actions. Automatic cloud sync remains off.</p>
+  <p style="font-size:11px;color:#aebfd0;margin:10px 0 0;">Safety rules: cloud retrieval is SELECT-only followed by additive local storage. Manual upload uses INSERT only. No upsert, overwrite, update, or delete. Any same-ID content conflict blocks automatic import and requires review.</p>
 </div>
 </div>
 <div class="sync-note">
-<strong>Important:</strong> “Sync Now” and Push/Pull operate only on this browser’s IndexedDB, not Supabase. “Preview Supabase Cloud” performs a read-only comparison against the authenticated cloud rows. Cloud transfers are manual, additive-only and conflict-blocked; automatic cloud sync remains disabled.
+<strong>Important:</strong> “Sync Now” and Push/Pull operate only on this browser’s IndexedDB. After sign-in, cross-device recovery reads the authenticated account’s Supabase rows and adds only trades missing on this device. It never uploads local-only trades automatically and never overwrites or deletes records. Use “Preview Supabase Cloud” to inspect the comparison; manual upload remains available for local-only trades.
     </div>
 </div>
 </div>
@@ -10383,6 +10383,7 @@ let OCHI_AUTH_READY = false;
 let OCHI_AUTH_INITIALIZING = false;
 let OCHI_LOCKED_BY_LEAVING = false;
 let OCHI_AUTO_LOCK_IN_PROGRESS = false;
+let OCHI_CLOUD_AUTO_IMPORT_RUNNING = false;
 
 function getOchiAccount(){
   try{ const raw=localStorage.getItem(OCHI_ACCOUNT_KEY); return raw ? JSON.parse(raw) : null; }
@@ -10459,7 +10460,7 @@ async function signUpOchiAccount(){
     setOchiAccountMessage("Creating your Supabase account…");
     const {data,error}=await OCHI_SUPABASE.auth.signUp({email,password,options:{data:{display_name:name || email.split("@")[0]},emailRedirectTo:window.location.href.split("#")[0]}});
     if(error)throw error;
-    if(data.session && data.user){OCHI_LOCKED_BY_LEAVING=false;persistOchiAuthUser(data.user);renderOchiAccount();renderOchiCloud();setOchiAccountMessage("Account created and signed in. Your local trades have not been uploaded or changed.");}
+    if(data.session && data.user){OCHI_LOCKED_BY_LEAVING=false;persistOchiAuthUser(data.user);renderOchiAccount();renderOchiCloud();setOchiAccountMessage("Account created and signed in. Checking for existing cloud trades…");void autoImportOchiCloudTrades("account creation");}
     else setOchiAccountMessage("Account request accepted. Check your email for the confirmation link, then return and sign in.");
   }catch(error){setOchiAccountMessage("Sign-up failed: "+(error.message || "Unknown Supabase error"),true);}
 }
@@ -10502,7 +10503,8 @@ async function signInOchiAccount(){
     setOchiAccountMessage("Signing in securely…");
     const {data,error}=await OCHI_SUPABASE.auth.signInWithPassword({email,password}); if(error)throw error;
     OCHI_LOCKED_BY_LEAVING=false;persistOchiAuthUser(data.user); const p=getOchiAuthInput("ochiAccountPassword");if(p)p.value="";
-    renderOchiAccount();renderOchiCloud();setOchiAccountMessage("Signed in to Supabase. Your local trades remain unchanged; cloud sync is still paused pending database checks.");
+    renderOchiAccount();renderOchiCloud();setOchiAccountMessage("Signed in securely. Checking your account for trades saved from other devices…");
+    void autoImportOchiCloudTrades("manual sign-in");
   }catch(error){setOchiAccountMessage("Sign-in failed: "+(error.message || "Check your email and password"),true);}
 }
 async function resetOchiPassword(){
@@ -10571,16 +10573,22 @@ async function initializeOchiAccount(){
     OCHI_LOCKED_BY_LEAVING=false;
     persistOchiAuthUser(data.session?.user || null);
     OCHI_AUTH_READY=true;
-    OCHI_SUPABASE.auth.onAuthStateChange((_event,session)=>{
+    OCHI_SUPABASE.auth.onAuthStateChange((event,session)=>{
       persistOchiAuthUser(session?.user || null);
       renderOchiAccount();
       renderOchiCloud();
+      if(event==="SIGNED_IN" && session?.user){
+        Promise.resolve().then(()=>autoImportOchiCloudTrades("Supabase sign-in event"));
+      }
     });
     renderOchiAccount();
     renderOchiCloud();
-    setOchiAccountMessage(data.session?.user
-      ? "Signed in session restored. Your local trading records are preserved. Cloud trade sync is not yet enabled."
-      : "Secure sign-in is ready. Enter your Supabase email and password.");
+    if(data.session?.user){
+      setOchiAccountMessage("Signed-in session restored. Checking this account for trades saved on other devices…");
+      void autoImportOchiCloudTrades("session restore");
+    }else{
+      setOchiAccountMessage("Secure sign-in is ready. Enter your Supabase email and password.");
+    }
   }catch(error){
     OCHI_AUTH_READY=false;
     renderOchiAccount();
@@ -11188,6 +11196,96 @@ async function getOchiCloudTransferSnapshot(){
   const conflicts=integrity.filter(x=>x.differences.length>0);
   return {user,local,rows,localOnly,cloudOnly,integrity,conflicts};
 }
+
+/*
+ * Phase 7.23.0 — Cross-device recovery.
+ * After authentication, read only the signed-in user's Supabase rows.
+ * Add cloud-only trades to this browser; never upload, overwrite, update,
+ * or delete a trade automatically. Same-ID content conflicts stop recovery.
+ */
+async function autoImportOchiCloudTrades(trigger="sign-in"){
+  const account=getOchiAuthUser();
+  if(!account?.userId || !OCHI_SUPABASE || OCHI_CLOUD_AUTO_IMPORT_RUNNING)return false;
+  if(OCHI_CLOUD_AUTO_IMPORT_USER===account.userId)return false;
+  OCHI_CLOUD_AUTO_IMPORT_RUNNING=true;
+  try{
+    setOchiSyncMessage("CROSS-DEVICE CHECK · Reading trades owned by the signed-in account. No cloud records will be changed…",false);
+    const snap=await getOchiCloudTransferSnapshot();
+    if(snap.user.id!==account.userId)throw new Error("The active cloud account changed during the check. No trades were imported.");
+
+    const differing=snap.conflicts.length;
+    renderOchiCloudDifferenceReport(snap.localOnly,snap.cloudOnly,snap.integrity);
+    window.OCHI_CLOUD_SYNC_PREVIEW={
+      userId:snap.user.id,
+      localOnly:snap.localOnly,
+      cloudOnly:snap.cloudOnly,
+      hasConflicts:differing>0,
+      createdAt:Date.now()
+    };
+    renderOchiCloudSafeSyncActions();
+
+    if(differing){
+      setOchiSyncMessage(`CROSS-DEVICE IMPORT PAUSED · ${differing} shared trade(s) have different stored fields. No cloud trades were imported and no records were changed. Review the integrity report before resolving the differences.`,true);
+      setOchiAccountMessage("Signed in. Cross-device recovery paused because some matching trade IDs have different content. Your saved records remain unchanged.",true);
+      return false;
+    }
+
+    if(!snap.rows.length){
+      setOchiSyncMessage(`CROSS-DEVICE CHECK COMPLETE · Supabase returned 0 trade rows for this account. This device has ${snap.local.length} local trade(s). Nothing was uploaded or changed; use Preview Supabase Cloud to verify ownership before any manual upload.`,false);
+      setOchiAccountMessage("Signed in. No cloud trades were found for this account; this device's local trades were left untouched.",false);
+      return true;
+    }
+
+    if(!snap.cloudOnly.length){
+      setOchiSyncMessage(`CROSS-DEVICE CHECK COMPLETE · ${snap.rows.length} cloud row(s) checked. All ${snap.local.length} local trade(s) already match cloud IDs; nothing needed importing. No cloud records were changed.`,false);
+      setOchiAccountMessage("Signed in. Your local journal is already up to date with the cloud trade IDs.",false);
+      return true;
+    }
+
+    const additions=snap.cloudOnly.map(row=>{
+      const data=row?.trade_data;
+      if(!data || typeof data!=="object" || Array.isArray(data)){
+        throw new Error(`Cloud record ${ochiCloudTradeId(row,true)} has invalid trade_data. Import stopped.`);
+      }
+      const copy=JSON.parse(JSON.stringify(data));
+      copy.id=copy.id ?? ochiCloudTradeId(row,true);
+      if(!copy.id)throw new Error("A cloud trade is missing its stable trade ID. Import stopped.");
+      return copy;
+    });
+    const existing=new Set(snap.local.map(t=>String(t.id)));
+    const incoming=additions.map(t=>String(t.id));
+    if(new Set(incoming).size!==incoming.length || additions.some(t=>existing.has(String(t.id)))){
+      throw new Error("Duplicate or already-present trade IDs detected. No trades were imported.");
+    }
+
+    const previous=trades;
+    try{
+      trades=[...previous,...additions];
+      saveTrades();
+      if(typeof renderEverything==="function")renderEverything();
+    }catch(storageError){
+      trades=previous;
+      try{saveTrades();}catch(restoreError){console.error("OchiTracker local rollback warning:",restoreError);}
+      throw new Error("The local browser could not save the imported trades: "+(storageError?.message || "storage error"));
+    }
+
+    const localCount=trades.length;
+    setOchiSyncMessage(`CROSS-DEVICE RECOVERY COMPLETE · Added ${additions.length} cloud-only trade(s) to this device. Local journal now contains ${localCount} trade(s). Existing local trades were retained; Supabase was read only.`,false);
+    setOchiAccountMessage(`Cross-device recovery complete. ${additions.length} missing trade(s) were added to this device. Existing records were not replaced or deleted.`,false);
+
+    // Refresh the comparison after the additive local save.
+    try{await previewOchiCloudMerge();}catch(previewError){console.warn("Post-import preview could not refresh:",previewError);}
+    setOchiSyncMessage(`CROSS-DEVICE RECOVERY COMPLETE · Added ${additions.length} cloud-only trade(s). This device now has ${localCount} trade(s). Existing local records were retained; no Supabase rows were written, updated, or deleted.`,false);
+    return true;
+  }catch(error){
+    setOchiSyncMessage("CROSS-DEVICE RECOVERY NOT COMPLETED · "+(error?.message || "Unknown error")+". Existing local and cloud records were not intentionally changed.",true);
+    setOchiAccountMessage("Signed in, but cloud trade retrieval could not complete: "+(error?.message || "Unknown error"),true);
+    return false;
+  }finally{
+    OCHI_CLOUD_AUTO_IMPORT_RUNNING=false;
+  }
+}
+
 async function uploadOchiCloudMissingTrades(){
   const button=document.getElementById('ochiCloudUploadMissingBtn');
   if(button)button.disabled=true;
@@ -12188,7 +12286,7 @@ footer{border-top-color:var(--ot-gold-line)!important;color:#788aa5!important}
 <script id="ochi-executive-716-runtime">
 (function(){
   'use strict';
-  const BUILD='7.22.3 Institutional News Alerts';
+  const BUILD='7.23.0 Cross-Device Cloud Recovery';
   // Preserve the original 7.15 storage contract so existing verified records/settings are reused.
   // Only record a build marker; never reset trades, risk settings, reports or evidence.
   try{localStorage.setItem('ochiExecutiveBuild',BUILD);}catch(e){console.warn('Build marker could not be stored; user data remains untouched.',e)}
