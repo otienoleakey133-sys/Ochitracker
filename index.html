@@ -5,8 +5,8 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta content="#07111f" name="theme-color"/>
-<title>OchiTracker Phase 7.26.0 — Automated Cloud Sync</title>
-<meta name="ochitracker-version" content="Phase 7.26.0"/>
+<title>OchiTracker Phase 7.26.1 — Dashboard Refresh Repair</title>
+<meta name="ochitracker-version" content="Phase 7.26.1"/>
 <meta name="description" content="OchiTracker trading journal, risk engine, performance intelligence and TradingView market terminal."/>
 <style>
 /* =========================================================
@@ -5424,7 +5424,14 @@ function renderMonthlyPerformance(){
 
 function renderDashboard(){
 
-  renderMonthlyPerformance();
+  // Keep the monthly panel isolated: a date/month rendering issue must not
+  // prevent the core performance cards from updating.
+  try{
+    renderMonthlyPerformance();
+  }catch(monthlyError){
+    console.warn("OchiTracker monthly performance panel warning:",monthlyError);
+  }
+
   const s=getStats();
 
   document.getElementById("totalTrades").textContent=
@@ -10287,6 +10294,31 @@ try{
   const boot=document.getElementById("ochiBootError");
   if(boot){boot.style.display="block";boot.textContent="Dashboard startup warning: "+(error?.message || error)+". Authentication remains available; saved records were not intentionally changed.";}
 }
+
+/*
+  Phase 7.26.1 dashboard refresh safeguard.
+  The historical/equity modules can finish rendering after the initial
+  dashboard paint. Repaint the dashboard from the already-loaded canonical
+  in-memory trade array after the document is ready and when the page returns.
+  This does not write, migrate, upload, delete, or alter any stored records.
+*/
+function refreshOchiDashboardCardsSafely(){
+  try{
+    if(!Array.isArray(trades)) return;
+    if(typeof renderDashboard==="function") renderDashboard();
+    if(typeof renderHero==="function") renderHero();
+  }catch(error){
+    console.warn("OchiTracker dashboard refresh safeguard warning:",error);
+  }
+}
+if(document.readyState==="loading"){
+  document.addEventListener("DOMContentLoaded",()=>setTimeout(refreshOchiDashboardCardsSafely,250),{once:true});
+}else{
+  setTimeout(refreshOchiDashboardCardsSafely,250);
+}
+window.addEventListener("load",()=>setTimeout(refreshOchiDashboardCardsSafely,350),{once:true});
+window.addEventListener("pageshow",()=>setTimeout(refreshOchiDashboardCardsSafely,250));
+
 
 
 /* =========================================================
