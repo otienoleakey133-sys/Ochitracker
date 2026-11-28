@@ -12791,5 +12791,236 @@ footer{border-top-color:var(--ot-gold-line)!important;color:#788aa5!important}
 })();
 </script>
 
+
+<script>
+/* OchiTracker Phase 7.27.0 — authenticated read-only published viewer layer.
+   Appended after the Phase 7.26.3 baseline. Owner behaviour is delegated to
+   the original functions; viewer sessions use only the fixed-owner RPC. */
+(function(){
+  'use strict';
+  const OCHI_PUBLISHED_OWNER_ID = 'fcad588e-c1fe-4656-b2ee-bea2ff5b5c3d';
+  const originalAutoImport = window.autoImportOchiCloudTrades;
+  const originalRenderAccount = window.renderOchiAccount;
+  const originalSignOut = window.signOutOchiAccount;
+  const originalSaveTrades = window.saveTrades;
+  const originalScheduleCloud = window.scheduleOchiCloudAutomaticSync;
+  const originalScheduleLocal = window.scheduleOchiTradeSync;
+  const originalPushDb = window.pushOchiTradesToDatabase;
+  const originalPullDb = window.pullOchiTradesFromDatabase;
+  const originalSyncNow = window.syncOchiTradesNow;
+  const originalSyncAuto = window.syncOchiCloudAutomatically;
+  const originalCloudPreview = window.previewOchiCloudMerge;
+  const originalCloudUpload = window.uploadOchiCloudMissingTrades;
+  const originalCloudImport = window.importOchiCloudMissingTrades;
+  const originalDeleteTrade = window.deleteTrade;
+  const originalSaveManagement = window.saveTradeManagement;
+  const originalClearAll = window.clearAllData;
+  const originalRestoreFull = window.restoreFullBackup;
+  const originalMergeBackup = window.mergeBackup;
+  const originalExportFull = window.exportFullBackup;
+  const originalExportJournal = window.exportJournal;
+
+  window.OCHI_VIEWER_MODE = false;
+  window.OCHI_VIEWER_DATA_LOADED = false;
+  window.OCHI_PUBLISHED_OWNER_ID = OCHI_PUBLISHED_OWNER_ID;
+
+  function isViewerAccount(){
+    const account = typeof getOchiAuthUser === 'function' ? getOchiAuthUser() : null;
+    return !!(account && account.userId && account.userId !== OCHI_PUBLISHED_OWNER_ID);
+  }
+  function viewerNotice(message, isError){
+    if(typeof setOchiAccountMessage === 'function') setOchiAccountMessage(message, !!isError);
+    const panel = document.getElementById('ochiAccountPanel');
+    if(!panel) return;
+    let notice = document.getElementById('ochiViewerNotice');
+    if(!notice){
+      notice = document.createElement('div');
+      notice.id = 'ochiViewerNotice';
+      notice.setAttribute('role','status');
+      notice.style.cssText = 'margin:12px 0;padding:12px 14px;border:1px solid rgba(70,160,255,.38);border-radius:12px;background:rgba(22,75,130,.18);color:#dcecff;font-size:13px;line-height:1.5';
+      panel.appendChild(notice);
+    }
+    notice.textContent = message;
+  }
+  function activateViewerLayout(){
+    window.OCHI_VIEWER_MODE = true;
+    let style = document.getElementById('ochiViewerModeStyles');
+    if(!style){
+      style = document.createElement('style');
+      style.id = 'ochiViewerModeStyles';
+      style.textContent = `
+        body.ochi-viewer-mode #tradeEntry,
+        body.ochi-viewer-mode #evidenceLab,
+        body.ochi-viewer-mode #riskEngine,
+        body.ochi-viewer-mode #dataProtection,
+        body.ochi-viewer-mode #historicalDataCenter,
+        body.ochi-viewer-mode #ochiDatabasePanel,
+        body.ochi-viewer-mode #ochiTradeSyncPanel,
+        body.ochi-viewer-mode #tradeManagementOverlay { display:none !important; }
+        body.ochi-viewer-mode #ochiCloud .cloud-grid,
+        body.ochi-viewer-mode #ochiCloud .cloud-architecture,
+        body.ochi-viewer-mode #ochiCloud .cloud-note,
+        body.ochi-viewer-mode #ochiCloud .database-panel,
+        body.ochi-viewer-mode #ochiCloud .sync-panel,
+        body.ochi-viewer-mode #ochiCloud [data-owner-only] { display:none !important; }
+        body.ochi-viewer-mode #history [data-trade-manage],
+        body.ochi-viewer-mode #history button.danger { display:none !important; }
+        body.ochi-viewer-mode #ochiCloud .account-note { display:none !important; }
+        body.ochi-viewer-mode .ochi-sidebar a[href="#tradeEntry"],
+        body.ochi-viewer-mode .ochi-sidebar a[href="#evidenceLab"],
+        body.ochi-viewer-mode .ochi-sidebar a[href="#riskEngine"] { display:none !important; }
+      `;
+      document.head.appendChild(style);
+    }
+    document.body.classList.add('ochi-viewer-mode');
+    viewerNotice('READ-ONLY VIEWER ACCOUNT · You can view the published owner journal, dashboard, reports and trade details. Trade editing, deletion, backups, restore and synchronization controls are disabled.', false);
+  }
+  function deactivateViewerLayout(){
+    window.OCHI_VIEWER_MODE = false;
+    document.body.classList.remove('ochi-viewer-mode');
+    const notice = document.getElementById('ochiViewerNotice');
+    if(notice) notice.remove();
+  }
+  function blockViewerWrite(action){
+    if(!window.OCHI_VIEWER_MODE) return false;
+    viewerNotice('READ-ONLY ACCESS · '+(action || 'This action')+' is available only to the OchiTracker owner.', true);
+    return true;
+  }
+
+  async function loadPublishedOwnerTrades(trigger){
+    if(typeof OCHI_SUPABASE === 'undefined' || !OCHI_SUPABASE) throw new Error('Secure database connection is not ready.');
+    const {data:sessionData,error:sessionError} = await OCHI_SUPABASE.auth.getSession();
+    if(sessionError) throw sessionError;
+    const sessionUser = sessionData && sessionData.session && sessionData.session.user;
+    const account = getOchiAuthUser();
+    if(!sessionUser || !sessionUser.id || !account || account.userId !== sessionUser.id){
+      throw new Error('The active login could not be verified. Please sign in again.');
+    }
+    if(sessionUser.id === OCHI_PUBLISHED_OWNER_ID){
+      deactivateViewerLayout();
+      return originalAutoImport ? originalAutoImport(trigger || 'owner sign-in') : false;
+    }
+
+    activateViewerLayout();
+    window.OCHI_VIEWER_DATA_LOADED = false;
+    // Do not expose any previously cached local journal while a viewer is loading.
+    trades = [];
+    if(typeof renderEverything === 'function') renderEverything();
+    viewerNotice('LOADING PUBLISHED JOURNAL · Securely retrieving the owner’s published records…', false);
+
+    const {data:rows,error} = await OCHI_SUPABASE.rpc('ochi_read_published_trades');
+    if(error) throw error;
+    if(!Array.isArray(rows)) throw new Error('The publishing function returned an unexpected response.');
+    const safeRows = rows.filter(row => row && row.user_id === OCHI_PUBLISHED_OWNER_ID && row.trade_data && typeof row.trade_data === 'object' && !Array.isArray(row.trade_data));
+    if(safeRows.length !== rows.length) throw new Error('A returned row failed the owner-integrity check. No records were displayed.');
+    const incomingIds = safeRows.map(row => String(row.trade_data.id ?? row.id ?? ''));
+    if(incomingIds.some(id => !id) || new Set(incomingIds).size !== incomingIds.length){
+      throw new Error('The published journal contains a missing or duplicate trade ID. No records were displayed.');
+    }
+    // Keep the published journal in memory only; never write viewer data into
+    // the browser's owner-local journal, IndexedDB, or Supabase.
+    trades = safeRows.map(row => ({...row.trade_data, id: row.trade_data.id ?? row.id}));
+    window.OCHI_VIEWER_DATA_LOADED = true;
+    if(typeof renderEverything === 'function') renderEverything();
+    activateViewerLayout();
+    viewerNotice(`READ-ONLY VIEW ACTIVE · ${trades.length} published owner trade(s) loaded successfully. This account cannot edit, delete, upload, restore or synchronize owner records.`, false);
+    return true;
+  }
+
+  // Replace the account recovery entry point. Owner logins retain the exact
+  // original recovery path; all other authenticated accounts use the RPC.
+  window.autoImportOchiCloudTrades = async function(trigger){
+    if(!isViewerAccount()){
+      deactivateViewerLayout();
+      return originalAutoImport ? originalAutoImport(trigger) : false;
+    }
+    try{
+      return await loadPublishedOwnerTrades(trigger || 'viewer sign-in');
+    }catch(error){
+      activateViewerLayout();
+      trades = [];
+      window.OCHI_VIEWER_DATA_LOADED = false;
+      if(typeof renderEverything === 'function') renderEverything();
+      viewerNotice('PUBLISHED JOURNAL NOT LOADED · '+(error && error.message ? error.message : 'Unknown error')+'. No local owner data was displayed.', true);
+      return false;
+    }
+  };
+
+  // Clear any previous browser-local journal immediately when a different
+  // account is rendered, before the viewer RPC begins. This prevents even a
+  // brief display of cached owner data on a shared device.
+  if(originalRenderAccount){
+    window.renderOchiAccount = function(){
+      if(isViewerAccount() && !window.OCHI_VIEWER_DATA_LOADED){
+        activateViewerLayout();
+        trades = [];
+        if(typeof renderEverything === 'function') renderEverything();
+      }
+      return originalRenderAccount.apply(this,arguments);
+    };
+  }
+
+  // A viewer session must never schedule or execute either cloud or local
+  // write/sync paths, even if a hidden control is triggered programmatically.
+  window.saveTrades = function(){ return blockViewerWrite('Saving trades') ? false : originalSaveTrades.apply(this,arguments); };
+  window.scheduleOchiCloudAutomaticSync = function(){ return blockViewerWrite('Cloud synchronization') ? false : originalScheduleCloud.apply(this,arguments); };
+  window.scheduleOchiTradeSync = function(){ return blockViewerWrite('Database synchronization') ? false : originalScheduleLocal.apply(this,arguments); };
+  window.pushOchiTradesToDatabase = function(){ return blockViewerWrite('Uploading trades') ? Promise.resolve(false) : originalPushDb.apply(this,arguments); };
+  window.pullOchiTradesFromDatabase = function(){ return blockViewerWrite('Pull synchronization') ? Promise.resolve(false) : originalPullDb.apply(this,arguments); };
+  window.syncOchiTradesNow = function(){ return blockViewerWrite('Manual synchronization') ? Promise.resolve(false) : originalSyncNow.apply(this,arguments); };
+  window.syncOchiCloudAutomatically = function(){ return blockViewerWrite('Automatic cloud synchronization') ? Promise.resolve(false) : originalSyncAuto.apply(this,arguments); };
+  window.previewOchiCloudMerge = function(){ return blockViewerWrite('Owner cloud preview') ? Promise.resolve(false) : originalCloudPreview.apply(this,arguments); };
+  window.uploadOchiCloudMissingTrades = function(){ return blockViewerWrite('Cloud upload') ? Promise.resolve(false) : originalCloudUpload.apply(this,arguments); };
+  window.importOchiCloudMissingTrades = function(){ return blockViewerWrite('Cloud import') ? Promise.resolve(false) : originalCloudImport.apply(this,arguments); };
+  window.deleteTrade = function(){ return blockViewerWrite('Trade deletion') ? false : originalDeleteTrade.apply(this,arguments); };
+  window.saveTradeManagement = function(){ return blockViewerWrite('Trade management edits') ? false : originalSaveManagement.apply(this,arguments); };
+  window.clearAllData = function(){ return blockViewerWrite('Clearing browser data') ? false : originalClearAll.apply(this,arguments); };
+  window.restoreFullBackup = function(){ return blockViewerWrite('Backup restore') ? false : originalRestoreFull.apply(this,arguments); };
+  window.mergeBackup = function(){ return blockViewerWrite('Backup merge') ? false : originalMergeBackup.apply(this,arguments); };
+  window.exportFullBackup = function(){ return blockViewerWrite('Owner backup export') ? false : originalExportFull.apply(this,arguments); };
+  window.exportJournal = function(){ return blockViewerWrite('Owner journal export') ? false : originalExportJournal.apply(this,arguments); };
+
+  // Capture-phase guard blocks owner-only form submissions and controls if a
+  // hidden element is reached through keyboard navigation or a stale overlay.
+  document.addEventListener('click', function(event){
+    if(!window.OCHI_VIEWER_MODE) return;
+    const target = event.target && event.target.closest ? event.target.closest('button,[role="button"],input[type="submit"]') : null;
+    if(!target) return;
+    const ownerSection = target.closest('#tradeEntry,#evidenceLab,#riskEngine,#dataProtection,#historicalDataCenter,#ochiDatabasePanel,#ochiTradeSyncPanel');
+    const historyMutation = target.closest('#history') && (target.hasAttribute('data-trade-manage') || target.classList.contains('danger'));
+    const ownerAction = /saveTrade|deleteTrade|clearAllData|restoreFullBackup|mergeBackup|exportFullBackup|exportJournal|pushOchi|pullOchi|syncOchi|uploadOchi|importOchi/i.test(target.getAttribute('onclick') || '');
+    if(ownerSection || historyMutation || ownerAction){
+      event.preventDefault(); event.stopImmediatePropagation();
+      blockViewerWrite('This owner-only control');
+    }
+  }, true);
+  document.addEventListener('submit', function(event){
+    if(window.OCHI_VIEWER_MODE && event.target && event.target.closest('#tradeEntry,#riskEngine,#evidenceLab')){
+      event.preventDefault(); event.stopImmediatePropagation(); blockViewerWrite('Form submission');
+    }
+  }, true);
+
+  // Signing out reloads the app so the next account starts from its own clean
+  // local state; published records are never persisted by viewer sessions.
+  window.signOutOchiAccount = async function(){
+    const result = originalSignOut ? await originalSignOut.apply(this,arguments) : null;
+    if(window.OCHI_VIEWER_MODE){
+      deactivateViewerLayout();
+      window.location.reload();
+    }
+    return result;
+  };
+
+  // Apply the correct mode if the browser restores an authenticated session.
+  try{
+    const current = getOchiAuthUser();
+    if(current && current.userId && current.userId !== OCHI_PUBLISHED_OWNER_ID){
+      activateViewerLayout();
+      Promise.resolve().then(()=>window.autoImportOchiCloudTrades('viewer session restore'));
+    }
+  }catch(error){ console.warn('OchiTracker viewer-mode initialization:',error); }
+})();
+
+</script>
 </body>
 </html>
