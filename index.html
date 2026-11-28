@@ -4142,7 +4142,7 @@ button:disabled{opacity:.58;cursor:wait;filter:saturate(.6)}
 <div class="cloud-node">☁️ Ochi Cloud</div>
 </div>
 <div class="cloud-note">
-<strong>cloud foundation:</strong> OchiTracker remains local-first. Supabase now provides real email authentication. Local trade storage remains the source of truth. Supabase authentication and read-only ownership checks are available; remote trade writes and automatic cloud synchronization remain disabled. Use the cloud preview for a read-only count/ID comparison only.
+<strong>cloud foundation:</strong> OchiTracker remains local-first. Supabase now provides real email authentication. Local trade storage remains the source of truth. Supabase authentication and account-scoped cloud reads are available. After sign-in, missing cloud trades can be added to this device without overwriting local records. Remote trade writes remain disabled.
   </div>
 <!-- =====================================================
        OCHI ACCOUNT / AUTHENTICATION FOUNDATION
@@ -10407,14 +10407,14 @@ function renderOchiCloud(){
   const local=document.getElementById("cloudLocalDataStatus");
   if(!status)return;
 
-  status.textContent=state.database.connected
-    ? "CLOUD CONNECTED"
-    : "LOCAL-FIRST · CLOUD NOT CONNECTED";
   const accountState=typeof getOchiAccountState==="function" ? getOchiAccountState() : state.account;
-  account.textContent=accountState.authenticated ? "Authenticated · Local" : "Not connected";
+  status.textContent=accountState.authenticated
+    ? "SUPABASE ACCOUNT CONNECTED · CLOUD READ AVAILABLE"
+    : "LOCAL-FIRST · SIGN IN TO RECOVER CLOUD TRADES";
+  account.textContent=accountState.authenticated ? "Authenticated · Supabase" : "Not connected";
   const dbRuntime=window.OCHI_CLOUD_RUNTIME?.database || state.database;
   database.textContent=dbRuntime.connected ? `Connected · ${dbRuntime.provider || "Local"}` : "Not connected";
-  sync.textContent=state.sync.enabled ? state.sync.status : "Local only";
+  sync.textContent=accountState.authenticated ? "Cloud read · additive device recovery" : "Sign in required";
   local.textContent=health.available && health.localStorageAvailable ? "Protected" : "Check storage";
 }
 
@@ -10439,6 +10439,9 @@ let OCHI_AUTH_INITIALIZING = false;
 let OCHI_LOCKED_BY_LEAVING = false;
 let OCHI_AUTO_LOCK_IN_PROGRESS = false;
 let OCHI_CLOUD_AUTO_IMPORT_RUNNING = false;
+// Tracks the account whose cloud recovery completed successfully on this device.
+// It is intentionally memory-only so a fresh page/device session can retry recovery.
+let OCHI_CLOUD_AUTO_IMPORT_USER = null;
 
 function getOchiAccount(){
   try{ const raw=localStorage.getItem(OCHI_ACCOUNT_KEY); return raw ? JSON.parse(raw) : null; }
@@ -11292,6 +11295,7 @@ async function autoImportOchiCloudTrades(trigger="sign-in"){
     }
 
     if(!snap.cloudOnly.length){
+      OCHI_CLOUD_AUTO_IMPORT_USER=account.userId;
       setOchiSyncMessage(`CROSS-DEVICE CHECK COMPLETE · ${snap.rows.length} cloud row(s) checked. All ${snap.local.length} local trade(s) already match cloud IDs; nothing needed importing. No cloud records were changed.`,false);
       setOchiAccountMessage("Signed in. Your local journal is already up to date with the cloud trade IDs.",false);
       return true;
@@ -11316,7 +11320,8 @@ async function autoImportOchiCloudTrades(trigger="sign-in"){
     const previous=trades;
     try{
       trades=[...previous,...additions];
-      saveTrades();
+      const persisted=saveTrades();
+      if(persisted===false)throw new Error("This device could not persist the recovered trades to local browser storage. The previous local journal has been retained.");
       if(typeof renderEverything==="function")renderEverything();
     }catch(storageError){
       trades=previous;
@@ -11325,6 +11330,7 @@ async function autoImportOchiCloudTrades(trigger="sign-in"){
     }
 
     const localCount=trades.length;
+    OCHI_CLOUD_AUTO_IMPORT_USER=account.userId;
     setOchiSyncMessage(`CROSS-DEVICE RECOVERY COMPLETE · Added ${additions.length} cloud-only trade(s) to this device. Local journal now contains ${localCount} trade(s). Existing local trades were retained; Supabase was read only.`,false);
     setOchiAccountMessage(`Cross-device recovery complete. ${additions.length} missing trade(s) were added to this device. Existing records were not replaced or deleted.`,false);
 
