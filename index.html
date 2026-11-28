@@ -5,8 +5,8 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta content="#07111f" name="theme-color"/>
-<title>OchiTracker Phase 7.24.0 — Automated Cloud Sync</title>
-<meta name="ochitracker-version" content="Phase 7.24.0"/>
+<title>OchiTracker Phase 7.25.0 — Automated Cloud Sync</title>
+<meta name="ochitracker-version" content="Phase 7.25.0"/>
 <meta name="description" content="OchiTracker trading journal, risk engine, performance intelligence and TradingView market terminal."/>
 <style>
 /* =========================================================
@@ -11481,7 +11481,7 @@ async function pushOchiTradesToDatabase(){
 
     setOchiSyncProgress(100);
     setOchiSyncMessage(
-      `Trade synchronization complete. ${Array.isArray(trades)?trades.length:0} trade(s) copied from the app into the local database.`,
+      `Local database copy complete. ${Array.isArray(trades)?trades.length:0} trade(s) copied into this browser’s IndexedDB; this does not confirm Supabase cloud sync.`,
       false
     );
 
@@ -11615,7 +11615,7 @@ function updateOchiSyncUI(comparison=null){
 
 
 /*
- * Phase 7.24.0 — automatic authenticated cloud sync.
+ * Phase 7.25.0 — automatic authenticated cloud sync.
  * Safety model:
  * - local save always happens first;
  * - cloud writes are INSERT-only (never upsert/update/delete);
@@ -11646,7 +11646,7 @@ async function syncOchiCloudAutomatically(trigger="local-save"){
   if(!account?.userId || !OCHI_SUPABASE || OCHI_CLOUD_AUTO_SYNC_RUNNING) return false;
   if(!navigator.onLine){
     OCHI_SYNC_RUNTIME.status="queued";
-    setOchiSyncMessage("CLOUD SYNC QUEUED · Your trade is saved on this device. It will retry when internet returns.",false);
+    setOchiSyncMessage("CLOUD SYNC QUEUED · Trades are saved on this device and will retry when internet returns.",false);
     updateOchiSyncUI();
     return false;
   }
@@ -11654,55 +11654,51 @@ async function syncOchiCloudAutomatically(trigger="local-save"){
   try{
     const snap=await getOchiCloudTransferSnapshot();
     if(snap.user.id!==account.userId) throw new Error("Signed-in account changed during sync.");
-    if(snap.conflicts.length){
+
+    // A conflict on one shared ID must not block INSERTs for separate local-only IDs.
+    // Existing same-ID records are never overwritten, updated, or deleted.
+    let uploaded=0;
+    if(snap.localOnly.length){
+      const payload=snap.localOnly.map(t=>({user_id:snap.user.id,trade_data:t}));
+      const {data,error}=await OCHI_SUPABASE.from("trades").insert(payload).select("id,user_id,trade_data");
+      if(error) throw error;
+      if(!Array.isArray(data) || data.length!==payload.length){
+        throw new Error("Supabase did not confirm every new trade. Recheck cloud preview before retrying.");
+      }
+      uploaded=data.length;
+    }
+
+    // Verify fresh state. Conflicting shared records remain untouched for review.
+    const verified=await getOchiCloudTransferSnapshot();
+    if(verified.user.id!==account.userId) throw new Error("Signed-in account changed during verification.");
+    if(verified.localOnly.length){
+      throw new Error(`${verified.localOnly.length} local trade(s) are still missing from Supabase; insert confirmation was incomplete.`);
+    }
+    const now=new Date().toISOString();
+    if(verified.conflicts.length || verified.cloudOnly.length){
       OCHI_SYNC_RUNTIME.status="conflict";
-      setOchiSyncMessage(`CLOUD SYNC PAUSED · ${snap.conflicts.length} shared trade(s) have differing stored fields. Local data is safe; resolve the integrity differences before automatic cloud writes.`,true);
+      OCHI_SYNC_RUNTIME.lastSync=now;
+      OCHI_SYNC_RUNTIME.direction="local-to-cloud-additive";
+      saveOchiSyncState({lastSyncAt:now,direction:"local-to-cloud-additive",tradeCount:trades.length,provider:"supabase",trigger});
+      const parts=[];
+      if(uploaded) parts.push(`${uploaded} new local trade(s) uploaded and confirmed`);
+      if(verified.conflicts.length) parts.push(`${verified.conflicts.length} shared trade(s) have field differences and were not changed`);
+      if(verified.cloudOnly.length) parts.push(`${verified.cloudOnly.length} cloud-only trade(s) remain to be imported`);
+      setOchiSyncMessage(`PARTIAL CLOUD SYNC · ${parts.join("; ")}. No existing cloud trade was overwritten or deleted.`,true);
+      renderOchiCloudDifferenceReport(verified.localOnly,verified.cloudOnly,verified.integrity);
       updateOchiSyncUI();
       return false;
     }
-    if(snap.localOnly.length){
-      const payload=snap.localOnly.map(t=>({user_id:snap.user.id,trade_data:t}));
-      const {error}=await OCHI_SUPABASE.from("trades").insert(payload);
-      if(error) throw error;
-    }
-    // Cloud-only rows are added locally by the existing recovery path; no cloud writes.
-    if(snap.cloudOnly.length){
-      const additions=snap.cloudOnly.map(row=>{
-        const data=row?.trade_data;
-        if(!data || typeof data!=="object" || Array.isArray(data)) throw new Error("Cloud row contains invalid trade_data.");
-        const copy=JSON.parse(JSON.stringify(data));
-        copy.id=copy.id ?? ochiCloudTradeId(row,true);
-        return copy;
-      });
-      const existing=new Set((Array.isArray(trades)?trades:[]).map(t=>String(t.id)));
-      if(additions.some(t=>!t.id || existing.has(String(t.id)))) throw new Error("Duplicate cloud trade ID; import stopped.");
-      const previous=trades;
-      try{
-        trades=[...previous,...additions];
-        localStorage.setItem(TRADE_KEY,JSON.stringify(trades));
-        await ochiDatabasePutMany(OCHI_DATABASE_STORES.trades,additions);
-        if(typeof renderEverything==="function") renderEverything();
-      }catch(e){
-        trades=previous;
-        try{localStorage.setItem(TRADE_KEY,JSON.stringify(previous));}catch(_){}
-        throw e;
-      }
-    }
-    const verified=await getOchiCloudTransferSnapshot();
-    if(verified.conflicts.length || verified.localOnly.length || verified.cloudOnly.length){
-      throw new Error("Post-sync verification did not reach an identical state. No further writes were attempted.");
-    }
-    const now=new Date().toISOString();
     OCHI_SYNC_RUNTIME.status="synced";
     OCHI_SYNC_RUNTIME.lastSync=now;
     OCHI_SYNC_RUNTIME.direction="two-way-additive";
     saveOchiSyncState({lastSyncAt:now,direction:"two-way-additive",tradeCount:trades.length,provider:"supabase",trigger});
-    setOchiSyncMessage(`CLOUD SYNC COMPLETE · ${verified.local.length} trade(s) verified against Supabase for this account. No existing cloud records were overwritten or deleted.`,false);
+    setOchiSyncMessage(`CLOUD SYNC COMPLETE · ${verified.local.length} local trade(s) verified against Supabase. ${uploaded} new trade(s) uploaded in this run.`,false);
     updateOchiSyncUI();
     return true;
   }catch(error){
     OCHI_SYNC_RUNTIME.status=navigator.onLine?"error":"queued";
-    setOchiSyncMessage("CLOUD SYNC NOT COMPLETED · "+(error?.message||"Unknown error")+". Local trades remain saved; cloud data was not intentionally overwritten or deleted.",true);
+    setOchiSyncMessage("CLOUD SYNC NOT COMPLETED · "+(error?.message||"Unknown error")+". Local trades remain saved; no existing cloud trade was intentionally overwritten or deleted.",true);
     updateOchiSyncUI();
     return false;
   }finally{
@@ -11747,7 +11743,7 @@ async function initializeOchiTradeSync(){
   if(persisted.lastSyncAt){
     OCHI_SYNC_RUNTIME.lastSync=persisted.lastSyncAt;
     OCHI_SYNC_RUNTIME.direction=persisted.direction || "none";
-    OCHI_SYNC_RUNTIME.status="synced";
+    OCHI_SYNC_RUNTIME.status="not-synced";
   }
 
   updateOchiSyncUI();
@@ -11757,7 +11753,7 @@ async function initializeOchiTradeSync(){
     const comparison=await compareOchiTradeStores(false);
 
     if(comparison && comparison.identical && comparison.localCount>0){
-      OCHI_SYNC_RUNTIME.status="synced";
+      OCHI_SYNC_RUNTIME.status="local-matched";
     }
 
     updateOchiSyncUI(comparison);
