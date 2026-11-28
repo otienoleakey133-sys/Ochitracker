@@ -5,8 +5,8 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta content="#07111f" name="theme-color"/>
-<title>OchiTracker Phase 7.26.1 — Dashboard Refresh Repair</title>
-<meta name="ochitracker-version" content="Phase 7.26.1"/>
+<title>OchiTracker Phase 7.26.2 — Storage-Safe Dashboard Repair</title>
+<meta name="ochitracker-version" content="Phase 7.26.2"/>
 <meta name="description" content="OchiTracker trading journal, risk engine, performance intelligence and TradingView market terminal."/>
 <style>
 /* =========================================================
@@ -4606,10 +4606,20 @@ function getTrades(){
 
 function saveTrades(){
 
-  localStorage.setItem(
-    TRADE_KEY,
-    JSON.stringify(trades)
-  );
+  // Persist the canonical journal first. If browser storage is full, report
+  // the failure and stop; do not pretend the trade was safely saved.
+  try{
+    localStorage.setItem(TRADE_KEY,JSON.stringify(trades));
+  }catch(storageError){
+    console.error("OchiTracker journal storage write failed:",storageError);
+    if(typeof setOchiSyncMessage==="function"){
+      setOchiSyncMessage(
+        "LOCAL JOURNAL STORAGE FULL · Existing trades are still being displayed, but this browser could not save the latest change. Do not clear site data. Export a backup and free browser storage safely before adding or editing trades.",
+        true
+      );
+    }
+    return false;
+  }
 
   /*
     Phase 7.4 sync starts only after its IndexedDB layer
@@ -4621,13 +4631,15 @@ function saveTrades(){
   ){
     scheduleOchiTradeSync();
   }
-  // Cloud sync is scheduled directly from the canonical trade-save function.
-  // It does not depend on the separate IndexedDB mirror completing first.
+
+  // The cloud sync engine creates queue entries only for records proven
+  // local-only by a fresh account-scoped comparison. Never enqueue every
+  // shared trade on each local save.
   if(typeof scheduleOchiCloudAutomaticSync==="function"){
-    try{enqueueOchiCloudTrades(trades,"trade-save");}catch(queueError){console.warn("OchiTracker cloud outbox enqueue warning:",queueError);}
     scheduleOchiCloudAutomaticSync("trade-save");
   }
 
+  return true;
 }
 
 
@@ -4898,12 +4910,13 @@ function normalizeTrades(list){
 
 function initialize(){
 
+  // Startup is read-only: load and normalize the existing journal in memory.
+  // Do not rewrite localStorage merely to open the dashboard. This allows
+  // historical metrics and reports to render even when browser storage is full.
   trades =
     normalizeTrades(
       getTrades()
     );
-
-  saveTrades();
 
   loadRiskSettings();
 
@@ -5169,7 +5182,11 @@ document
 
     trades.push(trade);
 
-    saveTrades();
+    if(!saveTrades()){
+      trades.pop();
+      alert("Trade was not saved because browser storage is full. Your existing journal was left unchanged. Export a backup and resolve browser storage before trying again.");
+      return;
+    }
 
     resetTradeForm();
 
